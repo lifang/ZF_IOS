@@ -8,6 +8,8 @@
 
 #import "LoginViewController.h"
 #import "FindPasswordViewController.h"
+#import "RegisterViewController.h"
+#import "NetworkInterface.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -322,6 +324,42 @@
 
 }
 
+#pragma mark - Data
+
+- (void)login {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"正在登录...";
+    [NetworkInterface loginWithUsername:_usernameField.text password:_passwordField.text isAlreadyEncrypt:NO finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                [hud hide:YES];
+                int errorCode = [[object objectForKey:@"code"] intValue];
+                if (errorCode == RequestFail) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                                    message:[object objectForKey:@"message"]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"确定"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                }
+                else if (errorCode == RequestSuccess) {
+                    NSLog(@"%@",object);
+                }
+            }
+            else {
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Action
 
 - (IBAction)goPervious:(id)sender {
@@ -329,7 +367,16 @@
 }
 
 - (IBAction)signIn:(id)sender {
-    
+    if (!_usernameField.text || [_usernameField.text isEqualToString:@""] || !_passwordField.text || [_passwordField.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"用户名或密码不能为空!"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    [self login];
 }
 
 - (IBAction)forgetPassword:(id)sender {
@@ -338,7 +385,15 @@
 }
 
 - (IBAction)signUp:(id)sender {
-    
+    RegisterViewController *registerC = [[RegisterViewController alloc] init];
+    [self.navigationController pushViewController:registerC animated:YES];
+}
+
+#pragma mark - UITextField
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

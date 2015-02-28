@@ -12,6 +12,8 @@
 #import "ModuleView.h"
 #import "MineViewController.h"
 #import "GoodListViewController.h"
+#import "DealFlowViewController.h"
+#import "TerminalManagerController.h"
 
 @interface HomeViewController ()
 
@@ -189,10 +191,16 @@
             break;
         case ModuleManageTerminal: {
             //终端管理
+            TerminalManagerController *managerC = [[TerminalManagerController alloc] init];
+            managerC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:managerC animated:YES];
         }
             break;
         case ModuletDealFlow: {
             //交易流水
+            DealFlowViewController *dealFlowC = [[DealFlowViewController alloc] init];
+            dealFlowC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:dealFlowC animated:YES];
         }
             break;
         case ModuleLoan: {

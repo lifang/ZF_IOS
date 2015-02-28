@@ -13,6 +13,7 @@ static CGFloat contentHeight = 34.f;
 
 @interface FormView : UIView
 
+
 + (CGFloat)heightWithRowCount:(NSInteger)row
                      hasTitle:(BOOL)hasTitle;
 

@@ -9,12 +9,17 @@
 #import "ShoppingCartController.h"
 #import "ShoppingCartCell.h"
 #import "ShoppingCartFooterView.h"
+#import "NetworkInterface.h"
+#import "AppDelegate.h"
+#import "ShoppingCartModel.h"
 
-@interface ShoppingCartController ()<UITableViewDataSource,UITableViewDelegate>
+@interface ShoppingCartController ()<UITableViewDataSource,UITableViewDelegate,ShoppingCartDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) ShoppingCartFooterView *bottomView;
+
+@property (nonatomic, strong) NSMutableArray *dataItem;
 
 @end
 
@@ -25,7 +30,8 @@
     // Do any additional setup after loading the view.
     self.title = @"购物车";
     [self initAndLayoutUI];
-    
+    _dataItem = [[NSMutableArray alloc] init];
+    [self getShoppingList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,10 +123,58 @@
                                                            constant:0]];
 }
 
+#pragma mark - Data
+
+- (void)getShoppingList {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface getShoppingCartWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            NSLog(@"!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    [self parseDataWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+- (void)parseDataWithDictionary:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    NSArray *cartList = [dict objectForKey:@"result"];
+    for (int i = 0; i < [cartList count]; i++) {
+        NSDictionary *dict = [cartList objectAtIndex:i];
+        ShoppingCartModel *cart = [[ShoppingCartModel alloc] initWithParseDictionary:dict];
+        [_dataItem addObject:cart];
+    }
+    [_tableView reloadData];
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 10;
+    return [_dataItem count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -129,7 +183,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ShoppingCartCell *cell = nil;
-    if (indexPath.section % 2 == 0) {
+    ShoppingCartModel *cart = [_dataItem objectAtIndex:indexPath.section];
+    if (!cart.isEditing) {
         cell = [tableView dequeueReusableCellWithIdentifier:shoppingCartIdentifier_normal];
         if (cell == nil) {
             cell = [[ShoppingCartCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:shoppingCartIdentifier_normal];
@@ -141,13 +196,8 @@
             cell = [[ShoppingCartCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:shoppingCartIdentifier_edit];
         }
     }
-    cell.pictureView.image = kImageName(@"test1.png");
-    cell.titleLabel.text = @"秦山POS旗舰版";
-    cell.brandLabel.text = @"品牌型号  泰山TS900";
-    cell.channelLabel.text = @"支付通道  XXXXXX";
-    cell.priceLabel.text = @"￥9999.99";
-    cell.countLabel.text = @"X 2";
-    
+    cell.delegate = self;
+    [cell setShoppingCartData:cart];
     return cell;
 }
 
@@ -179,6 +229,66 @@
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
+}
+
+#pragma mark - ShoppingCartDelegate
+
+- (void)editOrderForCell:(ShoppingCartCell *)cell {
+    cell.cartData.isEditing = !cell.cartData.isEditing;
+    NSArray *indexPaths = [NSArray arrayWithObjects:
+                           [_tableView indexPathForCell:cell],
+                           nil];
+    [_tableView beginUpdates];
+    [_tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView endUpdates];
+}
+
+- (void)minusCountForCell:(ShoppingCartCell *)cell {
+    [self updateShoppingCartWithCart:cell.cartData
+                            newCount:[cell.numberField.text intValue]];
+}
+
+- (void)addCountForCell:(ShoppingCartCell *)cell {
+    [self updateShoppingCartWithCart:cell.cartData
+                            newCount:[cell.numberField.text intValue]];
+}
+
+- (void)deleteOrderForCell:(ShoppingCartCell *)cell {
+    
+}
+
+- (void)updateShoppingCartWithCart:(ShoppingCartModel *)cart
+                          newCount:(int)count {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"更新中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface updateShoppingCartWithToken:delegate.token cartID:cart.cartID count:count finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            NSLog(@"!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    cart.cartCount = count;
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ShoppingCartCell.h"
+#import "RegularFormat.h"
 
 @implementation ShoppingCartCell
 
@@ -402,6 +403,7 @@
     
     _numberField = [[UITextField alloc] init];
     _numberField.translatesAutoresizingMaskIntoConstraints = NO;
+    _numberField.delegate = self;
     _numberField.layer.borderWidth = 1;
     _numberField.layer.borderColor = kColor(193, 192, 192, 1).CGColor;
     _numberField.borderStyle = UITextBorderStyleNone;
@@ -494,10 +496,37 @@
                                                                   constant:35.f]];
 }
 
+#pragma mark - Data
+
+- (void)setShoppingCartData:(ShoppingCartModel *)cart {
+    _cartData = cart;
+    [self.pictureView sd_setImageWithURL:[NSURL URLWithString:cart.cartImagePath]
+                        placeholderImage:kImageName(@"test1.png")];
+    self.titleLabel.text = cart.cartTitle;
+    self.brandLabel.text = [NSString stringWithFormat:@"品牌型号   %@",cart.cartModel];
+    self.channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",cart.cartChannel];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",cart.cartPrice];
+    self.countLabel.text = [NSString stringWithFormat:@"X %d",cart.cartCount];
+    if (cart.isSelected) {
+        [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
+    }
+    else {
+        [_selectedButton setBackgroundImage:kImageName(@"btn_unselected.png") forState:UIControlStateNormal];
+    }
+    if (!cart.isEditing) {
+        [self.editButton setTitle:@"编辑" forState:UIControlStateNormal];
+    }
+    else {
+        [self.editButton setTitle:@"完成" forState:UIControlStateNormal];
+    }
+    _numberField.text = [NSString stringWithFormat:@"%d",cart.cartCount];
+}
+
 #pragma mark - Action
 
 - (IBAction)selectedOrder:(id)sender {
     _selectedButton.selected = !_selectedButton.selected;
+    _cartData.isSelected = !_cartData.isSelected;
     if (_selectedButton.isSelected) {
         [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
     }
@@ -507,19 +536,57 @@
 }
 
 - (IBAction)editOrder:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(editOrderForCell:)]) {
+        [_delegate editOrderForCell:self];
+    }
 }
 
 - (IBAction)countMinus:(id)sender {
-    
+    BOOL isNumber = [RegularFormat isNumber:_numberField.text];
+    if (isNumber) {
+        int currentCount = [_numberField.text intValue];
+        if (currentCount > 1) {
+            currentCount--;
+            _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
+            if (_delegate && [_delegate respondsToSelector:@selector(minusCountForCell:)]) {
+                [_delegate minusCountForCell:self];
+            }
+        }
+        else {
+            
+        }
+    }
+    else {
+        _numberField.text = [NSString stringWithFormat:@"%d",_cartData.cartCount];
+    }
 }
 
 - (IBAction)countAdd:(id)sender {
-    
+    BOOL isNumber = [RegularFormat isNumber:_numberField.text];
+    if (isNumber) {
+        int currentCount = [_numberField.text intValue];
+        currentCount++;
+        _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
+        if (_delegate && [_delegate respondsToSelector:@selector(addCountForCell:)]) {
+            [_delegate addCountForCell:self];
+        }
+    }
+    else {
+        _numberField.text = [NSString stringWithFormat:@"%d",_cartData.cartCount];
+    }
 }
 
 - (IBAction)deleteOrder:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(deleteOrderForCell:)]) {
+        [_delegate deleteOrderForCell:self];
+    }
+}
+
+#pragma mark - UITextField
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

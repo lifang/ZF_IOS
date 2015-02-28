@@ -20,6 +20,11 @@
 
 #define kPageSize 10   //分页加载每页行数
 
-#define kServiceURL @""
+#define kServiceURL @"http://114.215.149.242:18080/ZFMerchant/api"
 
 #define kImageName(name) [UIImage imageNamed:name]
+
+
+
+#define kServiceReturnWrong  @"服务端数据返回错误"
+#define kNetworkFailed       @"网络连接失败"

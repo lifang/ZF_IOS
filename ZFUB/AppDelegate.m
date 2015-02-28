@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "NetworkInterface.h"
+#import "TreeDataHandle.h"
 
 @interface AppDelegate ()
 
@@ -14,6 +16,9 @@
 
 @implementation AppDelegate
 
++ (AppDelegate *)shareAppDelegate {
+    return [UIApplication sharedApplication].delegate;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -24,6 +29,11 @@
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
+    
+    _cityID = @"1";
+    _userID = @"1";
+    _token = @"123";
+    [self testInterface];
     return YES;
 }
 
@@ -47,6 +57,25 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+- (void)testInterface {
+//    [NetworkInterface goodSearchInfoWithCityID:_cityID finished:^(BOOL success,NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface modifyUserInfoWithUserID:@"8" username:@"123" mobilePhone:@"123" email:@"123@qq.com" cityID:@"1" finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface registerWithActivation:@"L1GDxr" username:@"13964915263" userPassword:@"123456" cityID:@"1" isEmailRegister:NO finished:^(BOOL success, NSData *response) {
+//        NSLog(@"!!%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface getGoodListWithCityID:@"1" sortType:OrderFilterNone brandID:nil category:nil channelID:nil payCardID:nil tradeID:nil slipID:nil date:nil maxPrice:-1 minPrice:-1 keyword:nil onlyRent:NO page:1 rows:10 finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface getValidateCodeWithMobileNumber:@"15106139162" finished:^(BOOL success,NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
 }
 
 @end

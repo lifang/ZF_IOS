@@ -9,13 +9,28 @@
 #define kShoppingCartCellHeight  108.f
 
 #import <UIKit/UIKit.h>
+#import "UIImageView+WebCache.h"
+#import "ShoppingCartModel.h"
+
+@class ShoppingCartCell;
+
+@protocol ShoppingCartDelegate <NSObject>
+
+- (void)editOrderForCell:(ShoppingCartCell *)cell;
+- (void)minusCountForCell:(ShoppingCartCell *)cell;
+- (void)addCountForCell:(ShoppingCartCell *)cell;
+- (void)deleteOrderForCell:(ShoppingCartCell *)cell;
+
+@end
 
 //编辑状态
 static NSString *shoppingCartIdentifier_edit = @"shoppingCartIdentifierEdit";
 //正常状态
 static NSString *shoppingCartIdentifier_normal = @"shoppingCartIdentifierNormal";
 
-@interface ShoppingCartCell : UITableViewCell
+@interface ShoppingCartCell : UITableViewCell<UITextFieldDelegate>
+
+@property (nonatomic, assign) id<ShoppingCartDelegate>delegate;
 
 @property (nonatomic, strong) UIButton *selectedButton;
 
@@ -24,8 +39,6 @@ static NSString *shoppingCartIdentifier_normal = @"shoppingCartIdentifierNormal"
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UIButton *editButton;
-
-@property (nonatomic, strong) UITextField *inputField;
 
 @property (nonatomic, strong) UILabel *brandLabel;
 
@@ -43,7 +56,11 @@ static NSString *shoppingCartIdentifier_normal = @"shoppingCartIdentifierNormal"
 
 @property (nonatomic, strong) UIButton *minusButton;
 
+@property (nonatomic, strong) ShoppingCartModel *cartData;
+
 - (IBAction)selectedOrder:(id)sender;
+
+- (void)setShoppingCartData:(ShoppingCartModel *)cart;
 
 
 @end

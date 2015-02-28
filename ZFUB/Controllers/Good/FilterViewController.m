@@ -7,6 +7,11 @@
 //
 
 #import "FilterViewController.h"
+#import "NetworkInterface.h"
+#import "TreeDataHandle.h"
+#import "FilterContentViewController.h"
+#import "AppDelegate.h"
+#import "RegularFormat.h"
 
 @interface FilterViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 
@@ -17,6 +22,8 @@
 @property (nonatomic, strong) UITextField *highField;
 
 @property (nonatomic, strong) UISwitch *switchButton;
+///下载的筛选条件
+@property (nonatomic, strong) NSDictionary *loadDict;
 
 @end
 
@@ -36,12 +43,18 @@
                                                                 action:@selector(filterCanceled:)];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = rightItem;
+    [self downloadFilterInfo];
+//    [self setOriginalQuery];
     [self initAndLayoutUI];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [_tableView reloadData];
 }
 
 #pragma mark - UI
@@ -111,20 +124,113 @@
     _lowField.font = [UIFont systemFontOfSize:14.f];
     _lowField.backgroundColor = [UIColor clearColor];
     _lowField.textAlignment = NSTextAlignmentRight;
-    _lowField.placeholder = @"200";
+    _lowField.placeholder = @"0";
     _lowField.delegate = self;
     _highField = [[UITextField alloc] init];
     _highField.font = [UIFont systemFontOfSize:14.f];
     _highField.backgroundColor = [UIColor clearColor];
-    _highField.placeholder = @"300";
+    _highField.placeholder = @"0";
     _highField.textAlignment = NSTextAlignmentRight;
     _highField.delegate = self;
+    
+    [_switchButton setOn:[[_filterDict objectForKey:s_rent] boolValue]];
+    _lowField.text = [NSString stringWithFormat:@"%d",[[_filterDict objectForKey:s_minPrice] intValue]];
+    _highField.text = [NSString stringWithFormat:@"%d",[[_filterDict objectForKey:s_maxPrice] intValue]];
 }
+
+#pragma mark - Data 
+////设置查询初始值
+//- (void)setOriginalQuery {
+//    TreeNodeModel *original = [[TreeNodeModel alloc] initWithDirectoryName:@"全部"
+//                                                                children:nil
+//                                                                  nodeID:kNoneFilterID];
+//    NSMutableArray *item = [[NSMutableArray alloc] initWithObjects:original, nil];
+//    //所有条件可多选，value为数组
+//    [_filterDict setObject:item forKey:s_brands];
+//    [_filterDict setObject:item forKey:s_category];
+//    [_filterDict setObject:item forKey:s_channel];
+//    [_filterDict setObject:item forKey:s_card];
+//    [_filterDict setObject:item forKey:s_trade];
+//    [_filterDict setObject:item forKey:s_slip];
+//    [_filterDict setObject:item forKey:s_date];
+//}
+
+//界面上显示筛选条件名，顿号分隔
+- (NSString *)nameForSelectedKey:(NSString *)key {
+    NSArray *item = [_filterDict objectForKey:key];
+    NSString *names = @"";
+    for (int i = 0; i < [item count]; i++) {
+        TreeNodeModel *node = [item objectAtIndex:i];
+        names = [names stringByAppendingString:node.nodeName];
+        if (i != [item count] - 1) {
+            names = [names stringByAppendingString:@"、"];
+        }
+    }
+    return names;
+}
+
+- (void)downloadFilterInfo {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    [NetworkInterface goodSearchInfoWithCityID:delegate.cityID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    _loadDict = [TreeDataHandle parseData:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 
 #pragma mark - Action
 
 - (IBAction)filterFinished:(id)sender {
-    
+    BOOL maxIsNumber = [RegularFormat isNumber:_highField.text];
+    BOOL minIsNumber = [RegularFormat isNumber:_lowField.text];
+    if (!maxIsNumber || !minIsNumber) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"价格必须为正整数，可输入0查询所有数据"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    if ([_highField.text intValue] < [_lowField.text intValue]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"最低价不能超过最高价"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+
+    [_filterDict setObject:[NSNumber numberWithBool:_switchButton.isOn] forKey:s_rent];
+    [_filterDict setObject:[NSNumber numberWithFloat:[_highField.text intValue]] forKey:s_maxPrice];
+    [_filterDict setObject:[NSNumber numberWithFloat:[_lowField.text intValue]] forKey:s_minPrice];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UpdateGoodListNotification object:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)filterCanceled:(id)sender {
@@ -166,42 +272,42 @@
             break;
         case 1: {
             NSString *titleName = nil;
-            NSString *detailInfo = nil;
+            NSString *key = nil;
             switch (indexPath.row) {
                 case 0:
                     titleName = @"选择POS品牌";
-                    detailInfo = @"泰山";
+                    key = s_brands;
                     break;
                 case 1:
                     titleName = @"选择POS类型";
-                    detailInfo = @"磁条";
+                    key = s_category;
                     break;
                 case 2:
                     titleName = @"选择支付通道";
-                    detailInfo = @"安付";
+                    key = s_channel;
                     break;
                 case 3:
                     titleName = @"选择支付卡类型";
-                    detailInfo = @"";
+                    key = s_card;
                     break;
                 case 4:
                     titleName = @"选择支付交易类型";
-                    detailInfo = @"";
+                    key = s_trade;
                     break;
                 case 5:
                     titleName = @"选择签购单方式";
-                    detailInfo = @"";
+                    key = s_slip;
                     break;
                 case 6:
                     titleName = @"选择对账日期";
-                    detailInfo = @"";
+                    key = s_date;
                     break;
                 default:
                     break;
             }
             cell.textLabel.text = titleName;
             cell.detailTextLabel.font = [UIFont systemFontOfSize:14.f];
-            cell.detailTextLabel.text = detailInfo;
+            cell.detailTextLabel.text = [self nameForSelectedKey:key];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
             break;
@@ -233,6 +339,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == 1) {
+        NSString *key = nil;
+        switch (indexPath.row) {
+            case 0:
+                key = s_brands;
+                break;
+            case 1:
+                key = s_category;
+                break;
+            case 2:
+                key = s_channel;
+                break;
+            case 3:
+                key = s_card;
+                break;
+            case 4:
+                key = s_trade;
+                break;
+            case 5:
+                key = s_slip;
+                break;
+            case 6:
+                key = s_date;
+                break;
+            default:
+                break;
+        }
+        FilterContentViewController *filterC = [[FilterContentViewController alloc] init];
+        filterC.title = cell.textLabel.text;
+        filterC.key = key;
+        filterC.selectedFilterDict = _filterDict;
+        filterC.dataItem = [_loadDict objectForKey:key];
+        [self.navigationController pushViewController:filterC animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

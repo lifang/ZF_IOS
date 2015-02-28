@@ -9,6 +9,7 @@
 #define kGoodCellHeight  136.f
 
 #import <UIKit/UIKit.h>
+#import "UIImageView+WebCache.h"
 
 @interface GoodsCell : UITableViewCell
 

@@ -15,6 +15,13 @@
 
 @property (nonatomic, strong) RootViewController *rootController;
 
+@property (nonatomic, strong) NSString *cityID;
+
+//登录后返回
+@property (nonatomic, strong) NSString *userID;
+@property (nonatomic, strong) NSString *token;
+
++ (AppDelegate *)shareAppDelegate;
 
 @end
 

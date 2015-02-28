@@ -8,6 +8,12 @@
 
 #import "CommonViewController.h"
 
+//列表界面刷新数据
+static NSString *UpdateGoodListNotification = @"UpdateGoodListNotification";
+
 @interface FilterViewController : CommonViewController
+
+///保存用户选择的筛选条件
+@property (nonatomic, strong) NSMutableDictionary *filterDict;
 
 @end
