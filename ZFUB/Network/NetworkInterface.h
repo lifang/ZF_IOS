@@ -17,6 +17,12 @@
  3.1注册验证码
  3.2找回密码手机验证码
  15.获取终端管理终端列表
+ 16.指定收单通道
+ 17.添加终端
+ 18.找回POS密码
+ 19.视频认证
+ 20.同步
+ 21.终端详情
  22.商品搜索条件
  23.商品列表
  24.商品详细
@@ -69,8 +75,29 @@ static NSString *s_registerValidate_method = @"user/sendPhoneVerificationCodeReg
 //找回密码手机验证码
 static NSString *s_findValidate_method = @"user/sendPhoneVerificationCodeFind";
 
+//开通申请
+static NSString *s_applyList_method = @"apply/getApplyList";
+
 //终端管理列表
 static NSString *s_terminalManagerList_method = @"terminal/getApplyList";
+
+//收单机构
+static NSString *s_organzationList_method = @"terminal/getFactories";
+
+//添加终端
+static NSString *s_addTerminal_method = @"terminal/addTerminal";
+
+//找回POS密码
+static NSString *s_terminalFindPsw_method = @"terminal/Encryption";
+
+//视频认证
+static NSString *s_videoAuth_method = @"terminal/videoAuthentication";
+
+//同步
+static NSString *s_synchronize_method = @"terminal/synchronous";
+
+//终端详情
+static NSString *s_termainlDetail_method = @"terminal/getApplyDetails";
 
 //商品列表
 static NSString *s_goodList_method = @"good/list";
@@ -151,6 +178,21 @@ static NSString *s_userUpdate_method = @"customers/update";
 + (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
                                    finished:(requestDidFinished)finish;
 
+
+/*!
+ @abstract 6.获取开通申请列表
+ @param token       登录返回
+ @param userID      用户ID
+ @param page        分页参数 页
+ @param rows        分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getApplyListWithToken:(NSString *)token
+                       userID:(NSString *)userID
+                         page:(int)page
+                         rows:(int)rows
+                     finished:(requestDidFinished)finish;
+
 /*!
  @abstract 15.获取终端管理终端列表
  @param token       登录返回
@@ -164,6 +206,70 @@ static NSString *s_userUpdate_method = @"customers/update";
                                    page:(int)page
                                    rows:(int)rows
                                finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 16.指定收单通道
+ @param token       登录返回
+ @result finish  请求回调结果
+ */
++ (void)getCollectionChannelWithToken:(NSString *)token
+                             finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 17.添加终端
+ @param token       登录返回
+ @param userID      用户id
+ @param institutionID    收单机构id
+ @param terminalNumber   终端号
+ @param merchantName     商家名
+ @result finish  请求回调结果
+ */
++ (void)addTerminalWithToken:(NSString *)token
+                      userID:(NSString *)userID
+               institutionID:(NSString *)institutionID
+              terminalNumber:(NSString *)terminalNumber
+                merchantName:(NSString *)merchantName
+                    finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 18.找回POS密码
+ @param token       登录返回
+ @param tmID     终端信息id
+ @result finish  请求回调结果
+ */
++ (void)findPOSPasswordWithToken:(NSString *)token
+                            tmID:(NSString *)tmID
+                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 19.视频认证
+ @param token       登录返回
+ @param tmID     终端信息id
+ @result finish  请求回调结果
+ */
++ (void)videoAuthWithToken:(NSString *)token
+                      tmID:(NSString *)tmID
+                  finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 20.同步
+ @param token       登录返回
+ @param tmID     终端信息id
+ @result finish  请求回调结果
+ */
++ (void)synchronizeWithToken:(NSString *)token
+                        tmID:(NSString *)tmID
+                    finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 21.终端详情
+ @param token       登录返回
+ @param tmID     终端信息id
+ @result finish  请求回调结果
+ */
++ (void)getTerminalDetailWithToken:(NSString *)token
+                              tmID:(NSString *)tmID
+                          finished:(requestDidFinished)finish;
 
 /*!
  @abstract 22.商品搜索条件

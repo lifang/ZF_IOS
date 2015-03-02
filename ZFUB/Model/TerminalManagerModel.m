@@ -19,4 +19,29 @@
     return self;
 }
 
+- (NSString *)getStatusString {
+    NSString *statusString = nil;
+    int index = [self.TM_status intValue];
+    switch (index) {
+        case TerminalStatusOpened:
+            statusString = @"已开通";
+            break;
+        case TerminalStatusPartOpened:
+            statusString = @"部分开通";
+            break;
+        case TerminalStatusUnOpened:
+            statusString = @"未开通";
+            break;
+        case TerminalStatusCanceled:
+            statusString = @"已注销";
+            break;
+        case TerminalStatusStopped:
+            statusString = @"已停用";
+            break;
+        default:
+            break;
+    }
+    return statusString;
+}
+
 @end

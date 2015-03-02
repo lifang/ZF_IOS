@@ -181,7 +181,7 @@
                                                              toItem:nil
                                                           attribute:NSLayoutAttributeNotAnAttribute
                                                          multiplier:1.0
-                                                           constant:kLineHeight]];
+                                                           constant:1.0]];
     //商户信息
     UILabel *merchantTitleLabel = [[UILabel alloc] init];
     merchantTitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -220,7 +220,7 @@
     //划线
     UIView *secondLine = [[UIView alloc] init];
     secondLine.translatesAutoresizingMaskIntoConstraints = NO;
-    secondLine.backgroundColor = [UIColor redColor];
+    secondLine.backgroundColor = kColor(255, 102, 36, 1);
     [_scrollView addSubview:secondLine];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:secondLine
                                                           attribute:NSLayoutAttributeTop
@@ -249,7 +249,7 @@
                                                              toItem:nil
                                                           attribute:NSLayoutAttributeNotAnAttribute
                                                          multiplier:1.0
-                                                           constant:kLineHeight]];
+                                                           constant:1.0]];
     //商家编号
     UILabel *merchantNumberLabel = [[UILabel alloc] init];
     [self setLabel:merchantNumberLabel withTopView:secondLine middleSpace:space];
@@ -298,7 +298,7 @@
     //划线
     UIView *thirdLine = [[UIView alloc] init];
     thirdLine.translatesAutoresizingMaskIntoConstraints = NO;
-    thirdLine.backgroundColor = [UIColor redColor];
+    thirdLine.backgroundColor = kColor(255, 102, 36, 1);
     [_scrollView addSubview:thirdLine];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:thirdLine
                                                           attribute:NSLayoutAttributeTop
@@ -327,7 +327,7 @@
                                                              toItem:nil
                                                           attribute:NSLayoutAttributeNotAnAttribute
                                                          multiplier:1.0
-                                                           constant:kLineHeight]];
+                                                           constant:1.0]];
     //终端号
     UILabel *terminalLabel = [[UILabel alloc] init];
     [self setLabel:terminalLabel withTopView:thirdLine middleSpace:space];
@@ -376,9 +376,9 @@
      小label+间距    22 * (labelHeight + space)
      线上下间距       3 * lineSpace
      标题label       2 * titleLabelHeight
-     线              3 * kLineHeight
+     线              3 * 1
      */
-    CGFloat sizeY = topSpace + 30 + 17 * (labelHeight + space) + 5 * space + 3 * lineSpace + 2 * titleLabelHeight + 3 * kLineHeight;
+    CGFloat sizeY = topSpace + 30 + 17 * (labelHeight + space) + 5 * space + 3 * lineSpace + 2 * titleLabelHeight + 3 * 1;
     if (_tradeType == TradeTypeTelephoneFare) {
         sizeY -= labelHeight + space;
     }

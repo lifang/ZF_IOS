@@ -87,6 +87,11 @@
 		775874001A7234A900EB3AE5 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873F11A7234A900EB3AE5 /* UIImageView+WebCache.m */; };
 		775874011A7234A900EB3AE5 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */; };
 		775874041A723CDE00EB3AE5 /* ModuleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 775874031A723CDE00EB3AE5 /* ModuleView.m */; };
+		775B86911AA189EF002434F4 /* AddTerminalController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86901AA189EF002434F4 /* AddTerminalController.m */; };
+		775B86941AA18FCD002434F4 /* InstitutionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86931AA18FCD002434F4 /* InstitutionModel.m */; };
+		775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86961AA19294002434F4 /* InstitutionSelectedController.m */; };
+		775B869A1AA19EC6002434F4 /* TerminalDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86991AA19EC6002434F4 /* TerminalDetailController.m */; };
+		775B869E1AA1BCFE002434F4 /* OpenApplyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B869D1AA1BCFE002434F4 /* OpenApplyController.m */; };
 		7792CB511A709C8F00C44A64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB501A709C8F00C44A64 /* main.m */; };
 		7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB531A709C8F00C44A64 /* AppDelegate.m */; };
 		7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7792CB5B1A709C8F00C44A64 /* Images.xcassets */; };
@@ -266,6 +271,16 @@
 		775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		775874021A723CDE00EB3AE5 /* ModuleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleView.h; sourceTree = "<group>"; };
 		775874031A723CDE00EB3AE5 /* ModuleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleView.m; sourceTree = "<group>"; };
+		775B868F1AA189EF002434F4 /* AddTerminalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTerminalController.h; sourceTree = "<group>"; };
+		775B86901AA189EF002434F4 /* AddTerminalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTerminalController.m; sourceTree = "<group>"; };
+		775B86921AA18FCD002434F4 /* InstitutionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionModel.h; sourceTree = "<group>"; };
+		775B86931AA18FCD002434F4 /* InstitutionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutionModel.m; sourceTree = "<group>"; };
+		775B86951AA19294002434F4 /* InstitutionSelectedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionSelectedController.h; sourceTree = "<group>"; };
+		775B86961AA19294002434F4 /* InstitutionSelectedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutionSelectedController.m; sourceTree = "<group>"; };
+		775B86981AA19EC6002434F4 /* TerminalDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalDetailController.h; sourceTree = "<group>"; };
+		775B86991AA19EC6002434F4 /* TerminalDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerminalDetailController.m; sourceTree = "<group>"; };
+		775B869C1AA1BCFE002434F4 /* OpenApplyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenApplyController.h; sourceTree = "<group>"; };
+		775B869D1AA1BCFE002434F4 /* OpenApplyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenApplyController.m; sourceTree = "<group>"; };
 		7792CB4B1A709C8F00C44A64 /* ZFUB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZFUB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7792CB4F1A709C8F00C44A64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7792CB501A709C8F00C44A64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -324,6 +339,8 @@
 				773A10001A9F1A22008EA806 /* TradeModel.m */,
 				7738E8811AA07AC500D51CBE /* TerminalManagerModel.h */,
 				7738E8821AA07AC500D51CBE /* TerminalManagerModel.m */,
+				775B86921AA18FCD002434F4 /* InstitutionModel.h */,
+				775B86931AA18FCD002434F4 /* InstitutionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,6 +365,12 @@
 			children = (
 				7738E87E1AA06F6700D51CBE /* TerminalManagerController.h */,
 				7738E87F1AA06F6700D51CBE /* TerminalManagerController.m */,
+				775B868F1AA189EF002434F4 /* AddTerminalController.h */,
+				775B86901AA189EF002434F4 /* AddTerminalController.m */,
+				775B86951AA19294002434F4 /* InstitutionSelectedController.h */,
+				775B86961AA19294002434F4 /* InstitutionSelectedController.m */,
+				775B86981AA19EC6002434F4 /* TerminalDetailController.h */,
+				775B86991AA19EC6002434F4 /* TerminalDetailController.m */,
 			);
 			path = TerminalManager;
 			sourceTree = "<group>";
@@ -562,6 +585,7 @@
 				774129621A737E2F00DA0B27 /* Good */,
 				775873B71A71ED2100EB3AE5 /* ShoppingCart */,
 				773A0FF51A9EB5F0008EA806 /* DealFlow */,
+				775B869B1AA1BCE9002434F4 /* OpenApply */,
 				7738E87D1AA06F3F00D51CBE /* TerminalManager */,
 				775873B81A71ED4D00EB3AE5 /* MyMessage */,
 				775873B91A71ED5D00EB3AE5 /* Mine */,
@@ -669,6 +693,15 @@
 				775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		775B869B1AA1BCE9002434F4 /* OpenApply */ = {
+			isa = PBXGroup;
+			children = (
+				775B869C1AA1BCFE002434F4 /* OpenApplyController.h */,
+				775B869D1AA1BCFE002434F4 /* OpenApplyController.m */,
+			);
+			path = OpenApply;
 			sourceTree = "<group>";
 		};
 		7792CB421A709C8F00C44A64 = {
@@ -840,9 +873,12 @@
 			files = (
 				775873F71A7234A900EB3AE5 /* SDWebImageDecoder.m in Sources */,
 				7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */,
+				775B86941AA18FCD002434F4 /* InstitutionModel.m in Sources */,
 				7742DB1A1A89CC1800EF16FB /* RegisterViewController.m in Sources */,
+				775B869A1AA19EC6002434F4 /* TerminalDetailController.m in Sources */,
 				773093A61A8B3EE80096FE0B /* TreeNodeInfo.m in Sources */,
 				7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */,
+				775B86911AA189EF002434F4 /* AddTerminalController.m in Sources */,
 				7738E8801AA06F6700D51CBE /* TerminalManagerController.m in Sources */,
 				773093AA1A8B40D70096FE0B /* FilterContentViewController.m in Sources */,
 				7738E8861AA07C1600D51CBE /* TerminalManagerCell.m in Sources */,
@@ -855,7 +891,9 @@
 				775874011A7234A900EB3AE5 /* UIView+WebCacheOperation.m in Sources */,
 				775873B31A71ECA600EB3AE5 /* CommonViewController.m in Sources */,
 				7792CB511A709C8F00C44A64 /* main.m in Sources */,
+				775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */,
 				7742DB351A8A2EEB00EF16FB /* CityHandle.m in Sources */,
+				775B869E1AA1BCFE002434F4 /* OpenApplyController.m in Sources */,
 				773093AD1A8B41330096FE0B /* TreeNodeModel.m in Sources */,
 				774129611A7368E000DA0B27 /* ModifyPasswordViewController.m in Sources */,
 				774D67741A79FFA200DDCEE4 /* SearchHistoryHelper.m in Sources */,

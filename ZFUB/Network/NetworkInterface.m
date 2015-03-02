@@ -93,6 +93,31 @@ static NSString *HTTP_GET  = @"GET";
                         finished:finish];
 }
 
+//3.2
++ (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
+                                   finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_findValidate_method,mobileNumber];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//6.
++ (void)getApplyListWithToken:(NSString *)token
+                       userID:(NSString *)userID
+                         page:(int)page
+                         rows:(int)rows
+                     finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/%d/%d",kServiceURL,s_applyList_method,userID,page,rows];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
 //15.
 + (void)getTerminalManagerListWithToken:(NSString *)token
                                  userID:(NSString *)userID
@@ -107,11 +132,79 @@ static NSString *HTTP_GET  = @"GET";
                         finished:finish];
 }
 
-//3.2
-+ (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
-                                   finished:(requestDidFinished)finish {
+//16.
++ (void)getCollectionChannelWithToken:(NSString *)token finished:(requestDidFinished)finish {
     //url
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_findValidate_method,mobileNumber];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/",kServiceURL,s_organzationList_method];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//17.
++ (void)addTerminalWithToken:(NSString *)token
+                      userID:(NSString *)userID
+               institutionID:(NSString *)institutionID
+              terminalNumber:(NSString *)terminalNumber
+                merchantName:(NSString *)merchantName
+                    finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:userID forKey:@"customerId"];
+    [paramDict setObject:terminalNumber forKey:@"serialNum"];
+    [paramDict setObject:merchantName forKey:@"title"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_addTerminal_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//18.
++ (void)findPOSPasswordWithToken:(NSString *)token
+                            tmID:(NSString *)tmID
+                        finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_terminalFindPsw_method,tmID];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//19.
++ (void)videoAuthWithToken:(NSString *)token
+                      tmID:(NSString *)tmID
+                  finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_videoAuth_method];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//20.
++ (void)synchronizeWithToken:(NSString *)token
+                        tmID:(NSString *)tmID
+                    finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_synchronize_method];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//21.
++ (void)getTerminalDetailWithToken:(NSString *)token
+                              tmID:(NSString *)tmID
+                          finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_termainlDetail_method,tmID];
     [[self class] requestWithURL:urlString
                           params:nil
                       httpMethod:HTTP_GET

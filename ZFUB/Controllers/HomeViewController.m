@@ -14,6 +14,7 @@
 #import "GoodListViewController.h"
 #import "DealFlowViewController.h"
 #import "TerminalManagerController.h"
+#import "OpenApplyController.h"
 
 @interface HomeViewController ()
 
@@ -187,6 +188,9 @@
             break;
         case ModuleAuthentication: {
             //开通认证
+            OpenApplyController *applyC = [[OpenApplyController alloc] init];
+            applyC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:applyC animated:YES];
         }
             break;
         case ModuleManageTerminal: {
