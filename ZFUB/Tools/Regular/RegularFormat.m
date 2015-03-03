@@ -58,6 +58,12 @@
     }
 }
 
++ (BOOL)isTelephoneNumber:(NSString *)teleNum {
+    NSString *teleRegex = @"((\\d{3,4})|\\d{3,4}-|\\s)?\\d{7,8}";
+    NSPredicate *teleTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",teleRegex];
+    return [teleTest evaluateWithObject:teleNum];
+}
+
 + (BOOL)isCorrectEmail:(NSString *)email {
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
@@ -74,6 +80,12 @@
     else {
         return NO;
     }
+}
+
++ (BOOL)isInt:(NSString*)string {
+    NSScanner *scan = [NSScanner scannerWithString:string];
+    int val;
+    return[scan scanInt:&val] && [scan isAtEnd];
 }
 
 @end

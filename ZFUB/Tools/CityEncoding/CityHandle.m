@@ -28,14 +28,26 @@
         for (int j = 0; j < [cityForProvince count]; j++) {
             NSDictionary *cityDict = [cityForProvince objectAtIndex:j];
             CityModel *city = [[CityModel alloc] init];
-            city.cityID = [cityDict objectForKey:@"id"];
+            city.cityID = [NSString stringWithFormat:@"%@",[cityDict objectForKey:@"id"]];
             city.cityName = [cityDict objectForKey:@"name"];
-            city.parentID = [cityDict objectForKey:@"parentId"];
+            city.parentID = [NSString stringWithFormat:@"%@",[cityDict objectForKey:@"parentId"]];
             city.cityPinYin = [cityDict objectForKey:@"pinyin"];
             [cityList addObject:city];
         }
     }
     return cityList;
+}
+
++ (NSString *)getCityNameWithCityID:(NSString *)cityID {
+    NSString *cityName = nil;
+    NSArray *cityList = [[self class] getCityList];
+    for (CityModel *city in cityList) {
+        if ([city.cityID isEqualToString:cityID]) {
+            cityName = city.cityName;
+            break;
+        }
+    }
+    return cityName;
 }
 
 //城市排序

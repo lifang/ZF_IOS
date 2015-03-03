@@ -7,8 +7,13 @@
 //
 
 #import "PersonInfoViewController.h"
-
 #import "ModifyPasswordViewController.h"
+#import "NetworkInterface.h"
+#import "AppDelegate.h"
+#import "UserModel.h"
+#import "CityHandle.h"
+#import "EditPersonInfoController.h"
+#import "ScoreViewController.h"
 
 static NSInteger s_firstSectionCount = 5;    ///第一分组列数
 static NSInteger s_secondSectionCount = 1;   ///第二分组列数
@@ -20,9 +25,15 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
 @property (nonatomic, strong) NSArray *itemNames;    //我的信息模块名称
 
+@property (nonatomic, strong) UserModel *userInfo;
+
 @end
 
 @implementation PersonInfoViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,6 +43,11 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
     //初始化静态数据
     [self initStaticData];
     [self initAndLauoutUI];
+    
+    //加载用户数据
+    [self getUserInfo];
+    //通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUserInfo:) name:EditUserInfoNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,6 +114,40 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                                                            constant:0]];
 }
 
+#pragma mark - Request 
+
+- (void)getUserInfo {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface getUserInfoWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    [self parseUserDataWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)initStaticData {
@@ -110,6 +160,15 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                   @"地址管理",
                   @"修改密码",
                   nil];
+}
+
+- (void)parseUserDataWithDictionary:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    NSDictionary *infoDict = [dict objectForKey:@"result"];
+    _userInfo = [[UserModel alloc] initWithParseDictionary:infoDict];
+    [_tableView reloadData];
 }
 
 #pragma mark - Action
@@ -159,19 +218,19 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
             NSString *detailInfo = nil;
             switch (indexPath.row) {
                 case 0:
-                    detailInfo = @"张晓晓";
+                    detailInfo = _userInfo.userName;
                     break;
                 case 1:
-                    detailInfo = @"13948583943";
+                    detailInfo = _userInfo.phoneNumber;
                     break;
                 case 2:
-                    detailInfo = @"130@qq.com";
+                    detailInfo = _userInfo.email;
                     break;
                 case 3:
-                    detailInfo = @"上海";
+                    detailInfo = [CityHandle getCityNameWithCityID:_userInfo.cityID];
                     break;
                 case 4:
-                    detailInfo = @"200";
+                    detailInfo = _userInfo.userScore;
                     break;
                 default:
                     break;
@@ -227,14 +286,26 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
             switch (indexPath.row) {
                 case 0: {
                     //姓名
+                    EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
+                    editC.modifyType = ModifyUsername;
+                    editC.userInfo = _userInfo;
+                    [self.navigationController pushViewController:editC animated:YES];
                 }
                     break;
                 case 1: {
                     //手机
+                    EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
+                    editC.modifyType = ModifyPhoneNumber;
+                    editC.userInfo = _userInfo;
+                    [self.navigationController pushViewController:editC animated:YES];
                 }
                     break;
                 case 2: {
                     //邮箱
+                    EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
+                    editC.modifyType = ModifyEmail;
+                    editC.userInfo = _userInfo;
+                    [self.navigationController pushViewController:editC animated:YES];
                 }
                     break;
                 case 3: {
@@ -243,6 +314,8 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                     break;
                 case 4: {
                     //我的积分
+                    ScoreViewController *scoreC = [[ScoreViewController alloc] init];
+                    [self.navigationController pushViewController:scoreC animated:YES];
                 }
                     break;
                 default:
@@ -277,6 +350,12 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
+}
+
+#pragma mark - NSNotification
+
+- (void)refreshUserInfo:(NSNotification *)notification {
+    [_tableView reloadData];
 }
 
 @end

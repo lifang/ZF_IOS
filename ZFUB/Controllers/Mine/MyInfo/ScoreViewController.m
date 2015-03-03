@@ -1,18 +1,19 @@
 //
-//  OpenApplyController.m
+//  ScoreViewController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/28.
+//  Created by 徐宝桥 on 15/3/2.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "OpenApplyController.h"
-#import "RefreshView.h"
-#import "NetworkInterface.h"
+#import "ScoreViewController.h"
 #import "AppDelegate.h"
-#import "OpenApplyCell.h"
+#import "NetworkInterface.h"
+#import "RefreshView.h"
+#import "ScoreCell.h"
+#import "ExchangeScoreController.h"
 
-@interface OpenApplyController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,OpenApplyCellDelegate>
+@interface ScoreViewController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -25,20 +26,34 @@
 @property (nonatomic, assign) int page;
 /**********************************/
 
-//终端信息数据
-@property (nonatomic, strong) NSMutableArray *applyList;
+@property (nonatomic, strong) UILabel *totalLabel;  //总积分label
+//请求获取
+@property (nonatomic, strong) NSString *totalScore; //总积分
+@property (nonatomic, strong) NSString *totalMoney; //总金额
+
+@property (nonatomic, strong) NSMutableArray *scoreItems;
 
 @end
 
-@implementation OpenApplyController
+@implementation ScoreViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"开通申请";
-    _applyList = [[NSMutableArray alloc] init];
+    self.title = @"我的积分";
+    _scoreItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"兑换"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(exchangeScore:)];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     [self initAndLayoutUI];
+    //加载数据
     [self firstLoadData];
+    //总积分
+    [self getAllScore];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,12 +63,28 @@
 
 #pragma mark - UI
 
+- (void)setHeaderAndFooterView {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 60)];
+    headerView.backgroundColor = kColor(244, 243, 243, 1);
+    _tableView.tableHeaderView = headerView;
+    
+    _totalLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, kScreenWidth - 10, 40)];
+    _totalLabel.backgroundColor = [UIColor clearColor];
+    _totalLabel.font = [UIFont boldSystemFontOfSize:18.f];
+    [headerView addSubview:_totalLabel];
+    
+    UIView *footerView = [[UIView alloc] init];
+    footerView.backgroundColor = [UIColor clearColor];
+    _tableView.tableFooterView = footerView;
+}
+
 - (void)initAndLayoutUI {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     _tableView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    [self setHeaderAndFooterView];
     [self.view addSubview:_tableView];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
                                                           attribute:NSLayoutAttributeTop
@@ -97,6 +128,32 @@
 
 #pragma mark - Request
 
+- (void)getAllScore {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface getScoreTotalWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    NSDictionary *dict = [object objectForKey:@"result"];
+                    _totalScore = [NSString stringWithFormat:@"%@",[dict objectForKey:@"quantityTotal"]];
+                    _totalMoney = [NSString stringWithFormat:@"%@",[dict objectForKey:@"moneyTotal"]];
+                    _totalLabel.text = [NSString stringWithFormat:@"总积分 %@",_totalScore];
+                }
+            }
+            else {
+                //返回错误数据
+            }
+        }
+        else {
+        }
+    }];
+}
+
 - (void)firstLoadData {
     _page = 1;
     [self downloadDataWithPage:_page isMore:NO];
@@ -106,7 +163,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface getApplyListWithToken:delegate.token userID:delegate.userID page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getScoreListWithToken:delegate.token userID:delegate.userID page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -121,7 +178,7 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     if (!isMore) {
-                        [_applyList removeAllObjects];
+                        [_scoreItems removeAllObjects];
                     }
                     if ([[object objectForKey:@"result"] count] > 0) {
                         //有数据
@@ -132,7 +189,7 @@
                         //无数据
                         hud.labelText = @"没有更多数据了...";
                     }
-                    [self parseApplyDataWithDictionary:object];
+                    [self parseScoreListDataWithDictionary:object];
                 }
             }
             else {
@@ -152,72 +209,68 @@
     }];
 }
 
-
 #pragma mark - Data
 
-- (void)parseApplyDataWithDictionary:(NSDictionary *)dict {
+- (void)parseScoreListDataWithDictionary:(NSDictionary *)dict {
     if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
         return;
     }
-    NSArray *TM_List = [dict objectForKey:@"result"];
-    for (int i = 0; i < [TM_List count]; i++) {
-        TerminalManagerModel *tm_Model = [[TerminalManagerModel alloc] initWithParseDictionary:[TM_List objectAtIndex:i]];
-        [_applyList addObject:tm_Model];
+    NSArray *scoreList = [dict objectForKey:@"result"];
+    for (int i = 0; i < [scoreList count]; i++) {
+        ScoreModel *model = [[ScoreModel alloc] initWithParseDictionary:[scoreList objectAtIndex:i]];
+        [_scoreItems addObject:model];
     }
     [_tableView reloadData];
 }
 
 #pragma mark - Action
 
+- (IBAction)exchangeScore:(id)sender {
+    ExchangeScoreController *exchangeC = [[ExchangeScoreController alloc] init];
+    exchangeC.totalPrice = _totalMoney;
+    exchangeC.totalScore = _totalScore;
+    [self.navigationController pushViewController:exchangeC animated:YES];
+}
 
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [_applyList count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_scoreItems count];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TerminalManagerModel *model = [_applyList objectAtIndex:indexPath.section];
-    NSString *cellIdentifier = nil;
-    switch ([model.TM_status intValue]) {
-        case TerminalStatusPartOpened:
-            //部分开通
-            cellIdentifier = partOpenedApplyIdentifier;
-            break;
-        case TerminalStatusUnOpened:
-            //未开通
-            cellIdentifier = unOpenedApplyIdentifier;
-            break;
-        default:
-            break;
-    }
-    OpenApplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *scoreIdentifier = @"scoreIdentifier";
+    ScoreCell *cell = [tableView dequeueReusableCellWithIdentifier:scoreIdentifier];
     if (cell == nil) {
-        cell = [[OpenApplyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        cell.delegate = self;
+        cell = [[ScoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:scoreIdentifier];
     }
+    ScoreModel *model = [_scoreItems objectAtIndex:indexPath.row];
     [cell setContentsWithData:model];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kOpenApplyCellHeight;
+    return kScoreCellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 5.f;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0.001f;
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
 
 #pragma mark - Refresh
@@ -312,18 +365,5 @@
     [self downloadDataWithPage:self.page isMore:YES];
 }
 
-#pragma mark - OpenApplyCellDelegate
-//申请开通
-- (void)openApplyWithData:(TerminalManagerModel *)model {
-    
-}
-//视频认证
-- (void)videoAuthWithData:(TerminalManagerModel *)model {
-    
-}
-//重新申请开通
-- (void)reopenApplyWithData:(TerminalManagerModel *)model {
-    
-}
 
 @end

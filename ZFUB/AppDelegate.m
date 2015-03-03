@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "NetworkInterface.h"
 #import "TreeDataHandle.h"
+#import "RegularFormat.h"
 
 @interface AppDelegate ()
 
@@ -29,9 +30,8 @@
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
-    
     _cityID = @"1";
-    _userID = @"1";
+    _userID = @"8";
     _token = @"123";
     [self testInterface];
     return YES;

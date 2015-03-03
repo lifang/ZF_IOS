@@ -14,8 +14,8 @@
  已完成
  1.注册
  2.登录
- 3.1注册验证码
- 3.2找回密码手机验证码
+ 3.找回密码手机验证码
+ 5.注册验证码
  15.获取终端管理终端列表
  16.指定收单通道
  17.添加终端
@@ -33,7 +33,10 @@
  36.查询交易流水
  37.交易流水详情
  38.统计交易流水
- 39.修改用户信息
+ 39.获取用户信息
+ 40.修改用户信息
+ 41.修改用户密码
+ 42.我的积分列表
  */
 
 
@@ -129,8 +132,23 @@ static NSString *s_tradeDetail_method = @"trade/record/getTradeRecord";
 //统计交易流水
 static NSString *s_tradeTotal_method = @"trade/record/getTradeRecordTotal";
 
+//获取用户信息
+static NSString *s_userInfo_method = @"customers/getOne";
+
 //修改用户信息
 static NSString *s_userUpdate_method = @"customers/update";
+
+//修改用户密码
+static NSString *s_mofityUserPassword_method = @"customers/updatePassword";
+
+//我的积分列表
+static NSString *s_scoreList_method = @"customers/getIntegralList";
+
+//我的积分总计
+static NSString *s_scoreTotal_method = @"customers/getIntegralTotal";
+
+//积分兑换
+static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";
 
 @interface NetworkInterface : NSObject
 
@@ -163,20 +181,20 @@ static NSString *s_userUpdate_method = @"customers/update";
                  finished:(requestDidFinished)finish;
 
 /*!
- @abstract 3.1.获取注册手机验证码
- @param mobileNumber    手机号
- @result finish  请求回调结果
- */
-+ (void)getRegisterValidateCodeWithMobileNumber:(NSString *)mobileNumber
-                                       finished:(requestDidFinished)finish;
-
-/*!
- @abstract 3.2.找回密码手机验证码
+ @abstract 3.找回密码手机验证码
  @param mobileNumber    手机号
  @result finish  请求回调结果
  */
 + (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
                                    finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 5.获取注册手机验证码
+ @param mobileNumber    手机号
+ @result finish  请求回调结果
+ */
++ (void)getRegisterValidateCodeWithMobileNumber:(NSString *)mobileNumber
+                                       finished:(requestDidFinished)finish;
 
 
 /*!
@@ -414,7 +432,17 @@ static NSString *s_userUpdate_method = @"customers/update";
                       finished:(requestDidFinished)finish;
 
 /*!
- @abstract 39.修改用户信息
+ @abstract 39.获取用户信息
+ @param token       登录返回
+ @param userID      用户ID
+ @result finish  请求回调结果
+ */
++ (void)getUserInfoWithToken:(NSString *)token
+                      userID:(NSString *)userID
+                    finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 40.修改用户信息
  @param token       登录返回
  @param userID      用户ID
  @param username    用户姓名
@@ -430,5 +458,59 @@ static NSString *s_userUpdate_method = @"customers/update";
                            email:(NSString *)email
                           cityID:(NSString *)cityID
                         finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 41.修改用户密码
+ @param token       登录返回
+ @param userID      用户ID
+ @param primayPassword   原密码
+ @param newPassword      新密码
+ @result finish  请求回调结果
+ */
++ (void)modifyUserPasswordWithToken:(NSString *)token
+                             userID:(NSString *)userID
+                    primaryPassword:(NSString *)primayPassword
+                        newPassword:(NSString *)newPassword
+                           finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 42.我的积分列表
+ @param token       登录返回
+ @param userID   交易类型
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getScoreListWithToken:(NSString *)token
+                       userID:(NSString *)userID
+                         page:(int)page
+                         rows:(int)rows
+                     finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 43.我的积分总计
+ @param token       登录返回
+ @param userID   交易类型
+ @result finish  请求回调结果
+ */
++ (void)getScoreTotalWithToken:(NSString *)token
+                        userID:(NSString *)userID
+                      finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 44.兑换积分
+ @param token       登录返回
+ @param userID   交易类型
+ @param handler  姓名
+ @param phoneNumber   手机号
+ @param money   金额
+ @result finish  请求回调结果
+ */
++ (void)exchangeScoreWithToken:(NSString *)token
+                        userID:(NSString *)userID
+                   handlerName:(NSString *)handlerName
+            handlerPhoneNumber:(NSString *)phoneNumber
+                         money:(int)money
+                      finished:(requestDidFinished)finish;
 
 @end

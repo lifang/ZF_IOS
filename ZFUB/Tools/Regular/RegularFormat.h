@@ -12,9 +12,13 @@
 
 //手机正则
 + (BOOL)isMobileNumber:(NSString *)mobileNum;
+//固话
++ (BOOL)isTelephoneNumber:(NSString *)teleNum;
 //邮箱正则
 + (BOOL)isCorrectEmail:(NSString *)email;
 //纯数字
 + (BOOL)isNumber:(NSString *)string;
+//整形
++ (BOOL)isInt:(NSString*)string;
 
 @end

@@ -14,4 +14,7 @@
 + (NSArray *)tableViewIndex;
 + (NSArray *)dataForSection;
 
+//根据城市id获取城市名
++ (NSString *)getCityNameWithCityID:(NSString *)cityID;
+
 @end

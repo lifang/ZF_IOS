@@ -1,33 +1,30 @@
 //
-//  ModifyPasswordViewController.m
+//  EditPersonInfoController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/1/24.
+//  Created by 徐宝桥 on 15/3/2.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "ModifyPasswordViewController.h"
+#import "EditPersonInfoController.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
+#import "RegularFormat.h"
 
-@interface ModifyPasswordViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface EditPersonInfoController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) UITextField *oldPasswordField;
-
-@property (nonatomic, strong) UITextField *passwordField;
-
-@property (nonatomic, strong) UITextField *confirmField;
+@property (nonatomic, strong) UITextField *editField;
 
 @end
 
-@implementation ModifyPasswordViewController
+@implementation EditPersonInfoController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"修改密码";
+    self.title = @"修改信息";
     [self initAndLayoutUI];
 }
 
@@ -45,15 +42,15 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
     footerView.backgroundColor = [UIColor clearColor];
-    UIButton *save = [UIButton buttonWithType:UIButtonTypeCustom];
-    save.frame = CGRectMake(80, 20, kScreenWidth - 160, 40);
-    save.layer.cornerRadius = 4;
-    save.layer.masksToBounds = YES;
-    save.titleLabel.font = [UIFont systemFontOfSize:16.f];
-    [save setTitle:@"保存" forState:UIControlStateNormal];
-    [save setBackgroundImage:[UIImage imageNamed:@"orange.png"] forState:UIControlStateNormal];
-    [save addTarget:self action:@selector(savePassword:) forControlEvents:UIControlEventTouchUpInside];
-    [footerView addSubview:save];
+    UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    submitBtn.frame = CGRectMake(80, 20, kScreenWidth - 160, 40);
+    submitBtn.layer.cornerRadius = 4;
+    submitBtn.layer.masksToBounds = YES;
+    submitBtn.titleLabel.font = [UIFont systemFontOfSize:16.f];
+    [submitBtn setTitle:@"提交" forState:UIControlStateNormal];
+    [submitBtn setBackgroundImage:[UIImage imageNamed:@"orange.png"] forState:UIControlStateNormal];
+    [submitBtn addTarget:self action:@selector(submitUserInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [footerView addSubview:submitBtn];
     _tableView.tableFooterView = footerView;
 }
 
@@ -95,56 +92,29 @@
                                                            constant:0]];
     //输入框
     CGFloat offsetX = 20.0f;
-    //旧密码
-    _oldPasswordField = [[UITextField alloc] init];
-    _oldPasswordField.borderStyle = UITextBorderStyleNone;
-    _oldPasswordField.backgroundColor = [UIColor clearColor];
-    _oldPasswordField.delegate = self;
-    _oldPasswordField.placeholder = @"原密码";
-    _oldPasswordField.font = [UIFont systemFontOfSize:15.f];
-    _oldPasswordField.secureTextEntry = YES;
-    UIView *oldView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
-    _oldPasswordField.leftView = oldView;
-    _oldPasswordField.leftViewMode = UITextFieldViewModeAlways;
-    _oldPasswordField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _oldPasswordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    //新密码
-    _passwordField = [[UITextField alloc] init];
-    _passwordField.borderStyle = UITextBorderStyleNone;
-    _passwordField.backgroundColor = [UIColor clearColor];
-    _passwordField.delegate = self;
-    _passwordField.placeholder = @"新密码";
-    _passwordField.font = [UIFont systemFontOfSize:15.f];
-    _passwordField.secureTextEntry = YES;
-    UIView *passwordView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
-    _passwordField.leftView = passwordView;
-    _passwordField.leftViewMode = UITextFieldViewModeAlways;
-    _passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    //confirm
-    _confirmField = [[UITextField alloc] init];
-    _confirmField.borderStyle = UITextBorderStyleNone;
-    _confirmField.backgroundColor = [UIColor clearColor];
-    _confirmField.delegate = self;
-    _confirmField.placeholder = @"确认密码";
-    _confirmField.font = [UIFont systemFontOfSize:15.f];
-    _confirmField.secureTextEntry = YES;
-    UIView *confirmView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
-    _confirmField.leftView = confirmView;
-    _confirmField.leftViewMode = UITextFieldViewModeAlways;
-    _confirmField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _confirmField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    
-    [_oldPasswordField becomeFirstResponder];
+    //输入框
+    _editField = [[UITextField alloc] init];
+    _editField.borderStyle = UITextBorderStyleNone;
+    _editField.backgroundColor = [UIColor clearColor];
+    _editField.delegate = self;
+    _editField.font = [UIFont systemFontOfSize:15.f];
+    UIView *editView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
+    _editField.leftView = editView;
+    _editField.leftViewMode = UITextFieldViewModeAlways;
+    _editField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _editField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [_editField becomeFirstResponder];
+    [self setPrimaryData];
 }
 
 #pragma mark - Request
 
-- (void)modifyPassword {
+- (void)modifyUserInfo {
+    UserModel *modifyModel = [self newUserInfo];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"提交中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface modifyUserPasswordWithToken:delegate.token userID:delegate.userID primaryPassword:_oldPasswordField.text newPassword:_passwordField.text finished:^(BOOL success, NSData *response) {
+    [NetworkInterface modifyUserInfoWithToken:delegate.token userID:delegate.userID username:modifyModel.userName mobilePhone:modifyModel.phoneNumber email:modifyModel.email cityID:modifyModel.cityID finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
@@ -159,11 +129,12 @@
                 else if ([errorCode intValue] == RequestSuccess) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
                                                                     message:@"用户信息修改成功"
-                                                                   delegate:nil
+                                                                   delegate:self
                                                           cancelButtonTitle:@"确定"
                                                           otherButtonTitles:nil];
                     [alert show];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [self updateUserInfoWithModel:modifyModel];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:EditUserInfoNotification object:nil];
                 }
             }
             else {
@@ -177,50 +148,94 @@
     }];
 }
 
+#pragma mark - Data
+
+- (void)setPrimaryData {
+    switch (_modifyType) {
+        case ModifyUsername:
+            _editField.text = _userInfo.userName;
+            break;
+        case ModifyPhoneNumber:
+            _editField.text = _userInfo.phoneNumber;
+            break;
+        case ModifyEmail:
+            _editField.text = _userInfo.email;
+            break;
+        default:
+            break;
+    }
+}
+
+- (UserModel *)newUserInfo {
+    UserModel *model = [[UserModel alloc] init];
+    switch (_modifyType) {
+        case ModifyUsername:
+            model.userName = _editField.text;
+            break;
+        case ModifyPhoneNumber:
+            model.phoneNumber = _editField.text;
+            break;
+        case ModifyEmail:
+            model.email = _editField.text;
+            break;
+        default:
+            break;
+    }
+    return model;
+}
+
+- (void)updateUserInfoWithModel:(UserModel *)model {
+    switch (_modifyType) {
+        case ModifyUsername:
+            _userInfo.userName = model.userName;
+            break;
+        case ModifyPhoneNumber:
+            _userInfo.phoneNumber = model.phoneNumber;
+            break;
+        case ModifyEmail:
+            _userInfo.email = model.email;
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - Action
 
-- (IBAction)savePassword:(id)sender {
-    if (!_oldPasswordField.text || [_oldPasswordField.text isEqualToString:@""]) {
+- (IBAction)submitUserInfo:(id)sender {
+    if (!_editField.text || [_editField.text isEqualToString:@""]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请输入原密码";
+        hud.labelText = @"修改信息不能为空";
         return;
     }
-    if (!_passwordField.text || [_passwordField.text isEqualToString:@""]) {
+    if (_modifyType == ModifyPhoneNumber && ![RegularFormat isMobileNumber:_editField.text]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请输入新密码";
+        hud.labelText = @"请输入正确的手机号";
         return;
     }
-    if (!_confirmField.text || [_confirmField.text isEqualToString:@""]) {
+    if (_modifyType == ModifyEmail && ![RegularFormat isCorrectEmail:_editField.text]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请再次输入新密码";
+        hud.labelText = @"请输入正确的邮箱";
         return;
     }
-    if (![_confirmField.text isEqualToString:_passwordField.text]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"两次输入的密码不一致";
-        return;
-    }
-    [_oldPasswordField becomeFirstResponder];
-    [_oldPasswordField resignFirstResponder];
-    [self modifyPassword];
+    [_editField becomeFirstResponder];
+    [_editField resignFirstResponder];
+    [self modifyUserInfo];
 }
 
 #pragma mark - TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -231,23 +246,11 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     switch (indexPath.section) {
         case 0: {
-            //原密码
-            _oldPasswordField.frame = CGRectMake(0, 0, kScreenWidth, cell.contentView.bounds.size.height);
-            [cell.contentView addSubview:_oldPasswordField];
-        }
+            //输入框
+            _editField.frame = CGRectMake(0, 0, kScreenWidth, cell.contentView.bounds.size.height);
+            [cell.contentView addSubview:_editField];
             break;
-        case 1: {
-            //新密码
-            _passwordField.frame = CGRectMake(0, 0, kScreenWidth, cell.contentView.bounds.size.height);
-            [cell.contentView addSubview:_passwordField];
         }
-            break;
-        case 2: {
-            //确认密码
-            _confirmField.frame = CGRectMake(0, 0, kScreenWidth, cell.contentView.bounds.size.height);
-            [cell.contentView addSubview:_confirmField];
-        }
-            break;
         default:
             break;
     }
@@ -270,6 +273,14 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - UIAlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

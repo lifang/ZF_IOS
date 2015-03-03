@@ -281,10 +281,10 @@
 }
 
 - (void)parseDataWithDictionary:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    NSArray *goodList = [dict objectForKey:@"result"];
+    NSArray *goodList = [[dict objectForKey:@"result"] objectForKey:@"list"];
     for (int i = 0; i < [goodList count]; i++) {
         GoodListModel *good = [[GoodListModel alloc] initWithParseDictionary:[goodList objectAtIndex:i]];
         [_dataItem addObject:good];
