@@ -8,6 +8,7 @@
 
 #import "AfterSaleViewController.h"
 #import "AfterSaleView.h"
+#import "CustomerServiceController.h"
 
 @interface AfterSaleViewController ()
 
@@ -44,13 +45,13 @@
                           @"换货记录",
                           @"更新资料记录",
                           @"租赁退还记录",
-                          @"修改到账日期记录",
+//                          @"修改到账日期记录",
                           nil];
     CGRect rect = CGRectMake(hSpace, topSpace, moduleWidth, moduleHeight);
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             int index = i * 3 + j;
-            if (index > 6) {
+            if (index > 5) {
                 break;
             }
             rect.origin.x = (moduleWidth + lineWidth) * j + hSpace;
@@ -66,7 +67,7 @@
         }
     }
     //划线
-    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(hSpace + moduleWidth, topSpace, lineWidth, 3 * moduleHeight + 2 * lineWidth)];
+    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(hSpace + moduleWidth, topSpace, lineWidth, 2 * moduleHeight + 2 * lineWidth)];
     firstLine.backgroundColor = kColor(224, 223, 223, 1);
     [self.view addSubview:firstLine];
     
@@ -78,9 +79,9 @@
     thirdLine.backgroundColor = kColor(224, 223, 223, 1);
     [self.view addSubview:thirdLine];
     
-    UIView *forthLine = [[UIView alloc] initWithFrame:CGRectMake(hSpace, topSpace + moduleHeight * 2 + lineWidth, kScreenWidth - 2 * hSpace, lineWidth)];
-    forthLine.backgroundColor = kColor(224, 223, 223, 1);
-    [self.view addSubview:forthLine];
+//    UIView *forthLine = [[UIView alloc] initWithFrame:CGRectMake(hSpace, topSpace + moduleHeight * 2 + lineWidth, kScreenWidth - 2 * hSpace, lineWidth)];
+//    forthLine.backgroundColor = kColor(224, 223, 223, 1);
+//    [self.view addSubview:forthLine];
     
 }
 
@@ -89,6 +90,9 @@
 - (IBAction)selectedModule:(id)sender {
     AfterSaleView *moduleView = (AfterSaleView *)sender;
     NSLog(@"%ld",moduleView.tag);
+    CustomerServiceController *csC = [[CustomerServiceController alloc] init];
+    csC.csType = (CSType)moduleView.tag;
+    [self.navigationController pushViewController:csC animated:YES];
 }
 
 @end

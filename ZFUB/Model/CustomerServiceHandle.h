@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NetworkInterface.h"
+#import "CustomerServiceModel.h"
 
 @interface CustomerServiceHandle : NSObject
+
++ (NSString *)titleForCSType:(CSType)csType;
++ (NSString *)titleForDetailWithCSType:(CSType)csType;
+
++ (NSString *)getStatusStringWithCSType:(CSType)csType
+                                 status:(NSString *)status;
 
 @end

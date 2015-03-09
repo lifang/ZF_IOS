@@ -21,6 +21,7 @@
         _cartCount = [[dict objectForKey:@"quantity"] intValue];
         _cartPrice = [[dict objectForKey:@"retail_price"] floatValue] / 100;
         _cartImagePath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"url_path"]];
+        _channelCost = [[dict objectForKey:@"opening_cost"] floatValue] / 100;
     }
     return self;
 }

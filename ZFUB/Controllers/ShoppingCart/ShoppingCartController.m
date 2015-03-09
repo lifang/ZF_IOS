@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "ShoppingCartModel.h"
 
-@interface ShoppingCartController ()<UITableViewDataSource,UITableViewDelegate,ShoppingCartDelegate>
+@interface ShoppingCartController ()<UITableViewDataSource,UITableViewDelegate,ShoppingCartDelegate,SelectedShopCartDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -55,6 +55,7 @@
     _bottomView = [[ShoppingCartFooterView alloc] init];
     _bottomView.backgroundColor = kColor(235, 233, 233, 1);
     _bottomView.translatesAutoresizingMaskIntoConstraints = NO;
+    _bottomView.delegate = self;
     [self.view addSubview:_bottomView];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_bottomView
@@ -171,6 +172,19 @@
     [_tableView reloadData];
 }
 
+//计算总价
+- (void)getSummaryPrice {
+    CGFloat summaryPrice = 0.f;
+    for (ShoppingCartModel *model in _dataItem) {
+        if (model.isSelected) {
+            summaryPrice += model.cartPrice * model.cartCount + model.channelCost;
+        }
+    }
+    _bottomView.totalLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",summaryPrice];
+}
+
+#pragma mark - Action
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -217,6 +231,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ShoppingCartCell *cell = (ShoppingCartCell *)[tableView cellForRowAtIndexPath:indexPath];
     [cell selectedOrder:nil];
+    //计算总价
+    [self getSummaryPrice];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -278,6 +294,7 @@
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
                     cart.cartCount = count;
+                    [self getSummaryPrice];
                 }
             }
             else {
@@ -289,6 +306,16 @@
             hud.labelText = kNetworkFailed;
         }
     }];
+}
+
+#pragma mark - SelectedShopCartDelegate
+
+- (void)selectedAllShoppingCart:(BOOL)isSelected {
+    for (ShoppingCartModel *model in _dataItem) {
+        model.isSelected = isSelected;
+    }
+    [_tableView reloadData];
+    [self getSummaryPrice];
 }
 
 @end

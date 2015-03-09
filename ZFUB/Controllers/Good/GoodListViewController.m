@@ -20,7 +20,7 @@
 #import "TreeDataHandle.h"
 #import "GoodDetailViewController.h"
 
-@interface GoodListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,SortViewDelegate,RefreshDelegate>
+@interface GoodListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,SortViewDelegate,RefreshDelegate,SearchDelegate>
 
 @property (nonatomic, strong) ZFSearchBar *searchBar;
 
@@ -85,6 +85,7 @@
 
 - (void)initNavigationBarView {
     _searchBar = [[ZFSearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
+    _searchBar.inputField.clearButtonMode = UITextFieldViewModeNever;
     _searchBar.delegate = self;
     self.navigationItem.titleView = _searchBar;
     
@@ -374,6 +375,8 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     SearchViewController *searchC = [[SearchViewController alloc] init];
+    searchC.delegate = self;
+    searchC.keyword = _keyword;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchC];
     [NavigationBarAttr setNavigationBarStyle:nav];
     [self presentViewController:nav animated:NO completion:nil];
@@ -495,6 +498,14 @@
 //上拉加载
 - (void)pullUpToLoadData {
     [self downloadDataWithPage:self.page isMore:YES];
+}
+
+#pragma mark - SearchDelegate
+
+- (void)getSearchKeyword:(NSString *)keyword {
+    _keyword = keyword;
+    _searchBar.text = _keyword;
+    [self firstLoadData];
 }
 
 @end

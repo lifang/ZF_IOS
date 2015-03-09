@@ -10,4 +10,16 @@
 
 @implementation ResourceModel
 
+- (id)initWithParseDictionary:(NSDictionary *)dict {
+    if (self = [super init]) {
+        if ([dict objectForKey:@"title"]) {
+            _title = [NSString stringWithFormat:@"%@",[dict objectForKey:@"title"]];
+        }
+        if ([dict objectForKey:@"upload_path"]) {
+            _path = [NSString stringWithFormat:@"%@",[dict objectForKey:@"upload_path"]];
+        }
+    }
+    return self;
+}
+
 @end

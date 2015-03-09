@@ -141,9 +141,36 @@
 #pragma mark - Request
 
 - (void)exchangeScore {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     [NetworkInterface exchangeScoreWithToken:delegate.token userID:delegate.userID handlerName:_nameField.text handlerPhoneNumber:_phoneField.text money:[_moneyField.text intValue] finished:^(BOOL success, NSData *response) {
-        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"兑换成功";
+                    //兑换成功发送通知更新积分
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ExchangeScoreNotification object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
     }];
 }
 

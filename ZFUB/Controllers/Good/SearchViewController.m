@@ -7,8 +7,8 @@
 //
 
 #import "SearchViewController.h"
-#import "ZFSearchBar.h"
 #import "SearchHistoryHelper.h"
+#import "ZFSearchBar.h"
 
 @interface SearchViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>
 
@@ -52,6 +52,7 @@
 - (void)initSearchBar {
     _searchBar = [[ZFSearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
     _searchBar.delegate = self;
+    _searchBar.text = _keyword;
     self.navigationItem.titleView = _searchBar;
     [_searchBar becomeFirstResponder];
 }
@@ -122,6 +123,7 @@
 #pragma mark - Action
 
 - (IBAction)dismiss:(id)sender {
+    [self searchWithString:nil];
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -153,6 +155,13 @@
     }
 }
 
+- (void)searchWithString:(NSString *)string {
+    if (_delegate && [_delegate respondsToSelector:@selector(getSearchKeyword:)]) {
+        [_delegate getSearchKeyword:string];
+    }
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
 #pragma mark - SearchBar
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
@@ -163,6 +172,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSLog(@"!!");
     [self saveSearchHistory];
+    [self searchWithString:self.searchBar.text];
 }
 
 #pragma mark - TableView
@@ -187,6 +197,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.searchBar.text = [_historyItems objectAtIndex:indexPath.row];
+    [self searchWithString:self.searchBar.text];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

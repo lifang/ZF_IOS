@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import "MerchantImageLoadController.h"
 
-@interface CreateMerchantController : CommonViewController
+@interface CreateMerchantController : MerchantImageLoadController
 
 @end

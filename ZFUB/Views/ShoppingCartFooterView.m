@@ -177,7 +177,7 @@
     _totalLabel.backgroundColor = [UIColor clearColor];
     _totalLabel.font = [UIFont boldSystemFontOfSize:14.f];
     _totalLabel.textAlignment = NSTextAlignmentRight;
-    _totalLabel.text = @"合计:￥9999.99";
+    _totalLabel.text = @"合计:￥0.00";
     [self addSubview:_totalLabel];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_totalLabel
                                                      attribute:NSLayoutAttributeRight
@@ -256,6 +256,9 @@
     else {
         [_selectedButton setBackgroundImage:kImageName(@"btn_unselected.png") forState:UIControlStateNormal];
         _selectedLabel.textColor = kColor(128, 126, 126, 1);
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(selectedAllShoppingCart:)]) {
+        [_delegate selectedAllShoppingCart:_selectedButton.isSelected];
     }
 }
 

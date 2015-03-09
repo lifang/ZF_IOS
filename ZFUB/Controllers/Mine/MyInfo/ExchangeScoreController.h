@@ -8,6 +8,8 @@
 
 #import "CommonViewController.h"
 
+static NSString *ExchangeScoreNotification = @"ExchangeScoreNotification";
+
 @interface ExchangeScoreController : CommonViewController
 
 @property (nonatomic, strong) NSString *totalScore;

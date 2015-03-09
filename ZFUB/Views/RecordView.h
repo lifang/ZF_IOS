@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RecordModel.h"
 
 @interface RecordView : UIView
+
+@property (nonatomic, strong) NSArray *recordItems;
+
+@property (nonatomic, assign) CGFloat width;
+
+- (id)initWithRecords:(NSArray *)records
+                width:(CGFloat)width;
+
+- (CGFloat)getHeight;
+
+- (void)initAndLayoutUI;
 
 @end

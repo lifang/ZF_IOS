@@ -10,4 +10,12 @@
 
 @interface MerchantModel : NSObject
 
+@property (nonatomic, strong) NSString *merchantID;
+
+@property (nonatomic, strong) NSString *merchantName;
+
+@property (nonatomic, strong) NSString *merchantLegal;
+
+- (id)initWithParseDictionary:(NSDictionary *)dict;
+
 @end

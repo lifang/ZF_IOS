@@ -10,4 +10,29 @@
 
 @implementation OrderGoodModel
 
+- (id)initWithParseDictionary:(NSDictionary *)dict {
+    if (self = [super init]) {
+        _goodID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_id"]];
+        if ([dict objectForKey:@"good_name"]) {
+            _goodName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_name"]];
+        }
+        if ([dict objectForKey:@"good_brand"]) {
+            _goodBrand = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_brand"]];
+        }
+        if ([dict objectForKey:@"good_price"]) {
+            _goodPrice = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_price"]];
+        }
+        if ([dict objectForKey:@"good_channel"]) {
+            _goodChannel = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_channel"]];
+        }
+        if ([dict objectForKey:@"good_num"]) {
+            _goodNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_num"]];
+        }
+        if ([dict objectForKey:@"good_logo"]) {
+            _goodPicture = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_logo"]];
+        }
+    }
+    return self;
+}
+
 @end

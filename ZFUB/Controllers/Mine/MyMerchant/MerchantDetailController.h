@@ -6,8 +6,11 @@
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import "MerchantImageLoadController.h"
+#import "MerchantModel.h"
 
-@interface MerchantDetailController : CommonViewController
+@interface MerchantDetailController : MerchantImageLoadController
+
+@property (nonatomic, strong) MerchantModel *merchant;
 
 @end

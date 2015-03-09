@@ -8,16 +8,33 @@
 
 #import "MyOrderViewController.h"
 #import "KxMenu.h"
+#import "RefreshView.h"
+#import "NetworkInterface.h"
+#import "AppDelegate.h"
+#import "OrderCell.h"
+#import "OrderDetailController.h"
 
-@interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,RefreshDelegate>
 
-@property (nonatomic, assign) OrderStatus currentStatus;
+@property (nonatomic, assign) OrderType currentType;
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UIButton *statusButton;
 
 @property (nonatomic, strong) UILabel *statusLabel;
+
+/***************上下拉刷新**********/
+@property (nonatomic, strong) RefreshView *topRefreshView;
+@property (nonatomic, strong) RefreshView *bottomRefreshView;
+
+@property (nonatomic, assign) BOOL reloading;
+@property (nonatomic, assign) CGFloat primaryOffsetY;
+@property (nonatomic, assign) int page;
+/**********************************/
+
+//订单信息
+@property (nonatomic, strong) NSMutableArray *orderItems;
 
 @end
 
@@ -27,8 +44,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"我的订单";
+    
+    _orderItems = [[NSMutableArray alloc] init];
+    
     [self initAndLayoutUI];
-    self.currentStatus = OrderStatusUnPaid;
+    self.currentType = OrderTypeAll;
+    [self firstLoadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,7 +100,7 @@
 }
 
 - (void)initAndLayoutUI {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     _tableView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.delegate = self;
@@ -114,28 +135,29 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
+    _topRefreshView = [[RefreshView alloc] initWithFrame:CGRectMake(0, -80, self.view.bounds.size.width, 80)];
+    _topRefreshView.direction = PullFromTop;
+    _topRefreshView.delegate = self;
+    [_tableView addSubview:_topRefreshView];
+    
+    _bottomRefreshView = [[RefreshView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 60)];
+    _bottomRefreshView.direction = PullFromBottom;
+    _bottomRefreshView.delegate = self;
+    _bottomRefreshView.hidden = YES;
+    [_tableView addSubview:_bottomRefreshView];
 }
 
-- (NSString *)stringForOrderStatus:(OrderStatus)status {
+- (NSString *)stringForOrderType:(OrderType)type {
     NSString *title = nil;
-    switch (status) {
-        case OrderStatusUnPaid:
-            title = @"未付款";
+    switch (type) {
+        case OrderTypeAll:
+            title = @"全部";
             break;
-        case OrderStatusSending:
-            title = @"已发货";
+        case OrderTypeBuy:
+            title = @"购买";
             break;
-        case OrderStatusReview:
-            title = @"已评价";
-            break;
-        case OrderStatusCancel:
-            title = @"已取消";
-            break;
-        case OrderStatusClosed:
-            title = @"交易关闭";
-            break;
-        case OrderStatusPaid:
-            title = @"已付款";
+        case OrderTypeRent:
+            title = @"租赁";
             break;
         default:
             break;
@@ -143,51 +165,104 @@
     return title;
 }
 
-- (void)setCurrentStatus:(OrderStatus)currentStatus {
-    _currentStatus = currentStatus;
-    _statusLabel.text = [self stringForOrderStatus:_currentStatus];
+- (void)setCurrentType:(OrderType)currentType {
+    _currentType = currentType;
+    _statusLabel.text = [self stringForOrderType:_currentType];
+}
+
+#pragma mark - Request
+
+- (void)firstLoadData {
+    _page = 1;
+    [self downloadDataWithPage:_page isMore:NO];
+}
+
+- (void)downloadDataWithPage:(int)page isMore:(BOOL)isMore {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface getMyOrderListWithToken:delegate.token userID:delegate.userID orderType:_currentType page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            NSLog(@"!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    if (!isMore) {
+                        [_orderItems removeAllObjects];
+                    }
+                    if ([[object objectForKey:@"result"] count] > 0) {
+                        //有数据
+                        self.page++;
+                        [hud hide:YES];
+                    }
+                    else {
+                        //无数据
+                        hud.labelText = @"没有更多数据了...";
+                    }
+                    [self parseOrderListDataWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+        if (!isMore) {
+            [self refreshViewFinishedLoadingWithDirection:PullFromTop];
+        }
+        else {
+            [self refreshViewFinishedLoadingWithDirection:PullFromBottom];
+        }
+    }];
+}
+
+#pragma mark - Data
+
+- (void)parseOrderListDataWithDictionary:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    NSArray *orderList = [[dict objectForKey:@"result"] objectForKey:@"content"];
+    for (int i = 0; i < [orderList count]; i++) {
+        OrderModel *model = [[OrderModel alloc] initWithParseDictionary:[orderList objectAtIndex:i]];
+        [_orderItems addObject:model];
+    }
+    [_tableView reloadData];
 }
 
 #pragma mark - Action
 
 - (IBAction)showOrderStatus:(id)sender {
     NSMutableArray *listArray = [NSMutableArray arrayWithObjects:
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusUnPaid]
+                                 [KxMenuItem menuItem:[self stringForOrderType:OrderTypeAll]
                                                 image:nil
                                                target:self
                                                action:@selector(selectStatus:)
                                         selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusUnPaid],
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusSending]
+                                                  tag:OrderTypeAll],
+                                 [KxMenuItem menuItem:[self stringForOrderType:OrderTypeBuy]
                                                 image:nil
                                                target:self
                                                action:@selector(selectStatus:)
                                         selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusSending],
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusReview]
+                                                  tag:OrderTypeBuy],
+                                 [KxMenuItem menuItem:[self stringForOrderType:OrderTypeRent]
                                                 image:nil
                                                target:self
                                                action:@selector(selectStatus:)
                                         selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusReview],
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusCancel]
-                                                image:nil
-                                               target:self
-                                               action:@selector(selectStatus:)
-                                        selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusCancel],
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusClosed]
-                                                image:nil
-                                               target:self
-                                               action:@selector(selectStatus:)
-                                        selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusClosed],
-                                 [KxMenuItem menuItem:[self stringForOrderStatus:OrderStatusPaid]
-                                                image:nil
-                                               target:self
-                                               action:@selector(selectStatus:)
-                                        selectedTitle:_statusLabel.text
-                                                  tag:OrderStatusPaid],
+                                                  tag:OrderTypeRent],
                                  nil];
     
     CGRect rect = CGRectMake(_statusButton.frame.origin.x + _statusButton.frame.size.width / 2, _statusButton.frame.origin.y + _statusButton.frame.size.height + 5, 0, 0);
@@ -196,23 +271,148 @@
 
 - (IBAction)selectStatus:(id)sender {
     KxMenuItem *item = (KxMenuItem *)sender;
-    self.currentStatus = (OrderStatus)item.tag;
+    self.currentType = (OrderType)item.tag;
+    [self firstLoadData];
 }
 
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [_orderItems count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    OrderModel *model = [_orderItems objectAtIndex:indexPath.section];
+    NSString *identifier = [model getCellIdentifier];
+    OrderCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil) {
+        cell = [[OrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    [cell setContentsWithData:model];
     return cell;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    OrderModel *model = [_orderItems objectAtIndex:indexPath.section];
+    NSString *identifier = [model getCellIdentifier];
+    if ([identifier isEqualToString:unPaidIdentifier] ||
+        [identifier isEqualToString:sendingIdentifier]) {
+        return kOrderLongCellHeight;
+    }
+    return kOrderShortCellHeight;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    OrderModel *model = [_orderItems objectAtIndex:indexPath.section];
+    OrderDetailController *detailC = [[OrderDetailController alloc] init];
+    detailC.orderID = model.orderID;
+    [self.navigationController pushViewController:detailC animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 8.f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001f;
+}
+
+#pragma mark - Refresh
+
+- (void)refreshViewReloadData {
+    _reloading = YES;
+}
+
+- (void)refreshViewFinishedLoadingWithDirection:(PullDirection)direction {
+    _reloading = NO;
+    if (direction == PullFromTop) {
+        [_topRefreshView refreshViewDidFinishedLoading:_tableView];
+    }
+    else if (direction == PullFromBottom) {
+        _bottomRefreshView.frame = CGRectMake(0, _tableView.contentSize.height, _tableView.bounds.size.width, 60);
+        [_bottomRefreshView refreshViewDidFinishedLoading:_tableView];
+    }
+    [self updateFooterViewFrame];
+}
+
+- (BOOL)refreshViewIsLoading:(RefreshView *)view {
+    return _reloading;
+}
+
+- (void)refreshViewDidEndTrackingForRefresh:(RefreshView *)view {
+    [self refreshViewReloadData];
+    //loading...
+    if (view == _topRefreshView) {
+        [self pullDownToLoadData];
+    }
+    else if (view == _bottomRefreshView) {
+        [self pullUpToLoadData];
+    }
+}
+
+- (void)updateFooterViewFrame {
+    _bottomRefreshView.frame = CGRectMake(0, _tableView.contentSize.height, _tableView.bounds.size.width, 60);
+    _bottomRefreshView.hidden = NO;
+    if (_tableView.contentSize.height < _tableView.frame.size.height) {
+        _bottomRefreshView.hidden = YES;
+    }
+}
+
+#pragma mark - UIScrollView
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    _primaryOffsetY = scrollView.contentOffset.y;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == _tableView) {
+        CGPoint newPoint = scrollView.contentOffset;
+        if (_primaryOffsetY < newPoint.y) {
+            //上拉
+            if (_bottomRefreshView.hidden) {
+                return;
+            }
+            [_bottomRefreshView refreshViewDidScroll:scrollView];
+        }
+        else {
+            //下拉
+            [_topRefreshView refreshViewDidScroll:scrollView];
+        }
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (scrollView == _tableView) {
+        CGPoint newPoint = scrollView.contentOffset;
+        if (_primaryOffsetY < newPoint.y) {
+            //上拉
+            if (_bottomRefreshView.hidden) {
+                return;
+            }
+            [_bottomRefreshView refreshViewDidEndDragging:scrollView];
+        }
+        else {
+            //下拉
+            [_topRefreshView refreshViewDidEndDragging:scrollView];
+        }
+    }
+}
+
+#pragma mark - 上下拉刷新
+//下拉刷新
+- (void)pullDownToLoadData {
+    [self firstLoadData];
+}
+
+//上拉加载
+- (void)pullUpToLoadData {
+    [self downloadDataWithPage:self.page isMore:YES];
+}
+
 
 @end

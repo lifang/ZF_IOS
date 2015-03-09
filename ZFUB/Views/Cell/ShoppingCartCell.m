@@ -505,7 +505,7 @@
     self.titleLabel.text = cart.cartTitle;
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号   %@",cart.cartModel];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",cart.cartChannel];
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",cart.cartPrice];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",cart.cartPrice * cart.cartCount + cart.channelCost];
     self.countLabel.text = [NSString stringWithFormat:@"X %d",cart.cartCount];
     if (cart.isSelected) {
         [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
@@ -586,6 +586,17 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    BOOL isNumber = [RegularFormat isNumber:_numberField.text];
+    if (isNumber && [_numberField.text intValue] > 0) {
+        int currentCount = [_numberField.text intValue];
+        _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
+        if (_delegate && [_delegate respondsToSelector:@selector(addCountForCell:)]) {
+            [_delegate addCountForCell:self];
+        }
+    }
+    else {
+        _numberField.text = [NSString stringWithFormat:@"%d",_cartData.cartCount];
+    }
     return YES;
 }
 

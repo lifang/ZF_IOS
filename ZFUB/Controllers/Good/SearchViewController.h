@@ -7,7 +7,18 @@
 //
 
 #import "CommonViewController.h"
+#import "ZFSearchBar.h"
+
+@protocol SearchDelegate <NSObject>
+
+- (void)getSearchKeyword:(NSString *)keyword;
+
+@end
 
 @interface SearchViewController : CommonViewController
+
+@property (nonatomic, assign) id<SearchDelegate>delegate;
+
+@property (nonatomic, strong) NSString *keyword;
 
 @end

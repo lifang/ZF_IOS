@@ -7,6 +7,7 @@
 //
 
 #import "CommonViewController.h"
+#import "TerminalManagerModel.h"
 
 @interface TerminalDetailController : CommonViewController
 

@@ -128,6 +128,7 @@
         case 0: {
             //我的订单
             MyOrderViewController *orderC = [[MyOrderViewController alloc] init];
+            orderC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:orderC animated:YES];
         }
             break;

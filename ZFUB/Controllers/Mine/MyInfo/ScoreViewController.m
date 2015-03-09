@@ -37,6 +37,10 @@
 
 @implementation ScoreViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -48,6 +52,11 @@
                                                                  target:self
                                                                  action:@selector(exchangeScore:)];
     self.navigationItem.rightBarButtonItem = rightItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateScore:)
+                                                 name:ExchangeScoreNotification
+                                               object:nil];
     
     [self initAndLayoutUI];
     //加载数据
@@ -129,16 +138,23 @@
 #pragma mark - Request
 
 - (void)getAllScore {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     [NetworkInterface getScoreTotalWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
         if (success) {
             id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             if ([object isKindOfClass:[NSDictionary class]]) {
                 NSString *errorCode = [object objectForKey:@"code"];
                 if ([errorCode intValue] == RequestFail) {
                     //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
                     NSDictionary *dict = [object objectForKey:@"result"];
                     _totalScore = [NSString stringWithFormat:@"%@",[dict objectForKey:@"quantityTotal"]];
                     _totalMoney = [NSString stringWithFormat:@"%@",[dict objectForKey:@"moneyTotal"]];
@@ -147,9 +163,11 @@
             }
             else {
                 //返回错误数据
+                hud.labelText = kServiceReturnWrong;
             }
         }
         else {
+            hud.labelText = kNetworkFailed;
         }
     }];
 }
@@ -365,5 +383,10 @@
     [self downloadDataWithPage:self.page isMore:YES];
 }
 
+#pragma mark - ExchangeScoreNotification
+//积分兑换成功后刷新积分
+- (void)updateScore:(NSNotification *)notification {
+    [self getAllScore];
+}
 
 @end

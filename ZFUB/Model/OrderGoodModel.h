@@ -10,4 +10,20 @@
 
 @interface OrderGoodModel : NSObject
 
+@property (nonatomic, strong) NSString *goodName;
+
+@property (nonatomic, strong) NSString *goodBrand;
+
+@property (nonatomic, strong) NSString *goodPrice;
+
+@property (nonatomic, strong) NSString *goodChannel;
+
+@property (nonatomic, strong) NSString *goodID;
+
+@property (nonatomic, strong) NSString *goodNumber;
+
+@property (nonatomic, strong) NSString *goodPicture;
+
+- (id)initWithParseDictionary:(NSDictionary *)dict;
+
 @end

@@ -7,7 +7,30 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomerServiceHandle.h"
+
+#define kCSCellShortHeight 65.f
+#define kCSCellLongHeight  121.f
 
 @interface CustomerServiceCell : UITableViewCell
+
+@property (nonatomic, strong) UILabel *csNumberLabel;
+
+@property (nonatomic, strong) UILabel *timeLabel;
+
+@property (nonatomic, strong) UILabel *terminalLabel;
+
+@property (nonatomic, strong) UILabel *statusLabel;
+
+@property (nonatomic, strong) NSString *identifier;
+
+@property (nonatomic, assign) CSType csType;   //售后类型
+
+@property (nonatomic, strong) CustomerServiceModel *cellData;
+
+- (void)setContentsWithData:(CustomerServiceModel *)data;
+
+- (id)initWithCSType:(CSType)csType
+     reuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

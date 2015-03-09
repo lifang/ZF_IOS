@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SelectedShopCartDelegate <NSObject>
+
+- (void)selectedAllShoppingCart:(BOOL)isSelected;
+
+@end
+
 @interface ShoppingCartFooterView : UIView
+
+@property (nonatomic, assign) id<SelectedShopCartDelegate>delegate;
 
 @property (nonatomic, strong) UIButton *selectedButton;
 //全选文字 颜色根据是否选中变化

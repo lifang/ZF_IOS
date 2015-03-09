@@ -35,6 +35,8 @@
 
 @property (nonatomic, strong) UITableViewCell *selectedCell;
 
+@property (nonatomic, strong) NSMutableDictionary *imageDict; //保存上传的图片地址
+
 @end
 
 @implementation CreateMerchantController

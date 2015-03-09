@@ -10,6 +10,7 @@
 #import "NetworkRequest.h"
 #import "MBProgressHUD.h"
 
+
 /*
  已完成
  1.注册
@@ -37,10 +38,27 @@
  40.修改用户信息
  41.修改用户密码
  42.我的积分列表
+ 43.我的积分总计
+ 44.兑换积分
+ 48.我的商户列表
+ 49.我的商户详情
+ 60.我的订单列表
+ 64.维修记录列表 
+ 66.维修记录详情
+ 68.退货记录列表
+ 70.退货记录详情
+ 72.注销记录列表 
+ 75.注销记录详情
+ 76.换货记录列表 
+ 77.换货记录详情
+ 80.更新资料记录列表
+ 81.更新资料记录详情
+ 83.租赁退还记录列表
+ 84.租赁退还记录详情
  */
 
 
-
+@class MerchantDetailModel;
 
 typedef enum {
     RequestTokenOverdue = -2,   //token失效
@@ -66,6 +84,22 @@ typedef enum {
     TradeTypeTelephoneFare,   //话费充值
 }TradeType;
 
+typedef enum {
+    CSTypeNone = 0,
+    CSTypeRepair,      //维修记录
+    CSTypeReturn,      //退货记录
+    CSTypeCancel,      //注销记录
+    CSTypeChange,      //换货记录
+    CSTypeUpdate,      //更新资料记录
+    CSTypeLease,       //租赁退货记录
+}CSType;
+
+typedef enum {
+    OrderTypeAll= -1,
+    OrderTypeBuy = 1,
+    OrderTypeRent,
+}OrderType;
+
 //注册
 static NSString *s_register_method = @"user/userRegistration";
 
@@ -77,6 +111,9 @@ static NSString *s_registerValidate_method = @"user/sendPhoneVerificationCodeReg
 
 //找回密码手机验证码
 static NSString *s_findValidate_method = @"user/sendPhoneVerificationCodeFind";
+
+//找回密码发送邮件
+static NSString *s_findEmail_method = @"sendEmailVerificationCode";
 
 //开通申请
 static NSString *s_applyList_method = @"apply/getApplyList";
@@ -150,6 +187,57 @@ static NSString *s_scoreTotal_method = @"customers/getIntegralTotal";
 //积分兑换
 static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";
 
+//我的商户列表
+static NSString *s_merchantList_method = @"merchant/getList";
+
+//我的商户详情
+static NSString *s_merchantDetail_method = @"merchant/getOne";
+
+//修改商户
+static NSString *s_merchantModify_method = @"merchant/update";
+
+//我的订单列表
+static NSString *s_myOrderList_method = @"order/getMyOrderAll";
+
+//订单详情
+static NSString *s_orderDetail_method = @"order/getMyOrderById";
+
+//维修记录列表
+static NSString *s_repairList_method = @"cs/repair/getAll";
+
+//维修记录详情
+static NSString *s_repairDetail_method = @"cs/repair/getRepairById";
+
+//退货记录列表
+static NSString *s_returnList_method = @"return/getAll";
+
+//退货记录详情
+static NSString *s_returnDetail_method = @"return/getReturnById";
+
+//注销记录列表
+static NSString *s_cancelList_method = @"cs/cancels/getAll";
+
+//注销记录详情
+static NSString *s_cancelDetail_method = @"cs/cancels/getCanCelById";
+
+//换货记录列表
+static NSString *s_changeList_method = @"cs/change/getAll";
+
+//换货记录详情
+static NSString *s_changeDetail_method = @"cs/change/getChangeById";
+
+//更新资料记录列表
+static NSString *s_updateList_method = @"update/info/getAll";
+
+//更新资料记录详情
+static NSString *s_updateDetail_method = @"update/info/getInfoById";
+
+//租赁退货记录列表
+static NSString *s_leaseList_method = @"cs/lease/returns/getAll";
+
+//租赁退货记录详情
+static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -187,6 +275,8 @@ static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";
  */
 + (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
                                    finished:(requestDidFinished)finish;
+
+
 
 /*!
  @abstract 5.获取注册手机验证码
@@ -512,5 +602,94 @@ static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";
             handlerPhoneNumber:(NSString *)phoneNumber
                          money:(int)money
                       finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 48.我的商户列表
+ @param token       登录返回
+ @param userID   用户id
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getMerchantListWithToken:(NSString *)token
+                          userID:(NSString *)userID
+                            page:(int)page
+                            rows:(int)rows
+                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 49.我的商户详情
+ @param token       登录返回
+ @param merchantID   商户id
+ @result finish  请求回调结果
+ */
++ (void)getMerchantDetailWithToken:(NSString *)token
+                        merchantID:(NSString *)merchantID
+                          finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 51.修改商户
+ @param token       登录返回
+ @param merchant   商户信息  只需传修改的字段即可 未修改的传nil
+ @result finish  请求回调结果
+ */
++ (void)modifyMerchantWithToken:(NSString *)token
+                 merchantDetail:(MerchantDetailModel *)merchant
+                       finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 60.我的订单列表
+ @param token       登录返回
+ @param userID   用户id
+ @param type     订单类型
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getMyOrderListWithToken:(NSString *)token
+                         userID:(NSString *)userID
+                      orderType:(OrderType)type
+                           page:(int)page
+                           rows:(int)rows
+                       finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 61.我的订单详情
+ @param token       登录返回
+ @param orderID   订单id
+ @result finish  请求回调结果
+ */
++ (void)getMyOrderDetailWithToken:(NSString *)token
+                          orderID:(NSString *)orderID
+                         finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 64.维修记录列表 68.退货记录列表 72.注销记录列表 76.换货记录列表 80.更新资料记录列表 83.租赁退还记录列表
+ @param token       登录返回
+ @param userID   用户id
+ @param csType   售后记录类别
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getCSListWithToken:(NSString *)token
+                    userID:(NSString *)userID
+                    csType:(CSType)csType
+                      page:(int)page
+                      rows:(int)rows
+                  finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 66.维修记录详情 70.退货记录详情 75.注销记录详情 77.换货记录详情 81.更新资料记录详情 84.租赁退还记录详情
+ @param token       登录返回
+ @param csID     售后id
+ @param csType   售后记录类别
+ @result finish  请求回调结果
+ */
++ (void)getCSDetailWithToken:(NSString *)token
+                        csID:(NSString *)csID
+                      csType:(CSType)csType
+                    finished:(requestDidFinished)finish;
+
 
 @end

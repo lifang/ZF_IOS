@@ -7,7 +7,11 @@
 //
 
 #import "CommonViewController.h"
+#import "CustomerServiceCell.h"
 
 @interface CustomerServiceController : CommonViewController
+
+//售后类型
+@property (nonatomic, assign) CSType csType;
 
 @end

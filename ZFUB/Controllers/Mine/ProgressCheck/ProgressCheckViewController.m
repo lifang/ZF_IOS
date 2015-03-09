@@ -8,8 +8,9 @@
 
 #import "ProgressCheckViewController.h"
 #import "FormView.h"
-
+#import "GoodButton.h"
 @interface ProgressCheckViewController ()
+
 
 @end
 
@@ -39,11 +40,31 @@
     NSArray *contentArray = [NSArray arrayWithObjects:dict1,dict2,dict3, nil];
     [formView createFormWithTitle:@"交易费率" column:titleArray content:contentArray];
     [self.view addSubview:formView];
+    
+    CGFloat h = [FormView heightWithRowCount:3 hasTitle:NO];
+    FormView *ff = [[FormView alloc] initWithFrame:CGRectMake(0, height + 10, kScreenWidth, h)];
+    [ff createFormWithColumn:titleArray content:contentArray];
+    [self.view addSubview:ff];
+    
+    GoodButton *btn = [GoodButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(50, height + 20 + h, 80, 30);
+    [btn setButtonAttrWithTitle:@"点击"];
+    [btn addTarget:self action:@selector(tt:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)tt:(UIButton *)sender {
+    BOOL ss = sender.selected;
+    NSLog(@"ss = %d",ss);
+    ss = !ss;
+    NSLog(@"sss = %d",ss);
+    sender.selected = ss;
+    NSLog(@"ssss = %d",sender.selected);
 }
 
 /*
