@@ -17,8 +17,9 @@
 #import "ChangeDetailController.h"
 #import "UpdateDetailController.h"
 #import "RentDetailController.h"
+#import "PayWayViewController.h"
 
-@interface CustomerServiceController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate>
+@interface CustomerServiceController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,CSCellDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -33,9 +34,16 @@
 
 @property (nonatomic, strong) NSMutableArray *csItems;
 
+//进行操作的cell对应的数据
+@property (nonatomic, strong) CustomerServiceModel *selectedModel;
+
 @end
 
 @implementation CustomerServiceController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,6 +52,8 @@
     _csItems = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList:) name:RefreshCSListNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -165,6 +175,76 @@
     }];
 }
 
+//取消申请
+- (void)cancelApply {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface csCancelWithToken:delegate.token csID:_selectedModel.csID csType:_csType finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    hud.labelText = @"取消申请成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+//重新提交注销申请
+- (void)submitCanncelApply {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface submitCancelInfoWithToken:delegate.token csID:_selectedModel.csID finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    hud.labelText = @"提交成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 
 #pragma mark - Data
 
@@ -196,6 +276,7 @@
     if (cell == nil) {
         cell = [[CustomerServiceCell alloc] initWithCSType:_csType reuseIdentifier:identifier];
     }
+    cell.delegate = self;
     [cell setContentsWithData:data];
     return cell;
 }
@@ -393,5 +474,53 @@
     [self downloadDataWithPage:self.page isMore:YES];
 }
 
+#pragma mark - CSCellDelegate
+
+//取消申请
+- (void)CSCellCancelRecordWithData:(CustomerServiceModel *)model {
+    _selectedModel = model;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确定取消申请？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+
+//提交物流信息
+- (void)CSCellLogisticInfoWithData:(CustomerServiceModel *)model {
+    LogisticViewController *logisticC = [[LogisticViewController alloc] init];
+    logisticC.csID = model.csID;
+    logisticC.csType = _csType;
+    [self.navigationController pushViewController:logisticC animated:YES];
+}
+
+//重新提交注销申请
+- (void)csCellSubmitInfoWithData:(CustomerServiceModel *)model {
+    _selectedModel = model;
+    [self submitCanncelApply];
+}
+
+//付款
+- (void)csCellPayWithData:(CustomerServiceModel *)model {
+    PayWayViewController *payWayC = [[PayWayViewController alloc] init];
+    payWayC.orderID = model.csID;
+    payWayC.totalPrice = @"";
+    [self.navigationController pushViewController:payWayC animated:YES];
+}
+
+#pragma mark - AlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        [self cancelApply];
+    }
+}
+
+#pragma mark - Notification
+
+- (void)refreshList:(NSNotification *)notification {
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.1f];
+}
 
 @end

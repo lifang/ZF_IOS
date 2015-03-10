@@ -30,6 +30,7 @@ typedef enum {
     CSStatusFifth,
 }CSStatus;
 
+/*
 typedef enum {
     RepairStatusNone = 0,
     RepairStatusUnpaid,      //未付款
@@ -39,7 +40,6 @@ typedef enum {
     RepairStatusCanceled,    //已取消
 }RepairStatus;    //维修状态
 
-/*
 typedef enum {
     ReturnStatusNone = 0,
     ReturnStatusPending,     //待处理

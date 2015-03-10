@@ -14,7 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "FormView.h"
 
-static CGFloat topImageHeight = 180.f;
+static CGFloat topImageHeight = 160.f;
 
 @interface GoodDetailViewController ()
 
@@ -24,10 +24,15 @@ static CGFloat topImageHeight = 180.f;
 
 @property (nonatomic, strong) GoodDetialModel *detailModel;
 
+@property (nonatomic, strong) UIView *footerView;
+
 //控件
 @property (nonatomic, strong) UILabel *priceLabel;
 @property (nonatomic, strong) GoodButton *buyButton;
 @property (nonatomic, strong) GoodButton *rentButton;
+
+@property (nonatomic, strong) UIButton *shopcartButton;  //购物车按钮
+@property (nonatomic, strong) UIButton *buyGoodButton;   //立刻购买
 
 @end
 
@@ -36,6 +41,8 @@ static CGFloat topImageHeight = 180.f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"商品详情";
+    self.view.backgroundColor = kColor(244, 243, 243, 1);
     [self downloadGoodDetail];
 }
 
@@ -47,6 +54,42 @@ static CGFloat topImageHeight = 180.f;
 #pragma mark - UI
 
 - (void)initAndLayoutUI {
+    CGFloat footerHeight = 60.f;
+    //底部按钮
+    _footerView = [[UIView alloc] init];
+    _footerView.translatesAutoresizingMaskIntoConstraints = NO;
+    _footerView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_footerView];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_footerView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0
+                                                           constant:-footerHeight]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_footerView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_footerView
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_footerView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0
+                                                           constant:0]];
+    [self footerViewAddSubview];
+    
     _mainScrollView = [[UIScrollView alloc] init];
     _mainScrollView.translatesAutoresizingMaskIntoConstraints = NO;
     _mainScrollView.backgroundColor = kColor(244, 243, 243, 1);
@@ -76,8 +119,8 @@ static CGFloat topImageHeight = 180.f;
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_mainScrollView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
+                                                             toItem:_footerView
+                                                          attribute:NSLayoutAttributeTop
                                                          multiplier:1.0
                                                            constant:0]];
     //image
@@ -99,6 +142,38 @@ static CGFloat topImageHeight = 180.f;
     [_rentButton setButtonAttrWithTitle:@"租赁"];
     [_rentButton addTarget:self action:@selector(rentGood:) forControlEvents:UIControlEventTouchUpInside];
     [self initSubViews];
+}
+
+- (void)footerViewAddSubview {
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 0.5)];
+    line.backgroundColor = kColor(135, 135, 135, 1);
+    [_footerView addSubview:line];
+    CGFloat middleSpace = 10.f;
+    CGFloat btnWidth = (kScreenWidth - 4 * middleSpace) / 2;
+    CGFloat btnHeight = 36.f;
+    _shopcartButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _shopcartButton.frame = CGRectMake(middleSpace, 12, btnWidth, btnHeight);
+    _shopcartButton.layer.cornerRadius = 4.f;
+    _shopcartButton.layer.masksToBounds = YES;
+    _shopcartButton.layer.borderWidth = 1.f;
+    _shopcartButton.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+    [_shopcartButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+    [_shopcartButton setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+    [_shopcartButton setTitle:@"加入购物车" forState:UIControlStateNormal];
+    _shopcartButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+    [_shopcartButton addTarget:self action:@selector(addShoppingCart:) forControlEvents:UIControlEventTouchUpInside];
+    [_footerView addSubview:_shopcartButton];
+    
+    //立即购买
+    _buyGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _buyGoodButton.frame = CGRectMake(btnWidth + 3 * middleSpace, 12, btnWidth, btnHeight);
+    _buyGoodButton.layer.cornerRadius = 4.f;
+    _buyGoodButton.layer.masksToBounds = YES;
+    [_buyGoodButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+    [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
+    _buyGoodButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+    [_buyGoodButton addTarget:self action:@selector(buyNow:) forControlEvents:UIControlEventTouchUpInside];
+    [_footerView addSubview:_buyGoodButton];
 }
 
 - (void)initSubViews {
@@ -149,11 +224,12 @@ static CGFloat topImageHeight = 180.f;
     [self setLabel:modelLabel withTitle:_detailModel.goodModel font:[UIFont boldSystemFontOfSize:13.f]];
     
     //已售
-    UILabel *saleNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, originY, kScreenWidth - originX, labelHeight)];
+    UILabel *saleNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, originY, kScreenWidth - originX - rightSpace, labelHeight)];
     saleNumberLabel.backgroundColor = [UIColor clearColor];
     saleNumberLabel.font = [UIFont systemFontOfSize:13.f];
     saleNumberLabel.textAlignment = NSTextAlignmentRight;
     saleNumberLabel.text = [NSString stringWithFormat:@"已售%d",[_detailModel.goodSaleNumber intValue]];
+    [_mainScrollView addSubview:saleNumberLabel];
     
     originY += vSpace + labelHeight;
     //终端类型
@@ -491,18 +567,30 @@ static CGFloat topImageHeight = 180.f;
 - (IBAction)selectedChannel:(id)sender {
     GoodButton *btn = (GoodButton *)sender;
     btn.selected = YES;
+    if ([_detailModel.defaultChannel.channelID isEqualToString:btn.ID]) {
+        NSLog(@"!");
+    }
+    else {
+        NSLog(@"~~~");
+    }
 }
 
 - (IBAction)buyGood:(id)sender {
     NSLog(@"buy ");
     _buyButton.selected = YES;
     _rentButton.selected = NO;
+    
+    _shopcartButton.enabled = YES;
+    [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
 }
 
 - (IBAction)rentGood:(id)sender {
     NSLog(@"rent");
     _buyButton.selected = NO;
     _rentButton.selected = YES;
+    
+    _shopcartButton.enabled = NO;
+    [_buyGoodButton setTitle:@"立即租赁" forState:UIControlStateNormal];
 }
 
 - (IBAction)scanFactoryInfo:(id)sender {
@@ -522,6 +610,16 @@ static CGFloat topImageHeight = 180.f;
 }
 
 - (IBAction)scanRent:(id)sender {
+    
+}
+
+//加入购物车
+- (IBAction)addShoppingCart:(id)sender {
+    
+}
+
+//立即购买
+- (IBAction)buyNow:(id)sender {
     
 }
 

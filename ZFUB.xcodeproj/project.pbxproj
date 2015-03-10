@@ -129,6 +129,10 @@
 		775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86961AA19294002434F4 /* InstitutionSelectedController.m */; };
 		775B869A1AA19EC6002434F4 /* TerminalDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86991AA19EC6002434F4 /* TerminalDetailController.m */; };
 		775B869E1AA1BCFE002434F4 /* OpenApplyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B869D1AA1BCFE002434F4 /* OpenApplyController.m */; };
+		7761449C1AAD357A00FAE3B6 /* ApplyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7761449B1AAD357A00FAE3B6 /* ApplyDetailController.m */; };
+		7761449F1AAD73C200FAE3B6 /* PayWayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7761449E1AAD73C200FAE3B6 /* PayWayViewController.m */; };
+		776144A21AAD7FF600FAE3B6 /* OrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776144A11AAD7FF600FAE3B6 /* OrderCommentController.m */; };
+		776144A51AAD9D4000FAE3B6 /* LogisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */; };
 		7792CB511A709C8F00C44A64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB501A709C8F00C44A64 /* main.m */; };
 		7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB531A709C8F00C44A64 /* AppDelegate.m */; };
 		7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7792CB5B1A709C8F00C44A64 /* Images.xcassets */; };
@@ -392,6 +396,14 @@
 		775B86991AA19EC6002434F4 /* TerminalDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerminalDetailController.m; sourceTree = "<group>"; };
 		775B869C1AA1BCFE002434F4 /* OpenApplyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenApplyController.h; sourceTree = "<group>"; };
 		775B869D1AA1BCFE002434F4 /* OpenApplyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenApplyController.m; sourceTree = "<group>"; };
+		7761449A1AAD357A00FAE3B6 /* ApplyDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyDetailController.h; sourceTree = "<group>"; };
+		7761449B1AAD357A00FAE3B6 /* ApplyDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyDetailController.m; sourceTree = "<group>"; };
+		7761449D1AAD73C200FAE3B6 /* PayWayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayWayViewController.h; sourceTree = "<group>"; };
+		7761449E1AAD73C200FAE3B6 /* PayWayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayWayViewController.m; sourceTree = "<group>"; };
+		776144A01AAD7FF600FAE3B6 /* OrderCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderCommentController.h; sourceTree = "<group>"; };
+		776144A11AAD7FF600FAE3B6 /* OrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderCommentController.m; sourceTree = "<group>"; };
+		776144A31AAD9D4000FAE3B6 /* LogisticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticViewController.h; sourceTree = "<group>"; };
+		776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogisticViewController.m; sourceTree = "<group>"; };
 		7792CB4B1A709C8F00C44A64 /* ZFUB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZFUB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7792CB4F1A709C8F00C44A64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7792CB501A709C8F00C44A64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -547,6 +559,10 @@
 				7740B4341A85A6A00057EED7 /* MyOrderViewController.m */,
 				773BDF381AA98C2F008D3DC7 /* OrderDetailController.h */,
 				773BDF391AA98C2F008D3DC7 /* OrderDetailController.m */,
+				7761449D1AAD73C200FAE3B6 /* PayWayViewController.h */,
+				7761449E1AAD73C200FAE3B6 /* PayWayViewController.m */,
+				776144A01AAD7FF600FAE3B6 /* OrderCommentController.h */,
+				776144A11AAD7FF600FAE3B6 /* OrderCommentController.m */,
 			);
 			path = MyOrder;
 			sourceTree = "<group>";
@@ -698,6 +714,8 @@
 				7739DE441AA6F89100A4B9FE /* UpdateDetailController.m */,
 				7739DE461AA6F8A300A4B9FE /* RentDetailController.h */,
 				7739DE471AA6F8A300A4B9FE /* RentDetailController.m */,
+				776144A31AAD9D4000FAE3B6 /* LogisticViewController.h */,
+				776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */,
 			);
 			path = AfterSale;
 			sourceTree = "<group>";
@@ -885,6 +903,8 @@
 			children = (
 				775B869C1AA1BCFE002434F4 /* OpenApplyController.h */,
 				775B869D1AA1BCFE002434F4 /* OpenApplyController.m */,
+				7761449A1AAD357A00FAE3B6 /* ApplyDetailController.h */,
+				7761449B1AAD357A00FAE3B6 /* ApplyDetailController.m */,
 			);
 			path = OpenApply;
 			sourceTree = "<group>";
@@ -1067,6 +1087,7 @@
 				7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */,
 				775B86911AA189EF002434F4 /* AddTerminalController.m in Sources */,
 				7738E8801AA06F6700D51CBE /* TerminalManagerController.m in Sources */,
+				7761449F1AAD73C200FAE3B6 /* PayWayViewController.m in Sources */,
 				773093AA1A8B40D70096FE0B /* FilterContentViewController.m in Sources */,
 				7738E8861AA07C1600D51CBE /* TerminalManagerCell.m in Sources */,
 				775873F91A7234A900EB3AE5 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -1123,8 +1144,10 @@
 				7739DE451AA6F89100A4B9FE /* UpdateDetailController.m in Sources */,
 				774D67781A7A257700DDCEE4 /* GoodsCell.m in Sources */,
 				773D8C0B1AA432C000D8A5A1 /* ScoreViewController.m in Sources */,
+				7761449C1AAD357A00FAE3B6 /* ApplyDetailController.m in Sources */,
 				7740B4391A85A7210057EED7 /* KxMenu.m in Sources */,
 				773BDF3D1AA992BD008D3DC7 /* OrderDetailModel.m in Sources */,
+				776144A21AAD7FF600FAE3B6 /* OrderCommentController.m in Sources */,
 				7742DB111A899D0800EF16FB /* NetworkInterface.m in Sources */,
 				7742DB211A89F13100EF16FB /* RegularFormat.m in Sources */,
 				7747DC441A7B7EF1002797CC /* MyMerchantViewController.m in Sources */,
@@ -1135,6 +1158,7 @@
 				773A0FF81A9EB607008EA806 /* DealFlowViewController.m in Sources */,
 				773BDF341AA93E2C008D3DC7 /* RateModel.m in Sources */,
 				773093A41A8B3EE80096FE0B /* TreeNode.m in Sources */,
+				776144A51AAD9D4000FAE3B6 /* LogisticViewController.m in Sources */,
 				775873B61A71ECBB00EB3AE5 /* HomeViewController.m in Sources */,
 				7739DE3F1AA6EBFB00A4B9FE /* CancelDetailController.m in Sources */,
 				773B12D91AA5CF76005C2B91 /* OrderCell.m in Sources */,
@@ -1291,7 +1315,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sen Ye";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1305,7 +1330,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sen Ye";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

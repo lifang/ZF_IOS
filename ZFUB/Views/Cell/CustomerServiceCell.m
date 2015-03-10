@@ -597,56 +597,80 @@ typedef enum {
 
 //维修
 - (IBAction)repairCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 - (IBAction)repairPay:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(csCellPayWithData:)]) {
+        [_delegate csCellPayWithData:_cellData];
+    }
 }
 
 - (IBAction)repairSend:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellLogisticInfoWithData:)]) {
+        [_delegate CSCellLogisticInfoWithData:_cellData];
+    }
 }
 
 //退货
 - (IBAction)returnCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 - (IBAction)returnSend:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellLogisticInfoWithData:)]) {
+        [_delegate CSCellLogisticInfoWithData:_cellData];
+    }
 }
 
 //注销
 - (IBAction)cancelCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 - (IBAction)cancelSubmit:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(csCellSubmitInfoWithData:)]) {
+        [_delegate csCellSubmitInfoWithData:_cellData];
+    }
 }
 
 //换货
 - (IBAction)changeCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 - (IBAction)changeSend:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellLogisticInfoWithData:)]) {
+        [_delegate CSCellLogisticInfoWithData:_cellData];
+    }
 }
 
 //更新
 - (IBAction)updateCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 //租赁退还
 - (IBAction)rentCancel:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellCancelRecordWithData:)]) {
+        [_delegate CSCellCancelRecordWithData:_cellData];
+    }
 }
 
 - (IBAction)rentSend:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(CSCellLogisticInfoWithData:)]) {
+        [_delegate CSCellLogisticInfoWithData:_cellData];
+    }
 }
 
 @end

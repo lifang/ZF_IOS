@@ -11,6 +11,7 @@
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 #import "OpenApplyCell.h"
+#import "ApplyDetailController.h"
 
 @interface OpenApplyController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,OpenApplyCellDelegate>
 
@@ -210,6 +211,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    TerminalManagerModel *model = [_applyList objectAtIndex:indexPath.section];
+    ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
+    detailC.terminalID = model.TM_ID;
+    [self.navigationController pushViewController:detailC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {

@@ -510,11 +510,11 @@
 #pragma mark - Action
 
 - (IBAction)cancelApply:(id)sender {
-    
+    [self cancelApply];
 }
 
 - (IBAction)submit:(id)sender {
-    
+    [self submitCanncelApply];
 }
 
 @end

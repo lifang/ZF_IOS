@@ -595,11 +595,11 @@
 #pragma mark - Action
 
 - (IBAction)cancelApply:(id)sender {
-    
+    [self cancelApply];
 }
 
 - (IBAction)send:(id)sender {
-    
+    [self submitLogisticInfomaiton];
 }
 
 @end

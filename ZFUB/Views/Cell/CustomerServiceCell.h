@@ -12,7 +12,21 @@
 #define kCSCellShortHeight 65.f
 #define kCSCellLongHeight  121.f
 
+@protocol CSCellDelegate <NSObject>
+//取消申请
+- (void)CSCellCancelRecordWithData:(CustomerServiceModel *)model;
+//物流
+- (void)CSCellLogisticInfoWithData:(CustomerServiceModel *)model;
+//注销
+- (void)csCellSubmitInfoWithData:(CustomerServiceModel *)model;
+//付款
+- (void)csCellPayWithData:(CustomerServiceModel *)model;
+
+@end
+
 @interface CustomerServiceCell : UITableViewCell
+
+@property (nonatomic, assign) id<CSCellDelegate>delegate;
 
 @property (nonatomic, strong) UILabel *csNumberLabel;
 

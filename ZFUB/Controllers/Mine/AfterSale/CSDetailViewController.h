@@ -10,11 +10,14 @@
 #import "CustomerServiceHandle.h"
 #import "RecordView.h"
 #import "ResourceModel.h"
+#import "LogisticViewController.h"
 
 typedef enum {
     OperationBtnFirst = 1,
     OperationBtnSecond,
 }OperationBtn; //详情有几个操作按钮 用来定位置
+
+static NSString *RefreshCSListNotification = @"RefreshCSListNotification";
 
 @interface CSDetailViewController : CommonViewController
 
@@ -39,5 +42,14 @@ typedef enum {
 - (void)setLabel:(UILabel *)label
      withTopView:(UIView *)topView
      middleSpace:(CGFloat)space;
+
+//取消申请
+- (void)cancelApply;
+
+//提交物流信息
+- (void)submitLogisticInfomaiton;
+
+//重新提交注销申请
+- (void)submitCanncelApply;
 
 @end

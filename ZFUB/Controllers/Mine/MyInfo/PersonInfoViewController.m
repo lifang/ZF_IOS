@@ -14,18 +14,23 @@
 #import "CityHandle.h"
 #import "EditPersonInfoController.h"
 #import "ScoreViewController.h"
+#import "LocationViewController.h"
 
 static NSInteger s_firstSectionCount = 5;    ///第一分组列数
 static NSInteger s_secondSectionCount = 1;   ///第二分组列数
 static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
-@interface PersonInfoViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface PersonInfoViewController ()<UITableViewDelegate,UITableViewDataSource,LocationDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *itemNames;    //我的信息模块名称
 
 @property (nonatomic, strong) UserModel *userInfo;
+
+@property (nonatomic, strong) UIPickerView *pickerView;
+
+@property (nonatomic, strong) UIToolbar *toolbar;
 
 @end
 
@@ -112,6 +117,27 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
+    [self initPickerView];
+}
+
+- (void)initPickerView {
+    //日期选择相关控件
+    _toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 44)];
+    UIBarButtonItem *finishItem = [[UIBarButtonItem alloc] initWithTitle:@"完成"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(pickerScrollOut)];
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                               target:nil
+                                                                               action:nil];
+    spaceItem.width = kScreenWidth - 60;
+    [_toolbar setItems:[NSArray arrayWithObjects:spaceItem,finishItem, nil]];
+    [self.view addSubview:_toolbar];
+    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 216, kScreenWidth, 216)];
+    _pickerView.delegate = self;
+    _pickerView.dataSource = self;
+    [_pickerView selectRow:0 inComponent:0 animated:NO];
+    [self.view addSubview:_pickerView];
 }
 
 #pragma mark - Request 
@@ -310,6 +336,10 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                     break;
                 case 3: {
                     //所在地
+                    LocationViewController *locationC = [[LocationViewController alloc] init];
+                    locationC.needShowLocation = NO;
+                    locationC.delegate = self;
+                    [self.navigationController pushViewController:locationC animated:YES];
                 }
                     break;
                 case 4: {
@@ -356,6 +386,92 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
 - (void)refreshUserInfo:(NSNotification *)notification {
     [_tableView reloadData];
+}
+
+#pragma mark - LocationDelegate
+
+- (void)getSelectedLocation:(CityModel *)selectedCity {
+    if (!selectedCity) {
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface modifyUserInfoWithToken:delegate.token userID:delegate.userID username:nil mobilePhone:nil email:nil cityID:selectedCity.cityID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                                    message:@"用户信息修改成功"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"确定"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                    _userInfo.cityID = selectedCity.cityID;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:EditUserInfoNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+
+}
+
+#pragma mark - UIPickerView
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (component == 0) {
+        return [[CityHandle shareProvinceList] count];
+    }
+    else {
+        NSInteger provinceIndex = [pickerView selectedRowInComponent:0];
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:provinceIndex];
+        NSLog(@"%@",provinceDict);
+        return [[provinceDict objectForKey:@"cities"] count];
+    }
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (component == 0) {
+        //省
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:row];
+        NSLog(@"%d,%@",[[provinceDict objectForKey:@"cities"] count],[provinceDict objectForKey:@"name"]);
+        return [provinceDict objectForKey:@"name"];
+    }
+    else {
+        //市
+        NSInteger provinceIndex = [pickerView selectedRowInComponent:0];
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:provinceIndex];
+        NSArray *cityList = [provinceDict objectForKey:@"cities"];
+        return [[cityList objectAtIndex:component] objectForKey:@"name"];
+    }
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (component == 0) {
+        //省
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:row];
+//        [_pickerView reloadComponent:1];
+    }
 }
 
 @end

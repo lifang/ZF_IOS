@@ -14,6 +14,8 @@
 + (NSArray *)tableViewIndex;
 + (NSArray *)dataForSection;
 
++ (NSArray *)shareProvinceList;  //省份数组
+
 //根据城市id获取城市名
 + (NSString *)getCityNameWithCityID:(NSString *)cityID;
 

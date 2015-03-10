@@ -13,8 +13,10 @@
 #import "AppDelegate.h"
 #import "OrderCell.h"
 #import "OrderDetailController.h"
+#import "PayWayViewController.h"
+#import "OrderCommentController.h"
 
-@interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,RefreshDelegate>
+@interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,RefreshDelegate,OrderCellDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, assign) OrderType currentType;
 
@@ -36,9 +38,16 @@
 //订单信息
 @property (nonatomic, strong) NSMutableArray *orderItems;
 
+//保存进行操作的cell对应的数据
+@property (nonatomic, strong) OrderModel *selectedModel;
+
 @end
 
 @implementation MyOrderViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,6 +59,8 @@
     [self initAndLayoutUI];
     self.currentType = OrderTypeAll;
     [self firstLoadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshOrderList:) name:RefreshMyOrderListNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -227,6 +238,41 @@
     }];
 }
 
+//取消订单
+- (void)cancelOrder {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface cancelMyOrderWithToken:delegate.token orderID:_selectedModel.orderID finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    hud.labelText = @"订单取消成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseOrderListDataWithDictionary:(NSDictionary *)dict {
@@ -292,6 +338,7 @@
     if (cell == nil) {
         cell = [[OrderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.delegate = self;
     [cell setContentsWithData:model];
     return cell;
 }
@@ -414,5 +461,46 @@
     [self downloadDataWithPage:self.page isMore:YES];
 }
 
+
+#pragma mark - Notification
+
+- (void)refreshOrderList:(NSNotification *)notification {
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.1f];
+}
+
+#pragma mark - OrderCellDelegate 
+
+- (void)orderCellCancelOrderForData:(OrderModel *)model {
+    _selectedModel = model;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确定取消此订单？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+
+- (void)orderCellPayOrderForData:(OrderModel *)model {
+    _selectedModel = model;
+    PayWayViewController *payWayC = [[PayWayViewController alloc] init];
+    payWayC.orderID = _selectedModel.orderID;
+    payWayC.totalPrice = _selectedModel.orderTotalPrice;
+    [self.navigationController pushViewController:payWayC animated:YES];
+}
+
+- (void)orderCellCommentOrderForData:(OrderModel *)model {
+    _selectedModel = model;
+    OrderCommentController *commentC = [[OrderCommentController alloc] init];
+    commentC.orderID = _selectedModel.orderID;
+    [self.navigationController pushViewController:commentC animated:YES];   
+}
+
+#pragma mark - AlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        [self cancelOrder];
+    }
+}
 
 @end

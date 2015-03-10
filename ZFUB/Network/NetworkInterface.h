@@ -17,6 +17,8 @@
  2.登录
  3.找回密码手机验证码
  5.注册验证码
+ 6.获取开通申请列表
+ 12.获取对公对私材料
  15.获取终端管理终端列表
  16.指定收单通道
  17.添加终端
@@ -42,21 +44,39 @@
  44.兑换积分
  48.我的商户列表
  49.我的商户详情
+ 55.我的消息列表
+ 56.我的消息详情
+ 57.我的消息单个删除
+ 58.我的消息批量删除
+ 59.我的消息批量已读
  60.我的订单列表
+ 61.我的订单详情
+ 62.取消订单
+ 63.订单评论
  64.维修记录列表 
+ 65.维修记录取消订单
  66.维修记录详情
+ 67.维修记录物流
  68.退货记录列表
+ 69.退货记录取消订单
  70.退货记录详情
+ 71.退货记录物流
  72.注销记录列表 
+ 73.注销记录取消申请
+ 74.重新提交注销记录
  75.注销记录详情
  76.换货记录列表 
  77.换货记录详情
+ 78.换货记录取消申请
+ 79.换货记录物流
  80.更新资料记录列表
  81.更新资料记录详情
+ 82.更新资料取消申请
  83.租赁退还记录列表
  84.租赁退还记录详情
+ 85.租赁退货取消申请
+ 86.租赁退还记录物流
  */
-
 
 @class MerchantDetailModel;
 
@@ -95,10 +115,16 @@ typedef enum {
 }CSType;
 
 typedef enum {
-    OrderTypeAll= -1,
-    OrderTypeBuy = 1,
-    OrderTypeRent,
-}OrderType;
+    OrderTypeAll= -1,  //全部
+    OrderTypeBuy = 1,  //购买
+    OrderTypeRent,     //租赁
+}OrderType;//我的订单列表类型
+
+typedef enum {
+    OpenApplyNone = 0,
+    OpenApplyPublic,    //对公
+    OpenApplyPrivate,   //对私
+}OpenApplyType;  //开通类型
 
 //注册
 static NSString *s_register_method = @"user/userRegistration";
@@ -115,8 +141,11 @@ static NSString *s_findValidate_method = @"user/sendPhoneVerificationCodeFind";
 //找回密码发送邮件
 static NSString *s_findEmail_method = @"sendEmailVerificationCode";
 
-//开通申请
+//开通申请列表
 static NSString *s_applyList_method = @"apply/getApplyList";
+
+//对公对私材料
+static NSString *s_applyMaterial_method = @"apply/getMaterialName";
 
 //终端管理列表
 static NSString *s_terminalManagerList_method = @"terminal/getApplyList";
@@ -196,26 +225,65 @@ static NSString *s_merchantDetail_method = @"merchant/getOne";
 //修改商户
 static NSString *s_merchantModify_method = @"merchant/update";
 
+//我的消息列表
+static NSString *s_messageList_method = @"message/receiver/getAll";
+
+//我的消息详情
+static NSString *s_messageDetail_method = @"message/receiver/getById";
+
+//我的消息 单个删除
+static NSString *s_messageDeleteSingle_method = @"message/receiver/deleteById";
+
+//我的消息 批量删除
+static NSString *s_messageDeleteMulti_method = @"message/receiver/batchDelete";
+
+//我的消息已读
+static NSString *s_messageRead_method = @"message/receiver/batchRead";
+
 //我的订单列表
 static NSString *s_myOrderList_method = @"order/getMyOrderAll";
 
 //订单详情
 static NSString *s_orderDetail_method = @"order/getMyOrderById";
 
+//取消订单
+static NSString *s_orderCancel_method = @"order/cancelMyOrder";
+
+//订单评论
+static NSString *s_orderComment_method = @"order/saveComment";
+
 //维修记录列表
 static NSString *s_repairList_method = @"cs/repair/getAll";
+
+//维修记录取消申请
+static NSString *s_repairCancel_method = @"cs/repair/cancelApply";
 
 //维修记录详情
 static NSString *s_repairDetail_method = @"cs/repair/getRepairById";
 
+//维修记录物流
+static NSString *s_repairLogistic_method = @"cs/repair/addMark";
+
 //退货记录列表
 static NSString *s_returnList_method = @"return/getAll";
+
+//退货记录取消申请
+static NSString *s_returnCancel_method = @"retrun/cancelApply";
 
 //退货记录详情
 static NSString *s_returnDetail_method = @"return/getReturnById";
 
+//退货记录物流
+static NSString *s_returnLogistic_method = @"return/addMark";
+
 //注销记录列表
 static NSString *s_cancelList_method = @"cs/cancels/getAll";
+
+//注销记录取消申请
+static NSString *s_cancelCancel_method = @"cs/cancels/cancelApply";
+
+//注销记录重新提交
+static NSString *s_cancelSubmit_method = @"cs/cancels/resubmitCancel";
 
 //注销记录详情
 static NSString *s_cancelDetail_method = @"cs/cancels/getCanCelById";
@@ -223,8 +291,14 @@ static NSString *s_cancelDetail_method = @"cs/cancels/getCanCelById";
 //换货记录列表
 static NSString *s_changeList_method = @"cs/change/getAll";
 
+//换货记录取消申请
+static NSString *s_changeCancel_method = @"cs/change/cancelApply";
+
 //换货记录详情
 static NSString *s_changeDetail_method = @"cs/change/getChangeById";
+
+//换货记录物流
+static NSString *s_changeLogistic_method = @"cs/change/addMark";
 
 //更新资料记录列表
 static NSString *s_updateList_method = @"update/info/getAll";
@@ -232,11 +306,20 @@ static NSString *s_updateList_method = @"update/info/getAll";
 //更新资料记录详情
 static NSString *s_updateDetail_method = @"update/info/getInfoById";
 
+//更新资料取消申请
+static NSString *s_updateCancel_method = @"update/info/cancelApply";
+
 //租赁退货记录列表
 static NSString *s_leaseList_method = @"cs/lease/returns/getAll";
 
 //租赁退货记录详情
 static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
+
+//租赁退货记录取消申请
+static NSString *s_leaseCancel_method = @"cs/lease/returns/cancelApply";
+
+//租赁退货记录物流
+static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 
 @interface NetworkInterface : NSObject
 
@@ -300,6 +383,18 @@ static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
                          page:(int)page
                          rows:(int)rows
                      finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 12.获取对公对私材料
+ @param token       登录返回
+ @param terminalID      终端ID
+ @param type        对公 对私类型
+ @result finish  请求回调结果
+ */
++ (void)getApplyMaterialWithToken:(NSString *)token
+                       terminalID:(NSString *)terminalID
+                         openType:(OpenApplyType)type
+                         finished:(requestDidFinished)finish;
 
 /*!
  @abstract 15.获取终端管理终端列表
@@ -637,6 +732,69 @@ static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
                  merchantDetail:(MerchantDetailModel *)merchant
                        finished:(requestDidFinished)finish;
 
+
+/*!
+ @abstract 55.我的消息列表
+ @param token       登录返回
+ @param userID   用户id
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getMyMessageListWithToken:(NSString *)token
+                           userID:(NSString *)userID
+                             page:(int)page
+                             rows:(int)rows
+                         finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 56.我的消息详情
+ @param token       登录返回
+ @param userID   用户id
+ @param messageID   消息id
+ @result finish  请求回调结果
+ */
++ (void)getMyMessageDetailWithToken:(NSString *)token
+                             userID:(NSString *)userID
+                          messageID:(NSString *)messageID
+                           finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 57.我的消息单个删除
+ @param token       登录返回
+ @param userID   用户id
+ @param messageID   消息id
+ @result finish  请求回调结果
+ */
++ (void)messageDeleteSingleWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                           messageID:(NSString *)messageID
+                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 58.我的消息批量删除
+ @param token       登录返回
+ @param userID   用户id
+ @param messagesID   消息数组
+ @result finish  请求回调结果
+ */
++ (void)messsageDeleteMultiWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                          messagesID:(NSArray *)messagesID
+                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 59.我的消息批量已读
+ @param token       登录返回
+ @param userID   用户id
+ @param messagesID   消息数组
+ @result finish  请求回调结果
+ */
++ (void)messageReadWithToken:(NSString *)token
+                      userID:(NSString *)userID
+                  messagesID:(NSArray *)messagesID
+                    finished:(requestDidFinished)finish;
+
 /*!
  @abstract 60.我的订单列表
  @param token       登录返回
@@ -664,6 +822,32 @@ static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
                          finished:(requestDidFinished)finish;
 
 /*!
+ @abstract 62.取消订单
+ @param token       登录返回
+ @param orderID   订单id
+ @result finish  请求回调结果
+ */
++ (void)cancelMyOrderWithToken:(NSString *)token
+                       orderID:(NSString *)orderID
+                      finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 63.订单评论
+ @param token       登录返回
+ @param userID   用户id
+ @param orderID   订单id
+ @param score   评分
+ @param content  评论内容
+ @result finish  请求回调结果
+ */
++ (void)commentMyOrderWithToken:(NSString *)token
+                         userID:(NSString *)userID
+                        orderID:(NSString *)orderID
+                          score:(int)score
+                        content:(NSString *)content
+                       finished:(requestDidFinished)finish;
+
+/*!
  @abstract 64.维修记录列表 68.退货记录列表 72.注销记录列表 76.换货记录列表 80.更新资料记录列表 83.租赁退还记录列表
  @param token       登录返回
  @param userID   用户id
@@ -680,6 +864,19 @@ static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
                   finished:(requestDidFinished)finish;
 
 /*!
+ @abstract 65.维修记录取消订单 69.退货记录取消申请  73.注销记录取消申请 78.换货记录取消申请 82.更新资料取消申请 85.租赁退货取消申请
+ @param token       登录返回
+ @param csID      id
+ @param csType   售后记录类别
+ @result finish  请求回调结果
+ */
++ (void)csCancelWithToken:(NSString *)token
+                     csID:(NSString *)csID
+                   csType:(CSType)csType
+                 finished:(requestDidFinished)finish;
+
+
+/*!
  @abstract 66.维修记录详情 70.退货记录详情 75.注销记录详情 77.换货记录详情 81.更新资料记录详情 84.租赁退还记录详情
  @param token       登录返回
  @param csID     售后id
@@ -690,6 +887,35 @@ static NSString *s_leaseDetail_method = @"cs/lease/returns/getById";
                         csID:(NSString *)csID
                       csType:(CSType)csType
                     finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 67.维修记录物流 71.退货记录物流 79.换货记录物流 86.租赁退还记录物流
+ @param token       登录返回
+ @param userID     用户id
+ @param csID     售后id
+ @param csType   售后记录类别
+ @param csID     售后id
+ @param companyName    物流公司
+ @param number    物流单号
+ @result finish  请求回调结果
+ */
++ (void)csLogisticWithToken:(NSString *)token
+                     userID:(NSString *)userID
+                       csID:(NSString *)csID
+                     csType:(CSType)csType
+            logisticCompany:(NSString *)companyName
+             logisticNumber:(NSString *)number
+                   finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 74.重新提交注销记录
+ @param token       登录返回
+ @param csID     售后id
+ @result finish  请求回调结果
+ */
++ (void)submitCancelInfoWithToken:(NSString *)token
+                             csID:(NSString *)csID
+                         finished:(requestDidFinished)finish;
 
 
 @end

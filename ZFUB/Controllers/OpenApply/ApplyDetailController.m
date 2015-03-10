@@ -1,26 +1,33 @@
 //
-//  LocationViewController.m
+//  ApplyDetailController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/11.
+//  Created by 徐宝桥 on 15/3/9.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "LocationViewController.h"
+#import "ApplyDetailController.h"
+#import "NetworkInterface.h"
+#import "AppDelegate.h"
 
-@interface LocationViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface ApplyDetailController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UISegmentedControl *segmentControl;
+
+@property (nonatomic, assign) OpenApplyType applyType;  //对公 对私
 
 @end
 
-@implementation LocationViewController
+@implementation ApplyDetailController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"城市选择";
-    [self initAndLauoutUI];
+    self.title = @"开通申请";
+    _applyType = OpenApplyPublic;
+    [self initAndLayoutUI];
+    [self downloadOpenApplyMaterial];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,19 +38,35 @@
 #pragma mark - UI
 
 - (void)setHeaderAndFooterView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 18 * kScaling)];
-    headerView.backgroundColor = [UIColor clearColor];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    headerView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.tableHeaderView = headerView;
+    NSArray *nameArray = [NSArray arrayWithObjects:
+                          @"对公",
+                          @"对私",
+                          nil];
+    CGFloat h_space = 20.f;
+    CGFloat v_space = 10.f;
+    _segmentControl = [[UISegmentedControl alloc] initWithItems:nameArray];
+    _segmentControl.selectedSegmentIndex = 0;
+    _segmentControl.frame = CGRectMake(h_space, v_space, kScreenWidth - h_space * 2, 30);
+    _segmentControl.tintColor = kColor(255, 102, 36, 1);
+    [_segmentControl addTarget:self action:@selector(typeChanged:) forControlEvents:UIControlEventValueChanged];
+    NSDictionary *attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [UIFont systemFontOfSize:12.f],NSFontAttributeName,
+                              nil];
+    [_segmentControl setTitleTextAttributes:attrDict forState:UIControlStateNormal];
+    [headerView addSubview:_segmentControl];
     
     UIView *footerView = [[UIView alloc] init];
     footerView.backgroundColor = [UIColor clearColor];
     _tableView.tableFooterView = footerView;
 }
 
-- (void)initAndLauoutUI {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+- (void)initAndLayoutUI {
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tableView.sectionIndexColor = [UIColor grayColor];
+    _tableView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self setHeaderAndFooterView];
@@ -78,78 +101,34 @@
                                                            constant:0]];
 }
 
+#pragma mark - Request
+
+- (void)downloadOpenApplyMaterial {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface getApplyMaterialWithToken:delegate.token terminalID:_terminalID openType:_applyType finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+    }];
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (_needShowLocation) {
-        return [[CityHandle tableViewIndex] count] + 1;
-    }
-    return [[CityHandle tableViewIndex] count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_needShowLocation) {
-        if (section == 0) {
-            return 1;
-        }
-        else {
-            return [[[CityHandle dataForSection] objectAtIndex:section - 1] count];
-        }
-    }
-    return [[[CityHandle dataForSection] objectAtIndex:section] count];
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"CityIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    if (_needShowLocation) {
-        if (indexPath.section == 0) {
-            cell.textLabel.text = @"上海";
-        }
-        else {
-            CityModel *city = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-            cell.textLabel.text = city.cityName;
-        }
-    }
-    else {
-        CityModel *city = [[[CityHandle dataForSection] objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        cell.textLabel.text = city.cityName;
-    }
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (_needShowLocation) {
-        if (section == 0) {
-            return nil;
-        }
-        return [[CityHandle tableViewIndex] objectAtIndex:section - 1];
-    }
-    else {
-        return [[CityHandle tableViewIndex] objectAtIndex:section];
-    }
-}
+#pragma mark - Action
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return [CityHandle tableViewIndex];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CityModel *selectedCity = nil;
-    if (_needShowLocation) {
-        if (indexPath.section != 0) {
-            selectedCity = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-        }
-    }
-    else {
-        selectedCity = [[[CityHandle dataForSection] objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    }
-    if (_delegate && [_delegate respondsToSelector:@selector(getSelectedLocation:)]) {
-        [_delegate getSelectedLocation:selectedCity];
-    }
+- (IBAction)typeChanged:(id)sender {
+    
 }
 
 @end

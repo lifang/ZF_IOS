@@ -131,6 +131,24 @@ static NSString *HTTP_GET  = @"GET";
                         finished:finish];
 }
 
+//12.
++ (void)getApplyMaterialWithToken:(NSString *)token
+                       terminalID:(NSString *)terminalID
+                         openType:(OpenApplyType)type
+                         finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[terminalID intValue]] forKey:@"terminalId"];
+    [paramDict setObject:[NSNumber numberWithInt:type] forKey:@"status"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applyMaterial_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
 //15.
 + (void)getTerminalManagerListWithToken:(NSString *)token
                                  userID:(NSString *)userID
@@ -657,6 +675,99 @@ static NSString *HTTP_GET  = @"GET";
     
 }
 
+//55.
++ (void)getMyMessageListWithToken:(NSString *)token
+                           userID:(NSString *)userID
+                             page:(int)page
+                             rows:(int)rows
+                         finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
+    [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"pageSize"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_messageList_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//56.
++ (void)getMyMessageDetailWithToken:(NSString *)token
+                             userID:(NSString *)userID
+                          messageID:(NSString *)messageID
+                           finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:[NSNumber numberWithInt:[messageID intValue]] forKey:@"id"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_messageDetail_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//57.
++ (void)messageDeleteSingleWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                           messageID:(NSString *)messageID
+                            finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:[NSNumber numberWithInt:[messageID intValue]] forKey:@"id"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_messageDeleteSingle_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//58.
++ (void)messsageDeleteMultiWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                          messagesID:(NSArray *)messagesID
+                            finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:messagesID forKey:@"ids"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_messageDeleteMulti_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//59.
++ (void)messageReadWithToken:(NSString *)token
+                      userID:(NSString *)userID
+                  messagesID:(NSArray *)messagesID
+                    finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:messagesID forKey:@"ids"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_messageRead_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+    
+}
+
 //60.
 + (void)getMyOrderListWithToken:(NSString *)token
                          userID:(NSString *)userID
@@ -691,6 +802,44 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderDetail_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//62.
++ (void)cancelMyOrderWithToken:(NSString *)token
+                       orderID:(NSString *)orderID
+                      finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"id"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderCancel_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//63.
++ (void)commentMyOrderWithToken:(NSString *)token
+                         userID:(NSString *)userID
+                        orderID:(NSString *)orderID
+                          score:(int)score
+                        content:(NSString *)content
+                       finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"good_id"];
+    [paramDict setObject:[NSNumber numberWithInt:score] forKey:@"score"];
+    [paramDict setObject:content forKey:@"content"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderComment_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST
@@ -749,6 +898,54 @@ static NSString *HTTP_GET  = @"GET";
 }
 
 /*
+ 65.维修记录取消订单 
+ 69.退货记录取消申请 
+ 73.注销记录取消申请 
+ 78.换货记录取消申请 
+ 82.更新资料取消申请 
+ 85.租赁退货取消申请
+ */
++ (void)csCancelWithToken:(NSString *)token
+                     csID:(NSString *)csID
+                   csType:(CSType)csType
+                 finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
+    //url
+    NSString *method = nil;
+    switch (csType) {
+        case CSTypeRepair:
+            method = s_repairCancel_method;
+            break;
+        case CSTypeReturn:
+            method = s_returnCancel_method;
+            break;
+        case CSTypeCancel:
+            method = s_cancelCancel_method;
+            break;
+        case CSTypeChange:
+            method = s_changeCancel_method;
+            break;
+        case CSTypeUpdate:
+            method = s_updateCancel_method;
+            break;
+        case CSTypeLease:
+            method = s_leaseCancel_method;
+            break;
+        default:
+            break;
+    }
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+
+/*
  66.维修记录详情
  70.退货记录详情 
  75.注销记录详情
@@ -794,6 +991,72 @@ static NSString *HTTP_GET  = @"GET";
                       httpMethod:HTTP_POST
                         finished:finish];
 
+}
+
+/*
+ 67.维修记录物流 
+ 71.退货记录物流 
+ 79.换货记录物流 
+ 86.租赁退还记录物流
+ */
++ (void)csLogisticWithToken:(NSString *)token
+                     userID:(NSString *)userID
+                       csID:(NSString *)csID
+                     csType:(CSType)csType
+            logisticCompany:(NSString *)companyName
+             logisticNumber:(NSString *)number
+                   finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
+    [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
+    [paramDict setObject:companyName forKey:@"computer_name"];
+    [paramDict setObject:number forKey:@"track_number"];
+    //url
+    NSString *method = nil;
+    switch (csType) {
+        case CSTypeRepair:
+            method = s_repairLogistic_method;
+            break;
+        case CSTypeReturn:
+            method = s_returnLogistic_method;
+            break;
+        case CSTypeCancel:
+            break;
+        case CSTypeChange:
+            method = s_changeLogistic_method;
+            break;
+        case CSTypeUpdate:
+            break;
+        case CSTypeLease:
+            method = s_leaseLogistic_method;
+            break;
+        default:
+            break;
+    }
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+    
+}
+
+//74.
++ (void)submitCancelInfoWithToken:(NSString *)token
+                             csID:(NSString *)csID
+                         finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_cancelSubmit_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
 }
 
 

@@ -1,25 +1,25 @@
 //
-//  LocationViewController.m
+//  PayWayViewController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/11.
+//  Created by 徐宝桥 on 15/3/9.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "LocationViewController.h"
+#import "PayWayViewController.h"
 
-@interface LocationViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface PayWayViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @end
 
-@implementation LocationViewController
+@implementation PayWayViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"城市选择";
+    self.title = @"选择支付方式";
     [self initAndLauoutUI];
 }
 
@@ -31,19 +31,47 @@
 #pragma mark - UI
 
 - (void)setHeaderAndFooterView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 18 * kScaling)];
-    headerView.backgroundColor = [UIColor clearColor];
+    CGFloat hearderHeight = 160.f;
+    CGFloat blackViewHeight = 130.f;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, hearderHeight)];
+    headerView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.tableHeaderView = headerView;
     
-    UIView *footerView = [[UIView alloc] init];
-    footerView.backgroundColor = [UIColor clearColor];
-    _tableView.tableFooterView = footerView;
+    UIView *blackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, blackViewHeight)];
+    blackView.backgroundColor = kColor(33, 32, 42, 1);
+    [headerView addSubview:blackView];
+    
+    CGFloat topSpace = 20.f;
+    CGFloat leftSpace = 20.f;
+    CGFloat rightSpace = 20.f;
+    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, topSpace, kScreenWidth - leftSpace - rightSpace, 20.f)];
+    infoLabel.backgroundColor = [UIColor clearColor];
+    infoLabel.textColor = [UIColor whiteColor];
+    infoLabel.font = [UIFont systemFontOfSize:14.f];
+    infoLabel.text = @"付款金额";
+    [blackView addSubview:infoLabel];
+    //金额
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, 60, kScreenWidth - leftSpace - rightSpace, 60.f)];
+    priceLabel.backgroundColor = [UIColor clearColor];
+    priceLabel.textColor = [UIColor whiteColor];
+    priceLabel.font = [UIFont boldSystemFontOfSize:48.f];
+    priceLabel.adjustsFontSizeToFitWidth = YES;
+    priceLabel.text = [NSString stringWithFormat:@"￥%@",_totalPrice];
+    [blackView addSubview:priceLabel];
+    
+    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, hearderHeight - 20, kScreenWidth - leftSpace - rightSpace, 20.f)];
+    typeLabel.backgroundColor = [UIColor clearColor];
+    typeLabel.textColor = kColor(150, 150, 150, 1);
+    typeLabel.font = [UIFont systemFontOfSize:14.f];
+    typeLabel.text = @"选择支付方式";
+    [headerView addSubview:typeLabel];
 }
 
 - (void)initAndLauoutUI {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tableView.sectionIndexColor = [UIColor grayColor];
+    _tableView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self setHeaderAndFooterView];
@@ -81,75 +109,37 @@
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (_needShowLocation) {
-        return [[CityHandle tableViewIndex] count] + 1;
-    }
-    return [[CityHandle tableViewIndex] count];
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_needShowLocation) {
-        if (section == 0) {
-            return 1;
-        }
-        else {
-            return [[[CityHandle dataForSection] objectAtIndex:section - 1] count];
-        }
-    }
-    return [[[CityHandle dataForSection] objectAtIndex:section] count];
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"CityIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    NSString *title = nil;
+    switch (indexPath.section) {
+        case 0:
+            title = @"支付宝";
+            break;
+        case 1:
+            title = @"银联";
+            break;
+        default:
+            break;
     }
-    if (_needShowLocation) {
-        if (indexPath.section == 0) {
-            cell.textLabel.text = @"上海";
-        }
-        else {
-            CityModel *city = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-            cell.textLabel.text = city.cityName;
-        }
-    }
-    else {
-        CityModel *city = [[[CityHandle dataForSection] objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        cell.textLabel.text = city.cityName;
-    }
+    cell.textLabel.text = title;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (_needShowLocation) {
-        if (section == 0) {
-            return nil;
-        }
-        return [[CityHandle tableViewIndex] objectAtIndex:section - 1];
-    }
-    else {
-        return [[CityHandle tableViewIndex] objectAtIndex:section];
-    }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001f;
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return [CityHandle tableViewIndex];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CityModel *selectedCity = nil;
-    if (_needShowLocation) {
-        if (indexPath.section != 0) {
-            selectedCity = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-        }
-    }
-    else {
-        selectedCity = [[[CityHandle dataForSection] objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    }
-    if (_delegate && [_delegate respondsToSelector:@selector(getSelectedLocation:)]) {
-        [_delegate getSelectedLocation:selectedCity];
-    }
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 5.f;
 }
 
 @end

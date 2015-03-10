@@ -383,7 +383,7 @@ typedef enum {
     else if ([_identifier isEqualToString:unPaidIdentifier]) {
         //未付款
         [self addLine];
-        UIButton *cancelBtn = [self buttonWithTitle:@"取消申请" action:@selector(cancelOrder:) style:orderBtnStyleFirst];
+        UIButton *cancelBtn = [self buttonWithTitle:@"取消订单" action:@selector(cancelOrder:) style:orderBtnStyleFirst];
         [self.contentView addSubview:cancelBtn];
         [self layoutButton:cancelBtn location:BtnPositionLeft];
         
@@ -582,15 +582,21 @@ typedef enum {
 #pragma mark - Action
 
 - (IBAction)cancelOrder:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(orderCellCancelOrderForData:)]) {
+        [_delegate orderCellCancelOrderForData:_cellData];
+    }
 }
 
 - (IBAction)payOrder:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(orderCellPayOrderForData:)]) {
+        [_delegate orderCellPayOrderForData:_cellData];
+    }
 }
 
 - (IBAction)reviewOrder:(id)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(orderCellCommentOrderForData:)]) {
+        [_delegate orderCellCommentOrderForData:_cellData];
+    }
 }
 
 @end

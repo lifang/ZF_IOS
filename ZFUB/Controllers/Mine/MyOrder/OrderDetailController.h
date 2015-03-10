@@ -8,6 +8,9 @@
 
 #import "CommonViewController.h"
 
+//操作成功后刷新订单列表
+static NSString *RefreshMyOrderListNotification = @"RefreshMyOrderListNotification";
+
 @interface OrderDetailController : CommonViewController
 
 @property (nonatomic, strong) NSString *orderID;

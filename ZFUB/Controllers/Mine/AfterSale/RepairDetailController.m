@@ -7,6 +7,7 @@
 //
 
 #import "RepairDetailController.h"
+#import "PayWayViewController.h"
 
 @interface RepairDetailController ()
 
@@ -440,15 +441,18 @@
 #pragma mark - Action
 
 - (IBAction)cancelApply:(id)sender {
-    
+    [self cancelApply];
 }
 
 - (IBAction)payRepair:(id)sender {
-    
+    PayWayViewController *payWayC = [[PayWayViewController alloc] init];
+    payWayC.orderID = self.csID;
+    payWayC.totalPrice = _repairPrice;
+    [self.navigationController pushViewController:payWayC animated:YES];
 }
 
 - (IBAction)send:(id)sender {
-    
+    [self submitLogisticInfomaiton];
 }
 
 @end

@@ -12,12 +12,16 @@
 #import "OrderDetailModel.h"
 #import "OrderDetailCell.h"
 #import "RecordView.h"
+#import "PayWayViewController.h"
+#import "OrderCommentController.h"
 
 @interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) OrderDetailModel *orderDetail;
+
+@property (nonatomic, strong) UIView *detailFooterView;
 
 @end
 
@@ -61,6 +65,46 @@
 }
 
 - (void)initAndLayoutUI {
+    CGFloat footerHeight = 0.f;
+    int status = [_orderDetail.orderStatus intValue];
+    if (status == OrderStatusUnPaid || status == OrderStatusSending) {
+        footerHeight = 60.f;
+        //底部按钮
+        _detailFooterView = [[UIView alloc] init];
+        _detailFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailFooterView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_detailFooterView];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_detailFooterView
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:-footerHeight]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_detailFooterView
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1.0
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_detailFooterView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.0
+                                                               constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_detailFooterView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:0]];
+        [self footerViewAddSubview];
+
+    }
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
     _tableView.backgroundColor = kColor(244, 243, 243, 1);
@@ -98,7 +142,52 @@
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
-                                                           constant:0]];
+                                                           constant:-footerHeight]];
+}
+
+- (void)footerViewAddSubview {
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 0.5)];
+    line.backgroundColor = kColor(135, 135, 135, 1);
+    [_detailFooterView addSubview:line];
+    CGFloat middleSpace = 10.f;
+    CGFloat btnWidth = (kScreenWidth - 4 * middleSpace) / 2;
+    CGFloat btnHeight = 36.f;
+    int status = [_orderDetail.orderStatus intValue];
+    if (status == OrderStatusUnPaid) {
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelButton.frame = CGRectMake(middleSpace, 12, btnWidth, btnHeight);
+        cancelButton.layer.cornerRadius = 4.f;
+        cancelButton.layer.masksToBounds = YES;
+        cancelButton.layer.borderWidth = 1.f;
+        cancelButton.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+        [cancelButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+        [cancelButton setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+        [cancelButton setTitle:@"取消订单" forState:UIControlStateNormal];
+        cancelButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+        [cancelButton addTarget:self action:@selector(cancelOrder:) forControlEvents:UIControlEventTouchUpInside];
+        [_detailFooterView addSubview:cancelButton];
+        
+        UIButton *payButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        payButton.frame = CGRectMake(btnWidth + 3 * middleSpace, 12, btnWidth, btnHeight);
+        payButton.layer.cornerRadius = 4.f;
+        payButton.layer.masksToBounds = YES;
+        [payButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+        [payButton setTitle:@"付款" forState:UIControlStateNormal];
+        payButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+        [payButton addTarget:self action:@selector(payOrder:) forControlEvents:UIControlEventTouchUpInside];
+        [_detailFooterView addSubview:payButton];
+    }
+    else if (status == OrderStatusSending) {
+        UIButton *commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        commentButton.frame = CGRectMake(middleSpace, 12, kScreenWidth - 2 * middleSpace, btnHeight);
+        commentButton.layer.cornerRadius = 4.f;
+        commentButton.layer.masksToBounds = YES;
+        [commentButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+        [commentButton setTitle:@"评价" forState:UIControlStateNormal];
+        commentButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+        [commentButton addTarget:self action:@selector(commentOrder:) forControlEvents:UIControlEventTouchUpInside];
+        [_detailFooterView addSubview:commentButton];
+    }
 }
 
 - (void)setLabel:(UILabel *)label withString:(NSString *)string {
@@ -141,6 +230,42 @@
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
                     [self parseOrderDetailDataWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+//取消订单
+- (void)cancelOrder {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface cancelMyOrderWithToken:delegate.token orderID:_orderID finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    hud.labelText = @"订单取消成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }
             else {
@@ -364,6 +489,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - Action
+
+- (IBAction)cancelOrder:(id)sender {
+    [self cancelOrder];
+}
+
+- (IBAction)payOrder:(id)sender {
+    PayWayViewController *payWayC = [[PayWayViewController alloc] init];
+    payWayC.totalPrice = _orderDetail.orderTotalPrice;
+    payWayC.orderID = _orderID;
+    [self.navigationController pushViewController:payWayC animated:YES];
+}
+
+- (IBAction)commentOrder:(id)sender {
+    OrderCommentController *commentC = [[OrderCommentController alloc] init];
+    commentC.orderID = _orderID;
+    [self.navigationController pushViewController:commentC animated:YES];
 }
 
 @end

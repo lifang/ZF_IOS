@@ -8,7 +8,30 @@
 
 #import "CityHandle.h"
 
+static NSArray *s_cityList = nil;
+static NSArray *s_provinceList = nil;
+
 @implementation CityHandle
+
++ (NSArray *)shareProvinceList {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!s_provinceList) {
+            s_provinceList = [[self class] getProvinceList];
+        }
+    });
+    return s_provinceList;
+}
+
++ (NSArray *)shareCityList {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!s_cityList) {
+            s_cityList = [[self class] getCityList];
+        }
+    });
+    return s_cityList;
+}
 
 //省
 + (NSArray *)getProvinceList {
@@ -20,7 +43,7 @@
 
 //城市
 + (NSArray *)getCityList {
-    NSArray *provinceList = [[self class] getProvinceList];
+    NSArray *provinceList = [[self class] shareProvinceList];
     NSMutableArray *cityList = [[NSMutableArray alloc] init];
     for (int i = 0; i < [provinceList count]; i++) {
         NSDictionary *provinceDict = [provinceList objectAtIndex:i];
@@ -40,7 +63,7 @@
 
 + (NSString *)getCityNameWithCityID:(NSString *)cityID {
     NSString *cityName = nil;
-    NSArray *cityList = [[self class] getCityList];
+    NSArray *cityList = [[self class] shareCityList];
     for (CityModel *city in cityList) {
         if ([city.cityID isEqualToString:cityID]) {
             cityName = city.cityName;
@@ -52,7 +75,7 @@
 
 //城市排序
 + (NSArray *)sortCityList {
-    NSArray *cityList = [[self class] getCityList];
+    NSArray *cityList = [[self class] shareCityList];
     NSArray *sortDescriptors = [NSArray arrayWithObject:
                                 [NSSortDescriptor sortDescriptorWithKey:@"cityPinYin"
                                                               ascending:YES]];

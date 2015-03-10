@@ -506,7 +506,7 @@
 #pragma mark - Action
 
 - (IBAction)cancelApply:(id)sender {
-    
+    [self cancelApply];
 }
 
 

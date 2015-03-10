@@ -13,7 +13,19 @@
 #define kOrderShortCellHeight 122.f
 #define kOrderLongCellHeight 169.f
 
+@protocol OrderCellDelegate <NSObject>
+
+- (void)orderCellCancelOrderForData:(OrderModel *)model;
+
+- (void)orderCellPayOrderForData:(OrderModel *)model;
+
+- (void)orderCellCommentOrderForData:(OrderModel *)model;
+
+@end
+
 @interface OrderCell : UITableViewCell
+
+@property (nonatomic, assign) id<OrderCellDelegate>delegate;
 
 @property (nonatomic, strong) UILabel *orderNoLabel;
 
