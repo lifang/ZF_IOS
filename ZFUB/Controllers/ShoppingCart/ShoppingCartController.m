@@ -12,6 +12,7 @@
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 #import "ShoppingCartModel.h"
+#import "ShoppingCartOrderController.h"
 
 @interface ShoppingCartController ()<UITableViewDataSource,UITableViewDelegate,ShoppingCartDelegate,SelectedShopCartDelegate>
 
@@ -25,6 +26,10 @@
 
 @implementation ShoppingCartController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -32,6 +37,10 @@
     [self initAndLayoutUI];
     _dataItem = [[NSMutableArray alloc] init];
     [self getShoppingList];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshCartList:)
+                                                 name:RefreshShoppingCartNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +65,7 @@
     _bottomView.backgroundColor = kColor(235, 233, 233, 1);
     _bottomView.translatesAutoresizingMaskIntoConstraints = NO;
     _bottomView.delegate = self;
+    [_bottomView.finishButton addTarget:self action:@selector(orderConfirm:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_bottomView];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_bottomView
@@ -145,6 +155,7 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
+                    [_dataItem removeAllObjects];
                     [self parseDataWithDictionary:object];
                 }
             }
@@ -177,13 +188,34 @@
     CGFloat summaryPrice = 0.f;
     for (ShoppingCartModel *model in _dataItem) {
         if (model.isSelected) {
-            summaryPrice += model.cartPrice * model.cartCount + model.channelCost;
+            summaryPrice += (model.cartPrice + model.channelCost) * model.cartCount;
         }
     }
     _bottomView.totalLabel.text = [NSString stringWithFormat:@"合计：￥%.2f",summaryPrice];
 }
 
 #pragma mark - Action
+
+- (IBAction)orderConfirm:(id)sender {
+    NSMutableArray *selectedOrder = [[NSMutableArray alloc] init];
+    for (ShoppingCartModel *model in _dataItem) {
+        if (model.isSelected) {
+            [selectedOrder addObject:model];
+        }
+    }
+    if ([selectedOrder count] <= 0) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请至少选择一件商品";
+        return;
+    }
+    ShoppingCartOrderController *orderC = [[ShoppingCartOrderController alloc] init];
+    orderC.shoppingCartItem = selectedOrder;
+    orderC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:orderC animated:YES];
+}
 
 #pragma mark - UITableView
 
@@ -231,8 +263,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ShoppingCartCell *cell = (ShoppingCartCell *)[tableView cellForRowAtIndexPath:indexPath];
     [cell selectedOrder:nil];
-    //计算总价
-    [self getSummaryPrice];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -248,6 +278,11 @@
 }
 
 #pragma mark - ShoppingCartDelegate
+
+- (void)selectRowForCell {
+    //计算总价
+    [self getSummaryPrice];
+}
 
 - (void)editOrderForCell:(ShoppingCartCell *)cell {
     cell.cartData.isEditing = !cell.cartData.isEditing;
@@ -316,6 +351,12 @@
     }
     [_tableView reloadData];
     [self getSummaryPrice];
+}
+
+#pragma mark - Notification 
+
+- (void)refreshCartList:(NSNotification *)notification {
+    [self getShoppingList];
 }
 
 @end

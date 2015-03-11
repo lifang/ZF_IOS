@@ -213,7 +213,7 @@ static CGFloat topImageHeight = 160.f;
     //价格
     CGFloat originX = leftSpace + leftLabelWidth + firstSpace + 80;
     _priceLabel.frame = CGRectMake(originX, originY, kScreenWidth - originX - rightSpace, labelHeight);
-    [self setPriceWithString:_detailModel.goodPrice];
+    [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice]];
     [_mainScrollView addSubview:_priceLabel];
     
     originY += vSpace + labelHeight;
@@ -572,6 +572,18 @@ static CGFloat topImageHeight = 160.f;
     }
     else {
         NSLog(@"~~~");
+        ChannelModel *newModel = nil;
+        for (ChannelModel *model in _detailModel.channelItem) {
+            if ([model.channelID isEqualToString:btn.ID]) {
+                newModel = model;
+                break;
+            }
+        }
+        _detailModel.defaultChannel = newModel;
+        for (UIView *view in _mainScrollView.subviews) {
+            [view removeFromSuperview];
+        }
+        [self initSubViews];
     }
 }
 

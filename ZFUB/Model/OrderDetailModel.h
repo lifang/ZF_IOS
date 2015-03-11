@@ -15,9 +15,9 @@
 
 @property (nonatomic, strong) NSString *orderStatus;         //订单状态
 
-@property (nonatomic, strong) NSString *orderTotalPrice;     //实付
+@property (nonatomic, assign) CGFloat orderTotalPrice;     //实付
 
-@property (nonatomic, strong) NSString *orderDeliveryFee;    //配送费
+@property (nonatomic, assign) CGFloat orderDeliveryFee;    //配送费
 
 @property (nonatomic, strong) NSString *orderReceiver;       //收件人
 

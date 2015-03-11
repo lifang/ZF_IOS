@@ -57,7 +57,7 @@
     priceLabel.textColor = [UIColor whiteColor];
     priceLabel.font = [UIFont boldSystemFontOfSize:48.f];
     priceLabel.adjustsFontSizeToFitWidth = YES;
-    priceLabel.text = [NSString stringWithFormat:@"￥%@",_totalPrice];
+    priceLabel.text = [NSString stringWithFormat:@"￥%.2f",_totalPrice];
     [blackView addSubview:priceLabel];
     
     UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, hearderHeight - 20, kScreenWidth - leftSpace - rightSpace, 20.f)];

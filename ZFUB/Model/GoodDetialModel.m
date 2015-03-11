@@ -48,7 +48,7 @@
                 _canRent = [goodInfo objectForKey:@"has_lease"];
             }
             if ([goodInfo objectForKey:@"price"]) {
-                _goodPrice = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"price"]];
+                _goodPrice = [[goodInfo objectForKey:@"price"] floatValue] / 100;
             }
         }
         id factoryInfo = [dict objectForKey:@"factory"];

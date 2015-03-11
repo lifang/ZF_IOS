@@ -505,7 +505,7 @@
     self.titleLabel.text = cart.cartTitle;
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号   %@",cart.cartModel];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",cart.cartChannel];
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",cart.cartPrice * cart.cartCount + cart.channelCost];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",(cart.cartPrice + cart.channelCost) * cart.cartCount];
     self.countLabel.text = [NSString stringWithFormat:@"X %d",cart.cartCount];
     if (cart.isSelected) {
         [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
@@ -525,13 +525,17 @@
 #pragma mark - Action
 
 - (IBAction)selectedOrder:(id)sender {
-    _selectedButton.selected = !_selectedButton.selected;
     _cartData.isSelected = !_cartData.isSelected;
+    _selectedButton.selected = _cartData.isSelected;
     if (_selectedButton.isSelected) {
         [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
     }
     else {
         [_selectedButton setBackgroundImage:kImageName(@"btn_unselected.png") forState:UIControlStateNormal];
+    }
+    //更新数据
+    if (_delegate && [_delegate respondsToSelector:@selector(selectRowForCell)]) {
+        [_delegate selectRowForCell];
     }
 }
 

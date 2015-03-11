@@ -254,12 +254,14 @@ static NSString *HTTP_GET  = @"GET";
 
 //21.
 + (void)getTerminalDetailWithToken:(NSString *)token
+                            userID:(NSString *)userID
                               tmID:(NSString *)tmID
                           finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
     [paramDict setObject:token forKey:@"token"];
-    [paramDict setObject:tmID forKey:@"terminalsId"];
+    [paramDict setObject:[NSNumber numberWithInt:[tmID intValue]] forKey:@"terminalsId"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_termainlDetail_method];
     [[self class] requestWithURL:urlString
@@ -407,6 +409,110 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:[NSNumber numberWithInt:count] forKey:@"quantity"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_updateShoppingList_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//32.
++ (void)createOrderFromCartWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                             cartsID:(NSArray *)cartsID
+                           addressID:(NSString *)addressID
+                             comment:(NSString *)comment
+                         needInvoice:(int)needInvoice
+                         invoiceType:(int)invoiceType
+                         invoiceInfo:(NSString *)invoiceTitle
+                            finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
+    [paramDict setObject:cartsID forKey:@"cartid"];
+    [paramDict setObject:[NSNumber numberWithInt:[addressID intValue]] forKey:@"addressId"];
+    if (comment) {
+        [paramDict setObject:comment forKey:@"comment"];
+    }
+    [paramDict setObject:[NSNumber numberWithInt:needInvoice] forKey:@"is_need_invoice"];
+    if (needInvoice == 1) {
+        [paramDict setObject:[NSNumber numberWithInt:invoiceType] forKey:@"invoice_type"];
+        [paramDict setObject:invoiceTitle forKey:@"invoice_info"];
+    }
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_createOrderFromCart_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//33.
++ (void)createOrderFromGoodBuyWithToken:(NSString *)token
+                                 userID:(NSString *)userID
+                                 goodID:(NSString *)goodID
+                              channelID:(NSString *)channelID
+                                  count:(int)count
+                              addressID:(NSString *)addressID
+                                comment:(NSString *)comment
+                            needInvoice:(int)needInvoice
+                            invoiceType:(int)invoiceType
+                            invoiceInfo:(NSString *)invoiceTitle
+                               finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
+    [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
+    [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"paychannelId"];
+    [paramDict setObject:[NSNumber numberWithInt:count] forKey:@"quantity"];
+    [paramDict setObject:[NSNumber numberWithInt:[addressID intValue]] forKey:@"addressId"];
+    if (comment) {
+        [paramDict setObject:comment forKey:@"comment"];
+    }
+    [paramDict setObject:[NSNumber numberWithInt:needInvoice] forKey:@"is_need_invoice"];
+    if (needInvoice == 1) {
+        [paramDict setObject:[NSNumber numberWithInt:invoiceType] forKey:@"invoice_type"];
+        [paramDict setObject:invoiceTitle forKey:@"invoice_info"];
+    }
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_createOrderFromGood_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//34.
++ (void)createOrderFromGoodRentWithToken:(NSString *)token
+                                  userID:(NSString *)userID
+                                  goodID:(NSString *)goodID
+                               channelID:(NSString *)channelID
+                                   count:(int)count
+                               addressID:(NSString *)addressID
+                                 comment:(NSString *)comment
+                             needInvoice:(int)needInvoice
+                             invoiceType:(int)invoiceType
+                             invoiceInfo:(NSString *)invoiceTitle
+                                finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
+    [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
+    [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"paychannelId"];
+    [paramDict setObject:[NSNumber numberWithInt:count] forKey:@"quantity"];
+    [paramDict setObject:[NSNumber numberWithInt:[addressID intValue]] forKey:@"addressId"];
+    if (comment) {
+        [paramDict setObject:comment forKey:@"comment"];
+    }
+    [paramDict setObject:[NSNumber numberWithInt:needInvoice] forKey:@"is_need_invoice"];
+    if (needInvoice == 1) {
+        [paramDict setObject:[NSNumber numberWithInt:invoiceType] forKey:@"invoice_type"];
+        [paramDict setObject:invoiceTitle forKey:@"invoice_info"];
+    }
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_createOrderFromLease_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST
@@ -579,6 +685,58 @@ static NSString *HTTP_GET  = @"GET";
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//45.
++ (void)getAddressListWithToken:(NSString *)token
+                         usedID:(NSString *)userID
+                       finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/",kServiceURL,s_addressList_method,userID];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
+                        finished:finish];
+}
+
+//46.
++ (void)addAddressWithToken:(NSString *)token
+                     userID:(NSString *)userID
+                     cityID:(NSString *)cityID
+               receiverName:(NSString *)receiverName
+                phoneNumber:(NSString *)phoneNumber
+                    zipCode:(NSString *)zipCode
+                    address:(NSString *)address
+                  isDefault:(AddressType)addressType
+                   finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
+    [paramDict setObject:cityID forKey:@"cityId"];
+    [paramDict setObject:receiverName forKey:@"receiver"];
+    [paramDict setObject:phoneNumber forKey:@"moblephone"];
+    [paramDict setObject:zipCode forKey:@"zipCode"];
+    [paramDict setObject:address forKey:@"address"];
+    [paramDict setObject:[NSNumber numberWithInt:addressType] forKey:@"isDefault"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_addressAdd_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//47.
++ (void)deleteAddressWithToken:(NSString *)token
+                     addressID:(NSString *)addressID
+                      finished:(requestDidFinished)finish {
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/",kServiceURL,s_addressDelete_method,addressID];
+    [[self class] requestWithURL:urlString
+                          params:nil
+                      httpMethod:HTTP_GET
                         finished:finish];
 }
 

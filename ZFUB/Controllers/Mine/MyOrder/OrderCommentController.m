@@ -173,7 +173,7 @@
             [btn setBackgroundImage:kImageName(@"star_light.png") forState:UIControlStateHighlighted];
         }
     }
-    _score = (int)selectedBtn.tag;
+    _score = (int)selectedBtn.tag * 10;
 }
 
 - (IBAction)submitComment:(id)sender {

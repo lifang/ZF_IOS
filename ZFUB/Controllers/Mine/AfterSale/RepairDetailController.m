@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *merchantName;
 @property (nonatomic, strong) NSString *merchantPhone;
 @property (nonatomic, strong) NSString *address;
-@property (nonatomic, strong) NSString *repairPrice;
+@property (nonatomic, assign) CGFloat repairPrice;
 @property (nonatomic, strong) NSString *detail;
 
 @end
@@ -342,7 +342,7 @@
     merchantNameLabel.text = [NSString stringWithFormat:@"商 户  名  %@",_merchantName];
     merchantPhoneLabel.text = [NSString stringWithFormat:@"商户电话  %@",_merchantPhone];
     addressLabel.text = [NSString stringWithFormat:@"收货地址  %@",_address];
-    repairFeeLabel.text = [NSString stringWithFormat:@"维修费用  %@",_repairPrice];
+    repairFeeLabel.text = [NSString stringWithFormat:@"维修费用  %.2f",_repairPrice];
     infoLabel.text = [NSString stringWithFormat:@"故障描述  %@",_detail];
     
     //添加按钮
@@ -392,7 +392,6 @@
     _merchantName = @"";
     _merchantPhone = @"";
     _address = @"";
-    _repairPrice = @"";
     _detail = @"";
     NSDictionary *infoDict = [dict objectForKey:@"result"];
     if ([infoDict objectForKey:@"status"]) {
@@ -423,7 +422,7 @@
         _address = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"receiver_addr"]];
     }
     if ([infoDict objectForKey:@"repair_price"]) {
-        _repairPrice = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"repair_price"]];
+        _repairPrice = [[infoDict objectForKey:@"repair_price"] floatValue] / 100;
     }
     if ([infoDict objectForKey:@"description"]) {
         _detail = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"description"]];

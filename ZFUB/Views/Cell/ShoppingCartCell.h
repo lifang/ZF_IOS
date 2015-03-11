@@ -21,6 +21,8 @@
 - (void)addCountForCell:(ShoppingCartCell *)cell;
 - (void)deleteOrderForCell:(ShoppingCartCell *)cell;
 
+- (void)selectRowForCell;
+
 @end
 
 //编辑状态

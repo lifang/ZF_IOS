@@ -32,6 +32,9 @@
  27.购物车列表
  29.删除购物车
  30.修改购物车数量
+ 32.从购物车创建订单
+ 33.从商品购买创建订单
+ 34.从商品租赁创建订单
  35.获取终端列表
  36.查询交易流水
  37.交易流水详情
@@ -42,6 +45,9 @@
  42.我的积分列表
  43.我的积分总计
  44.兑换积分
+ 45.地址列表
+ 46.新增地址
+ 47.删除地址
  48.我的商户列表
  49.我的商户详情
  55.我的消息列表
@@ -126,6 +132,12 @@ typedef enum {
     OpenApplyPrivate,   //对私
 }OpenApplyType;  //开通类型
 
+typedef enum {
+    AddressNone = 0,
+    AddressDefault,    //默认地址
+    AddressOther,      //非默认地址
+}AddressType;
+
 //注册
 static NSString *s_register_method = @"user/userRegistration";
 
@@ -186,6 +198,15 @@ static NSString *s_deleteShoppingList_method = @"cart/delete";
 //修改购物车数量
 static NSString *s_updateShoppingList_method = @"cart/update";
 
+//从购物车创建订单
+static NSString *s_createOrderFromCart_method = @"order/cart";
+
+//从商品购买创建订单
+static NSString *s_createOrderFromGood_method = @"order/shop";
+
+//从商品租赁创建订单
+static NSString *s_createOrderFromLease_method = @"order/lease";
+
 //获取交易流水终端列表
 static NSString *s_terminalList_method = @"trade/record/getTerminals";
 
@@ -215,6 +236,14 @@ static NSString *s_scoreTotal_method = @"customers/getIntegralTotal";
 
 //积分兑换
 static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";
+
+//地址列表
+static NSString *s_addressList_method = @"customers/getAddressList";
+
+//新增地址
+static NSString *s_addressAdd_method = @"customers/insertAddress";
+
+static NSString *s_addressDelete_method = @"customers/deleteAddress";
 
 //我的商户列表
 static NSString *s_merchantList_method = @"merchant/getList";
@@ -467,10 +496,12 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 21.终端详情
  @param token       登录返回
+ @param userID   用户id
  @param tmID     终端信息id
  @result finish  请求回调结果
  */
 + (void)getTerminalDetailWithToken:(NSString *)token
+                            userID:(NSString *)userID
                               tmID:(NSString *)tmID
                           finished:(requestDidFinished)finish;
 
@@ -559,6 +590,80 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
                              cartID:(NSString *)cartID
                               count:(int)count
                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 32.购物车创建订单
+ @param token       登录返回
+ @param userID      登录用户id
+ @param cartsID     选中的订单id数组
+ @param addressID   地址id
+ @param comment     留言
+ @param needInvoice 是否需要发票 0.不要 1.要
+ @param invoiceType 发票类型 0.公司 1.个人
+ @param invoiceTitle  发票抬头
+ @result finish  请求回调结果
+ */
++ (void)createOrderFromCartWithToken:(NSString *)token
+                              userID:(NSString *)userID
+                             cartsID:(NSArray *)cartsID
+                           addressID:(NSString *)addressID
+                             comment:(NSString *)comment
+                         needInvoice:(int)needInvoice
+                         invoiceType:(int)invoiceType
+                         invoiceInfo:(NSString *)invoiceTitle
+                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 33.商品购买创建订单
+ @param token       登录返回
+ @param userID      登录用户id
+ @param goodID     商品id
+ @param channelID  支付通道id
+ @param count      数量
+ @param addressID   地址id
+ @param comment     留言
+ @param needInvoice 是否需要发票 0.不要 1.要
+ @param invoiceType 发票类型 0.公司 1.个人
+ @param invoiceTitle  发票抬头
+ @result finish  请求回调结果
+ */
++ (void)createOrderFromGoodBuyWithToken:(NSString *)token
+                                 userID:(NSString *)userID
+                                 goodID:(NSString *)goodID
+                              channelID:(NSString *)channelID
+                                  count:(int)count
+                              addressID:(NSString *)addressID
+                                comment:(NSString *)comment
+                            needInvoice:(int)needInvoice
+                            invoiceType:(int)invoiceType
+                            invoiceInfo:(NSString *)invoiceTitle
+                               finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 34.商品租赁创建订单
+ @param token       登录返回
+ @param userID      登录用户id
+ @param goodID     商品id
+ @param channelID  支付通道id
+ @param count      数量
+ @param addressID   地址id
+ @param comment     留言
+ @param needInvoice 是否需要发票 0.不要 1.要
+ @param invoiceType 发票类型 0.公司 1.个人
+ @param invoiceTitle  发票抬头
+ @result finish  请求回调结果
+ */
++ (void)createOrderFromGoodRentWithToken:(NSString *)token
+                                  userID:(NSString *)userID
+                                  goodID:(NSString *)goodID
+                               channelID:(NSString *)channelID
+                                   count:(int)count
+                               addressID:(NSString *)addressID
+                                 comment:(NSString *)comment
+                             needInvoice:(int)needInvoice
+                             invoiceType:(int)invoiceType
+                             invoiceInfo:(NSString *)invoiceTitle
+                                finished:(requestDidFinished)finish;
 
 /*!
  @abstract 35.获取终端列表
@@ -661,7 +766,7 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 42.我的积分列表
  @param token       登录返回
- @param userID   交易类型
+ @param userID   用户id
  @param page     分页参数 页
  @param rows     分页参数 行
  @result finish  请求回调结果
@@ -675,7 +780,7 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 43.我的积分总计
  @param token       登录返回
- @param userID   交易类型
+ @param userID   用户id
  @result finish  请求回调结果
  */
 + (void)getScoreTotalWithToken:(NSString *)token
@@ -685,7 +790,7 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 44.兑换积分
  @param token       登录返回
- @param userID   交易类型
+ @param userID   用户id
  @param handler  姓名
  @param phoneNumber   手机号
  @param money   金额
@@ -696,6 +801,48 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
                    handlerName:(NSString *)handlerName
             handlerPhoneNumber:(NSString *)phoneNumber
                          money:(int)money
+                      finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 45.地址列表
+ @param token       登录返回
+ @param userID   交易类型
+ @result finish  请求回调结果
+ */
++ (void)getAddressListWithToken:(NSString *)token
+                         usedID:(NSString *)userID
+                       finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 46.新增地址
+ @param token       登录返回
+ @param userID   用户id
+ @param cityID    城市id
+ @param receiverName   收件人姓名
+ @param phoneNumber   收件人电话
+ @param zipCode   邮编
+ @param address   详细地址
+ @param addressType  是否默认地址
+ @result finish  请求回调结果
+ */
++ (void)addAddressWithToken:(NSString *)token
+                     userID:(NSString *)userID
+                     cityID:(NSString *)cityID
+               receiverName:(NSString *)receiverName
+                phoneNumber:(NSString *)phoneNumber
+                    zipCode:(NSString *)zipCode
+                    address:(NSString *)address
+                  isDefault:(AddressType)addressType
+                   finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 47.删除地址
+ @param token       登录返回
+ @param addressID   地址id
+ @result finish  请求回调结果
+ */
++ (void)deleteAddressWithToken:(NSString *)token
+                     addressID:(NSString *)addressID
                       finished:(requestDidFinished)finish;
 
 /*!

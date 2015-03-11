@@ -164,7 +164,7 @@
 
 - (void)setContentsWithData:(OrderGoodModel *)data {
     self.nameLabel.text = data.goodName;
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",[data.goodPrice floatValue]];
+    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",data.goodPrice];
     self.numberLabel.text = [NSString stringWithFormat:@"X %d",[data.goodNumber intValue]];
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",data.goodBrand];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",data.goodChannel];

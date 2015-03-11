@@ -505,7 +505,6 @@
 - (void)csCellPayWithData:(CustomerServiceModel *)model {
     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
     payWayC.orderID = model.csID;
-    payWayC.totalPrice = @"";
     [self.navigationController pushViewController:payWayC animated:YES];
 }
 

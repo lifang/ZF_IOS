@@ -33,7 +33,7 @@
 
 @property (nonatomic, strong) NSString *goodSaleNumber;
 
-@property (nonatomic, strong) NSString *goodPrice;
+@property (nonatomic, assign) CGFloat goodPrice;
 
 @property (nonatomic, assign) BOOL canRent;
 

@@ -124,6 +124,11 @@
 		775874001A7234A900EB3AE5 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873F11A7234A900EB3AE5 /* UIImageView+WebCache.m */; };
 		775874011A7234A900EB3AE5 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */; };
 		775874041A723CDE00EB3AE5 /* ModuleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 775874031A723CDE00EB3AE5 /* ModuleView.m */; };
+		775AB4D21AAE8FF9000E01C5 /* AddressManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4D11AAE8FF9000E01C5 /* AddressManagerController.m */; };
+		775AB4D51AAE986D000E01C5 /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4D41AAE986D000E01C5 /* AddressModel.m */; };
+		775AB4D81AAE9B86000E01C5 /* AddressEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4D71AAE9B86000E01C5 /* AddressEditController.m */; };
+		775AB4DE1AAECC00000E01C5 /* OrderConfirmController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4DD1AAECC00000E01C5 /* OrderConfirmController.m */; };
+		775AB4E11AAED788000E01C5 /* ShoppingCartOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4E01AAED788000E01C5 /* ShoppingCartOrderController.m */; };
 		775B86911AA189EF002434F4 /* AddTerminalController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86901AA189EF002434F4 /* AddTerminalController.m */; };
 		775B86941AA18FCD002434F4 /* InstitutionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86931AA18FCD002434F4 /* InstitutionModel.m */; };
 		775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86961AA19294002434F4 /* InstitutionSelectedController.m */; };
@@ -386,6 +391,16 @@
 		775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		775874021A723CDE00EB3AE5 /* ModuleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleView.h; sourceTree = "<group>"; };
 		775874031A723CDE00EB3AE5 /* ModuleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleView.m; sourceTree = "<group>"; };
+		775AB4D01AAE8FF9000E01C5 /* AddressManagerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressManagerController.h; sourceTree = "<group>"; };
+		775AB4D11AAE8FF9000E01C5 /* AddressManagerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressManagerController.m; sourceTree = "<group>"; };
+		775AB4D31AAE986D000E01C5 /* AddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressModel.h; sourceTree = "<group>"; };
+		775AB4D41AAE986D000E01C5 /* AddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressModel.m; sourceTree = "<group>"; };
+		775AB4D61AAE9B86000E01C5 /* AddressEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressEditController.h; sourceTree = "<group>"; };
+		775AB4D71AAE9B86000E01C5 /* AddressEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressEditController.m; sourceTree = "<group>"; };
+		775AB4DC1AAECC00000E01C5 /* OrderConfirmController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmController.h; sourceTree = "<group>"; };
+		775AB4DD1AAECC00000E01C5 /* OrderConfirmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmController.m; sourceTree = "<group>"; };
+		775AB4DF1AAED788000E01C5 /* ShoppingCartOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartOrderController.h; sourceTree = "<group>"; };
+		775AB4E01AAED788000E01C5 /* ShoppingCartOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartOrderController.m; sourceTree = "<group>"; };
 		775B868F1AA189EF002434F4 /* AddTerminalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTerminalController.h; sourceTree = "<group>"; };
 		775B86901AA189EF002434F4 /* AddTerminalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTerminalController.m; sourceTree = "<group>"; };
 		775B86921AA18FCD002434F4 /* InstitutionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionModel.h; sourceTree = "<group>"; };
@@ -494,6 +509,8 @@
 				774760F01AAA9237000B34C3 /* GoodDetialModel.m */,
 				774760F21AAA9ADA000B34C3 /* ChannelModel.h */,
 				774760F31AAA9ADA000B34C3 /* ChannelModel.m */,
+				775AB4D31AAE986D000E01C5 /* AddressModel.h */,
+				775AB4D41AAE986D000E01C5 /* AddressModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -611,6 +628,10 @@
 				773D8C0A1AA432C000D8A5A1 /* ScoreViewController.m */,
 				773D8C121AA4487900D8A5A1 /* ExchangeScoreController.h */,
 				773D8C131AA4487900D8A5A1 /* ExchangeScoreController.m */,
+				775AB4D01AAE8FF9000E01C5 /* AddressManagerController.h */,
+				775AB4D11AAE8FF9000E01C5 /* AddressManagerController.m */,
+				775AB4D61AAE9B86000E01C5 /* AddressEditController.h */,
+				775AB4D71AAE9B86000E01C5 /* AddressEditController.m */,
 			);
 			path = MyInfo;
 			sourceTree = "<group>";
@@ -797,6 +818,10 @@
 			children = (
 				775873BA1A71EDC700EB3AE5 /* ShoppingCartController.h */,
 				775873BB1A71EDC700EB3AE5 /* ShoppingCartController.m */,
+				775AB4DC1AAECC00000E01C5 /* OrderConfirmController.h */,
+				775AB4DD1AAECC00000E01C5 /* OrderConfirmController.m */,
+				775AB4DF1AAED788000E01C5 /* ShoppingCartOrderController.h */,
+				775AB4E01AAED788000E01C5 /* ShoppingCartOrderController.m */,
 			);
 			path = ShoppingCart;
 			sourceTree = "<group>";
@@ -1106,6 +1131,7 @@
 				773B12CA1AA55A23005C2B91 /* CustomerServiceModel.m in Sources */,
 				775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */,
 				7742DB351A8A2EEB00EF16FB /* CityHandle.m in Sources */,
+				775AB4D81AAE9B86000E01C5 /* AddressEditController.m in Sources */,
 				775B869E1AA1BCFE002434F4 /* OpenApplyController.m in Sources */,
 				773093AD1A8B41330096FE0B /* TreeNodeModel.m in Sources */,
 				773BDF401AA9A732008D3DC7 /* OrderDetailCell.m in Sources */,
@@ -1116,6 +1142,7 @@
 				775873FF1A7234A900EB3AE5 /* UIImageView+HighlightedWebCache.m in Sources */,
 				7742DB251A89F22200EF16FB /* MBProgressHUD.m in Sources */,
 				774596311AA7E8D9008F3D52 /* MerchantDetailModel.m in Sources */,
+				775AB4DE1AAECC00000E01C5 /* OrderConfirmController.m in Sources */,
 				7738E87C1AA01BCA00D51CBE /* TradeDetailController.m in Sources */,
 				773093A51A8B3EE80096FE0B /* TreeNodeCollection.m in Sources */,
 				7738E8831AA07AC500D51CBE /* TerminalManagerModel.m in Sources */,
@@ -1150,6 +1177,7 @@
 				776144A21AAD7FF600FAE3B6 /* OrderCommentController.m in Sources */,
 				7742DB111A899D0800EF16FB /* NetworkInterface.m in Sources */,
 				7742DB211A89F13100EF16FB /* RegularFormat.m in Sources */,
+				775AB4E11AAED788000E01C5 /* ShoppingCartOrderController.m in Sources */,
 				7747DC441A7B7EF1002797CC /* MyMerchantViewController.m in Sources */,
 				773BDF3A1AA98C2F008D3DC7 /* OrderDetailController.m in Sources */,
 				7745963A1AA82805008F3D52 /* MerchantImageLoadController.m in Sources */,
@@ -1165,12 +1193,14 @@
 				7742DB321A8A2E0B00EF16FB /* CityModel.m in Sources */,
 				775873FC1A7234A900EB3AE5 /* UIButton+WebCache.m in Sources */,
 				773A0FFE1A9EF0B6008EA806 /* TerminalSelectedController.m in Sources */,
+				775AB4D21AAE8FF9000E01C5 /* AddressManagerController.m in Sources */,
 				773A10011A9F1A22008EA806 /* TradeModel.m in Sources */,
 				7738E8761A9FFE9600D51CBE /* TradeCell.m in Sources */,
 				774596341AA7EFB3008F3D52 /* MerchantDetailController.m in Sources */,
 				775873D41A722CBB00EB3AE5 /* PollingView.m in Sources */,
 				774D67701A79D76E00DDCEE4 /* ZFSearchBar.m in Sources */,
 				7742DB281A89FE5200EF16FB /* EmailRegisterController.m in Sources */,
+				775AB4D51AAE986D000E01C5 /* AddressModel.m in Sources */,
 				773093921A8B1B8B0096FE0B /* CircleView.m in Sources */,
 				775873F51A7234A900EB3AE5 /* SDImageCache.m in Sources */,
 				7741295A1A73478100DA0B27 /* NavigationBarAttr.m in Sources */,

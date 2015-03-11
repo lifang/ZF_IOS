@@ -16,10 +16,10 @@
             _orderStatus = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_status"]];
         }
         if ([dict objectForKey:@"order_totalPrice"]) {
-            _orderTotalPrice = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_totalPrice"]];
+            _orderTotalPrice = [[dict objectForKey:@"order_totalPrice"] floatValue] / 100;
         }
         if ([dict objectForKey:@"order_psf"]) {
-            _orderDeliveryFee = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_psf"]];
+            _orderDeliveryFee = [[dict objectForKey:@"order_psf"] floatValue] / 100;
         }
         if ([dict objectForKey:@"order_receiver"]) {
             _orderReceiver = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_receiver"]];

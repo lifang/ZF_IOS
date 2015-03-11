@@ -20,7 +20,7 @@
             _goodBrand = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_brand"]];
         }
         if ([dict objectForKey:@"good_price"]) {
-            _goodPrice = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_price"]];
+            _goodPrice = [[dict objectForKey:@"good_price"] floatValue] / 100;
         }
         if ([dict objectForKey:@"good_channel"]) {
             _goodChannel = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_channel"]];

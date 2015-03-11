@@ -568,13 +568,13 @@ typedef enum {
     self.timeLabel.text = _cellData.orderTime;
     self.statusLabel.text = [_cellData getStatusString];
     self.nameLabel.text = _cellData.orderGood.goodName;
-    self.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",[_cellData.orderGood.goodPrice floatValue]];
+    self.priceLabel.text = [NSString stringWithFormat:@"%.2f",_cellData.orderGood.goodPrice];
     self.numberLabel.text = [NSString stringWithFormat:@"X %d",[_cellData.orderGood.goodNumber intValue]];
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",_cellData.orderGood.goodBrand];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",_cellData.orderGood.goodChannel];
     self.totalCountLabel.text = [NSString stringWithFormat:@"共计：%@件",_cellData.orderTotalNum];
-    self.deliveryFeeLabel.text = [NSString stringWithFormat:@"配送费：￥%@",_cellData.orderDeliverFee];
-    self.payLabel.text = [NSString stringWithFormat:@"实付：￥%@",_cellData.orderTotalPrice];
+    self.deliveryFeeLabel.text = [NSString stringWithFormat:@"配送费：￥%.2f",_cellData.orderDeliverFee];
+    self.payLabel.text = [NSString stringWithFormat:@"实付：￥%.2f",_cellData.orderTotalPrice];
     [self.pictureView sd_setImageWithURL:_cellData.orderGood.goodPicture placeholderImage:kImageName(@"test1.png")];
 }
 

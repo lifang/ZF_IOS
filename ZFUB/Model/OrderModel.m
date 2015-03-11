@@ -26,10 +26,10 @@
             _orderTotalNum = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_totalNum"]];
         }
         if ([dict objectForKey:@"order_totalPrice"]) {
-            _orderTotalPrice = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_totalPrice"]];
+            _orderTotalPrice = [[dict objectForKey:@"order_totalPrice"] floatValue] / 100;
         }
         if ([dict objectForKey:@"order_psf"]) {
-            _orderDeliverFee = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_psf"]];
+            _orderDeliverFee = [[dict objectForKey:@"order_psf"] floatValue] / 100;
         }
         id object = [dict objectForKey:@"order_goodsList"];
         if (object && [object isKindOfClass:[NSArray class]]) {

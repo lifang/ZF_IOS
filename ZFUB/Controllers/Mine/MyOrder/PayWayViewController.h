@@ -8,11 +8,11 @@
 
 #import "CommonViewController.h"
 
-//订单和维修记录可跳转此类
+//订单、购物车、商品详情、维修记录可跳转此类
 
 @interface PayWayViewController : CommonViewController
 
-@property (nonatomic, strong) NSString *totalPrice;
+@property (nonatomic, assign) CGFloat totalPrice;
 
 @property (nonatomic, strong) NSString *orderID;
 

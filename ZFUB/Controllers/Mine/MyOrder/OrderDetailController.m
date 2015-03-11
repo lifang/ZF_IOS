@@ -336,11 +336,11 @@
                     [cell.contentView addSubview:statusLabel];
                     //实付
                     UILabel *payLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, 30, kScreenWidth - originX * 2, 20.f)];
-                    [self setLabel:payLabel withString:[NSString stringWithFormat:@"实付金额（含配送费）：￥%@",_orderDetail.orderTotalPrice]];
+                    [self setLabel:payLabel withString:[NSString stringWithFormat:@"实付金额（含配送费）：￥%.2f",_orderDetail.orderTotalPrice]];
                     [cell.contentView addSubview:payLabel];
                     //配送费
                     UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, 50, kScreenWidth - originX * 2, 20.f)];
-                    [self setLabel:deliveryLabel withString:[NSString stringWithFormat:@"配送费：￥%@",_orderDetail.orderDeliveryFee]];
+                    [self setLabel:deliveryLabel withString:[NSString stringWithFormat:@"配送费：￥%.2f",_orderDetail.orderDeliveryFee]];
                     [cell.contentView addSubview:deliveryLabel];
                 }
                     break;
@@ -414,7 +414,7 @@
                 totalLabel.backgroundColor = [UIColor clearColor];
                 totalLabel.font = [UIFont systemFontOfSize:13.f];
                 totalLabel.textAlignment = NSTextAlignmentRight;
-                totalLabel.text = [NSString stringWithFormat:@"共计%@件商品 实付金额：￥%@",_orderDetail.orderTotalNumber,_orderDetail.orderTotalPrice];
+                totalLabel.text = [NSString stringWithFormat:@"共计%@件商品 实付金额：￥%.2f",_orderDetail.orderTotalNumber,_orderDetail.orderTotalPrice];
                 [cell.contentView addSubview:totalLabel];
             }
             else {
