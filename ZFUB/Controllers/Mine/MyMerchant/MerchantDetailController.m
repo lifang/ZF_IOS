@@ -97,6 +97,7 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
+    [self initPickerView];
 }
 
 #pragma mark - Request
@@ -134,6 +135,42 @@
     }];
 }
 
+- (void)modifyMerchantWithMerchant:(MerchantDetailModel *)model
+                  isModifyLocation:(BOOL)flag {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface modifyMerchantWithToken:delegate.token merchantDetail:model finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"修改商户成功";
+                    if (flag) {
+                        _mercahtnDetail.merchantCityID = model.merchantCityID;
+                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:EditMerchantInfoNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parsemerchantDetaiDataWithDictionary:(NSDictionary *)dict {
@@ -142,6 +179,9 @@
     }
     NSDictionary *infoDict = [dict objectForKey:@"result"];
     _mercahtnDetail = [[MerchantDetailModel alloc] initWithParseDictionary:infoDict];
+    [self.pickerView selectRow:[CityHandle getProvinceIndexWithCityID:_mercahtnDetail.merchantCityID] inComponent:0 animated:NO];
+    [self.pickerView reloadAllComponents];
+    [self.pickerView selectRow:[CityHandle getCityIndexWithCityID:_mercahtnDetail.merchantCityID] inComponent:1 animated:NO];
     [_tableView reloadData];
 }
 
@@ -174,7 +214,17 @@
 #pragma mark - Action
 
 - (IBAction)modifyMerchant:(id)sender {
-    
+    [self modifyMerchantWithMerchant:_mercahtnDetail isModifyLocation:NO];
+}
+
+- (IBAction)modifyLocation:(id)sender {
+    [self pickerScrollOut];
+    NSInteger index = [self.pickerView selectedRowInComponent:1];
+    NSString *cityID = [NSString stringWithFormat:@"%@",[[self.cityArray objectAtIndex:index] objectForKey:@"id"]];
+    MerchantDetailModel *model = [[MerchantDetailModel alloc] init];
+    model.merchantID = _mercahtnDetail.merchantID;
+    model.merchantCityID = cityID;
+    [self modifyMerchantWithMerchant:model isModifyLocation:YES];
 }
 
 #pragma mark - UITableView
@@ -240,7 +290,7 @@
                         break;
                     case 6:
                         titleName = @"商户所在地";
-                        detailName = _mercahtnDetail.merchantCityID;
+                        detailName = [CityHandle getCityNameWithCityID:_mercahtnDetail.merchantCityID];
                         break;
                     default:
                         break;
@@ -357,6 +407,10 @@
         editC.merchant = _mercahtnDetail;
         editC.editType = (MerchantEditType)(indexPath.section * 10 + indexPath.row);
         [self.navigationController pushViewController:editC animated:YES];
+    }
+    else if (indexPath.section == 0 && indexPath.row == 6) {
+        //所在地
+        [self pickerScrollIn];
     }
     else if (indexPath.section == 2) {
         //上传图片

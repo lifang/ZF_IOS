@@ -230,10 +230,10 @@
 #pragma mark - Data
 
 - (void)parseScoreListDataWithDictionary:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    NSArray *scoreList = [dict objectForKey:@"result"];
+    NSArray *scoreList = [[dict objectForKey:@"result"] objectForKey:@"list"];
     for (int i = 0; i < [scoreList count]; i++) {
         ScoreModel *model = [[ScoreModel alloc] initWithParseDictionary:[scoreList objectAtIndex:i]];
         [_scoreItems addObject:model];

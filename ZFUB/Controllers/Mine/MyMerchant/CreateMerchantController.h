@@ -8,6 +8,8 @@
 
 #import "MerchantImageLoadController.h"
 
+static NSString *RefreshMerchantListNotification = @"RefreshMerchantListNotification";
+
 @interface CreateMerchantController : MerchantImageLoadController
 
 @end

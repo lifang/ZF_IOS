@@ -61,7 +61,7 @@
             _organizationPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"org_code_no_pic_path"]];
         }
         if ([dict objectForKey:@"account_pic_path"]) {
-            _backPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"account_pic_path"]];
+            _bankPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"account_pic_path"]];
         }
     }
     return self;

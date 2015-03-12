@@ -27,6 +27,16 @@ typedef void (^requestDidFinished)(BOOL success, NSData *response);
 
 - (void)setPostBody:(NSData *)postData;
 
+/*
+ 图片上传
+ imageData  图片二进制
+ imageName  图片名
+ key        参数名
+*/
+- (void)uploadImageData:(NSData *)imageData
+              imageName:(NSString *)imageName
+                    key:(NSString *)key;
+
 - (void)start;
 
 @end

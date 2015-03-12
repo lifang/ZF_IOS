@@ -222,7 +222,12 @@
     switch ([model.TM_status intValue]) {
         case TerminalStatusOpened:
             //已开通
-            cellIdentifier = OpenedFirstStatusIdentifier;
+            if (model.appID) {
+                cellIdentifier = OpenedFirstStatusIdentifier;
+            }
+            else {
+                cellIdentifier = OpenedSecondStatusIdentifier;
+            }
             break;
         case TerminalStatusPartOpened:
             //部分开通
@@ -230,7 +235,12 @@
             break;
         case TerminalStatusUnOpened:
             //未开通
-            cellIdentifier = UnOpenedSecondStatusIdentifier;
+            if (model.appID) {
+                cellIdentifier = UnOpenedSecondStatusIdentifier;
+            }
+            else {
+                cellIdentifier = UnOpenedFirstStatusIdentifier;
+            }
             break;
         case TerminalStatusCanceled:
             //已注销
@@ -243,6 +253,7 @@
         default:
             break;
     }
+    NSLog(@"%@,%@,%@",cellIdentifier,model.TM_status,model.appID);
     TerminalManagerCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -257,9 +268,9 @@
     if ([model.TM_status intValue] == TerminalStatusCanceled) {
         return kTMShortCellHeight;
     }
-//    else if ([model.TM_status intValue] == TerminalStatusOpened) {
-//        return kTMMiddleCellHeight;
-//    }
+    else if ([model.TM_status intValue] == TerminalStatusOpened && !model.appID) {
+        return kTMMiddleCellHeight;
+    }
     return kTMLongCellHeight;
 }
 

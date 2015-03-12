@@ -336,10 +336,10 @@ static NSString *s_defaultTerminalNum = @"选择终端号";
 }
 
 - (void)parseTradeDataWithDictionary:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    NSArray *tradeList = [dict objectForKey:@"result"];
+    NSArray *tradeList = [[dict objectForKey:@"result"] objectForKey:@"list"];
     for (int i = 0; i < [tradeList count]; i++) {
         TradeModel *trade = [[TradeModel alloc] initWithParseDictionary:[tradeList objectAtIndex:i]];
         [_tradeRecords addObject:trade];

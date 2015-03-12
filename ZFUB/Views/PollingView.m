@@ -31,6 +31,8 @@
     
     _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 20, self.bounds.size.width, 20)];
     _pageControl.userInteractionEnabled = NO;
+    _pageControl.pageIndicatorTintColor = [UIColor colorWithPatternImage:kImageName(@"doc_unselected.png")];
+    _pageControl.currentPageIndicatorTintColor = [UIColor colorWithPatternImage:kImageName(@"doc_selected.png")];
     [self addSubview:_pageControl];
 }
 
@@ -41,7 +43,6 @@
     _totalPage = count;
     _pageControl.numberOfPages = _totalPage;
     _scrollView.contentSize = CGSizeMake(self.bounds.size.width * count, self.bounds.size.height);
-    
     CGRect rect = self.bounds;
     for (int i = 0; i < count; i++) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
@@ -52,7 +53,7 @@
         //loading...
         NSString *urlString = [urlArray objectAtIndex:i];
         [imageView sd_setImageWithURL:[NSURL URLWithString:urlString]];
-        [self addSubview:imageView];
+        [_scrollView addSubview:imageView];
         rect.origin.x += self.bounds.size.width;
     }
 }

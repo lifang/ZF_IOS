@@ -15,10 +15,14 @@
 #import "DealFlowViewController.h"
 #import "TerminalManagerController.h"
 #import "OpenApplyController.h"
+#import "NetworkInterface.h"
+#import "HomeImageModel.h"
 
 @interface HomeViewController ()
 
 @property (nonatomic, strong) PollingView *pollingView;
+
+@property (nonatomic, strong) NSMutableArray *pictureItem;
 
 @end
 
@@ -30,6 +34,8 @@
     // Do any additional setup after loading the view.
     [self initAndLayoutUI];
     self.view.backgroundColor = [UIColor whiteColor];
+    _pictureItem = [[NSMutableArray alloc] init];
+    [self loadHomeImageList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -174,6 +180,48 @@
     [self.view addSubview:fifthLine];
 }
 
+#pragma mark - Request
+
+- (void)loadHomeImageList {
+    [NetworkInterface getHomeImageListFinished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [self parseImageDataWithDict:object];
+                }
+            }
+        }
+    }];
+}
+
+#pragma mark - Data
+
+- (void)parseImageDataWithDict:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    NSArray *imageList = [dict objectForKey:@"result"];
+    [_pictureItem removeAllObjects];
+    for (int i = 0; i < [imageList count]; i++) {
+        id imageDict = [imageList objectAtIndex:i];
+        if ([imageDict isKindOfClass:[NSDictionary class]]) {
+            HomeImageModel *model = [[HomeImageModel alloc] initWithParseDictionary:imageDict];
+            [_pictureItem addObject:model];
+        }
+    }
+    NSMutableArray *urlList = [[NSMutableArray alloc] init];
+    for (HomeImageModel *model in _pictureItem) {
+        [urlList addObject:model.pictureURL];
+    }
+    [_pollingView downloadImageWithURLs:urlList target:self action:@selector(tapPicture:)];
+}
+
 #pragma mark - Action
 
 - (IBAction)moduleSelected:(id)sender {
@@ -233,7 +281,8 @@
 }
 
 - (void)tapPicture:(UITapGestureRecognizer *)tap {
-    
+    UIImageView *imageView = (UIImageView *)[tap view];
+    NSLog(@"tag = %ld",imageView.tag);
 }
 
 

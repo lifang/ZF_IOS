@@ -35,6 +35,10 @@
 
 @implementation MyMerchantViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -42,6 +46,11 @@
     _merchantItems = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshMerchantList:)
+                                                 name:RefreshMerchantListNotification
+                                               object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -201,10 +210,10 @@
 #pragma mark - Data
 
 - (void)parseMerchantDataWithDictionary:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    NSArray *merchantList = [dict objectForKey:@"result"];
+    NSArray *merchantList = [[dict objectForKey:@"result"] objectForKey:@"list"];
     for (int i = 0; i < [merchantList count]; i++) {
         MerchantModel *model = [[MerchantModel alloc] initWithParseDictionary:[merchantList objectAtIndex:i]];
         [_merchantItems addObject:model];
@@ -385,5 +394,10 @@
     [self downloadDataWithPage:self.page isMore:YES];
 }
 
+#pragma mark - NSNotification
+
+- (void)refreshMerchantList:(NSNotification *)notification {
+    [self firstLoadData];
+}
 
 @end

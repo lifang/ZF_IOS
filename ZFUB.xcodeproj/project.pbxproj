@@ -43,6 +43,8 @@
 		773A10011A9F1A22008EA806 /* TradeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A10001A9F1A22008EA806 /* TradeModel.m */; };
 		773ADD201A885CA0009DAF42 /* FormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 773ADD1F1A885CA0009DAF42 /* FormView.m */; };
 		773ADD241A88845D009DAF42 /* ProgressCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773ADD231A88845D009DAF42 /* ProgressCheckViewController.m */; };
+		773AEBB31AB0150200598351 /* ApplyOpenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773AEBB21AB0150200598351 /* ApplyOpenModel.m */; };
+		773AEBB61AB029B900598351 /* MerchantSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773AEBB51AB029B900598351 /* MerchantSelectedController.m */; };
 		773B12C11AA54D60005C2B91 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773B12C01AA54D60005C2B91 /* OrderModel.m */; };
 		773B12CA1AA55A23005C2B91 /* CustomerServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773B12C91AA55A23005C2B91 /* CustomerServiceModel.m */; };
 		773B12CD1AA55B3D005C2B91 /* CustomerServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773B12CC1AA55B3D005C2B91 /* CustomerServiceController.m */; };
@@ -62,6 +64,8 @@
 		773D8C0E1AA4391E00D8A5A1 /* ScoreModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773D8C0D1AA4391E00D8A5A1 /* ScoreModel.m */; };
 		773D8C111AA43B9F00D8A5A1 /* ScoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 773D8C101AA43B9F00D8A5A1 /* ScoreCell.m */; };
 		773D8C141AA4487900D8A5A1 /* ExchangeScoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773D8C131AA4487900D8A5A1 /* ExchangeScoreController.m */; };
+		773ED5C81AB164D1007F35AE /* BankSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773ED5C71AB164D1007F35AE /* BankSelectedController.m */; };
+		773ED5CB1AB18C1D007F35AE /* HomeImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773ED5CA1AB18C1D007F35AE /* HomeImageModel.m */; };
 		7740B4351A85A6A00057EED7 /* MyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7740B4341A85A6A00057EED7 /* MyOrderViewController.m */; };
 		7740B4391A85A7210057EED7 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7740B4381A85A7210057EED7 /* KxMenu.m */; };
 		774121551A75D0C2002388B8 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774121541A75D0C2002388B8 /* SearchViewController.m */; };
@@ -228,6 +232,10 @@
 		773ADD1F1A885CA0009DAF42 /* FormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormView.m; sourceTree = "<group>"; };
 		773ADD221A88845D009DAF42 /* ProgressCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressCheckViewController.h; sourceTree = "<group>"; };
 		773ADD231A88845D009DAF42 /* ProgressCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressCheckViewController.m; sourceTree = "<group>"; };
+		773AEBB11AB0150200598351 /* ApplyOpenModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyOpenModel.h; sourceTree = "<group>"; };
+		773AEBB21AB0150200598351 /* ApplyOpenModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyOpenModel.m; sourceTree = "<group>"; };
+		773AEBB41AB029B900598351 /* MerchantSelectedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantSelectedController.h; sourceTree = "<group>"; };
+		773AEBB51AB029B900598351 /* MerchantSelectedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantSelectedController.m; sourceTree = "<group>"; };
 		773B12BF1AA54D60005C2B91 /* OrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderModel.h; sourceTree = "<group>"; };
 		773B12C01AA54D60005C2B91 /* OrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
 		773B12C81AA55A23005C2B91 /* CustomerServiceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerServiceModel.h; sourceTree = "<group>"; };
@@ -266,6 +274,10 @@
 		773D8C101AA43B9F00D8A5A1 /* ScoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreCell.m; sourceTree = "<group>"; };
 		773D8C121AA4487900D8A5A1 /* ExchangeScoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeScoreController.h; sourceTree = "<group>"; };
 		773D8C131AA4487900D8A5A1 /* ExchangeScoreController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExchangeScoreController.m; sourceTree = "<group>"; };
+		773ED5C61AB164D1007F35AE /* BankSelectedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSelectedController.h; sourceTree = "<group>"; };
+		773ED5C71AB164D1007F35AE /* BankSelectedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankSelectedController.m; sourceTree = "<group>"; };
+		773ED5C91AB18C1D007F35AE /* HomeImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeImageModel.h; sourceTree = "<group>"; };
+		773ED5CA1AB18C1D007F35AE /* HomeImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeImageModel.m; sourceTree = "<group>"; };
 		7740B4331A85A6A00057EED7 /* MyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderViewController.h; sourceTree = "<group>"; };
 		7740B4341A85A6A00057EED7 /* MyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderViewController.m; sourceTree = "<group>"; };
 		7740B4371A85A7210057EED7 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
@@ -511,6 +523,10 @@
 				774760F31AAA9ADA000B34C3 /* ChannelModel.m */,
 				775AB4D31AAE986D000E01C5 /* AddressModel.h */,
 				775AB4D41AAE986D000E01C5 /* AddressModel.m */,
+				773AEBB11AB0150200598351 /* ApplyOpenModel.h */,
+				773AEBB21AB0150200598351 /* ApplyOpenModel.m */,
+				773ED5C91AB18C1D007F35AE /* HomeImageModel.h */,
+				773ED5CA1AB18C1D007F35AE /* HomeImageModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -930,6 +946,10 @@
 				775B869D1AA1BCFE002434F4 /* OpenApplyController.m */,
 				7761449A1AAD357A00FAE3B6 /* ApplyDetailController.h */,
 				7761449B1AAD357A00FAE3B6 /* ApplyDetailController.m */,
+				773AEBB41AB029B900598351 /* MerchantSelectedController.h */,
+				773AEBB51AB029B900598351 /* MerchantSelectedController.m */,
+				773ED5C61AB164D1007F35AE /* BankSelectedController.h */,
+				773ED5C71AB164D1007F35AE /* BankSelectedController.m */,
 			);
 			path = OpenApply;
 			sourceTree = "<group>";
@@ -1137,6 +1157,7 @@
 				773BDF401AA9A732008D3DC7 /* OrderDetailCell.m in Sources */,
 				774129611A7368E000DA0B27 /* ModifyPasswordViewController.m in Sources */,
 				774D67741A79FFA200DDCEE4 /* SearchHistoryHelper.m in Sources */,
+				773ED5CB1AB18C1D007F35AE /* HomeImageModel.m in Sources */,
 				7739DE4B1AA71BD000A4B9FE /* MerchantModel.m in Sources */,
 				773804FB1A8C77B0003A4AA1 /* ShoppingCartModel.m in Sources */,
 				775873FF1A7234A900EB3AE5 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1161,6 +1182,7 @@
 				774760F71AAAD387000B34C3 /* GoodButton.m in Sources */,
 				773B12D61AA5CAF7005C2B91 /* OrderGoodModel.m in Sources */,
 				775873F61A7234A900EB3AE5 /* SDWebImageCompat.m in Sources */,
+				773AEBB31AB0150200598351 /* ApplyOpenModel.m in Sources */,
 				7739DE421AA6EE9200A4B9FE /* ChangeDetailController.m in Sources */,
 				775873FB1A7234A900EB3AE5 /* SDWebImagePrefetcher.m in Sources */,
 				774381DE1A7C82590083F3AC /* CreateMerchantController.m in Sources */,
@@ -1191,6 +1213,7 @@
 				7739DE3F1AA6EBFB00A4B9FE /* CancelDetailController.m in Sources */,
 				773B12D91AA5CF76005C2B91 /* OrderCell.m in Sources */,
 				7742DB321A8A2E0B00EF16FB /* CityModel.m in Sources */,
+				773AEBB61AB029B900598351 /* MerchantSelectedController.m in Sources */,
 				775873FC1A7234A900EB3AE5 /* UIButton+WebCache.m in Sources */,
 				773A0FFE1A9EF0B6008EA806 /* TerminalSelectedController.m in Sources */,
 				775AB4D21AAE8FF9000E01C5 /* AddressManagerController.m in Sources */,
@@ -1209,6 +1232,7 @@
 				775873B01A71EC3100EB3AE5 /* RootViewController.m in Sources */,
 				773D8C021AA3F2C200D8A5A1 /* OpenApplyCell.m in Sources */,
 				774121581A75E93F002388B8 /* FilterViewController.m in Sources */,
+				773ED5C81AB164D1007F35AE /* BankSelectedController.m in Sources */,
 				7739DE391AA6D93D00A4B9FE /* ReturnDetailController.m in Sources */,
 				774121551A75D0C2002388B8 /* SearchViewController.m in Sources */,
 				7739DE331AA6A38E00A4B9FE /* RecordView.m in Sources */,

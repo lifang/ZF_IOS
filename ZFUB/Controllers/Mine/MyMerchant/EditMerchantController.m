@@ -126,13 +126,9 @@
                     hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                                    message:@"用户信息修改成功"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"确定"
-                                                          otherButtonTitles:nil];
-                    [alert show];
+                    hud.labelText = @"修改商户成功";
                     [self updateMerchant:modifyModel];
+                    [self.navigationController popViewControllerAnimated:YES];
                     [[NSNotificationCenter defaultCenter] postNotificationName:EditMerchantInfoNotification object:nil];
                 }
             }

@@ -476,7 +476,7 @@
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
-    [NetworkInterface getTradeDetailWithToken:delegate.token tradeID:_tradeID finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getTradeDetailWithToken:delegate.token tradeType:_tradeType tradeID:_tradeID finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];

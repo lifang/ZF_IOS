@@ -9,6 +9,7 @@
 #import "CommonViewController.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
+#import "CityHandle.h"
 
 static NSString *key_frontImage = @"key_frontImage";
 static NSString *key_backImage = @"key_backImage";
@@ -22,9 +23,22 @@ static NSString *key_bankImage = @"key_bankImage";
 
 @property (nonatomic, strong) NSString *selectedImageKey;  //选中的图片行
 
+@property (nonatomic, strong) UIPickerView *pickerView;
+
+@property (nonatomic, strong) UIToolbar *toolbar;
+
+@property (nonatomic, strong) NSArray *cityArray;  //pickerView 第二列
+
+- (void)initPickerView;
+
 - (void)selectedKey:(NSString *)imageKey
            hasImage:(BOOL)hasImage;
 
 - (void)saveWithURLString:(NSString *)urlString;
+
+- (IBAction)modifyLocation:(id)sender;
+
+- (void)pickerScrollIn;
+- (void)pickerScrollOut;
 
 @end

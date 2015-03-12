@@ -15,6 +15,9 @@
         _TM_ID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
         _TM_status = [NSString stringWithFormat:@"%@",[dict objectForKey:@"status"]];
         _TM_serialNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"serial_num"]];
+        if ([dict objectForKey:@"appid"]) {
+            _appID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"appid"]];
+        }
     }
     return self;
 }

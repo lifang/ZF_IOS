@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) NSString *merchantLegal;
 
+@property (nonatomic, assign) BOOL isSelected;  //开通申请中记录是否选中
+
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 
 @end

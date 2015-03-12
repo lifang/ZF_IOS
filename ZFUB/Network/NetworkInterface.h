@@ -18,6 +18,7 @@
  3.找回密码手机验证码
  5.注册验证码
  6.获取开通申请列表
+ 7.进入开通申请
  12.获取对公对私材料
  15.获取终端管理终端列表
  16.指定收单通道
@@ -156,11 +157,26 @@ static NSString *s_findEmail_method = @"sendEmailVerificationCode";
 //开通申请列表
 static NSString *s_applyList_method = @"apply/getApplyList";
 
+//选择商户
+static NSString *s_applyMerchant_method = @"apply/getMerchant";
+
+//选择通道
+static NSString *s_applyChannel_method = @"apply/getChannels";
+
+//选择银行
+static NSString *s_applyBank_method = @"apply/ChooseBank";
+
+//上传图片
+static NSString *s_loadImage_method = @"comment/upload/tempImage";
+
 //对公对私材料
 static NSString *s_applyMaterial_method = @"apply/getMaterialName";
 
 //终端管理列表
 static NSString *s_terminalManagerList_method = @"terminal/getApplyList";
+
+//进入开通申请
+static NSString *s_intoApply_method = @"apply/getApplyDetails";
 
 //收单机构
 static NSString *s_organzationList_method = @"terminal/getFactories";
@@ -251,8 +267,17 @@ static NSString *s_merchantList_method = @"merchant/getList";
 //我的商户详情
 static NSString *s_merchantDetail_method = @"merchant/getOne";
 
+//新增商户
+static NSString *s_merchantAdd_method = @"merchant/insert";
+
 //修改商户
 static NSString *s_merchantModify_method = @"merchant/update";
+
+//商户上传图片
+static NSString *s_merchantUploadImage_method = @"merchant/upload/file";
+
+//删除商户
+static NSString *s_merchantDelete_method = @"merchant/delete";
 
 //我的消息列表
 static NSString *s_messageList_method = @"message/receiver/getAll";
@@ -350,6 +375,9 @@ static NSString *s_leaseCancel_method = @"cs/lease/returns/cancelApply";
 //租赁退货记录物流
 static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 
+//首页轮播图
+static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -412,6 +440,54 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
                          page:(int)page
                          rows:(int)rows
                      finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 7.进入开通申请
+ @param token       登录返回
+ @param userID      用户ID
+ @param applyStatus  开通类型 1.对公 2.对私
+ @param terminalID   终端id
+ @result finish  请求回调结果
+ */
++ (void)beginToApplyWithToken:(NSString *)token
+                       userID:(NSString *)userID
+                  applyStatus:(OpenApplyType)applyStatus
+                   terminalID:(NSString *)terminalID
+                     finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 8.选择商户
+ @param token       登录返回
+ @param merchantID  商户ID
+ @result finish  请求回调结果
+ */
++ (void)selectedMerchantWithToken:(NSString *)token
+                       merchantID:(NSString *)merchantID
+                         finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 9.选择通道
+ @param token       登录返回
+ @result finish  请求回调结果
+ */
++ (void)selectedChannelWithToken:(NSString *)token
+                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 10.选择银行
+ @param token       登录返回
+ @result finish  请求回调结果
+ */
++ (void)selectedBankWithToken:(NSString *)token
+                     finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 11.上传图片
+ @param image       图片
+ @result finish  请求回调结果
+ */
++ (void)uploadImageWithImage:(UIImage *)image
+                    finished:(requestDidFinished)finish;
 
 /*!
  @abstract 12.获取对公对私材料
@@ -698,10 +774,12 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 37.交易流水详情
  @param token       登录返回
+ @param tradeType   交易类型
  @param tradeID   交易流水id
  @result finish  请求回调结果
  */
 + (void)getTradeDetailWithToken:(NSString *)token
+                      tradeType:(TradeType)tradeType
                         tradeID:(NSString *)tradeID
                        finished:(requestDidFinished)finish;
 
@@ -838,11 +916,11 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 /*!
  @abstract 47.删除地址
  @param token       登录返回
- @param addressID   地址id
+ @param addressIDs   地址id数组
  @result finish  请求回调结果
  */
 + (void)deleteAddressWithToken:(NSString *)token
-                     addressID:(NSString *)addressID
+                     addressIDs:(NSArray *)addressIDs
                       finished:(requestDidFinished)finish;
 
 /*!
@@ -870,6 +948,31 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
                           finished:(requestDidFinished)finish;
 
 /*!
+ @abstract 50.添加商户
+
+ @result finish  请求回调结果
+ */
++ (void)createMerchantWithToken:(NSString *)token
+                         userID:(NSString *)userID
+                   merchantName:(NSString *)merchantName
+                     personName:(NSString *)personName
+                       personID:(NSString *)personID
+                      licenseID:(NSString *)licenseID
+                          taxID:(NSString *)taxID
+                       oraganID:(NSString *)organID
+                         cityID:(NSString *)cityID
+                       bankName:(NSString *)bankName
+                         bankID:(NSString *)bankID
+                      frontPath:(NSString *)frontPath
+                       backPath:(NSString *)backPath
+                       bodyPath:(NSString *)bodyPath
+                    licensePath:(NSString *)licensePath
+                        taxPath:(NSString *)taxPath
+                        orgPath:(NSString *)orgPath
+                       bankPath:(NSString *)bankPath
+                       finished:(requestDidFinished)finish;
+
+/*!
  @abstract 51.修改商户
  @param token       登录返回
  @param merchant   商户信息  只需传修改的字段即可 未修改的传nil
@@ -879,6 +982,23 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
                  merchantDetail:(MerchantDetailModel *)merchant
                        finished:(requestDidFinished)finish;
 
+/*!
+ @abstract 上传商户图片
+ @param image      图片
+ @result finish  请求回调结果
+ */
++ (void)uploadMerchantImageWithImage:(UIImage *)image
+                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 52.删除商户 多删
+ @param token       登录返回
+ @param merchantIDs   需要删除商户的id数组 id为int类型
+ @result finish  请求回调结果
+ */
++ (void)deleteMerchantWithToken:(NSString *)token
+                    merchantIDs:(NSArray *)merchantsID
+                       finished:(requestDidFinished)finish;
 
 /*!
  @abstract 55.我的消息列表
@@ -1063,6 +1183,13 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 + (void)submitCancelInfoWithToken:(NSString *)token
                              csID:(NSString *)csID
                          finished:(requestDidFinished)finish;
+
+
+/*!
+ @abstract 首页轮播图
+ @result finish  请求回调结果
+ */
++ (void)getHomeImageListFinished:(requestDidFinished)finish;
 
 
 @end

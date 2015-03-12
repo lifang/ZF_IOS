@@ -8,7 +8,7 @@
 
 #import "MerchantImageLoadController.h"
 
-@interface MerchantImageLoadController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface MerchantImageLoadController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic, assign) BOOL alreadyHasImage;
 
@@ -26,15 +26,84 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - UI
+
+- (void)initPickerView {
+    //pickerView
+    _toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 44)];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"取消"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(pickerScrollOut)];
+    UIBarButtonItem *finishItem = [[UIBarButtonItem alloc] initWithTitle:@"完成"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(modifyLocation:)];
+    UIBarButtonItem *spaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                               target:nil
+                                                                               action:nil];
+    [_toolbar setItems:[NSArray arrayWithObjects:cancelItem,spaceItem,finishItem, nil]];
+    [self.view addSubview:_toolbar];
+    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 216)];
+    _pickerView.backgroundColor = kColor(244, 243, 243, 1);
+    _pickerView.delegate = self;
+    _pickerView.dataSource = self;
+    
+    [self.view addSubview:_pickerView];
+}
+
 #pragma mark - Request
 
-- (void)uploadImage:(UIImage *)image {
-    [self saveWithURLString:@"111"];
+- (void)uploadPictureWithImage:(UIImage *)image {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"上传中...";
+    [NetworkInterface uploadMerchantImageWithImage:image finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"图片上传成功";
+                    [self parseImageUploadInfo:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
 }
 
 #pragma mark - Data
 
 - (void)saveWithURLString:(NSString *)urlString {
+    //重写
+}
+
+- (void)parseImageUploadInfo:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    NSDictionary *infoDict = [dict objectForKey:@"result"];
+    NSString *urlString = [infoDict objectForKey:@"filePath"];
+    [self saveWithURLString:urlString];
+}
+
+#pragma mark - Action
+
+- (IBAction)modifyLocation:(id)sender {
     //重写
 }
 
@@ -103,7 +172,60 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:nil];
     UIImage *editImage = [info objectForKey:UIImagePickerControllerEditedImage];
-    [self uploadImage:editImage];
+    [self uploadPictureWithImage:editImage];
+}
+
+#pragma mark - UIPickerView
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 2;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (component == 0) {
+        return [[CityHandle shareProvinceList] count];
+    }
+    else {
+        NSInteger provinceIndex = [pickerView selectedRowInComponent:0];
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:provinceIndex];
+        _cityArray = [provinceDict objectForKey:@"cities"];
+        return [_cityArray count];
+    }
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (component == 0) {
+        //省
+        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:row];
+        return [provinceDict objectForKey:@"name"];
+    }
+    else {
+        //市
+        return [[_cityArray objectAtIndex:row] objectForKey:@"name"];
+    }
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (component == 0) {
+        //省
+        [_pickerView reloadComponent:1];
+    }
+}
+
+#pragma mark - UIPickerView
+
+- (void)pickerScrollIn {
+    [UIView animateWithDuration:.3f animations:^{
+        _toolbar.frame = CGRectMake(0, kScreenHeight - 260, kScreenWidth, 44);
+        _pickerView.frame = CGRectMake(0, kScreenHeight - 216, kScreenWidth, 216);
+    }];
+}
+
+- (void)pickerScrollOut {
+    [UIView animateWithDuration:.3f animations:^{
+        _toolbar.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 44);
+        _pickerView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 216);
+    }];
 }
 
 @end

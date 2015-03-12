@@ -238,7 +238,7 @@
                                                                      attribute:NSLayoutAttributeLeft
                                                                      relatedBy:NSLayoutRelationEqual
                                                                         toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeRight
+                                                                     attribute:NSLayoutAttributeLeft
                                                                     multiplier:1.0
                                                                       constant:10.f]];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:infoLabel

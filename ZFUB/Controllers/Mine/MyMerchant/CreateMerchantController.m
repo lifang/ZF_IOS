@@ -25,17 +25,9 @@
 @property (nonatomic, strong) UITextField *textField_bank;
 @property (nonatomic, strong) UITextField *textField_bank_ID;
 
-@property (nonatomic, strong) UIImageView *imageView_person_first;
-@property (nonatomic, strong) UIImageView *imageView_person_second;
-@property (nonatomic, strong) UIImageView *imageView_person_third;
-@property (nonatomic, strong) UIImageView *imageView_licence;
-@property (nonatomic, strong) UIImageView *imageView_tax;
-@property (nonatomic, strong) UIImageView *imageView_organzation;
-@property (nonatomic, strong) UIImageView *imageView_bank;
-
-@property (nonatomic, strong) UITableViewCell *selectedCell;
-
 @property (nonatomic, strong) NSMutableDictionary *imageDict; //保存上传的图片地址
+
+@property (nonatomic, strong) NSString *cityID;
 
 @end
 
@@ -45,6 +37,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"创建商户";
+    _imageDict = [[NSMutableDictionary alloc] init];
     [self initAndLayoutUI];
 }
 
@@ -110,6 +103,7 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
+    [self initPickerView];
     
     //初始化文本框
     _textField_merchant = [[UITextField alloc] init];
@@ -140,29 +134,6 @@
     _textField_location.placeholder = @"请选择";
     _textField_bank.placeholder = @"请输入开户银行";
     _textField_bank_ID.placeholder = @"请输入银行许可证号";
-    
-    //图片框
-    _imageView_person_first = [[UIImageView alloc] init];
-    _imageView_person_second = [[UIImageView alloc] init];
-    _imageView_person_third = [[UIImageView alloc] init];
-    _imageView_licence = [[UIImageView alloc] init];
-    _imageView_tax = [[UIImageView alloc] init];
-    _imageView_organzation = [[UIImageView alloc] init];
-    _imageView_bank = [[UIImageView alloc] init];
-    [self setAttrForImageView:_imageView_person_first];
-    [self setAttrForImageView:_imageView_person_second];
-    [self setAttrForImageView:_imageView_person_third];
-    [self setAttrForImageView:_imageView_licence];
-    [self setAttrForImageView:_imageView_tax];
-    [self setAttrForImageView:_imageView_organzation];
-    [self setAttrForImageView:_imageView_bank];
-    _imageView_person_first.hidden = YES;
-    _imageView_person_second.hidden = YES;
-    _imageView_person_third.hidden = YES;
-    _imageView_licence.hidden = YES;
-    _imageView_tax.hidden = YES;
-    _imageView_organzation.hidden = YES;
-    _imageView_bank.hidden = YES;
 }
 
 - (void)setAttrForInputView:(UITextField *)textField {
@@ -176,15 +147,193 @@
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 }
 
-- (void)setAttrForImageView:(UIImageView *)imageView {
-    imageView.image = kImageName(@"upload.png");
-    imageView.tag = kImageViewTag;
-}
-
 #pragma mark - Action
 
 - (IBAction)createMerchant:(id)sender {
-    
+    [_textField_merchant becomeFirstResponder];
+    [_textField_merchant resignFirstResponder];
+    [self pickerScrollOut];
+    if (!_textField_merchant.text || [_textField_merchant.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入商户名";
+        return;
+    }
+    if (!_textField_person.text || [_textField_person.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入法人姓名";
+        return;
+    }
+    if (!_textField_person_ID.text || [_textField_person_ID.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入法人身份证号";
+        return;
+    }
+    if (!_textField_licence.text || [_textField_licence.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入营业执照号";
+        return;
+    }
+    if (!_textField_tax.text || [_textField_tax.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入税务证号";
+        return;
+    }
+    if (!_textField_organzation.text || [_textField_organzation.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入组织机构代码证号";
+        return;
+    }
+    if (!_cityID || [_cityID isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择商户所在地";
+        return;
+    }
+    if (!_textField_bank.text || [_textField_bank.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入开户银行";
+        return;
+    }
+    if (!_textField_bank_ID.text || [_textField_bank_ID.text isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请输入银行许可证号";
+        return;
+    }
+    if (![_imageDict objectForKey:key_frontImage] || [[_imageDict objectForKey:key_frontImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传身份证照片正面";
+        return;
+    }
+    if (![_imageDict objectForKey:key_backImage] || [[_imageDict objectForKey:key_backImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传身份证照片背面";
+        return;
+    }
+    if (![_imageDict objectForKey:key_bodyImage] || [[_imageDict objectForKey:key_bodyImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传法人上半身照片";
+        return;
+    }
+    if (![_imageDict objectForKey:key_licenseImage] || [[_imageDict objectForKey:key_licenseImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传营业执照照片";
+        return;
+    }
+    if (![_imageDict objectForKey:key_taxImage] || [[_imageDict objectForKey:key_taxImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传税务证照片";
+        return;
+    }
+    if (![_imageDict objectForKey:key_organizationImage] || [[_imageDict objectForKey:key_organizationImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传组织机构代码证照片";
+        return;
+    }
+    if (![_imageDict objectForKey:key_bankImage] || [[_imageDict objectForKey:key_bankImage] isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请上传银行开户许可证照片";
+        return;
+    }
+    [self requestForCreateMerchant];
+}
+
+- (IBAction)modifyLocation:(id)sender {
+    [self pickerScrollOut];
+    NSInteger index = [self.pickerView selectedRowInComponent:1];
+    _cityID = [NSString stringWithFormat:@"%@",[[self.cityArray objectAtIndex:index] objectForKey:@"id"]];
+    NSString *cityName = [[self.cityArray objectAtIndex:index] objectForKey:@"name"];
+    _textField_location.text = cityName;
+}
+
+#pragma mark - Request
+
+- (void)requestForCreateMerchant {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface createMerchantWithToken:delegate.token userID:delegate.userID merchantName:_textField_merchant.text personName:_textField_person.text personID:_textField_person_ID.text licenseID:_textField_licence.text taxID:_textField_tax.text oraganID:_textField_organzation.text cityID:_cityID bankName:_textField_bank.text bankID:_textField_bank_ID.text frontPath:[_imageDict objectForKey:key_frontImage] backPath:[_imageDict objectForKey:key_backImage] bodyPath:[_imageDict objectForKey:key_bodyImage] licensePath:[_imageDict objectForKey:key_licenseImage] taxPath:[_imageDict objectForKey:key_taxImage] orgPath:[_imageDict objectForKey:key_organizationImage] bankPath:[_imageDict objectForKey:key_bankImage] finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"添加商户成功";
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMerchantListNotification object:nil];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+#pragma mark - Data
+
+- (void)saveWithURLString:(NSString *)urlString {
+    if (urlString && ![urlString isEqualToString:@""]) {
+        [_imageDict setObject:urlString forKey:self.selectedImageKey];
+    }
+    [_tableView reloadData];
 }
 
 #pragma mark - UITableView
@@ -281,69 +430,61 @@
         }
     }
     else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-        CGRect rect = CGRectMake(cell.frame.size.width - 40, (cell.frame.size.height - 20) / 2, 20, 20);
+        NSString *detailName = @"上传照片";
+        static NSString *imageIdentifier = @"imageIdentifier";
+        cell = [tableView dequeueReusableCellWithIdentifier:imageIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:imageIdentifier];
+            CGRect rect = CGRectMake(cell.frame.size.width - 40, (cell.frame.size.height - 20) / 2, 20, 20);
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
+            imageView.image = kImageName(@"upload.png");
+            imageView.tag = kImageViewTag;
+            imageView.hidden = YES;
+            [cell.contentView addSubview:imageView];
+        }
         cell.detailTextLabel.textColor = kColor(255, 102, 36, 1);
         cell.detailTextLabel.font = [UIFont systemFontOfSize:14.f];
+        UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:kImageViewTag];
+        NSString *urlString = nil;
         switch (indexPath.row) {
             case 0:
                 titleName = @"商户法人身份证照片正面";
-                _imageView_person_first.frame = rect;
-                [cell.contentView addSubview:_imageView_person_first];
-                if (_imageView_person_first.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_frontImage];
                 break;
             case 1:
                 titleName = @"商户法人身份证照片背面";
-                _imageView_person_second.frame = rect;
-                [cell.contentView addSubview:_imageView_person_second];
-                if (_imageView_person_second.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_backImage];
                 break;
             case 2:
                 titleName = @"商户法人上半身照片";
-                _imageView_person_third.frame = rect;
-                [cell.contentView addSubview:_imageView_person_third];
-                if (_imageView_person_third.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_bodyImage];
                 break;
             case 3:
                 titleName = @"营业执照照片";
-                _imageView_licence.frame = rect;
-                [cell.contentView addSubview:_imageView_licence];
-                if (_imageView_licence.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_licenseImage];
                 break;
             case 4:
                 titleName = @"税务证照片";
-                _imageView_tax.frame = rect;
-                [cell.contentView addSubview:_imageView_tax];
-                if (_imageView_tax.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_taxImage];
                 break;
             case 5:
                 titleName = @"组织机构代码证照片";
-                _imageView_organzation.frame = rect;
-                [cell.contentView addSubview:_imageView_organzation];
-                if (_imageView_organzation.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_organizationImage];
                 break;
             case 6:
                 titleName = @"银行开户许可证照片";
-                _imageView_bank.frame = rect;
-                [cell.contentView addSubview:_imageView_bank];
-                if (_imageView_bank.hidden) {
-                    cell.detailTextLabel.text = @"上传照片";
-                }
+                urlString = [_imageDict objectForKey:key_bankImage];
                 break;
             default:
                 break;
+        }
+        if (urlString && ![urlString isEqualToString:@""]) {
+            imageView.hidden = NO;
+            cell.detailTextLabel.text = nil;
+        }
+        else {
+            imageView.hidden = YES;
+            cell.detailTextLabel.text = detailName;
         }
     }
     cell.textLabel.text = titleName;
@@ -354,17 +495,50 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    _selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    UITextField *textfield = (UITextField *)[_selectedCell.contentView viewWithTag:kInputViewTag];
-    if (textfield && textfield.userInteractionEnabled) {
-        //输入框
-        [textfield becomeFirstResponder];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ((indexPath.section == 0 && indexPath.row != 6) || indexPath.section == 1) {
+        UITextField *textfield = (UITextField *)[cell.contentView viewWithTag:kInputViewTag];
+        if (textfield && textfield.userInteractionEnabled) {
+            //输入框
+            [textfield becomeFirstResponder];
+        }
     }
-    else {
-        //图片框
-        _selectedCell.detailTextLabel.text = nil;
-        UIImageView *imageView = (UIImageView *)[_selectedCell.contentView viewWithTag:kImageViewTag];
-        imageView.hidden = NO;
+    else if (indexPath.section == 0 && indexPath.row == 6) {
+        [_textField_merchant becomeFirstResponder];
+        [_textField_merchant resignFirstResponder];
+        [self pickerScrollIn];
+    }
+    else if (indexPath.section == 2) {
+        //上传图片
+        NSString *key = nil;
+        BOOL hasImage = NO;
+        switch (indexPath.row) {
+            case 0:
+                key = key_frontImage;
+                break;
+            case 1:
+                key = key_backImage;
+                break;
+            case 2:
+                key = key_bodyImage;
+                break;
+            case 3:
+                key = key_licenseImage;
+                break;
+            case 4:
+                key = key_taxImage;
+                break;
+            case 5:
+                key = key_organizationImage;
+                break;
+            case 6:
+                key = key_bankImage;
+                break;
+            default:
+                break;
+        }
+        hasImage = ([_imageDict objectForKey:key] && ![[_imageDict objectForKey:key] isEqualToString:@""]);
+        [self selectedKey:key hasImage:hasImage];
     }
 }
 

@@ -61,6 +61,15 @@
 
 
 - (void)testInterface {
+//    [NetworkInterface selectedChannelWithToken:_token finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface selectedBankWithToken:_token finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
+//    [NetworkInterface selectedMerchantWithToken:_token merchantID:@"19" finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//    }];
 //    [NetworkInterface goodSearchInfoWithCityID:_cityID finished:^(BOOL success,NSData *response) {
 //        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
 //    }];

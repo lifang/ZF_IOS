@@ -230,7 +230,7 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.labelText = @"加载中...";
         AppDelegate *delegate = [AppDelegate shareAppDelegate];
-        [NetworkInterface deleteAddressWithToken:delegate.token addressID:model.addressID finished:^(BOOL success, NSData *response) {
+        [NetworkInterface deleteAddressWithToken:delegate.token addressIDs:[NSArray arrayWithObject:[NSNumber numberWithInt:[model.addressID intValue]]] finished:^(BOOL success, NSData *response) {
             NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
             hud.customView = [[UIImageView alloc] init];
             hud.mode = MBProgressHUDModeCustomView;
