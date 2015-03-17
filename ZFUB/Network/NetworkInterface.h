@@ -148,6 +148,9 @@ static NSString *s_login_method = @"user/studentLogin";
 //注册手机验证码
 static NSString *s_registerValidate_method = @"user/sendPhoneVerificationCodeReg";
 
+//发送邮件
+static NSString *s_sendEmail_method = @"user/sendEmailVerificationCode";
+
 //找回密码手机验证码
 static NSString *s_findValidate_method = @"user/sendPhoneVerificationCodeFind";
 
@@ -171,6 +174,9 @@ static NSString *s_loadImage_method = @"comment/upload/tempImage";
 
 //对公对私材料
 static NSString *s_applyMaterial_method = @"apply/getMaterialName";
+
+//提交申请
+static NSString *s_applySubmit_method = @"apply/addOpeningApply";
 
 //终端管理列表
 static NSString *s_terminalManagerList_method = @"terminal/getApplyList";
@@ -205,6 +211,12 @@ static NSString *s_goodSearch_method = @"good/search";
 //商品详细
 static NSString *s_goodDetail_method = @"good/goodinfo";
 
+//支付通道详细
+static NSString *s_channelDetail_method = @"paychannel/info";
+
+//评论列表
+static NSString *s_commentList_method = @"comment/list";
+
 //购物车列表
 static NSString *s_shoppingList_method = @"cart/list";
 
@@ -222,6 +234,9 @@ static NSString *s_createOrderFromGood_method = @"order/shop";
 
 //从商品租赁创建订单
 static NSString *s_createOrderFromLease_method = @"order/lease";
+
+//查询终端开通情况
+static NSString *s_terminalSearch_method = @"terminal/openStatus";
 
 //获取交易流水终端列表
 static NSString *s_terminalList_method = @"trade/record/getTerminals";
@@ -322,7 +337,7 @@ static NSString *s_repairLogistic_method = @"cs/repair/addMark";
 static NSString *s_returnList_method = @"return/getAll";
 
 //退货记录取消申请
-static NSString *s_returnCancel_method = @"retrun/cancelApply";
+static NSString *s_returnCancel_method = @"return/cancelApply";
 
 //退货记录详情
 static NSString *s_returnDetail_method = @"return/getReturnById";
@@ -378,6 +393,9 @@ static NSString *s_leaseLogistic_method = @"cs/lease/returns/addMark";
 //首页轮播图
 static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
 
+//找回密码
+static NSString *s_findPassword_method = @"user/updatePassword";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -416,7 +434,13 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
 + (void)getFindValidateCodeWithMobileNumber:(NSString *)mobileNumber
                                    finished:(requestDidFinished)finish;
 
-
+/*!
+ @abstract 4.发送邮件
+ @param email    邮箱号
+ @result finish  请求回调结果
+ */
++ (void)sendEmailWithEmail:(NSString *)email
+                  finished:(requestDidFinished)finish;
 
 /*!
  @abstract 5.获取注册手机验证码
@@ -500,6 +524,16 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
                        terminalID:(NSString *)terminalID
                          openType:(OpenApplyType)type
                          finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 13.提交申请
+ @param token       登录返回
+ @param paramList   参数数组
+ @result finish  请求回调结果
+ */
++ (void)submitApplyWithToken:(NSString *)token
+                      params:(NSArray *)paramList
+                    finished:(requestDidFinished)finish;
 
 /*!
  @abstract 15.获取终端管理终端列表
@@ -636,6 +670,26 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
                        finished:(requestDidFinished)finish;
 
 /*!
+ @abstract 25.支付通道详细
+ @param channelID  支付通道id
+ @result finish  请求回调结果
+ */
++ (void)getChannelDetailWithChannleID:(NSString *)channelID
+                             finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 26.商品评论列表
+ @param goodID   商品id
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getCommentListWithGoodID:(NSString *)goodID
+                            page:(int)page
+                            rows:(int)rows
+                        finished:(requestDidFinished)finish;
+
+/*!
  @abstract 27.购物车列表
  @param token       登录返回
  @param userID      用户ID
@@ -666,6 +720,18 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
                              cartID:(NSString *)cartID
                               count:(int)count
                            finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 31.查询终端业务开通情况
+ @param token       登录返回
+ @param userID      登录用户ID
+ @param phoneNumber 手机号
+ @result finish  请求回调结果
+ */
++ (void)searchTerminalStatusWithToken:(NSString *)token
+                               userID:(NSString *)userID
+                          phoneNumber:(NSString *)phoneNumber
+                             finished:(requestDidFinished)finish;
 
 /*!
  @abstract 32.购物车创建订单
@@ -843,7 +909,7 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
 
 /*!
  @abstract 42.我的积分列表
- @param token       登录返回
+ @param token    登录返回
  @param userID   用户id
  @param page     分页参数 页
  @param rows     分页参数 行
@@ -1190,6 +1256,18 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
  @result finish  请求回调结果
  */
 + (void)getHomeImageListFinished:(requestDidFinished)finish;
+
+/*!
+ @abstract 90.找回密码
+ @param username  用户名
+ @param password  密码
+ @param validateCode  验证码
+ @result finish  请求回调结果
+ */
++ (void)findPasswordWithUsername:(NSString *)username
+                        password:(NSString *)password
+                    validateCode:(NSString *)validateCode
+                        finished:(requestDidFinished)finish;
 
 
 @end

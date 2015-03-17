@@ -21,6 +21,9 @@
         if ([dict objectForKey:@"info_type"]) {
             _materialType = [[dict objectForKey:@"info_type"] intValue];
         }
+        if ([dict objectForKey:@"opening_requirements_id"]) {
+            _levelID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"opening_requirements_id"]];
+        }
     }
     return self;
 }
@@ -69,6 +72,54 @@
             }
             if ([terminalDict objectForKey:@"channelName"]) {
                 _channelName = [NSString stringWithFormat:@"%@",[terminalDict objectForKey:@"channelName"]];
+            }
+        }
+        id primaryDict = [dict objectForKey:@"openingInfos"];
+        if ([primaryDict isKindOfClass:[NSDictionary class]]) {
+            if ([primaryDict objectForKey:@"name"]) {
+                _personName = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"name"]];
+            }
+            if ([primaryDict objectForKey:@"merchant_id"]) {
+                _merchantID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"merchant_id"]];
+            }
+            if ([primaryDict objectForKey:@"merchant_name"]) {
+                _merchantName = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"merchant_name"]];
+            }
+            if ([primaryDict objectForKey:@"sex"]) {
+                _sex = [[primaryDict objectForKey:@"sex"] intValue];
+            }
+            if ([primaryDict objectForKey:@"birthday"]) {
+                _birthday = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"birthday"]];
+            }
+            if ([primaryDict objectForKey:@"card_id"]) {
+                _cardID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"card_id"]];
+            }
+            if ([primaryDict objectForKey:@"phone"]) {
+                _phoneNumber = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"phone"]];
+            }
+            if ([primaryDict objectForKey:@"email"]) {
+                _email = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"email"]];
+            }
+            if ([primaryDict objectForKey:@"city_id"]) {
+                _cityID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"city_id"]];
+            }
+            if ([primaryDict objectForKey:@"account_bank_name"]) {
+                _bankName = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"account_bank_name"]];
+            }
+            if ([primaryDict objectForKey:@"account_bank_num"]) {
+                _bankNumber = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"account_bank_num"]];
+            }
+            if ([primaryDict objectForKey:@"account_bank_code"]) {
+                _bankAccount = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"account_bank_code"]];
+            }
+            if ([primaryDict objectForKey:@"tax_registered_no"]) {
+                _taxID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"tax_registered_no"]];
+            }
+            if ([primaryDict objectForKey:@"organization_code_no"]) {
+                _organID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"organization_code_no"]];
+            }
+            if ([primaryDict objectForKey:@"pay_channel_id"]) {
+                _channelID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"pay_channel_id"]];
             }
         }
         id matList = [dict objectForKey:@"materialName"];

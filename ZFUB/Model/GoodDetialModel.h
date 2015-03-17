@@ -9,7 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "ChannelModel.h"
 
+//相关商品
+@interface RelativeGood : NSObject
+
+@property (nonatomic, strong) NSString *relativeID;
+
+@property (nonatomic, strong) NSString *pictureURL;
+
+@property (nonatomic, assign) CGFloat price;
+
+@property (nonatomic, strong) NSString *title;
+
+@end
+
 @interface GoodDetialModel : NSObject
+
+@property (nonatomic, strong) NSString *goodID;
 
 @property (nonatomic, strong) NSString *goodName;
 
@@ -21,17 +36,19 @@
 
 @property (nonatomic, strong) NSString *goodCategory;
 
-@property (nonatomic, strong) NSString *goodComment;
+@property (nonatomic, strong) NSString *goodComment;   //评论数
 
-@property (nonatomic, strong) NSString *goodMaterial;
+@property (nonatomic, strong) NSString *goodMaterial;  //外壳材料
 
-@property (nonatomic, strong) NSString *goodBattery;
+@property (nonatomic, strong) NSString *goodBattery;   //电池
 
-@property (nonatomic, strong) NSString *goodSignWay;
+@property (nonatomic, strong) NSString *goodSignWay;   //签购单
 
-@property (nonatomic, strong) NSString *goodEncryptWay;
+@property (nonatomic, strong) NSString *goodEncryptWay;  //加密方式
 
-@property (nonatomic, strong) NSString *goodSaleNumber;
+@property (nonatomic, strong) NSString *goodSaleNumber;  //销售数量
+
+@property (nonatomic, strong) NSString *goodDescription;   //详细说明
 
 @property (nonatomic, assign) CGFloat goodPrice;
 
@@ -42,6 +59,8 @@
 @property (nonatomic, strong) ChannelModel *defaultChannel;
 
 @property (nonatomic, strong) NSMutableArray *channelItem;
+
+@property (nonatomic, strong) NSMutableArray *relativeItem;
 
 //厂家信息
 @property (nonatomic, strong) NSString *factoryName;

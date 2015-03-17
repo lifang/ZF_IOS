@@ -37,6 +37,8 @@ typedef enum {
 @property (nonatomic, strong) NSString *channelName;
 //申请开通条件
 @property (nonatomic, strong) NSString *openRequirement;
+//支付通道开通费用
+@property (nonatomic, assign) CGFloat openCost;
 //支付通道支持区域
 @property (nonatomic, strong) NSMutableArray *supportAreaItem;
 //资金服务费

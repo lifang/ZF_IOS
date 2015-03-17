@@ -18,6 +18,12 @@
 		773093AA1A8B40D70096FE0B /* FilterContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093A91A8B40D70096FE0B /* FilterContentViewController.m */; };
 		773093AD1A8B41330096FE0B /* TreeNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093AC1A8B41330096FE0B /* TreeNodeModel.m */; };
 		773093B01A8B41AC0096FE0B /* TreeDataHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093AF1A8B41AC0096FE0B /* TreeDataHandle.m */; };
+		7736E9741AB2AB2E00BC2A60 /* ImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E9731AB2AB2E00BC2A60 /* ImageScrollView.m */; };
+		7736E9771AB2BAF800BC2A60 /* InterestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E9761AB2BAF800BC2A60 /* InterestView.m */; };
+		7736E97A1AB2D92200BC2A60 /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E9791AB2D92200BC2A60 /* CommentViewController.m */; };
+		7736E97D1AB2DBBD00BC2A60 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E97C1AB2DBBD00BC2A60 /* CommentCell.m */; };
+		7736E9801AB2E14800BC2A60 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E97F1AB2E14800BC2A60 /* CommentModel.m */; };
+		7736E9831AB2F7D500BC2A60 /* BuyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736E9821AB2F7D500BC2A60 /* BuyOrderViewController.m */; };
 		773804FB1A8C77B0003A4AA1 /* ShoppingCartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773804FA1A8C77B0003A4AA1 /* ShoppingCartModel.m */; };
 		7738E8761A9FFE9600D51CBE /* TradeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7738E8751A9FFE9600D51CBE /* TradeCell.m */; };
 		7738E8791AA00D2800D51CBE /* StatisticDealFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7738E8781AA00D2800D51CBE /* StatisticDealFlowController.m */; };
@@ -36,6 +42,12 @@
 		7739DE451AA6F89100A4B9FE /* UpdateDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739DE441AA6F89100A4B9FE /* UpdateDetailController.m */; };
 		7739DE481AA6F8A300A4B9FE /* RentDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739DE471AA6F8A300A4B9FE /* RentDetailController.m */; };
 		7739DE4B1AA71BD000A4B9FE /* MerchantModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739DE4A1AA71BD000A4B9FE /* MerchantModel.m */; };
+		7739FAF81AB66AA30043A2A6 /* RegisterLocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FAF71AB66AA30043A2A6 /* RegisterLocationController.m */; };
+		7739FAFB1AB677740043A2A6 /* MobileFindController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FAFA1AB677740043A2A6 /* MobileFindController.m */; };
+		7739FAFE1AB67CD50043A2A6 /* EmailFindController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FAFD1AB67CD50043A2A6 /* EmailFindController.m */; };
+		7739FB011AB69C700043A2A6 /* BankModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FB001AB69C700043A2A6 /* BankModel.m */; };
+		7739FB041AB6A9860043A2A6 /* ChannelSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FB031AB6A9860043A2A6 /* ChannelSelectedController.m */; };
+		7739FB071AB6ACEA0043A2A6 /* ChannelListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7739FB061AB6ACEA0043A2A6 /* ChannelListModel.m */; };
 		773A0FF41A9EAE86008EA806 /* GoodDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A0FF31A9EAE86008EA806 /* GoodDetailViewController.m */; };
 		773A0FF81A9EB607008EA806 /* DealFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A0FF71A9EB607008EA806 /* DealFlowViewController.m */; };
 		773A0FFB1A9EEF2F008EA806 /* TerminalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773A0FFA1A9EEF2F008EA806 /* TerminalModel.m */; };
@@ -182,6 +194,18 @@
 		773093AC1A8B41330096FE0B /* TreeNodeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeNodeModel.m; sourceTree = "<group>"; };
 		773093AE1A8B41AC0096FE0B /* TreeDataHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeDataHandle.h; sourceTree = "<group>"; };
 		773093AF1A8B41AC0096FE0B /* TreeDataHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeDataHandle.m; sourceTree = "<group>"; };
+		7736E9721AB2AB2E00BC2A60 /* ImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScrollView.h; sourceTree = "<group>"; };
+		7736E9731AB2AB2E00BC2A60 /* ImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScrollView.m; sourceTree = "<group>"; };
+		7736E9751AB2BAF800BC2A60 /* InterestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestView.h; sourceTree = "<group>"; };
+		7736E9761AB2BAF800BC2A60 /* InterestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestView.m; sourceTree = "<group>"; };
+		7736E9781AB2D92200BC2A60 /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
+		7736E9791AB2D92200BC2A60 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
+		7736E97B1AB2DBBD00BC2A60 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
+		7736E97C1AB2DBBD00BC2A60 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
+		7736E97E1AB2E14800BC2A60 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
+		7736E97F1AB2E14800BC2A60 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
+		7736E9811AB2F7D500BC2A60 /* BuyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyOrderViewController.h; sourceTree = "<group>"; };
+		7736E9821AB2F7D500BC2A60 /* BuyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyOrderViewController.m; sourceTree = "<group>"; };
 		773804F91A8C77B0003A4AA1 /* ShoppingCartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartModel.h; sourceTree = "<group>"; };
 		773804FA1A8C77B0003A4AA1 /* ShoppingCartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartModel.m; sourceTree = "<group>"; };
 		7738E8741A9FFE9600D51CBE /* TradeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeCell.h; sourceTree = "<group>"; };
@@ -218,6 +242,18 @@
 		7739DE471AA6F8A300A4B9FE /* RentDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentDetailController.m; sourceTree = "<group>"; };
 		7739DE491AA71BD000A4B9FE /* MerchantModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MerchantModel.h; sourceTree = "<group>"; };
 		7739DE4A1AA71BD000A4B9FE /* MerchantModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MerchantModel.m; sourceTree = "<group>"; };
+		7739FAF61AB66AA30043A2A6 /* RegisterLocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterLocationController.h; sourceTree = "<group>"; };
+		7739FAF71AB66AA30043A2A6 /* RegisterLocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterLocationController.m; sourceTree = "<group>"; };
+		7739FAF91AB677740043A2A6 /* MobileFindController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileFindController.h; sourceTree = "<group>"; };
+		7739FAFA1AB677740043A2A6 /* MobileFindController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileFindController.m; sourceTree = "<group>"; };
+		7739FAFC1AB67CD50043A2A6 /* EmailFindController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailFindController.h; sourceTree = "<group>"; };
+		7739FAFD1AB67CD50043A2A6 /* EmailFindController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailFindController.m; sourceTree = "<group>"; };
+		7739FAFF1AB69C700043A2A6 /* BankModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankModel.h; sourceTree = "<group>"; };
+		7739FB001AB69C700043A2A6 /* BankModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankModel.m; sourceTree = "<group>"; };
+		7739FB021AB6A9860043A2A6 /* ChannelSelectedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelSelectedController.h; sourceTree = "<group>"; };
+		7739FB031AB6A9860043A2A6 /* ChannelSelectedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelSelectedController.m; sourceTree = "<group>"; };
+		7739FB051AB6ACEA0043A2A6 /* ChannelListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelListModel.h; sourceTree = "<group>"; };
+		7739FB061AB6ACEA0043A2A6 /* ChannelListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelListModel.m; sourceTree = "<group>"; };
 		773A0FF21A9EAE86008EA806 /* GoodDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoodDetailViewController.h; sourceTree = "<group>"; };
 		773A0FF31A9EAE86008EA806 /* GoodDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoodDetailViewController.m; sourceTree = "<group>"; };
 		773A0FF61A9EB607008EA806 /* DealFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DealFlowViewController.h; sourceTree = "<group>"; };
@@ -527,6 +563,12 @@
 				773AEBB21AB0150200598351 /* ApplyOpenModel.m */,
 				773ED5C91AB18C1D007F35AE /* HomeImageModel.h */,
 				773ED5CA1AB18C1D007F35AE /* HomeImageModel.m */,
+				7736E97E1AB2E14800BC2A60 /* CommentModel.h */,
+				7736E97F1AB2E14800BC2A60 /* CommentModel.m */,
+				7739FAFF1AB69C700043A2A6 /* BankModel.h */,
+				7739FB001AB69C700043A2A6 /* BankModel.m */,
+				7739FB051AB6ACEA0043A2A6 /* ChannelListModel.h */,
+				7739FB061AB6ACEA0043A2A6 /* ChannelListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -544,6 +586,15 @@
 				773093A31A8B3EE80096FE0B /* TreeView.m */,
 			);
 			path = TreeStructure;
+			sourceTree = "<group>";
+		};
+		7736E9711AB2AB0500BC2A60 /* ImageScan */ = {
+			isa = PBXGroup;
+			children = (
+				7736E9721AB2AB2E00BC2A60 /* ImageScrollView.h */,
+				7736E9731AB2AB2E00BC2A60 /* ImageScrollView.m */,
+			);
+			path = ImageScan;
 			sourceTree = "<group>";
 		};
 		7738E87D1AA06F3F00D51CBE /* TerminalManager */ = {
@@ -618,6 +669,7 @@
 				7742DB2F1A8A2D3F00EF16FB /* CityEncoding */,
 				7742DB1E1A89F10F00EF16FB /* Regular */,
 				7730939B1A8B3EE80096FE0B /* TreeStructure */,
+				7736E9711AB2AB0500BC2A60 /* ImageScan */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -665,6 +717,10 @@
 				773093A91A8B40D70096FE0B /* FilterContentViewController.m */,
 				773A0FF21A9EAE86008EA806 /* GoodDetailViewController.h */,
 				773A0FF31A9EAE86008EA806 /* GoodDetailViewController.m */,
+				7736E9781AB2D92200BC2A60 /* CommentViewController.h */,
+				7736E9791AB2D92200BC2A60 /* CommentViewController.m */,
+				7736E9811AB2F7D500BC2A60 /* BuyOrderViewController.h */,
+				7736E9821AB2F7D500BC2A60 /* BuyOrderViewController.m */,
 			);
 			path = Good;
 			sourceTree = "<group>";
@@ -676,8 +732,14 @@
 				7742143A1A8486DE006D75F1 /* LoginViewController.m */,
 				7742143C1A84AF33006D75F1 /* FindPasswordViewController.h */,
 				7742143D1A84AF33006D75F1 /* FindPasswordViewController.m */,
+				7739FAF91AB677740043A2A6 /* MobileFindController.h */,
+				7739FAFA1AB677740043A2A6 /* MobileFindController.m */,
+				7739FAFC1AB67CD50043A2A6 /* EmailFindController.h */,
+				7739FAFD1AB67CD50043A2A6 /* EmailFindController.m */,
 				7742DB181A89CC1800EF16FB /* RegisterViewController.h */,
 				7742DB191A89CC1800EF16FB /* RegisterViewController.m */,
+				7739FAF61AB66AA30043A2A6 /* RegisterLocationController.h */,
+				7739FAF71AB66AA30043A2A6 /* RegisterLocationController.m */,
 				7742DB1B1A89D90A00EF16FB /* MobileRegisterController.h */,
 				7742DB1C1A89D90A00EF16FB /* MobileRegisterController.m */,
 				7742DB261A89FE5200EF16FB /* EmailRegisterController.h */,
@@ -804,6 +866,8 @@
 				773B12D81AA5CF76005C2B91 /* OrderCell.m */,
 				773BDF3E1AA9A732008D3DC7 /* OrderDetailCell.h */,
 				773BDF3F1AA9A732008D3DC7 /* OrderDetailCell.m */,
+				7736E97B1AB2DBBD00BC2A60 /* CommentCell.h */,
+				7736E97C1AB2DBBD00BC2A60 /* CommentCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -888,6 +952,8 @@
 				7739DE321AA6A38E00A4B9FE /* RecordView.m */,
 				774760F51AAAD387000B34C3 /* GoodButton.h */,
 				774760F61AAAD387000B34C3 /* GoodButton.m */,
+				7736E9751AB2BAF800BC2A60 /* InterestView.h */,
+				7736E9761AB2BAF800BC2A60 /* InterestView.m */,
 				774D67751A7A255D00DDCEE4 /* Cell */,
 			);
 			path = Views;
@@ -950,6 +1016,8 @@
 				773AEBB51AB029B900598351 /* MerchantSelectedController.m */,
 				773ED5C61AB164D1007F35AE /* BankSelectedController.h */,
 				773ED5C71AB164D1007F35AE /* BankSelectedController.m */,
+				7739FB021AB6A9860043A2A6 /* ChannelSelectedController.h */,
+				7739FB031AB6A9860043A2A6 /* ChannelSelectedController.m */,
 			);
 			path = OpenApply;
 			sourceTree = "<group>";
@@ -1124,6 +1192,7 @@
 				773D8C0E1AA4391E00D8A5A1 /* ScoreModel.m in Sources */,
 				773B12D01AA56053005C2B91 /* CustomerServiceHandle.m in Sources */,
 				775873F71A7234A900EB3AE5 /* SDWebImageDecoder.m in Sources */,
+				7736E97D1AB2DBBD00BC2A60 /* CommentCell.m in Sources */,
 				7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */,
 				775B86941AA18FCD002434F4 /* InstitutionModel.m in Sources */,
 				7742DB1A1A89CC1800EF16FB /* RegisterViewController.m in Sources */,
@@ -1161,6 +1230,7 @@
 				7739DE4B1AA71BD000A4B9FE /* MerchantModel.m in Sources */,
 				773804FB1A8C77B0003A4AA1 /* ShoppingCartModel.m in Sources */,
 				775873FF1A7234A900EB3AE5 /* UIImageView+HighlightedWebCache.m in Sources */,
+				7736E9801AB2E14800BC2A60 /* CommentModel.m in Sources */,
 				7742DB251A89F22200EF16FB /* MBProgressHUD.m in Sources */,
 				774596311AA7E8D9008F3D52 /* MerchantDetailModel.m in Sources */,
 				775AB4DE1AAECC00000E01C5 /* OrderConfirmController.m in Sources */,
@@ -1168,16 +1238,20 @@
 				773093A51A8B3EE80096FE0B /* TreeNodeCollection.m in Sources */,
 				7738E8831AA07AC500D51CBE /* TerminalManagerModel.m in Sources */,
 				7747DC3D1A7B2FBF002797CC /* AfterSaleViewController.m in Sources */,
+				7739FAF81AB66AA30043A2A6 /* RegisterLocationController.m in Sources */,
 				773BDF371AA943DB008D3DC7 /* OpeningModel.m in Sources */,
 				775873F81A7234A900EB3AE5 /* SDWebImageDownloader.m in Sources */,
+				7736E9741AB2AB2E00BC2A60 /* ImageScrollView.m in Sources */,
 				7739DE3C1AA6E01000A4B9FE /* ResourceModel.m in Sources */,
 				7747DC401A7B314B002797CC /* AfterSaleView.m in Sources */,
 				7739DE481AA6F8A300A4B9FE /* RentDetailController.m in Sources */,
 				7742C4371A7F752B000DEFCE /* SortView.m in Sources */,
 				773D8C111AA43B9F00D8A5A1 /* ScoreCell.m in Sources */,
+				7739FB041AB6A9860043A2A6 /* ChannelSelectedController.m in Sources */,
 				775873CE1A72218500EB3AE5 /* LocationButton.m in Sources */,
 				773B12CD1AA55B3D005C2B91 /* CustomerServiceController.m in Sources */,
 				773B12C11AA54D60005C2B91 /* OrderModel.m in Sources */,
+				7739FAFE1AB67CD50043A2A6 /* EmailFindController.m in Sources */,
 				7741295E1A73498200DA0B27 /* PersonInfoViewController.m in Sources */,
 				774760F71AAAD387000B34C3 /* GoodButton.m in Sources */,
 				773B12D61AA5CAF7005C2B91 /* OrderGoodModel.m in Sources */,
@@ -1192,6 +1266,7 @@
 				775873FE1A7234A900EB3AE5 /* UIImage+MultiFormat.m in Sources */,
 				7739DE451AA6F89100A4B9FE /* UpdateDetailController.m in Sources */,
 				774D67781A7A257700DDCEE4 /* GoodsCell.m in Sources */,
+				7736E97A1AB2D92200BC2A60 /* CommentViewController.m in Sources */,
 				773D8C0B1AA432C000D8A5A1 /* ScoreViewController.m in Sources */,
 				7761449C1AAD357A00FAE3B6 /* ApplyDetailController.m in Sources */,
 				7740B4391A85A7210057EED7 /* KxMenu.m in Sources */,
@@ -1201,6 +1276,7 @@
 				7742DB211A89F13100EF16FB /* RegularFormat.m in Sources */,
 				775AB4E11AAED788000E01C5 /* ShoppingCartOrderController.m in Sources */,
 				7747DC441A7B7EF1002797CC /* MyMerchantViewController.m in Sources */,
+				7739FB071AB6ACEA0043A2A6 /* ChannelListModel.m in Sources */,
 				773BDF3A1AA98C2F008D3DC7 /* OrderDetailController.m in Sources */,
 				7745963A1AA82805008F3D52 /* MerchantImageLoadController.m in Sources */,
 				775873BC1A71EDC700EB3AE5 /* ShoppingCartController.m in Sources */,
@@ -1212,6 +1288,7 @@
 				775873B61A71ECBB00EB3AE5 /* HomeViewController.m in Sources */,
 				7739DE3F1AA6EBFB00A4B9FE /* CancelDetailController.m in Sources */,
 				773B12D91AA5CF76005C2B91 /* OrderCell.m in Sources */,
+				7736E9771AB2BAF800BC2A60 /* InterestView.m in Sources */,
 				7742DB321A8A2E0B00EF16FB /* CityModel.m in Sources */,
 				773AEBB61AB029B900598351 /* MerchantSelectedController.m in Sources */,
 				775873FC1A7234A900EB3AE5 /* UIButton+WebCache.m in Sources */,
@@ -1228,7 +1305,9 @@
 				775873F51A7234A900EB3AE5 /* SDImageCache.m in Sources */,
 				7741295A1A73478100DA0B27 /* NavigationBarAttr.m in Sources */,
 				773093971A8B2A800096FE0B /* GoodListModel.m in Sources */,
+				7736E9831AB2F7D500BC2A60 /* BuyOrderViewController.m in Sources */,
 				773ADD241A88845D009DAF42 /* ProgressCheckViewController.m in Sources */,
+				7739FB011AB69C700043A2A6 /* BankModel.m in Sources */,
 				775873B01A71EC3100EB3AE5 /* RootViewController.m in Sources */,
 				773D8C021AA3F2C200D8A5A1 /* OpenApplyCell.m in Sources */,
 				774121581A75E93F002388B8 /* FilterViewController.m in Sources */,
@@ -1239,6 +1318,7 @@
 				7742143B1A8486DE006D75F1 /* LoginViewController.m in Sources */,
 				775874041A723CDE00EB3AE5 /* ModuleView.m in Sources */,
 				775873BF1A71EDDD00EB3AE5 /* MessageViewController.m in Sources */,
+				7739FAFB1AB677740043A2A6 /* MobileFindController.m in Sources */,
 				774596371AA807A7008F3D52 /* EditMerchantController.m in Sources */,
 				7738E8791AA00D2800D51CBE /* StatisticDealFlowController.m in Sources */,
 				7742DB1D1A89D90A00EF16FB /* MobileRegisterController.m in Sources */,

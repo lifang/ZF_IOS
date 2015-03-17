@@ -214,6 +214,12 @@
     TerminalManagerModel *model = [_applyList objectAtIndex:indexPath.section];
     ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
     detailC.terminalID = model.TM_ID;
+    if ([model.TM_status intValue] == TerminalStatusPartOpened) {
+        detailC.openStatus = OpenStatusReopen;
+    }
+    else {
+        detailC.openStatus = OpenStatusNew;
+    }
     [self.navigationController pushViewController:detailC animated:YES];
 }
 

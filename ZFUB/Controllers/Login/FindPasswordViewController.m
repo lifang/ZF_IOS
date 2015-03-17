@@ -7,6 +7,10 @@
 //
 
 #import "FindPasswordViewController.h"
+#import "RegularFormat.h"
+#import "NetworkInterface.h"
+#import "MobileFindController.h"
+#import "EmailFindController.h"
 
 @interface FindPasswordViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
@@ -113,7 +117,100 @@
 
 - (IBAction)sendInfo:(id)sender {
     [_inputField resignFirstResponder];
+    if (_sendType == SendTypeMobile) {
+        if ([RegularFormat isMobileNumber:_inputField.text]) {
+            [self sendMobileValidate];
+        }
+        else {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"请输入正确的手机号";
+        }
+    }
+    else if (_sendType == SendTypeEmail) {
+        if ([RegularFormat isCorrectEmail:_inputField.text]) {
+            [self sendEmailValidate];
+        }
+        else {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"请输入正确的邮箱号";
+        }
+    }
+
 }
+
+#pragma mark - Request
+
+//发送验证码
+- (void)sendMobileValidate {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"正在发送...";
+    [NetworkInterface getFindValidateCodeWithMobileNumber:_inputField.text finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                if ([[object objectForKey:@"code"] intValue] == RequestSuccess) {
+                    [hud setHidden:YES];
+                    NSString *validate = [object objectForKey:@"result"];
+                    MobileFindController *mobileC = [[MobileFindController alloc] init];
+                    mobileC.validate = validate;
+                    mobileC.phoneNumber = _inputField.text;
+                    [self.navigationController pushViewController:mobileC animated:YES];
+                }
+                else {
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+            }
+            else {
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+//发送邮箱验证码
+- (void)sendEmailValidate {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"正在发送...";
+    [NetworkInterface sendEmailWithEmail:_inputField.text finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.3f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                if ([[object objectForKey:@"code"] intValue] == RequestSuccess) {
+                    [hud setHidden:YES];
+                    EmailFindController *emailC = [[EmailFindController alloc] init];
+                    [self.navigationController pushViewController:emailC animated:YES];
+                }
+                else {
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+            }
+            else {
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 
 #pragma mark - UITableView
 

@@ -24,8 +24,14 @@ static NSString *key_taxID = @"key_taxID";
 static NSString *key_organID = @"key_organID";
 static NSString *key_channel = @"key_channel";
 
+typedef enum {
+    OpenStatusNew = 1,  //开通
+    OpenStatusReopen,   //重新开通
+}OpenStatus;
+
 @interface ApplyDetailController : CommonViewController
 
 @property (nonatomic, strong) NSString *terminalID;
+@property (nonatomic, assign) OpenStatus openStatus;
 
 @end

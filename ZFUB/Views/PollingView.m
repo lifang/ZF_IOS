@@ -48,6 +48,8 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
         imageView.tag = i + 1;
         imageView.userInteractionEnabled = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.layer.masksToBounds = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
         [imageView addGestureRecognizer:tap];
         //loading...

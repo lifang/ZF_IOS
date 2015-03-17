@@ -569,4 +569,9 @@
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    CGRect rect = [textField.superview convertRect:textField.frame toView:self.view];
+    NSLog(@"%@",NSStringFromCGRect(rect));
+}
+
 @end

@@ -13,6 +13,7 @@
 #import "MerchantSelectedController.h"
 #import "CityHandle.h"
 #import "BankSelectedController.h"
+#import "ChannelSelectedController.h"
 
 #define kTextViewTag   111
 
@@ -38,7 +39,7 @@
 
 @end
 
-@interface ApplyDetailController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,ApplyMerchantSelectedDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+@interface ApplyDetailController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,ApplyMerchantSelectedDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,BankSelectedDelegate,ChannelSelectedDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISegmentedControl *segmentControl;
@@ -64,6 +65,11 @@
 @property (nonatomic, strong) UIToolbar *toolbar;
 
 @property (nonatomic, strong) NSArray *cityArray;  //pickerView 第二列
+
+@property (nonatomic, strong) NSString *merchantID;
+@property (nonatomic, strong) NSString *bankID;  //银行代码
+@property (nonatomic, strong) NSString *channelID; //支付通道ID
+@property (nonatomic, strong) NSString *billID;    //结算日期ID
 
 //无作用 就是用来去掉cell中输入框的输入状态
 @property (nonatomic, strong) UITextField *tempField;
@@ -278,6 +284,39 @@
     }];
 }
 
+- (void)submitApplyInfoWithArray:(NSArray *)params {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface submitApplyWithToken:delegate.token params:params finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"添加成功";
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseApplyDataWithDictionary:(NSDictionary *)dict {
@@ -291,20 +330,74 @@
     _modelLabel.text = [NSString stringWithFormat:@"POS型号   %@",_applyData.modelNumber];
     _terminalLabel.text = [NSString stringWithFormat:@"终  端  号   %@",_applyData.terminalNumber];
     _channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",_applyData.channelName];
+    [self setPrimaryData];
     [_tableView reloadData];
+}
+
+//保存获取的内容
+- (void)setPrimaryData {
+    if (_applyData.personName) {
+        [_infoDict setObject:_applyData.personName forKey:key_name];
+    }
+    if (_applyData.merchantName) {
+        [_infoDict setObject:_applyData.merchantName forKey:key_merchantName];
+    }
+    if (_applyData.birthday) {
+        [_infoDict setObject:_applyData.birthday forKey:key_birth];
+    }
+    if (_applyData.cardID) {
+        [_infoDict setObject:_applyData.cardID forKey:key_cardID];
+    }
+    if (_applyData.phoneNumber) {
+        [_infoDict setObject:_applyData.phoneNumber forKey:key_phone];
+    }
+    if (_applyData.email) {
+        [_infoDict setObject:_applyData.email forKey:key_email];
+    }
+    if (_applyData.cityID) {
+        [_infoDict setObject:_applyData.cityID forKey:key_location];
+    }
+    if (_applyData.bankName) {
+        [_infoDict setObject:_applyData.bankName forKey:key_bank];
+    }
+    if (_applyData.bankNumber) {
+        [_infoDict setObject:_applyData.bankNumber forKey:key_bankID];
+    }
+    if (_applyData.bankAccount) {
+        [_infoDict setObject:_applyData.bankAccount forKey:key_bankAccount];
+    }
+    if (_applyData.taxID) {
+        [_infoDict setObject:_applyData.taxID forKey:key_taxID];
+    }
+    if (_applyData.organID) {
+        [_infoDict setObject:_applyData.organID forKey:key_organID];
+    }
+    if (_applyData.channelID) {
+        [_infoDict setObject:_applyData.channelID forKey:key_channel];
+    }
+    [_infoDict setObject:[NSNumber numberWithInt:_applyData.sex] forKey:key_sex];
+    _merchantID = _applyData.merchantID;
 }
 
 //根据对公对私材料的id找到是否已经提交过材料
 - (NSString *)getApplyValueForKey:(NSString *)key {
-    if ([_applyData.applyList count] <= 0) {
-        return nil;
+    NSLog(@"!!%@,key = %@",[_infoDict objectForKey:key],key);
+    if ([_infoDict objectForKey:key] && ![[_infoDict objectForKey:@""] isEqualToString:@""]) {
+        //若修改过值 返回保存的值
+        return [_infoDict objectForKey:key];
     }
-    for (ApplyInfoModel *model in _applyData.applyList) {
-        if ([model.targetID isEqualToString:key]) {
-            if (model.value && ![model.value isEqualToString:@""]) {
-                [_infoDict setObject:model.value forKey:key];
+    else {
+        //是否之前提交过
+        if ([_applyData.applyList count] <= 0) {
+            return nil;
+        }
+        for (ApplyInfoModel *model in _applyData.applyList) {
+            if ([model.targetID isEqualToString:key]) {
+                if (model.value && ![model.value isEqualToString:@""]) {
+                    [_infoDict setObject:model.value forKey:key];
+                }
+                return model.value;
             }
-            return model.value;
         }
     }
     return nil;
@@ -507,7 +600,7 @@
                     break;
             }
             textFiled.key = textKey;
-            if (indexPath.row == 0 || indexPath.row == 4 || indexPath.row == 8) {
+            if (indexPath.row == 0 || indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 8) {
                 CGRect rect = CGRectMake(cell.frame.size.width - 180, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = NO;
@@ -522,6 +615,18 @@
             if ([_infoDict objectForKey:textKey]) {
                 if (indexPath.row == 8) {
                     textFiled.text = [CityHandle getCityNameWithCityID:[_infoDict objectForKey:textKey]];
+                }
+                else if (indexPath.row == 3) {
+                    //性别
+                    int sexIndex = [[_infoDict objectForKey:textKey] intValue];
+                    NSString *sex = @"";
+                    if (sexIndex == 0) {
+                        sex = @"女";
+                    }
+                    else {
+                        sex = @"男";
+                    }
+                    textFiled.text = sex;
                 }
                 else {
                     textFiled.text = [_infoDict objectForKey:textKey];
@@ -586,6 +691,9 @@
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = YES;
                 cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            if ([_infoDict objectForKey:textKey]) {
+                textFiled.text = [_infoDict objectForKey:textKey];
             }
             cell.key = textKey;
             cell.textLabel.text = titleName;
@@ -676,6 +784,12 @@
             selectedC.delegate = self;
             [self.navigationController pushViewController:selectedC animated:YES];
         }
+        else if (indexPath.section == 0 && indexPath.row == 3) {
+            //性别
+            ApplyInfoCell *cell = (ApplyInfoCell *)[_tableView cellForRowAtIndexPath:indexPath];
+            _selectedKey = cell.key;
+            [self pickerScrollIn];
+        }
         else if (indexPath.section == 0 && indexPath.row == 4) {
             //选择生日
             ApplyInfoCell *cell = (ApplyInfoCell *)[_tableView cellForRowAtIndexPath:indexPath];
@@ -690,6 +804,9 @@
         }
         else if (indexPath.section == 1 && indexPath.row == 5) {
             //选择支付通道
+            ChannelSelectedController *channelC = [[ChannelSelectedController alloc] init];
+            channelC.delegate = self;
+            [self.navigationController pushViewController:channelC animated:YES];
         }
         else {
             ApplyInfoCell *cell = (ApplyInfoCell *)[_tableView cellForRowAtIndexPath:indexPath];
@@ -703,8 +820,10 @@
     else if (indexPath.section == 2) {
         ApplyInfoCell *cell = (ApplyInfoCell *)[_tableView cellForRowAtIndexPath:indexPath];
         if (cell.type == MaterialList) {
+            _selectedKey = cell.key;
             //结算银行
             BankSelectedController *bankC = [[BankSelectedController alloc] init];
+            bankC.delegate = self;
             [self.navigationController pushViewController:bankC animated:YES];
         }
         else if (cell.type == MaterialImage) {
@@ -732,37 +851,68 @@
 #pragma mark - UIPickerView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 2;
+    if (_selectedKey == key_location) {
+        return 2;
+    }
+    else if (_selectedKey == key_sex) {
+        return 1;
+    }
+    return 0;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    if (component == 0) {
-        return [[CityHandle shareProvinceList] count];
+    if (_selectedKey == key_location) {
+        if (component == 0) {
+            return [[CityHandle shareProvinceList] count];
+        }
+        else {
+            NSInteger provinceIndex = [pickerView selectedRowInComponent:0];
+            NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:provinceIndex];
+            _cityArray = [provinceDict objectForKey:@"cities"];
+            return [_cityArray count];
+        }
     }
-    else {
-        NSInteger provinceIndex = [pickerView selectedRowInComponent:0];
-        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:provinceIndex];
-        _cityArray = [provinceDict objectForKey:@"cities"];
-        return [_cityArray count];
+    else if (_selectedKey == key_sex) {
+        return 2;
     }
+    return 0;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (component == 0) {
-        //省
-        NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:row];
-        return [provinceDict objectForKey:@"name"];
+    if (_selectedKey == key_location) {
+        if (component == 0) {
+            //省
+            NSDictionary *provinceDict = [[CityHandle shareProvinceList] objectAtIndex:row];
+            return [provinceDict objectForKey:@"name"];
+        }
+        else {
+            //市
+            return [[_cityArray objectAtIndex:row] objectForKey:@"name"];
+        }
     }
-    else {
-        //市
-        return [[_cityArray objectAtIndex:row] objectForKey:@"name"];
+    else if (_selectedKey == key_sex) {
+        NSString *title = @"";
+        switch (row) {
+            case 0:
+                title = @"女";
+                break;
+            case 1:
+                title = @"男";
+                break;
+            default:
+                break;
+        }
+        return title;
     }
+    return @"";
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (component == 0) {
-        //省
-        [_pickerView reloadComponent:1];
+    if (_selectedKey == key_location) {
+        if (component == 0) {
+            //省
+            [_pickerView reloadComponent:1];
+        }
     }
 }
 
@@ -770,10 +920,19 @@
 
 - (void)pickerScrollIn {
     if ([_selectedKey isEqualToString:key_location]) {
+        [_pickerView reloadAllComponents];
         NSString *cityID = [_infoDict objectForKey:key_location];
         [_pickerView selectRow:[CityHandle getProvinceIndexWithCityID:cityID] inComponent:0 animated:NO];
         [_pickerView reloadAllComponents];
         [_pickerView selectRow:[CityHandle getCityIndexWithCityID:cityID] inComponent:1 animated:NO];
+        [UIView animateWithDuration:.3f animations:^{
+            _toolbar.frame = CGRectMake(0, kScreenHeight - 260, kScreenWidth, 44);
+            _pickerView.frame = CGRectMake(0, kScreenHeight - 216, kScreenWidth, 216);
+            _datePicker.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 216);
+        }];
+    }
+    else if ([_selectedKey isEqualToString:key_sex]) {
+        [_pickerView reloadAllComponents];
         [UIView animateWithDuration:.3f animations:^{
             _toolbar.frame = CGRectMake(0, kScreenHeight - 260, kScreenWidth, 44);
             _pickerView.frame = CGRectMake(0, kScreenHeight - 216, kScreenWidth, 216);
@@ -825,11 +984,14 @@
     if ([_selectedKey isEqualToString:key_location]) {
         NSInteger index = [_pickerView selectedRowInComponent:1];
         NSString *cityID = [NSString stringWithFormat:@"%@",[[_cityArray objectAtIndex:index] objectForKey:@"id"]];
-        //    NSString *cityName = [[_cityArray objectAtIndex:index] objectForKey:@"name"];
         [_infoDict setObject:cityID forKey:key_location];
     }
     else if ([_selectedKey isEqualToString:key_birth]) {
         
+    }
+    else if ([_selectedKey isEqualToString:key_sex]) {
+        NSInteger index = [_pickerView selectedRowInComponent:0];
+        [_infoDict setObject:[NSNumber numberWithInteger:index] forKey:key_sex];
     }
     [_tableView reloadData];
 }
@@ -847,7 +1009,184 @@
 }
 
 - (IBAction)submitApply:(id)sender {
+    [_tempField becomeFirstResponder];
+    [_tempField resignFirstResponder];
+    if (![_infoDict objectForKey:key_name]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写姓名";
+        return;
+    }
+    if (![_infoDict objectForKey:key_merchantName]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写店铺名称";
+        return;
+    }
+    if (![_infoDict objectForKey:key_sex]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择性别";
+        return;
+    }
+    if (![_infoDict objectForKey:key_birth]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择生日";
+        return;
+    }
+    if (![_infoDict objectForKey:key_cardID]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写身份证号";
+        return;
+    }
+    if (![_infoDict objectForKey:key_phone]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写电话";
+        return;
+    }
+    if (![_infoDict objectForKey:key_email]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写邮箱";
+        return;
+    }
+    if (![_infoDict objectForKey:key_location]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择所在地";
+        return;
+    }
+    if (![_infoDict objectForKey:key_bank]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写结算银行名称";
+        return;
+    }
+    if (![_infoDict objectForKey:key_bankID]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写结算银行代码";
+        return;
+    }
+    if (![_infoDict objectForKey:key_bankAccount]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写结算银行账户";
+        return;
+    }
+    if (![_infoDict objectForKey:key_taxID]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写税务登记证号";
+        return;
+    }
+    if (![_infoDict objectForKey:key_organID]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写组织机构号";
+        return;
+    }
+    if (!_channelID || !_billID) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择支付通道";
+        return;
+    }
+    for (MaterialModel *model in _applyData.materialList) {
+        if (![_infoDict objectForKey:model.materialID]) {
+            NSString *infoString = nil;
+            if (model.materialType == MaterialText) {
+                infoString = [NSString stringWithFormat:@"请填写%@",model.materialName];
+            }
+            else if (model.materialType == MaterialList) {
+                infoString = [NSString stringWithFormat:@"请选择%@",model.materialName];
+            }
+            else if (model.materialType == MaterialImage) {
+                infoString = [NSString stringWithFormat:@"请上传%@",model.materialName];
+            }
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = infoString;
+            return;
+        }
+    }
+    NSMutableArray *paramList = [[NSMutableArray alloc] init];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:[NSNumber numberWithInt:[_terminalID intValue]] forKey:@"terminalId"];
+    [params setObject:[NSNumber numberWithInt:_openStatus] forKey:@"status"];
+    [params setObject:[NSNumber numberWithInt:[delegate.userID intValue]] forKey:@"applyCustomerId"];
+    [params setObject:[NSNumber numberWithInt:_applyType] forKey:@"publicPrivateStatus"];
+    [params setObject:[NSNumber numberWithInt:[_merchantID intValue]] forKey:@"merchantId"];
+    [params setObject:[_infoDict objectForKey:key_merchantName] forKey:@"merchantName"];
+    [params setObject:[_infoDict objectForKey:key_sex] forKey:@"sex"];
+    [params setObject:[_infoDict objectForKey:key_birth] forKey:@"birthday"];
+    [params setObject:[_infoDict objectForKey:key_cardID] forKey:@"cardId"];
+    [params setObject:[_infoDict objectForKey:key_phone] forKey:@"phone"];
+    [params setObject:[_infoDict objectForKey:key_name] forKey:@"name"];
+    [params setObject:[_infoDict objectForKey:key_email] forKey:@"email"];
+    [params setObject:[NSNumber numberWithInt:[[_infoDict objectForKey:key_location] intValue]] forKey:@"cityId"];
+    [params setObject:[NSNumber numberWithInt:[_channelID intValue]] forKey:@"channel"];
+    [params setObject:[NSNumber numberWithInt:[_billID intValue]] forKey:@"billingId"];
+    [params setObject:[_infoDict objectForKey:key_bankAccount] forKey:@"bankNum"];
+    [params setObject:[_infoDict objectForKey:key_bank] forKey:@"bankName"];
+    [params setObject:[_infoDict objectForKey:key_bankID] forKey:@"bankCode"];
+    [params setObject:[_infoDict objectForKey:key_organID] forKey:@"organizationNo"];
+    [params setObject:[_infoDict objectForKey:key_taxID] forKey:@"registeredNo"];
     
+    [paramList addObject:params];
+    for (MaterialModel *model in _applyData.materialList) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        NSString *value = nil;
+        if (model.materialType == MaterialList) {
+            value = _bankID;
+        }
+        else {
+            value = [_infoDict objectForKey:model.materialID];
+        }
+        [dict setObject:model.materialName forKey:@"Key"];
+        if (value) {
+            [dict setObject:value forKey:@"Value"];
+        }
+        [dict setObject:[NSNumber numberWithInt:model.materialType] forKey:@"types"];
+        [dict setObject:[NSNumber numberWithInt:[model.materialID intValue]] forKey:@"targetId"];
+        [dict setObject:[NSNumber numberWithInt:[model.levelID intValue]] forKey:@"openingRequirementId"];
+        [paramList addObject:dict];
+    }
+    [self submitApplyInfoWithArray:paramList];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -870,6 +1209,7 @@
 #pragma mark - ApplyMerchantSelectedDelegate
 //选中商户后 带入商户的一些信息
 - (void)getSelectedMerchant:(MerchantDetailModel *)model {
+    _merchantID = model.merchantID;
     if (model.merchantPersonName && ![model.merchantPersonName isEqualToString:@""]) {
         [_infoDict setObject:model.merchantPersonName forKey:key_selected];
         [_infoDict setObject:model.merchantPersonName forKey:key_name];
@@ -889,6 +1229,27 @@
     if (model.merchantOrganizationID && ![model.merchantOrganizationID isEqualToString:@""]) {
         [_infoDict setObject:model.merchantOrganizationID forKey:key_organID];
     }
+    [_tableView reloadData];
+}
+
+#pragma mark - BankSelectedDelegate
+
+- (void)getSelectedBank:(BankModel *)model {
+    if (model) {
+        //此处没有保存对象 因为infoDict的值都为NSString，防止报错
+        [_infoDict setObject:model.bankName forKey:_selectedKey];
+        _bankID = model.bankCode;
+        [_tableView reloadData];
+    }
+}
+
+#pragma mark - ChannelSelectedDelegate
+
+- (void)getChannelList:(ChannelListModel *)model billModel:(BillingModel *)billModel {
+    NSString *channelInfo = [NSString stringWithFormat:@"%@ %@",model.channelName,billModel.billName];
+    [_infoDict setObject:channelInfo forKey:key_channel];
+    _channelID = model.channelID;
+    _billID = billModel.billID;
     [_tableView reloadData];
 }
 

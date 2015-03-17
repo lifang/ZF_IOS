@@ -512,9 +512,19 @@
     NSMutableArray *contentArray = [[NSMutableArray alloc] init];
     for (RateModel *model in rateItems) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setObject:model.rateName forKey:@"0"];
+        if (model.rateName) {
+            [dict setObject:model.rateName forKey:@"0"];
+        }
+        else {
+            [dict setObject:@"" forKey:@"0"];
+        }
         [dict setObject:[NSString stringWithFormat:@"%@%%",model.rateTerminal] forKey:@"1"];
-        [dict setObject:[model statusString] forKey:@"2"];
+        if ([model statusString]) {
+            [dict setObject:[model statusString] forKey:@"2"];
+        }
+        else {
+            [dict setObject:@"" forKey:@"2"];
+        }
         [contentArray addObject:dict];
     }
     NSArray *titleArray = [NSArray arrayWithObjects:@"交易类型",@"费率",@"开通状态", nil];
@@ -527,9 +537,19 @@
     NSMutableArray *contentArray = [[NSMutableArray alloc] init];
     for (GoodRateModel *model in detailItems) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setObject:model.rateName forKey:@"0"];
+        if (model.rateName) {
+            [dict setObject:model.rateName forKey:@"0"];
+        }
+        else {
+            [dict setObject:@"" forKey:@"0"];
+        }
         [dict setObject:[NSString stringWithFormat:@"%@%%",model.ratePercent] forKey:@"1"];
-        [dict setObject:model.rateDescription forKey:@"2"];
+        if (model.rateDescription) {
+            [dict setObject:model.rateDescription forKey:@"2"];
+        }
+        else {
+            [dict setObject:@"" forKey:@"2"];
+        }
         [contentArray addObject:dict];
     }
     [self createFormWithTitle:formTitle column:titleArray content:contentArray];

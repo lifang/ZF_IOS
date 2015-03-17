@@ -7,7 +7,16 @@
 //
 
 #import "CommonViewController.h"
+#import "BankModel.h"
+
+@protocol BankSelectedDelegate <NSObject>
+
+- (void)getSelectedBank:(BankModel *)model;
+
+@end
 
 @interface BankSelectedController : CommonViewController
+
+@property (nonatomic, assign) id<BankSelectedDelegate>delegate;
 
 @end

@@ -1,32 +1,29 @@
 //
-//  ProgressCheckViewController.m
+//  EmailFindController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/9.
+//  Created by 徐宝桥 on 15/3/16.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "ProgressCheckViewController.h"
+#import "EmailFindController.h"
+#import "NetworkInterface.h"
 
-@interface ProgressCheckViewController ()
-
+@interface EmailFindController ()
 
 @end
 
-@implementation ProgressCheckViewController
+@implementation EmailFindController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"申请开通进度查询";
-    self.view.backgroundColor = [UIColor whiteColor];
-    
+    self.title = @"重置密码";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end

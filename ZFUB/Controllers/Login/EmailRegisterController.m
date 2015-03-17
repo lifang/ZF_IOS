@@ -115,6 +115,7 @@
     _passwordField.placeholder = @"输入密码";
     _passwordField.font = [UIFont systemFontOfSize:15.f];
     _passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _passwordField.secureTextEntry = YES;
     UIView *pwdView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, imageSize)];
     UIImageView *pwsImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 0, imageSize, imageSize)];
     pwsImageView.image = kImageName(@"myinfo7.png");
@@ -128,6 +129,7 @@
     _confirmField.placeholder = @"确认密码";
     _confirmField.font = [UIFont systemFontOfSize:15.f];
     _confirmField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _confirmField.secureTextEntry = YES;
     UIView *confirmView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, imageSize)];
     UIImageView *confirmImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 0, imageSize, imageSize)];
     confirmImageView.image = kImageName(@"myinfo7.png");
@@ -196,7 +198,7 @@
 - (void)registerWithEmail {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"正在提交...";
-    [NetworkInterface registerWithActivation:nil username:_usernameField.text userPassword:_passwordField.text cityID:@"1" isEmailRegister:NO finished:^(BOOL success, NSData *response) {
+    [NetworkInterface registerWithActivation:nil username:_usernameField.text userPassword:_passwordField.text cityID:self.selectedCityID isEmailRegister:YES finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -231,6 +233,16 @@
             hud.labelText = kNetworkFailed;
         }
     }];
+}
+
+#pragma mark - Action
+
+- (IBAction)modifyLocation:(id)sender {
+    [super modifyLocation:sender];
+    NSInteger index = [self.pickerView selectedRowInComponent:1];
+    self.selectedCityID = [NSString stringWithFormat:@"%@",[[self.cityArray objectAtIndex:index] objectForKey:@"id"]];
+    NSString *cityName = [[self.cityArray objectAtIndex:index] objectForKey:@"name"];
+    _locationField.text = cityName;
 }
 
 #pragma mark - UITableView
@@ -323,6 +335,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 1 && indexPath.row == 2) {
+        //所在地
+        [self pickerScrollIn];
+    }
 }
 
 #pragma mark - UIAlertView

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import "RegisterLocationController.h"
 
-@interface EmailRegisterController : CommonViewController
+@interface EmailRegisterController : RegisterLocationController
 
 @property (nonatomic, strong) NSString *email;
 

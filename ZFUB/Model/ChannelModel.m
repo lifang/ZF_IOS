@@ -78,6 +78,9 @@
         if ([dict objectForKey:@"support_cancel_flag"]) {
             _canCanceled = [[dict objectForKey:@"support_cancel_flag"] boolValue];
         }
+        if ([dict objectForKey:@"opening_cost"]) {
+            _openCost = [[dict objectForKey:@"opening_cost"] floatValue] / 100;
+        }
         id areaObject = [dict objectForKey:@"supportArea"];
         if ([areaObject isKindOfClass:[NSArray class]]) {
             _supportAreaItem = [[NSMutableArray alloc] init];

@@ -1,15 +1,15 @@
 //
-//  MobileRegisterController.m
+//  MobileFindController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/10.
+//  Created by 徐宝桥 on 15/3/16.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "MobileRegisterController.h"
+#import "MobileFindController.h"
 #import "NetworkInterface.h"
 
-@interface MobileRegisterController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
+@interface MobileFindController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -23,18 +23,17 @@
 
 @property (nonatomic, strong) UITextField *passwordField;
 @property (nonatomic, strong) UITextField *confirmField;
-@property (nonatomic, strong) UITextField *locationField;
 
 @property (nonatomic, assign) BOOL isChecked;
 
 @end
 
-@implementation MobileRegisterController
+@implementation MobileFindController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"注册";
+    self.title = @"找回密码";
     [self initAndLayoutUI];
     [self countDownStart];
 }
@@ -180,18 +179,6 @@
     _confirmField.leftViewMode = UITextFieldViewModeAlways;
     _confirmField.secureTextEntry = YES;
     _confirmField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    
-    _locationField = [[UITextField alloc] init];
-    _locationField.placeholder = @"选择所在地";
-    _locationField.font = [UIFont systemFontOfSize:15.f];
-    UIView *locationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, imageSize)];
-    UIImageView *locationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 0, imageSize, imageSize)];
-    locationImageView.image = kImageName(@"myinfo4.png");
-    [locationView addSubview:locationImageView];
-    _locationField.leftView = locationView;
-    _locationField.leftViewMode = UITextFieldViewModeAlways;
-    _locationField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _locationField.userInteractionEnabled = NO;
 }
 
 - (void)setIsChecked:(BOOL)isChecked {
@@ -208,7 +195,6 @@
         _validateField.text = @"";
         _passwordField.text = @"";
         _confirmField.text = @"";
-        _locationField.text = @"";
         [self setHeaderAndFooterView];
         [_tableView reloadData];
     }
@@ -268,16 +254,7 @@
         [alert show];
         return;
     }
-    if (!_locationField.text || [_locationField.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                        message:@"请选择所在地!"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"确定"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
-    [self registerWithMobile];
+    [self findPasswordWithMobile];
 }
 
 #pragma mark - Data
@@ -286,7 +263,7 @@
 - (void)sendMobileValidate {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"正在发送...";
-    [NetworkInterface getRegisterValidateCodeWithMobileNumber:_usernameField.text finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getFindValidateCodeWithMobileNumber:_usernameField.text finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -312,10 +289,10 @@
     }];
 }
 
-- (void)registerWithMobile {
+- (void)findPasswordWithMobile {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"正在提交...";
-    [NetworkInterface registerWithActivation:_validateField.text username:_usernameField.text userPassword:_passwordField.text cityID:self.selectedCityID isEmailRegister:NO finished:^(BOOL success, NSData *response) {
+    [NetworkInterface findPasswordWithUsername:_usernameField.text password:_passwordField.text validateCode:_validate finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -335,7 +312,7 @@
                 else if (errorCode == RequestSuccess) {
                     NSLog(@"success = %@",[object objectForKey:@"message"]);
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                                    message:@"注册成功"
+                                                                    message:@"修改成功"
                                                                    delegate:self
                                                           cancelButtonTitle:@"确定"
                                                           otherButtonTitles:nil];
@@ -393,13 +370,7 @@
 
 #pragma mark - Action
 
-- (IBAction)modifyLocation:(id)sender {
-    [super modifyLocation:sender];
-    NSInteger index = [self.pickerView selectedRowInComponent:1];
-    self.selectedCityID = [NSString stringWithFormat:@"%@",[[self.cityArray objectAtIndex:index] objectForKey:@"id"]];
-    NSString *cityName = [[self.cityArray objectAtIndex:index] objectForKey:@"name"];
-    _locationField.text = cityName;
-}
+
 
 #pragma mark - UITableView
 
@@ -422,7 +393,7 @@
             row = 1;
             break;
         case 2:
-            row = 3;
+            row = 2;
             break;
         default:
             break;
@@ -458,7 +429,7 @@
                     [cell.contentView addSubview:_validateField];
                     _checkImageView.frame = CGRectMake(_validateField.bounds.size.width + 10, (cell.contentView.bounds.size.height - imageSize ) / 2, imageSize, imageSize);
                     [cell.contentView addSubview:_checkImageView];
-
+                    
                 }
                     break;
                 default:
@@ -480,12 +451,6 @@
                     [cell.contentView addSubview:_confirmField];
                 }
                     break;
-                case 2: {
-                    //
-                    _locationField.frame = CGRectMake(0, 0, kScreenWidth, cell.contentView.bounds.size.height);
-                    [cell.contentView addSubview:_locationField];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                }
                 default:
                     break;
             }
@@ -522,10 +487,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 2 && indexPath.row == 2) {
-        //所在地
-        [self pickerScrollIn];
-    }
 }
 
 #pragma mark - UIAlertView
@@ -535,5 +496,6 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
+
 
 @end

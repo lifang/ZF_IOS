@@ -14,6 +14,14 @@
 #import "OpeningModel.h"
 #import "FormView.h"
 #import "RecordView.h"
+#import "ApplyDetailController.h"
+
+typedef enum {
+    TerDetailBtnTopRight = 1,
+    TerDetailBtnTopLeft,
+    TerDetailBtnBottomRight,
+    TerDetailBtnBottomLeft,
+}TerDetailBtnPosition;
 
 @interface TerminalDetailController ()
 
@@ -698,7 +706,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface getTerminalDetailWithToken:delegate.token userID:delegate.userID tmID:_tm_ID finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getTerminalDetailWithToken:delegate.token userID:delegate.userID tmID:_terminalModel.TM_ID finished:^(BOOL success, NSData *response) {
         NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
@@ -798,25 +806,136 @@
         }
     }
     [self initSubViews];
+    [self addButton];
 }
 
 - (void)addButton {
-    switch ([_status intValue]) {
+    switch ([_terminalModel.TM_status intValue]) {
         case TerminalStatusOpened: {
+            if (_terminalModel.appID) {
+                UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+                UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnTopRight];
+                [self layoutButton:findPswBtn position:TerDetailBtnBottomRight];
+            }
         }
             break;
         case TerminalStatusPartOpened: {
+            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+            UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
+            UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+            [self layoutButton:synBtn position:TerDetailBtnTopRight];
+            [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
+            [self layoutButton:videoAuthBtn position:TerDetailBtnTopLeft];
+            [self layoutButton:findPswBtn position:TerDetailBtnBottomLeft];
         }
             break;
-        case TerminalStatusUnOpened:
+        case TerminalStatusUnOpened: {
+            if (_terminalModel.appID) {
+                UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
+                UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+                [self layoutButton:openApplyBtn position:TerDetailBtnTopRight];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];
+            }
+            else {
+                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+                UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
+                UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openApplyBtn position:TerDetailBtnBottomRight];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnTopLeft];
+            }
+        }
             break;
         case TerminalStatusCanceled:
             break;
-        case TerminalStatusStopped:
+        case TerminalStatusStopped: {
+            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+            [self layoutButton:synBtn position:TerDetailBtnTopRight];
+        }
             break;
         default:
             break;
     }
+}
+
+- (void)layoutButton:(UIButton *)button position:(TerDetailBtnPosition)position {
+    CGFloat topSpace = 20.f;
+    CGFloat middleSpace = 5.f;
+    CGFloat btnWidth = 80.f;
+    CGFloat btnHeight = 24.f;
+    [_scrollView addSubview:button];
+    if (position == TerDetailBtnTopRight || position == TerDetailBtnTopLeft) {
+        //上面按钮
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:_scrollView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:topSpace]];
+    }
+    else if (position == TerDetailBtnBottomRight || position == TerDetailBtnBottomLeft) {
+        //下面的按钮
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                              attribute:NSLayoutAttributeTop
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:_scrollView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0
+                                                               constant:topSpace + middleSpace + btnHeight]];
+    }
+    if (position == TerDetailBtnTopRight || position == TerDetailBtnBottomRight) {
+        //右侧按钮
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.0
+                                                               constant:-20.f]];
+    }
+    else if (position == TerDetailBtnTopLeft || position == TerDetailBtnBottomLeft) {
+        //左侧按钮
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.0
+                                                               constant:-(20 + middleSpace + btnWidth)]];
+    }
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0
+                                                           constant:btnWidth]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0
+                                                           constant:btnHeight]];
+}
+
+- (UIButton *)buttonWithTitle:(NSString *)titleName
+                       action:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.layer.cornerRadius = 4;
+    button.layer.masksToBounds = YES;
+    button.layer.borderWidth = 1.f;
+    button.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+    [button setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+    [button setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:10.f];
+    [button setTitle:titleName forState:UIControlStateNormal];
+    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
                         
 - (NSString *)getStatusString {
@@ -847,10 +966,37 @@
 #pragma mark - Action
 
 - (IBAction)scanImage:(id)sender {
-    NSLog(@"%ld",[(UIButton *)sender tag]);
-    for (UIView *view in _scrollView.subviews) {
-        NSLog(@"%@",view);
-    }
+    NSLog(@"%ld",(long)[(UIButton *)sender tag]);
+
+}
+
+//同步
+- (IBAction)synchronization:(id)sender {
+    
+}
+
+//视频认证
+- (IBAction)videoAuth:(id)sender {
+    
+}
+
+//开通申请
+- (IBAction)openApply:(id)sender {
+    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
+    detail.terminalID = _terminalModel.TM_serialNumber;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
+//重新开通申请
+- (IBAction)openConfirm:(id)sender {
+    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
+    detail.terminalID = _terminalModel.TM_serialNumber;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
+//找回POS密码
+- (IBAction)findPassword:(id)sender {
+    
 }
 
 @end

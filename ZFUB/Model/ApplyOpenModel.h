@@ -23,6 +23,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *materialID;    //材料id
 @property (nonatomic, strong) NSString *materialName;  //材料名
 @property (nonatomic, assign) MaterialType materialType;  //数据类型
+@property (nonatomic, strong) NSString *levelID;
 
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 
@@ -31,7 +32,7 @@ typedef enum {
 //返回已提交的材料信息
 @interface ApplyInfoModel : NSObject
 
-@property (nonatomic, strong) NSString *targetID;
+@property (nonatomic, strong) NSString *targetID;  //等于MaterialModel中的materialID
 @property (nonatomic, strong) NSString *key;
 @property (nonatomic, strong) NSString *value;
 @property (nonatomic, assign) MaterialType type;
@@ -48,9 +49,26 @@ typedef enum {
 @property (nonatomic, strong) NSString *terminalNumber;
 @property (nonatomic, strong) NSString *channelName;
 
+//已上传的基本信息
+@property (nonatomic, strong) NSString *personName;
+@property (nonatomic, strong) NSString *merchantID;
+@property (nonatomic, strong) NSString *merchantName;
+@property (nonatomic, assign) int sex;
+@property (nonatomic, strong) NSString *birthday;
+@property (nonatomic, strong) NSString *cardID;
+@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *cityID;
+@property (nonatomic, strong) NSString *bankName;
+@property (nonatomic, strong) NSString *bankNumber;
+@property (nonatomic, strong) NSString *bankAccount;
+@property (nonatomic, strong) NSString *taxID;
+@property (nonatomic, strong) NSString *organID;
+@property (nonatomic, strong) NSString *channelID;
+
 @property (nonatomic, strong) NSMutableArray *merchantList;
-@property (nonatomic, strong) NSMutableArray *materialList;
-@property (nonatomic, strong) NSMutableArray *applyList;
+@property (nonatomic, strong) NSMutableArray *materialList; //需要提交的材料数组
+@property (nonatomic, strong) NSMutableArray *applyList;    //已提交的材料数组
 
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 

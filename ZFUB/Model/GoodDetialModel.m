@@ -8,12 +8,38 @@
 
 #import "GoodDetialModel.h"
 
+@implementation RelativeGood
+
+- (id)initWithParseDictionary:(NSDictionary *)dict {
+    if (self = [super init]) {
+        if ([dict objectForKey:@"id"]) {
+            _relativeID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
+        }
+        if ([dict objectForKey:@"url_path"]) {
+            _pictureURL = [NSString stringWithFormat:@"%@",[dict objectForKey:@"url_path"]];
+        }
+        if ([dict objectForKey:@"retail_price"]) {
+            _price = [[dict objectForKey:@"retail_price"] floatValue] / 100;
+        }
+        if ([dict objectForKey:@"Title"]) {
+            _title = [NSString stringWithFormat:@"%@",[dict objectForKey:@"Title"]];
+        }
+    }
+    return self;
+}
+
+
+@end
+
 @implementation GoodDetialModel
 
 - (id)initWithParseDictionary:(NSDictionary *)dict {
     if (self = [super init]) {
         id goodInfo = [dict objectForKey:@"goodinfo"];
         if ([goodInfo isKindOfClass:[NSDictionary class]]) {
+            if ([goodInfo objectForKey:@"id"]) {
+                _goodID = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"id"]];
+            }
             if ([goodInfo objectForKey:@"Title"]) {
                 _goodName = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"Title"]];
             }
@@ -49,6 +75,9 @@
             }
             if ([goodInfo objectForKey:@"price"]) {
                 _goodPrice = [[goodInfo objectForKey:@"price"] floatValue] / 100;
+            }
+            if ([goodInfo objectForKey:@"description"]) {
+                _goodDescription = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"description"]];
             }
         }
         id factoryInfo = [dict objectForKey:@"factory"];
@@ -89,6 +118,19 @@
                 }
             }
         }
+        //相关商品
+        id relativeObject = [dict objectForKey:@"relativeShopList"];
+        if ([relativeObject isKindOfClass:[NSArray class]]) {
+            _relativeItem = [[NSMutableArray alloc] init];
+            for (int i = 0; i < [relativeObject count]; i++) {
+                id relativeDict = [relativeObject objectAtIndex:i];
+                if ([relativeDict isKindOfClass:[NSDictionary class]]) {
+                    RelativeGood *model = [[RelativeGood alloc] initWithParseDictionary:relativeDict];
+                    [_relativeItem addObject:model];
+                }
+            }
+        }
+        
         [self setDownloadStatus];
     }
     return self;
@@ -96,17 +138,16 @@
 
 - (void)setDownloadStatus {
     ChannelModel *currentChannel = nil;
+    NSInteger oldIndex = -1;
     for (ChannelModel *model in _channelItem) {
+        oldIndex ++;
         if (_defaultChannel.channelID && [model.channelID isEqualToString:_defaultChannel.channelID]) {
             currentChannel = model;
             _defaultChannel.isAlreadyLoad = YES;
             break;
         }
     }
-    if (currentChannel) {
-        [_channelItem removeObject:currentChannel];
-        [_channelItem addObject:_defaultChannel];
-    }
+    [_channelItem replaceObjectAtIndex:oldIndex withObject:_defaultChannel];
 }
 
 @end

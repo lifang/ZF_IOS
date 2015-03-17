@@ -97,6 +97,20 @@ static NSString *HTTP_GET  = @"GET";
                         finished:finish];
 }
 
+//4.
++ (void)sendEmailWithEmail:(NSString *)email
+                  finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:email forKey:@"codeNumber"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_sendEmail_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
 //5.
 + (void)getRegisterValidateCodeWithMobileNumber:(NSString *)mobileNumber
                                        finished:(requestDidFinished)finish {
@@ -228,6 +242,25 @@ static NSString *HTTP_GET  = @"GET";
     
 }
 
++ (void)submitApplyWithToken:(NSString *)token
+                      params:(NSArray *)paramList
+                    finished:(requestDidFinished)finish {
+    //参数
+//    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+//    [paramDict setObject:token forKey:@"token"];
+//    [paramDict setObject:paramList forKey:@"paramMap"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applySubmit_method];
+    NetworkRequest *request = [[NetworkRequest alloc] initWithRequestURL:urlString
+                                                              httpMethod:HTTP_POST
+                                                                finished:finish];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:paramList
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    [request setPostBody:postData];
+    [request start];
+}
+
 //15.
 + (void)getTerminalManagerListWithToken:(NSString *)token
                                  userID:(NSString *)userID
@@ -273,8 +306,9 @@ static NSString *HTTP_GET  = @"GET";
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
     [paramDict setObject:token forKey:@"token"];
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
+    [paramDict setObject:[NSNumber numberWithInt:[institutionID intValue]] forKey:@"payChannelId"];
     [paramDict setObject:terminalNumber forKey:@"serialNum"];
-    [paramDict setObject:[merchantName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:@"title"];
+    [paramDict setObject:merchantName forKey:@"title"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_addTerminal_method];
     [[self class] requestWithURL:urlString
@@ -415,7 +449,7 @@ static NSString *HTTP_GET  = @"GET";
         [paramDict setObject:[NSNumber numberWithFloat:minPrice] forKey:@"minPrice"];
     }
     if (keyword) {
-        [paramDict setObject:[keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:@"keys"];
+        [paramDict setObject:keyword forKey:@"keys"];
     }
     [paramDict setObject:[NSNumber numberWithInt:rent] forKey:@"has_purchase"];
     [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
@@ -438,6 +472,38 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:goodID forKey:@"goodId"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_goodDetail_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//25.
++ (void)getChannelDetailWithChannleID:(NSString *)channelID
+                             finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"pcid"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_channelDetail_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//26.
++ (void)getCommentListWithGoodID:(NSString *)goodID
+                            page:(int)page
+                            rows:(int)rows
+                        finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
+    [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
+    [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"rows"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_commentList_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST
@@ -488,6 +554,24 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:[NSNumber numberWithInt:count] forKey:@"quantity"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_updateShoppingList_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//31.
++ (void)searchTerminalStatusWithToken:(NSString *)token
+                               userID:(NSString *)userID
+                          phoneNumber:(NSString *)phoneNumber
+                             finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:token forKey:@"token"];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
+    [paramDict setObject:phoneNumber forKey:@"phone"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_terminalSearch_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST
@@ -1435,6 +1519,25 @@ static NSString *HTTP_GET  = @"GET";
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_homeImageList_method];
     [[self class] requestWithURL:urlString
                           params:nil
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
+//90.
++ (void)findPasswordWithUsername:(NSString *)username
+                        password:(NSString *)password
+                    validateCode:(NSString *)validateCode
+                        finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:username forKey:@"username"];
+    NSString *encryptPassword = [EncryptHelper MD5_encryptWithString:password];
+    [paramDict setObject:encryptPassword forKey:@"password"];
+    [paramDict setObject:validateCode forKey:@"Code"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_findPassword_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
                       httpMethod:HTTP_POST
                         finished:finish];
 }

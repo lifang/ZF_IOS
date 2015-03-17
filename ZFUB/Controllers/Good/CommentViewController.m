@@ -1,21 +1,17 @@
 //
-//  TerminalManagerController.m
+//  CommentViewController.m
 //  ZFUB
 //
-//  Created by 徐宝桥 on 15/2/27.
+//  Created by 徐宝桥 on 15/3/13.
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "TerminalManagerController.h"
+#import "CommentViewController.h"
 #import "RefreshView.h"
-#import "AppDelegate.h"
 #import "NetworkInterface.h"
-#import "TerminalManagerCell.h"
-#import "AddTerminalController.h"
-#import "TerminalDetailController.h"
-#import "ApplyDetailController.h"
+#import "CommentCell.h"
 
-@interface TerminalManagerController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,TerminalManagerDelegate>
+@interface CommentViewController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -28,18 +24,18 @@
 @property (nonatomic, assign) int page;
 /**********************************/
 
-//终端信息数据
-@property (nonatomic, strong) NSMutableArray *terminalItems;
+//评论
+@property (nonatomic, strong) NSMutableArray *reviewItem;
 
 @end
 
-@implementation TerminalManagerController
+@implementation CommentViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"终端管理";
-    _terminalItems = [[NSMutableArray alloc] init];
+    self.title = [NSString stringWithFormat:@"评论(%@)",_commentCount];
+    _reviewItem = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
 }
@@ -52,32 +48,7 @@
 #pragma mark - UI
 
 - (void)setHeaderAndFooterView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 78)];
-    headerView.backgroundColor = kColor(244, 243, 243, 1);
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addBtn.frame = CGRectMake(80, 15, kScreenWidth - 160, 40);
-    addBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
-    [addBtn setImage:kImageName(@"add.png") forState:UIControlStateNormal];
-    [addBtn addTarget:self action:@selector(addTerminal:) forControlEvents:UIControlEventTouchUpInside];
-    [addBtn setTitle:@"添加其他终端" forState:UIControlStateNormal];
-    [addBtn setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
-    [addBtn setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
-    addBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 18, 0, 10);
-    [headerView addSubview:addBtn];
-    
-    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(116, 45, kScreenWidth - 200, 20)];
-    infoLabel.backgroundColor = [UIColor clearColor];
-    infoLabel.textAlignment = NSTextAlignmentCenter;
-    infoLabel.font = [UIFont systemFontOfSize:10.f];
-    infoLabel.textColor = kColor(132, 131, 131, 1);
-    infoLabel.text = @"方便您查看交易流水";
-    [headerView addSubview:infoLabel];
-    
-    _tableView.tableHeaderView = headerView;
-    
-//    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
-//    footerView.backgroundColor = [UIColor clearColor];
-//    _tableView.tableFooterView = footerView;
+
 }
 
 - (void)initAndLayoutUI {
@@ -138,8 +109,7 @@
 - (void)downloadDataWithPage:(int)page isMore:(BOOL)isMore {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
-    AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface getTerminalManagerListWithToken:delegate.token userID:delegate.userID page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getCommentListWithGoodID:_goodID page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -154,7 +124,7 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     if (!isMore) {
-                        [_terminalItems removeAllObjects];
+                        [_reviewItem removeAllObjects];
                     }
                     if ([[object objectForKey:@"result"] count] > 0) {
                         //有数据
@@ -165,7 +135,7 @@
                         //无数据
                         hud.labelText = @"没有更多数据了...";
                     }
-                    [self parseTerminalDataWithDictionary:object];
+                    [self parseCommentDataWithDictionary:object];
                 }
             }
             else {
@@ -185,32 +155,36 @@
     }];
 }
 
-
 #pragma mark - Data
 
-- (void)parseTerminalDataWithDictionary:(NSDictionary *)dict {
+- (void)parseCommentDataWithDictionary:(NSDictionary *)dict {
     if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    NSArray *TM_List = [[dict objectForKey:@"result"] objectForKey:@"list"];
-    for (int i = 0; i < [TM_List count]; i++) {
-        TerminalManagerModel *tm_Model = [[TerminalManagerModel alloc] initWithParseDictionary:[TM_List objectAtIndex:i]];
-        [_terminalItems addObject:tm_Model];
+    NSArray *commentList = [[dict objectForKey:@"result"] objectForKey:@"list"];
+    for (int i = 0; i < [commentList count]; i++) {
+        NSDictionary *dict = [commentList objectAtIndex:i];
+        CommentModel *model = [[CommentModel alloc] initWithParseDictionary:dict];
+        [_reviewItem addObject:model];
     }
     [_tableView reloadData];
 }
 
-#pragma mark - Action
-
-- (IBAction)addTerminal:(id)sender {
-    AddTerminalController *addC = [[AddTerminalController alloc] init];
-    [self.navigationController pushViewController:addC animated:YES];
+- (CGFloat)heightForComment:(NSString *)content {
+    NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [UIFont systemFontOfSize:14.f],NSFontAttributeName,
+                          nil];
+    CGRect rect = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 40, CGFLOAT_MAX)
+                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                     attributes:attr
+                                        context:nil];
+    return rect.size.height + 1 > 20.f ? rect.size.height + 1 : 20.f;
 }
 
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [_terminalItems count];
+    return [_reviewItem count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -218,68 +192,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
-    NSString *cellIdentifier = nil;
-    switch ([model.TM_status intValue]) {
-        case TerminalStatusOpened:
-            //已开通
-            if (model.appID) {
-                cellIdentifier = OpenedFirstStatusIdentifier;
-            }
-            else {
-                cellIdentifier = OpenedSecondStatusIdentifier;
-            }
-            break;
-        case TerminalStatusPartOpened:
-            //部分开通
-            cellIdentifier = PartOpenedStatusIdentifier;
-            break;
-        case TerminalStatusUnOpened:
-            //未开通
-            if (model.appID) {
-                cellIdentifier = UnOpenedSecondStatusIdentifier;
-            }
-            else {
-                cellIdentifier = UnOpenedFirstStatusIdentifier;
-            }
-            break;
-        case TerminalStatusCanceled:
-            //已注销
-            cellIdentifier = CanceledStatusIdentifier;
-            break;
-        case TerminalStatusStopped:
-            //已停用
-            cellIdentifier = StoppedStatusIdentifier;
-            break;
-        default:
-            break;
-    }
-    TerminalManagerCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *commentIdentifier = @"commentIdentifier";
+    CommentModel *model = [_reviewItem objectAtIndex:indexPath.section];
+    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:commentIdentifier];
     if (cell == nil) {
-        cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        cell.delegate = self;
+        cell = [[CommentCell alloc] initWithContent:model.content reuseIdentifier:commentIdentifier];
     }
-    [cell setContentsWithData:model];
+    [cell setCommentData:model];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
-    if ([model.TM_status intValue] == TerminalStatusCanceled) {
-        return kTMShortCellHeight;
-    }
-    else if ([model.TM_status intValue] == TerminalStatusOpened && !model.appID) {
-        return kTMMiddleCellHeight;
-    }
-    return kTMLongCellHeight;
+    CommentModel *model = [_reviewItem objectAtIndex:indexPath.section];
+    CGFloat commentHeight = [self heightForComment:model.content];
+    return commentHeight + kNormalHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
-    TerminalDetailController *detailC = [[TerminalDetailController alloc] init];
-    detailC.terminalModel = model;
-    [self.navigationController pushViewController:detailC animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -380,36 +310,6 @@
 //上拉加载
 - (void)pullUpToLoadData {
     [self downloadDataWithPage:self.page isMore:YES];
-}
-
-#pragma mark - TerminalManagerDelegate
-//视频认证
-- (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model {
-    
-}
-
-//找回POS密码
-- (void)terminalManagerFindPasswordWithData:(TerminalManagerModel *)model {
-    
-}
-
-//同步
-- (void)terminalManagerSynchronizationWithData:(TerminalManagerModel *)model {
-    
-}
-
-//开通申请
-- (void)terminalManagerOpenApplyWithData:(TerminalManagerModel *)model {
-    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = model.TM_serialNumber;
-    [self.navigationController pushViewController:detail animated:YES];
-}
-
-//重新开通申请
-- (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model {
-    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = model.TM_serialNumber;
-    [self.navigationController pushViewController:detail animated:YES];
 }
 
 
