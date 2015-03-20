@@ -15,14 +15,22 @@
 #import "DealFlowViewController.h"
 #import "TerminalManagerController.h"
 #import "OpenApplyController.h"
+#import "SystemMessageController.h"
 #import "NetworkInterface.h"
 #import "HomeImageModel.h"
+#import "LocationViewController.h"
+#import "ContactUsController.h"
+#import "UIImageView+WebCache.h"
 
-@interface HomeViewController ()
+@interface HomeViewController ()<LocationDelegate>
 
 @property (nonatomic, strong) PollingView *pollingView;
 
 @property (nonatomic, strong) NSMutableArray *pictureItem;
+
+@property (nonatomic, strong) LocationButton *locationBtn;
+
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
@@ -64,6 +72,25 @@
     [self initPollingView];
     //模块按钮
     [self initModuleView];
+    
+//    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, 220, 220)];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tt)];
+//    _imageView.backgroundColor = [UIColor blackColor];
+//    _imageView.userInteractionEnabled = YES;
+//    [_imageView addGestureRecognizer:tap];
+//    [self.view addSubview:_imageView];
+}
+
+- (void)tt {
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:@"http://pic42.nipic.com/20140608/18347945_020920394000_2.jpg"]
+                 placeholderImage:nil
+                          options:SDWebImageProgressiveDownload
+                         progress:^(NSInteger receivedSize, NSInteger expectedSize){
+                             NSLog(@"!!!%f",(float)receivedSize / expectedSize);
+                         }
+                        completed:^(UIImage *image,NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
+                            NSLog(@"%f,%f",image.size.width,image.size.height);
+                        }];
 }
 
 //********导航栏*********
@@ -86,9 +113,9 @@
                                                                                target:nil
                                                                                action:nil];
     spaceItem.width = -8;
-    LocationButton *leftButton = [[LocationButton alloc] initWithFrame:CGRectMake(0, 0, kLocationButtonWidth, 40)];
-    [leftButton addTarget:self action:@selector(selectLocation:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
+    _locationBtn = [[LocationButton alloc] initWithFrame:CGRectMake(0, 0, kLocationButtonWidth, 40)];
+    [_locationBtn addTarget:self action:@selector(selectLocation:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:_locationBtn];
     self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:spaceItem, leftItem, nil];
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -265,10 +292,16 @@
             break;
         case ModuleSystemAnnouncement: {
             //系统公告
+            SystemMessageController *systemC = [[SystemMessageController alloc] init];
+            systemC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:systemC animated:YES];
         }
             break;
         case ModuleContact: {
             //联系我们
+            ContactUsController *contactC = [[ContactUsController alloc] init];
+            contactC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contactC animated:YES];
         }
             break;
         default:
@@ -277,7 +310,10 @@
 }
 
 - (IBAction)selectLocation:(id)sender {
-    
+    LocationViewController *locationC = [[LocationViewController alloc] init];
+    locationC.delegate = self;
+    locationC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:locationC animated:YES];
 }
 
 - (void)tapPicture:(UITapGestureRecognizer *)tap {
@@ -285,5 +321,16 @@
     NSLog(@"tag = %ld",imageView.tag);
 }
 
+
+#pragma mark - 定位
+
+- (void)getSelectedLocation:(CityModel *)selectedCity {
+    if (selectedCity) {
+        _locationBtn.nameLabel.text = selectedCity.cityName;
+    }
+    else {
+        _locationBtn.nameLabel.text = @"无法定位";
+    }
+}
 
 @end

@@ -18,6 +18,10 @@
 #import "InterestView.h"
 #import "CommentViewController.h"
 #import "BuyOrderViewController.h"
+#import "RentOrderViewController.h"
+#import "TradeRateViewController.h"
+#import "RentDescriptionController.h"
+#import "OpenInfoViewController.h"
 
 static CGFloat topImageHeight = 160.f;
 
@@ -57,6 +61,12 @@ static CGFloat topImageHeight = 160.f;
     // Do any additional setup after loading the view.
     self.title = @"商品详情";
     self.view.backgroundColor = kColor(244, 243, 243, 1);
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"good_right1.png")
+                                                                  style:UIBarButtonItemStyleDone
+                                                                 target:self
+                                                                 action:@selector(goShoppingCart:)];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     [self downloadGoodDetail];
 }
 
@@ -357,6 +367,7 @@ static CGFloat topImageHeight = 160.f;
     UILabel *factorySummaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, summaryHeight)];
     factorySummaryLabel.numberOfLines = 2;
     [self setLabel:factorySummaryLabel withTitle:_detailModel.factorySummary font:[UIFont systemFontOfSize:13.f]];
+    factorySummaryLabel.textColor = kColor(102, 102, 102, 1);
     
     //按钮view
     originY += summaryHeight + 10;
@@ -405,7 +416,11 @@ static CGFloat topImageHeight = 160.f;
     //支持区域
     originY += vSpace + 1;
     NSString *area = [_detailModel.defaultChannel.supportAreaItem componentsJoinedByString:@" "];
-    [self addLabelWithTitle:@"支持支付区域" content:area offsetY:originY];
+    NSString *titleString = @"支持支付区域";
+    if (!_detailModel.defaultChannel.supportType) {
+        titleString = @"不支持支付区域";
+    }
+    [self addLabelWithTitle:titleString content:area offsetY:originY];
     //注销
     originY += vSpace +labelHeight;
     NSString *cancelString = nil;
@@ -589,6 +604,7 @@ static CGFloat topImageHeight = 160.f;
     
     UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(middleLeftSpace, offsetY, kScreenWidth - middleLeftSpace, labelHeight)];
     [self setLabel:contentLabel withTitle:content font:[UIFont systemFontOfSize:14.f]];
+    contentLabel.textColor = kColor(144, 143, 143, 1);
     
 }
 
@@ -665,6 +681,7 @@ static CGFloat topImageHeight = 160.f;
     }];
 }
 
+//切换支付通道
 - (void)getChannelDetailWithChannelID:(NSString *)channelID {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
@@ -684,6 +701,38 @@ static CGFloat topImageHeight = 160.f;
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
                     [self parseChannelDetailWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+- (void)addGoodIntoShoppingCart {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"加载中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface addShoppingCartWithToken:delegate.token userID:delegate.userID goodID:_detailModel.goodID channelID:_detailModel.defaultChannel.channelID finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"添加到购物车成功";
                 }
             }
             else {
@@ -743,6 +792,10 @@ static CGFloat topImageHeight = 160.f;
 
 #pragma mark - Action
 
+- (IBAction)goShoppingCart:(id)sender {
+    [self.tabBarController setSelectedIndex:1];
+}
+
 - (IBAction)selectedChannel:(id)sender {
     GoodButton *btn = (GoodButton *)sender;
     btn.selected = YES;
@@ -773,7 +826,11 @@ static CGFloat topImageHeight = 160.f;
     _rentButton.selected = NO;
     
     _shopcartButton.enabled = YES;
+    _shopcartButton.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+    [_shopcartButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+    
     [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
+    [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice + _detailModel.defaultChannel.openCost]];
 }
 
 - (IBAction)rentGood:(id)sender {
@@ -782,7 +839,11 @@ static CGFloat topImageHeight = 160.f;
     _rentButton.selected = YES;
     
     _shopcartButton.enabled = NO;
+    _shopcartButton.layer.borderColor = kColor(251, 179, 130, 1).CGColor;
+    [_shopcartButton setTitleColor:kColor(251, 179, 130, 1) forState:UIControlStateNormal];
+    
     [_buyGoodButton setTitle:@"立即租赁" forState:UIControlStateNormal];
+    [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.deposit + _detailModel.defaultChannel.openCost]];
 }
 
 - (IBAction)scanFactoryInfo:(id)sender {
@@ -797,20 +858,34 @@ static CGFloat topImageHeight = 160.f;
 }
 
 - (IBAction)scanRate:(id)sender {
-    
+    TradeRateViewController *rateC = [[TradeRateViewController alloc] init];
+    rateC.tradeRateItem = _detailModel.defaultChannel.dateRateItem;
+    [self.navigationController pushViewController:rateC animated:YES];
 }
 
 - (IBAction)scanOpenInfo:(id)sender {
-    
+    OpenInfoViewController *openC = [[OpenInfoViewController alloc] init];
+    openC.channelData = _detailModel.defaultChannel;
+    [self.navigationController pushViewController:openC animated:YES];
 }
 
 - (IBAction)scanRent:(id)sender {
-    
+    RentDescriptionController *descC = [[RentDescriptionController alloc] init];
+    descC.goodDetail = _detailModel;
+    [self.navigationController pushViewController:descC animated:YES];
 }
 
 //加入购物车
 - (IBAction)addShoppingCart:(id)sender {
-    
+    if (!_detailModel.goodID) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"未获取到此商品信息";
+        return;
+    }
+    [self addGoodIntoShoppingCart];
 }
 
 //立即购买、租赁
@@ -821,7 +896,9 @@ static CGFloat topImageHeight = 160.f;
         [self.navigationController pushViewController:buyC animated:YES];
     }
     else {
-        
+        RentOrderViewController *rentC = [[RentOrderViewController alloc] init];
+        rentC.goodDetail = _detailModel;
+        [self.navigationController pushViewController:rentC animated:YES];
     }
 }
 

@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "AddressModel.h"
 #import "AddressEditController.h"
+#import "MultipleDeleteCell.h"
 
 @interface AddressManagerController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -19,6 +20,10 @@
 @property (nonatomic, assign) BOOL isMultiDelete;
 
 @property (nonatomic, strong) NSMutableArray *addressItems;
+
+@property (nonatomic, strong) NSMutableDictionary *selectedItem; //多选的行
+
+@property (nonatomic, strong) UIView *bottomView;
 
 @end
 
@@ -33,9 +38,10 @@
     // Do any additional setup after loading the view.
     self.title = @"地址管理";
     _addressItems = [[NSMutableArray alloc] init];
+    _selectedItem = [[NSMutableDictionary alloc] init];
     [self initAndLayoutUI];
     [self getAddressList];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList:) name:RefreshAddressListNotification object:nil];
 }
 
@@ -108,6 +114,7 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
+    [self initBottomView];
 }
 
 - (void)setHeaderAndFooterView {
@@ -120,9 +127,41 @@
     _tableView.tableFooterView = footerView;
 }
 
+- (void)initBottomView {
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 49 - 64, kScreenWidth, 49)];
+    _bottomView.backgroundColor = [UIColor whiteColor];
+    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kLineHeight)];
+    firstLine.backgroundColor = kColor(170, 169, 169, 1);
+    [_bottomView addSubview:firstLine];
+    UIButton *readBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    readBtn.frame = CGRectMake(10, 7, 60, 36);
+    readBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
+    [readBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [readBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [readBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [readBtn addTarget:self action:@selector(cancelDelete:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:readBtn];
+    
+    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    deleteBtn.frame = CGRectMake(kScreenWidth - 60, 7, 60, 36);
+    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
+    [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(deleteAddress:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:deleteBtn];
+}
+
 - (void)setIsMultiDelete:(BOOL)isMultiDelete {
     _isMultiDelete = isMultiDelete;
     [_tableView setEditing:_isMultiDelete animated:YES];
+    if (_isMultiDelete) {
+        [self.view addSubview:_bottomView];
+    }
+    else {
+        [_selectedItem removeAllObjects];
+        [_bottomView removeFromSuperview];
+    }
 }
 
 #pragma mark - Request
@@ -161,6 +200,86 @@
     }];
 }
 
+//地址单删
+- (void)deleteSingleAddressWithIndexPath:(NSIndexPath *)indexPath {
+    AddressModel *model = [_addressItems objectAtIndex:indexPath.row];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface deleteAddressWithToken:delegate.token addressIDs:[NSArray arrayWithObject:[NSNumber numberWithInt:[model.addressID intValue]]] finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"删除成功";
+                    [_addressItems removeObject:model];
+                    [_tableView beginUpdates];
+                    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [_tableView endUpdates];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+//地址多删
+- (void)deleteMultiAddress {
+    NSArray *addressID = [self addresssIDForEditRows];
+    if ([addressID count] <= 0) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择需要删除的地址";
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface deleteAddressWithToken:delegate.token addressIDs:addressID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"删除成功";
+                    [self updateAddressListForMultiDelete];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseAddressListDataWithDict:(NSDictionary *)dict {
@@ -176,16 +295,61 @@
     [_tableView reloadData];
 }
 
+//多删成功后更新列表
+- (void)updateAddressListForMultiDelete {
+    NSMutableArray *deleteAddressArray = [[NSMutableArray alloc] init];
+    NSMutableArray *deleteIndexArray = [[NSMutableArray alloc] init];
+    for (NSNumber *index in _selectedItem) {
+        if ([index intValue] < [_addressItems count]) {
+            AddressModel *model = [_addressItems objectAtIndex:[index intValue]];
+            [deleteAddressArray addObject:model];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[index intValue] inSection:0];
+            [deleteIndexArray addObject:indexPath];
+        }
+    }
+    [_addressItems removeObjectsInArray:deleteAddressArray];
+    [_tableView beginUpdates];
+    [_tableView deleteRowsAtIndexPaths:deleteIndexArray withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView endUpdates];
+    self.isMultiDelete = NO;
+}
+
+//获取多选状态下选中的地址id数组
+- (NSArray *)addresssIDForEditRows {
+    NSMutableArray *IDs = [[NSMutableArray alloc] init];
+    for (NSNumber *index in _selectedItem) {
+        if ([index intValue] < [_addressItems count]) {
+            AddressModel *model = [_addressItems objectAtIndex:[index intValue]];
+            [IDs addObject:[NSNumber numberWithInt:[model.addressID intValue]]];
+        }
+    }
+    return IDs;
+}
+
 #pragma mark - Action
 
 - (IBAction)multiDelete:(id)sender {
+    if (!_isMultiDelete && _tableView.isEditing) {
+        _tableView.editing = NO;
+    }
     self.isMultiDelete = !_isMultiDelete;
 }
 
 - (IBAction)addAddress:(id)sender {
+    if (_isMultiDelete) {
+        self.isMultiDelete = NO;
+    }
     AddressEditController *modifyC = [[AddressEditController alloc] init];
     modifyC.type = AddressAdd;
     [self.navigationController pushViewController:modifyC animated:YES];
+}
+
+- (IBAction)cancelDelete:(id)sender {
+    self.isMultiDelete = NO;
+}
+
+- (IBAction)deleteAddress:(id)sender {
+    [self deleteMultiAddress];
 }
 
 
@@ -202,11 +366,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"Address";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    MultipleDeleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell = [[MultipleDeleteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
     AddressModel *model = [_addressItems objectAtIndex:indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:15.f];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14.f];
     cell.detailTextLabel.numberOfLines = 0;
     cell.textLabel.text = [NSString stringWithFormat:@"收件人：%@  %@",model.addressReceiver,model.addressPhone];
@@ -226,40 +391,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        AddressModel *model = [_addressItems objectAtIndex:indexPath.row];
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.labelText = @"加载中...";
-        AppDelegate *delegate = [AppDelegate shareAppDelegate];
-        [NetworkInterface deleteAddressWithToken:delegate.token addressIDs:[NSArray arrayWithObject:[NSNumber numberWithInt:[model.addressID intValue]]] finished:^(BOOL success, NSData *response) {
-            NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-            hud.customView = [[UIImageView alloc] init];
-            hud.mode = MBProgressHUDModeCustomView;
-            [hud hide:YES afterDelay:0.5f];
-            if (success) {
-                id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
-                if ([object isKindOfClass:[NSDictionary class]]) {
-                    NSString *errorCode = [object objectForKey:@"code"];
-                    if ([errorCode intValue] == RequestFail) {
-                        //返回错误代码
-                        hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
-                    }
-                    else if ([errorCode intValue] == RequestSuccess) {
-                        [hud hide:YES];
-                        [_addressItems removeObject:model];
-                        [_tableView beginUpdates];
-                        [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                        [_tableView endUpdates];
-                    }
-                }
-                else {
-                    //返回错误数据
-                    hud.labelText = kServiceReturnWrong;
-                }
-            }
-            else {
-                hud.labelText = kNetworkFailed;
-            }
-        }];
+        [self deleteSingleAddressWithIndexPath:indexPath];
     }
     else if (editingStyle == 3) {
         NSLog(@"33333");
@@ -273,6 +405,15 @@
         modifyC.type = AddressModify;
         modifyC.address = model;
         [self.navigationController pushViewController:modifyC animated:YES];
+    }
+    else {
+        [_selectedItem setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:indexPath.row]];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_isMultiDelete) {
+        [_selectedItem removeObjectForKey:[NSNumber numberWithInteger:indexPath.row]];
     }
 }
 

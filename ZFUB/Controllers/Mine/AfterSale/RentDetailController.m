@@ -18,12 +18,12 @@
 @property (nonatomic, strong) NSString *channelName;
 @property (nonatomic, strong) NSString *merchantName;
 @property (nonatomic, strong) NSString *merchantPhone;
-@property (nonatomic, strong) NSString *rent;
-@property (nonatomic, strong) NSString *deposit; //押金
+@property (nonatomic, assign) CGFloat  rent;
+@property (nonatomic, assign) CGFloat  deposit; //押金
 @property (nonatomic, strong) NSString *rentDuration;
 @property (nonatomic, strong) NSString *maxDuration;
 @property (nonatomic, strong) NSString *minDuration;
-@property (nonatomic, strong) NSString *refund;
+@property (nonatomic, assign) CGFloat  refund;
 @property (nonatomic, strong) NSString *contact;
 @property (nonatomic, strong) NSString *phoneNumber;
 
@@ -519,12 +519,12 @@
     channelLabel.text = [NSString stringWithFormat:@"支付平台  %@",_channelName];
     merchantNameLabel.text = [NSString stringWithFormat:@"商 户  名  %@",_merchantName];
     merchantPhoneLabel.text = [NSString stringWithFormat:@"商户电话  %@",_merchantPhone];
-    rentLabel.text = [NSString stringWithFormat:@"租    金  %@",_rent];
-    depositLabel.text = [NSString stringWithFormat:@"租赁押金  %@",_deposit];
+    rentLabel.text = [NSString stringWithFormat:@"租    金  %.2f",_rent];
+    depositLabel.text = [NSString stringWithFormat:@"租赁押金  %.2f",_deposit];
     durationLabel.text = [NSString stringWithFormat:@"租赁时长  %@",_rentDuration];
     maxLabel.text = [NSString stringWithFormat:@"最长租赁日期  %@",_maxDuration];
     minLabel.text = [NSString stringWithFormat:@"最短租赁日期  %@",_minDuration];
-    moneyLabel.text = [NSString stringWithFormat:@"退款金额  %@",_refund];
+    moneyLabel.text = [NSString stringWithFormat:@"退款金额  %.2f",_refund];
     contactLabel.text = [NSString stringWithFormat:@"联 系  人  %@",_contact];
     phoneLabel.text = [NSString stringWithFormat:@"联系电话  %@",_phoneNumber];
     
@@ -571,12 +571,9 @@
     _channelName = @"";
     _merchantName = @"";
     _merchantPhone = @"";
-    _rent = @"";
-    _deposit = @"";
     _rentDuration = @"";
     _maxDuration = @"";
     _minDuration = @"";
-    _refund = @"";
     _contact = @"";
     _phoneNumber = @"";
     NSDictionary *infoDict = [dict objectForKey:@"result"];
@@ -605,10 +602,10 @@
         _merchantPhone = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"merchant_phone"]];
     }
     if ([infoDict objectForKey:@"lease_price"]) {
-        _rent = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"lease_price"]];
+        _rent = [[infoDict objectForKey:@"lease_price"] floatValue] / 100;
     }
     if ([infoDict objectForKey:@"lease_deposit"]) {
-        _deposit = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"lease_deposit"]];
+        _deposit = [[infoDict objectForKey:@"lease_deposit"] floatValue] / 100;
     }
     if ([infoDict objectForKey:@"lease_length"]) {
         _rentDuration = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"lease_length"]];
@@ -620,7 +617,7 @@
         _minDuration = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"lease_min_time"]];
     }
     if ([infoDict objectForKey:@"return_price"]) {
-        _refund = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"return_price"]];
+        _refund = [[infoDict objectForKey:@"return_price"] floatValue] / 100;
     }
     if ([infoDict objectForKey:@"receiver_name"]) {
         _contact = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"receiver_name"]];

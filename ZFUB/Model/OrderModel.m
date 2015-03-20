@@ -51,7 +51,8 @@
             cellIdentifier = unPaidIdentifier;
             break;
         case OrderStatusSending:
-            cellIdentifier = sendingIdentifier;
+            //现在列表不显示评价按钮 
+            cellIdentifier = otherIdentifier;
             break;
         default:
             cellIdentifier = otherIdentifier;

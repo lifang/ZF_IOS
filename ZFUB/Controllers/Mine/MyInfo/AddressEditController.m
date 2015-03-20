@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "RegularFormat.h"
 
-@interface AddressEditController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate>
+@interface AddressEditController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -151,6 +151,7 @@
         _phoneField.text = _address.addressPhone;
         _zipField.text = _address.zipCode;
         _detailField.text = _address.address;
+        _selectedCityID = _address.cityID;
         _cityField.text = [CityHandle getCityNameWithCityID:_address.cityID];
         [_pickerView selectRow:[CityHandle getProvinceIndexWithCityID:_address.cityID] inComponent:0 animated:NO];
         [_pickerView reloadAllComponents];
@@ -206,9 +207,42 @@
 #pragma mark - Request 
 
 - (void)modifyAddress {
-//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    hud.labelText = @"提交中...";
-//    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    AddressType isDefault = AddressOther;
+    if (_defaultBtn.isSelected) {
+        isDefault = AddressDefault;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface modifyAddressWithToken:delegate.token addressID:_address.addressID cityID:_selectedCityID receiverName:_nameField.text phoneNumber:_phoneField.text zipCode:_zipField.text address:_detailField.text isDefault:isDefault finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [hud hide:YES];
+                    hud.labelText = @"地址修改成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+        
+    }];
 }
 
 - (void)addAddress {
@@ -233,13 +267,9 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
+                    hud.labelText = @"新增地址成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                                    message:@"新增地址成功"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"确定"
-                                                          otherButtonTitles:nil];
-                    [alert show];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }
             else {
@@ -474,12 +504,5 @@
     }];
 }
 
-#pragma mark - UIAlertView
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 
 @end

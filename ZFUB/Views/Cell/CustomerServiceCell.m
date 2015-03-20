@@ -447,6 +447,7 @@ typedef enum {
             }
             else if ([_identifier isEqualToString:firstStatusIdentifier]) {
                 //待处理
+                [self addLine];
                 UIButton *cancelBtn = [self buttonWithTitle:@"取消申请" action:@selector(rentCancel:) style:btnStyleFirst];
                 [self.contentView addSubview:cancelBtn];
                 [self layoutButton:cancelBtn location:BtnMiddle];

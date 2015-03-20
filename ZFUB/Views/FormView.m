@@ -543,7 +543,7 @@
         else {
             [dict setObject:@"" forKey:@"0"];
         }
-        [dict setObject:[NSString stringWithFormat:@"%@%%",model.ratePercent] forKey:@"1"];
+        [dict setObject:[NSString stringWithFormat:@"%.3f%%",model.ratePercent] forKey:@"1"];
         if (model.rateDescription) {
             [dict setObject:model.rateDescription forKey:@"2"];
         }

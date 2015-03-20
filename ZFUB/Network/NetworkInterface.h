@@ -220,6 +220,9 @@ static NSString *s_commentList_method = @"comment/list";
 //购物车列表
 static NSString *s_shoppingList_method = @"cart/list";
 
+//添加购物车
+static NSString *s_addShoppingList_method = @"cart/add";
+
 //删除购物车
 static NSString *s_deleteShoppingList_method = @"cart/delete";
 
@@ -274,6 +277,10 @@ static NSString *s_addressList_method = @"customers/getAddressList";
 //新增地址
 static NSString *s_addressAdd_method = @"customers/insertAddress";
 
+//修改地址
+static NSString *s_addressModify_method = @"customers/updateAddress";
+
+//删除地址
 static NSString *s_addressDelete_method = @"customers/deleteAddress";
 
 //我的商户列表
@@ -293,6 +300,12 @@ static NSString *s_merchantUploadImage_method = @"merchant/upload/file";
 
 //删除商户
 static NSString *s_merchantDelete_method = @"merchant/delete";
+
+//系统公告列表
+static NSString *s_systemList_method = @"web/message/getAll";
+
+//系统公告详情
+static NSString *s_systemDetail_method = @"web/message/getById";
 
 //我的消息列表
 static NSString *s_messageList_method = @"message/receiver/getAll";
@@ -320,6 +333,9 @@ static NSString *s_orderCancel_method = @"order/cancelMyOrder";
 
 //订单评论
 static NSString *s_orderComment_method = @"order/saveComment";
+
+//订单批量评论
+static NSString *s_orderMultiReview_method = @"order/batchSaveComment";
 
 //维修记录列表
 static NSString *s_repairList_method = @"cs/repair/getAll";
@@ -700,6 +716,20 @@ static NSString *s_findPassword_method = @"user/updatePassword";
                          finished:(requestDidFinished)finish;
 
 /*!
+ @abstract 28.添加购物车
+ @param token       登录返回
+ @param userID      用户ID
+ @param goodID      商品ID
+ @param channelID   支付通道ID
+ @result finish  请求回调结果
+ */
++ (void)addShoppingCartWithToken:(NSString *)token
+                          userID:(NSString *)userID
+                          goodID:(NSString *)goodID
+                       channelID:(NSString *)channelID
+                        finished:(requestDidFinished)finish;
+
+/*!
  @abstract 29.删除购物车
  @param token       登录返回
  @param cartID      某一订单ID
@@ -980,6 +1010,28 @@ static NSString *s_findPassword_method = @"user/updatePassword";
                    finished:(requestDidFinished)finish;
 
 /*!
+ @abstract .修改地址
+ @param token       登录返回
+ @param addressID   地址ID
+ @param cityID    城市id
+ @param receiverName   收件人姓名
+ @param phoneNumber   收件人电话
+ @param zipCode   邮编
+ @param address   详细地址
+ @param addressType  是否默认地址
+ @result finish  请求回调结果
+ */
++ (void)modifyAddressWithToken:(NSString *)token
+                     addressID:(NSString *)addressID
+                        cityID:(NSString *)cityID
+                  receiverName:(NSString *)receiverName
+                   phoneNumber:(NSString *)phoneNumber
+                       zipCode:(NSString *)zipCode
+                       address:(NSString *)address
+                     isDefault:(AddressType)addressType
+                      finished:(requestDidFinished)finish;
+
+/*!
  @abstract 47.删除地址
  @param token       登录返回
  @param addressIDs   地址id数组
@@ -1065,6 +1117,24 @@ static NSString *s_findPassword_method = @"user/updatePassword";
 + (void)deleteMerchantWithToken:(NSString *)token
                     merchantIDs:(NSArray *)merchantsID
                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 53.系统公告列表
+ @param page     分页参数 页
+ @param rows     分页参数 行
+ @result finish  请求回调结果
+ */
++ (void)getSystemListWithPage:(int)page
+                         rows:(int)rows
+                     finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 54.系统公告详情
+ @param messageID   系统公告id
+ @result finish  请求回调结果
+ */
++ (void)getSystemDetailWithID:(NSString *)messageID
+                     finished:(requestDidFinished)finish;
 
 /*!
  @abstract 55.我的消息列表
@@ -1179,6 +1249,16 @@ static NSString *s_findPassword_method = @"user/updatePassword";
                           score:(int)score
                         content:(NSString *)content
                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 63.订单批量评论
+ @param token       登录返回
+ @param reviewList  评论数组
+ @result finish  请求回调结果
+ */
++ (void)reviewMultiOrderWithToken:(NSString *)token
+                       reviewList:(NSArray *)reviewList
+                         finished:(requestDidFinished)finish;
 
 /*!
  @abstract 64.维修记录列表 68.退货记录列表 72.注销记录列表 76.换货记录列表 80.更新资料记录列表 83.租赁退还记录列表

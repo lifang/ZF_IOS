@@ -73,11 +73,29 @@
             if ([goodInfo objectForKey:@"has_lease"]) {
                 _canRent = [goodInfo objectForKey:@"has_lease"];
             }
-            if ([goodInfo objectForKey:@"price"]) {
-                _goodPrice = [[goodInfo objectForKey:@"price"] floatValue] / 100;
+            if ([goodInfo objectForKey:@"retail_price"]) {
+                _goodPrice = [[goodInfo objectForKey:@"retail_price"] floatValue] / 100;
+            }
+            if ([goodInfo objectForKey:@"lease_time"]) {
+                _minTime = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"lease_time"]];
+            }
+            if ([goodInfo objectForKey:@"return_time"]) {
+                _maxTime = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"return_time"]];
+            }
+            if ([goodInfo objectForKey:@"lease_price"]) {
+                _leasePrice = [[goodInfo objectForKey:@"lease_price"] floatValue] / 100;
+            }
+            if ([goodInfo objectForKey:@"lease_deposit"]) {
+                _deposit = [[goodInfo objectForKey:@"lease_deposit"] floatValue] / 100;
             }
             if ([goodInfo objectForKey:@"description"]) {
                 _goodDescription = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"description"]];
+            }
+            if ([goodInfo objectForKey:@"lease_description"]) {
+                _leaseDescription = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"lease_description"]];
+            }
+            if ([goodInfo objectForKey:@"lease_agreement"]) {
+                _leaseProtocol = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"lease_agreement"]];
             }
         }
         id factoryInfo = [dict objectForKey:@"factory"];

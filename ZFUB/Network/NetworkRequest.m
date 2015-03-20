@@ -17,7 +17,7 @@
         NSURL *url = [NSURL URLWithString:urlString];
         _request = [[NSMutableURLRequest alloc] initWithURL:url
                                                 cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                            timeoutInterval:30.0];
+                                            timeoutInterval:20.0];
         _finishBlock = finish;
         if (method) {
             [_request setHTTPMethod:method];

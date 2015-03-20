@@ -404,11 +404,10 @@
 }
 
 - (void)parseImageUploadInfo:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSString class]]) {
         return;
     }
-    NSDictionary *infoDict = [dict objectForKey:@"result"];
-    NSString *urlString = [infoDict objectForKey:@"filePath"];
+    NSString *urlString = [dict objectForKey:@"result"];
     if (urlString && ![urlString isEqualToString:@""]) {
         [_infoDict setObject:urlString forKey:_selectedKey];
     }
@@ -420,7 +419,7 @@
 - (void)uploadPictureWithImage:(UIImage *)image {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"上传中...";
-    [NetworkInterface uploadMerchantImageWithImage:image finished:^(BOOL success, NSData *response) {
+    [NetworkInterface uploadImageWithImage:image finished:^(BOOL success, NSData *response) {
         NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
@@ -550,7 +549,7 @@
             cell = [tableView dequeueReusableCellWithIdentifier:firstIdentifier];
             if (cell == nil) {
                 cell = [[ApplyInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:firstIdentifier];
-                CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
                 InputTextField *textField = [[InputTextField alloc] init];
                 textField.frame = rect;
                 [self setTextFieldAttr:textField];
@@ -601,13 +600,13 @@
             }
             textFiled.key = textKey;
             if (indexPath.row == 0 || indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 8) {
-                CGRect rect = CGRectMake(cell.frame.size.width - 180, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 180, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = NO;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             else {
-                CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = YES;
                 cell.accessoryType = UITableViewCellAccessoryNone;
@@ -642,7 +641,7 @@
             cell = [tableView dequeueReusableCellWithIdentifier:secondIdentifier];
             if (cell == nil) {
                 cell = [[ApplyInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:secondIdentifier];
-                CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
                 InputTextField *textField = [[InputTextField alloc] init];
                 textField.frame = rect;
                 [self setTextFieldAttr:textField];
@@ -681,13 +680,13 @@
             }
             textFiled.key = textKey;
             if (indexPath.row == 5) {
-                CGRect rect = CGRectMake(cell.frame.size.width - 180, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 180, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = NO;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             else {
-                CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = YES;
                 cell.accessoryType = UITableViewCellAccessoryNone;
@@ -705,7 +704,7 @@
             if (model.materialType == MaterialList) {
                 //选项 银行
                 cell = [[ApplyInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                CGRect rect = CGRectMake(cell.frame.size.width - 180, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 180, (cell.frame.size.height - 30) / 2, 150, 30);
                 InputTextField *textField = [[InputTextField alloc] init];
                 textField.frame = rect;
                 [self setTextFieldAttr:textField];
@@ -723,7 +722,7 @@
             else if (model.materialType == MaterialText) {
                 //文字
                 cell = [[ApplyInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+                CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
                 InputTextField *textField = [[InputTextField alloc] init];
                 textField.frame = rect;
                 [self setTextFieldAttr:textField];
@@ -738,7 +737,7 @@
             }
             else if (model.materialType == MaterialImage) {
                 cell = [[ApplyInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-                CGRect rect = CGRectMake(cell.frame.size.width - 40, (cell.frame.size.height - 20) / 2, 20, 20);
+                CGRect rect = CGRectMake(kScreenWidth - 40, (cell.frame.size.height - 20) / 2, 20, 20);
                 UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
                 imageView.image = kImageName(@"upload.png");
                 [cell.contentView addSubview:imageView];

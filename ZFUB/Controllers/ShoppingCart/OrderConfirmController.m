@@ -10,8 +10,9 @@
 #import "KxMenu.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
+#import "SelectedAddressController.h"
 
-@interface OrderConfirmController ()<UITextFieldDelegate>
+@interface OrderConfirmController ()<UITextFieldDelegate,SelectedAddressDelegate>
 
 @property (nonatomic, strong) UIButton *typeBtn;
 
@@ -48,6 +49,8 @@
     
     _addressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, blackViewHeight)];
     _addressView.backgroundColor = kColor(33, 32, 42, 1);
+    UITapGestureRecognizer *addressTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectedAddress:)];
+    [_addressView addGestureRecognizer:addressTap];
     [headerView addSubview:_addressView];
     
     CGFloat topSpace = 15.f;
@@ -298,6 +301,10 @@
             break;
         }
     }
+    [self updateContentsForAddress];
+}
+
+- (void)updateContentsForAddress {
     _nameLabel.text = [NSString stringWithFormat:@"收件人：%@",_defaultAddress.addressReceiver];
     _phoneLabel.text = _defaultAddress.addressPhone;
     _addressLabel.text = [NSString stringWithFormat:@"收件地址：%@",_defaultAddress.address];
@@ -327,6 +334,13 @@
 }
 
 #pragma mark - Action
+
+- (IBAction)selectedAddress:(id)sender {
+    SelectedAddressController *addressC = [[SelectedAddressController alloc] init];
+    addressC.addressID = _defaultAddress.addressID;
+    addressC.delegate = self;
+    [self.navigationController pushViewController:addressC animated:YES];
+}
 
 - (IBAction)needBill:(id)sender {
     _billBtn.selected = !_billBtn.selected;
@@ -373,6 +387,13 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - SelectedAddressDelegate
+
+- (void)getSelectedAddress:(AddressModel *)addressModel {
+    self.defaultAddress = addressModel;
+    [self updateContentsForAddress];
 }
 
 @end

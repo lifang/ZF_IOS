@@ -17,6 +17,9 @@
         _applyNum = [NSString stringWithFormat:@"%@",[dict objectForKey:@"apply_num"]];
         _status = [NSString stringWithFormat:@"%@",[dict objectForKey:@"status"]];
         _createTime = [NSString stringWithFormat:@"%@",[dict objectForKey:@"create_time"]];
+        if ([dict objectForKey:@"repair_price"]) {
+            _price = [[dict objectForKey:@"repair_price"] floatValue] / 100;
+        }
     }
     return self;
 }

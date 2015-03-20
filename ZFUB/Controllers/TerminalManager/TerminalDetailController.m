@@ -983,14 +983,26 @@ typedef enum {
 //开通申请
 - (IBAction)openApply:(id)sender {
     ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = _terminalModel.TM_serialNumber;
+    detail.terminalID = _terminalModel.TM_ID;
+    if ([_terminalModel.TM_status intValue] == TerminalStatusPartOpened) {
+        detail.openStatus = OpenStatusReopen;
+    }
+    else {
+        detail.openStatus = OpenStatusNew;
+    }
     [self.navigationController pushViewController:detail animated:YES];
 }
 
 //重新开通申请
 - (IBAction)openConfirm:(id)sender {
     ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = _terminalModel.TM_serialNumber;
+    detail.terminalID = _terminalModel.TM_ID;
+    if ([_terminalModel.TM_status intValue] == TerminalStatusPartOpened) {
+        detail.openStatus = OpenStatusReopen;
+    }
+    else {
+        detail.openStatus = OpenStatusNew;
+    }
     [self.navigationController pushViewController:detail animated:YES];
 }
 

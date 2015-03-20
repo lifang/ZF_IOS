@@ -365,7 +365,7 @@
     NSString *titleName = nil;
     if (indexPath.section == 0 || indexPath.section == 1) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        CGRect rect = CGRectMake(cell.frame.size.width - 170, (cell.frame.size.height - 30) / 2, 150, 30);
+        CGRect rect = CGRectMake(kScreenWidth - 170, (cell.frame.size.height - 30) / 2, 150, 30);
         switch (indexPath.section) {
             case 0: {
                 switch (indexPath.row) {
@@ -402,7 +402,7 @@
                     case 6:
                         titleName = @"商户所在地";
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                        _textField_location.frame = CGRectMake(rect.origin.x - 5, rect.origin.y, rect.size.width, rect.size.height);
+                        _textField_location.frame = CGRectMake(rect.origin.x - 10, rect.origin.y, rect.size.width, rect.size.height);
                         [cell.contentView addSubview:_textField_location];
                         break;
                     default:
@@ -435,7 +435,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:imageIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:imageIdentifier];
-            CGRect rect = CGRectMake(cell.frame.size.width - 40, (cell.frame.size.height - 20) / 2, 20, 20);
+            CGRect rect = CGRectMake(kScreenWidth - 40, (cell.frame.size.height - 20) / 2, 20, 20);
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
             imageView.image = kImageName(@"upload.png");
             imageView.tag = kImageViewTag;

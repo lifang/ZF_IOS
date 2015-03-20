@@ -36,6 +36,8 @@
 
 @property (nonatomic, strong) NSString *goodCategory;
 
+@property (nonatomic, assign) CGFloat goodPrice;       //商品价格
+
 @property (nonatomic, strong) NSString *goodComment;   //评论数
 
 @property (nonatomic, strong) NSString *goodMaterial;  //外壳材料
@@ -50,7 +52,12 @@
 
 @property (nonatomic, strong) NSString *goodDescription;   //详细说明
 
-@property (nonatomic, assign) CGFloat goodPrice;
+@property (nonatomic, strong) NSString *maxTime;   //租赁最长时间
+@property (nonatomic, strong) NSString *minTime;   //租赁最短时间
+@property (nonatomic, assign) CGFloat deposit;     //押金
+@property (nonatomic, assign) CGFloat leasePrice;  //租赁价格
+@property (nonatomic, strong) NSString *leaseDescription;  //租赁说明
+@property (nonatomic, strong) NSString *leaseProtocol;     //租赁协议
 
 @property (nonatomic, assign) BOOL canRent;
 

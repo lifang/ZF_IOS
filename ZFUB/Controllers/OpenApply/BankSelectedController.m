@@ -55,10 +55,10 @@
     [headerView addSubview:backView];
     
     UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kLineHeight)];
-    firstLine.backgroundColor = kColor(135, 135, 135, 1);
+    firstLine.backgroundColor = kColor(200, 199, 204, 1);
     [backView addSubview:firstLine];
     UIView *secondLine = [[UIView alloc] initWithFrame:CGRectMake(0, backHeight - kLineHeight, kScreenWidth, kLineHeight)];
-    secondLine.backgroundColor = kColor(135, 135, 135, 1);
+    secondLine.backgroundColor = kColor(200, 199, 204, 1);
     [backView addSubview:secondLine];
     
     _bankField = [[UITextField alloc] init];

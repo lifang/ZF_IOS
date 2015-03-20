@@ -73,13 +73,13 @@
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([[viewController.childViewControllers objectAtIndex:0] isMemberOfClass:[MessageViewController class]]) {
-        LoginViewController *loginC = [[LoginViewController alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
-        [NavigationBarAttr setNavigationBarStyle:nav];
-        [self presentViewController:nav animated:YES completion:nil];
-        return NO;
-    }
+//    if ([[viewController.childViewControllers objectAtIndex:0] isMemberOfClass:[MessageViewController class]]) {
+//        LoginViewController *loginC = [[LoginViewController alloc] init];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
+//        [NavigationBarAttr setNavigationBarStyle:nav];
+//        [self presentViewController:nav animated:YES completion:nil];
+//        return NO;
+//    }
     return YES;
 }
 

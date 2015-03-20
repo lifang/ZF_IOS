@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "OpenApplyCell.h"
 #import "ApplyDetailController.h"
+#import "TerminalDetailController.h"
 
 @interface OpenApplyController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,OpenApplyCellDelegate>
 
@@ -212,14 +213,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     TerminalManagerModel *model = [_applyList objectAtIndex:indexPath.section];
-    ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
-    detailC.terminalID = model.TM_ID;
-    if ([model.TM_status intValue] == TerminalStatusPartOpened) {
-        detailC.openStatus = OpenStatusReopen;
-    }
-    else {
-        detailC.openStatus = OpenStatusNew;
-    }
+    TerminalDetailController *detailC = [[TerminalDetailController alloc] init];
+    detailC.terminalModel = model;
     [self.navigationController pushViewController:detailC animated:YES];
 }
 
@@ -326,7 +321,10 @@
 #pragma mark - OpenApplyCellDelegate
 //申请开通
 - (void)openApplyWithData:(TerminalManagerModel *)model {
-    
+    ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
+    detailC.terminalID = model.TM_ID;
+    detailC.openStatus = OpenStatusNew;
+    [self.navigationController pushViewController:detailC animated:YES];
 }
 //视频认证
 - (void)videoAuthWithData:(TerminalManagerModel *)model {
@@ -334,7 +332,10 @@
 }
 //重新申请开通
 - (void)reopenApplyWithData:(TerminalManagerModel *)model {
-    
+    ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
+    detailC.terminalID = model.TM_ID;
+    detailC.openStatus = OpenStatusReopen;
+    [self.navigationController pushViewController:detailC animated:YES];
 }
 
 @end

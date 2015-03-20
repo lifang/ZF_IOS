@@ -238,6 +238,7 @@ static NSString *s_defaultTerminalNum = @"选择终端号";
     hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     [NetworkInterface getTerminalListWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
@@ -330,8 +331,11 @@ static NSString *s_defaultTerminalNum = @"选择终端号";
     }
     NSArray *terminalList = [dict objectForKey:@"result"];
     for (int i = 0; i < [terminalList count]; i++) {
-        TerminalModel *terminal = [[TerminalModel alloc] initWithParseDictionary:[terminalList objectAtIndex:i]];
-        [_terminalItems addObject:terminal];
+        id terminalDict = [terminalList objectAtIndex:i];
+        if ([terminalDict isKindOfClass:[NSDictionary class]]) {
+            TerminalModel *terminal = [[TerminalModel alloc] initWithParseDictionary:terminalDict];
+            [_terminalItems addObject:terminal];
+        }
     }
 }
 

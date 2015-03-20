@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "MerchantModel.h"
 #import "MerchantDetailController.h"
+#import "MultipleDeleteCell.h"
 
 @interface MyMerchantViewController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate>
 
@@ -31,6 +32,10 @@
 
 @property (nonatomic, strong) NSMutableArray *merchantItems;
 
+@property (nonatomic, strong) NSMutableDictionary *selectedItem; //多选的行
+
+@property (nonatomic, strong) UIView *bottomView;
+
 @end
 
 @implementation MyMerchantViewController
@@ -44,6 +49,7 @@
     // Do any additional setup after loading the view.
     self.title = @"我的商户";
     _merchantItems = [[NSMutableArray alloc] init];
+    _selectedItem = [[NSMutableDictionary alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -132,6 +138,33 @@
     _bottomRefreshView.delegate = self;
     _bottomRefreshView.hidden = YES;
     [_tableView addSubview:_bottomRefreshView];
+    
+    [self initBottomView];
+}
+
+- (void)initBottomView {
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 49 - 64, kScreenWidth, 49)];
+    _bottomView.backgroundColor = [UIColor whiteColor];
+    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kLineHeight)];
+    firstLine.backgroundColor = kColor(170, 169, 169, 1);
+    [_bottomView addSubview:firstLine];
+    UIButton *readBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    readBtn.frame = CGRectMake(10, 7, 60, 36);
+    readBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
+    [readBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [readBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [readBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [readBtn addTarget:self action:@selector(cancelDelete:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:readBtn];
+    
+    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    deleteBtn.frame = CGRectMake(kScreenWidth - 60, 7, 60, 36);
+    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
+    [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(deleteMerchant:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:deleteBtn];
 }
 
 - (void)setHeaderAndFooterView {
@@ -147,6 +180,13 @@
 - (void)setIsMultiDelete:(BOOL)isMultiDelete {
     _isMultiDelete = isMultiDelete;
     [_tableView setEditing:_isMultiDelete animated:YES];
+    if (_isMultiDelete) {
+        [self.view addSubview:_bottomView];
+    }
+    else {
+        [_selectedItem removeAllObjects];
+        [_bottomView removeFromSuperview];
+    }
 }
 
 #pragma mark - Request
@@ -160,7 +200,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface getMerchantListWithToken:delegate.token userID:delegate.userID page:page rows:kPageSize finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getMerchantListWithToken:delegate.token userID:delegate.userID page:page rows:kPageSize * 2 finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.3f];
@@ -206,6 +246,85 @@
     }];
 }
 
+//删除单个商户
+- (void)deleteSingleMerchantWithIndexPath:(NSIndexPath *)indexPath {
+    MerchantModel *model = [_merchantItems objectAtIndex:indexPath.row];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface deleteMerchantWithToken:delegate.token merchantIDs:[NSArray arrayWithObject:[NSNumber numberWithInt:[model.merchantID intValue]]] finished:^(BOOL success, NSData *response) {
+        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"删除成功";
+                    [_merchantItems removeObject:model];
+                    [_tableView beginUpdates];
+                    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [_tableView endUpdates];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
+
+//商户多删
+- (void)deleteMultiMerchant {
+    NSArray *merchantsID = [self merchantIDForEditRows];
+    if ([merchantsID count] <= 0) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择需要删除的商户";
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"提交中...";
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface deleteMerchantWithToken:delegate.token merchantIDs:merchantsID finished:^(BOOL success, NSData *response) {
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:0.5f];
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    hud.labelText = @"删除成功";
+                    [self updateMerchantListForMultiDelete];
+                }
+            }
+            else {
+                //返回错误数据
+                hud.labelText = kServiceReturnWrong;
+            }
+        }
+        else {
+            hud.labelText = kNetworkFailed;
+        }
+    }];
+}
 
 #pragma mark - Data
 
@@ -221,16 +340,60 @@
     [_tableView reloadData];
 }
 
+//多删成功后更新列表
+- (void)updateMerchantListForMultiDelete {
+    NSMutableArray *deleteAddressArray = [[NSMutableArray alloc] init];
+    NSMutableArray *deleteIndexArray = [[NSMutableArray alloc] init];
+    for (NSNumber *index in _selectedItem) {
+        if ([index intValue] < [_merchantItems count]) {
+            MerchantModel *model = [_merchantItems objectAtIndex:[index intValue]];
+            [deleteAddressArray addObject:model];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[index intValue] inSection:0];
+            [deleteIndexArray addObject:indexPath];
+        }
+    }
+    [_merchantItems removeObjectsInArray:deleteAddressArray];
+    [_tableView beginUpdates];
+    [_tableView deleteRowsAtIndexPaths:deleteIndexArray withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView endUpdates];
+    self.isMultiDelete = NO;
+}
+
+//获取多选状态下选中的商户id数组
+- (NSArray *)merchantIDForEditRows {
+    NSMutableArray *IDs = [[NSMutableArray alloc] init];
+    for (NSNumber *index in _selectedItem) {
+        if ([index intValue] < [_merchantItems count]) {
+            MerchantModel *model = [_merchantItems objectAtIndex:[index intValue]];
+            [IDs addObject:[NSNumber numberWithInt:[model.merchantID intValue]]];
+        }
+    }
+    return IDs;
+}
 
 #pragma mark - Action
 
 - (IBAction)multiDelete:(id)sender {
+    if (!_isMultiDelete && _tableView.isEditing) {
+        _tableView.editing = NO;
+    }
     self.isMultiDelete = !_isMultiDelete;
 }
 
 - (IBAction)addMerchant:(id)sender {
+    if (_isMultiDelete) {
+        self.isMultiDelete = NO;
+    }
     CreateMerchantController *createC = [[CreateMerchantController alloc] init];
     [self.navigationController pushViewController:createC animated:YES];
+}
+
+- (IBAction)cancelDelete:(id)sender {
+    self.isMultiDelete = NO;
+}
+
+- (IBAction)deleteMerchant:(id)sender {
+    [self deleteMultiMerchant];
 }
 
 #pragma mark - UITableView
@@ -246,9 +409,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"Merchant";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    MultipleDeleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell = [[MultipleDeleteCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     MerchantModel *model = [_merchantItems objectAtIndex:indexPath.row];
     cell.textLabel.text = model.merchantName;
@@ -273,7 +436,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"11111");
+        [self deleteSingleMerchantWithIndexPath:indexPath];
     }
     else if (editingStyle == 3) {
         NSLog(@"33333");
@@ -287,6 +450,15 @@
         MerchantDetailController *detailC = [[MerchantDetailController alloc] init];
         detailC.merchant = model;
         [self.navigationController pushViewController:detailC animated:YES];
+    }
+    else {
+        [_selectedItem setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInteger:indexPath.row]];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_isMultiDelete) {
+        [_selectedItem removeObjectForKey:[NSNumber numberWithInteger:indexPath.row]];
     }
 }
 

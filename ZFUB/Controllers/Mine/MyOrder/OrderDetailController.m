@@ -13,7 +13,7 @@
 #import "OrderDetailCell.h"
 #import "RecordView.h"
 #import "PayWayViewController.h"
-#import "OrderCommentController.h"
+#import "OrderReviewController.h"
 
 @interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -505,9 +505,20 @@
 }
 
 - (IBAction)commentOrder:(id)sender {
-    OrderCommentController *commentC = [[OrderCommentController alloc] init];
-    commentC.orderID = _orderID;
-    [self.navigationController pushViewController:commentC animated:YES];
+    NSMutableArray *reviewList = [[NSMutableArray alloc] init];
+    for (OrderGoodModel *model in _orderDetail.goodList) {
+        ReviewModel *review = [[ReviewModel alloc] init];
+        review.goodID = model.goodID;
+        review.goodName = model.goodName;
+        review.goodBrand = model.goodBrand;
+        review.goodPicture = model.goodPicture;
+        review.goodChannel = model.goodChannel;
+        review.score = 50;
+        [reviewList addObject:review];
+    }
+    OrderReviewController *reviewC = [[OrderReviewController alloc] init];
+    reviewC.goodList = reviewList;
+    [self.navigationController pushViewController:reviewC animated:YES];
 }
 
 @end

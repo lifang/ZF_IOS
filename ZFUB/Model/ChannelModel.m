@@ -8,6 +8,22 @@
 
 #import "ChannelModel.h"
 
+@implementation OpenMaterialModel
+
+- (id)initWithParseDictionary:(NSDictionary *)dict {
+    if (self = [super init]) {
+        if ([dict objectForKey:@"name"]) {
+            _name = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
+        }
+        if ([dict objectForKey:@"introduction"]) {
+            _introduction = [NSString stringWithFormat:@"%@",[dict objectForKey:@"introduction"]];
+        }
+    }
+    return self;
+}
+
+@end
+
 @implementation GoodRateModel
 
 - (id)initWithParseDictionary:(NSDictionary *)dict
@@ -19,7 +35,7 @@
                     _rateID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
                 }
                 if ([dict objectForKey:@"service_rate"]) {
-                    _ratePercent = [NSString stringWithFormat:@"%@",[dict objectForKey:@"service_rate"]];
+                    _ratePercent = [[dict objectForKey:@"service_rate"] floatValue] / 1000;
                 }
                 if ([dict objectForKey:@"name"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
@@ -31,7 +47,7 @@
                 break;
             case GoodRateStand: {
                 if ([dict objectForKey:@"standard_rate"]) {
-                    _ratePercent = [NSString stringWithFormat:@"%@",[dict objectForKey:@"standard_rate"]];
+                    _ratePercent = [[dict objectForKey:@"standard_rate"] floatValue] / 1000;
                 }
                 if ([dict objectForKey:@"name"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
@@ -43,7 +59,7 @@
                 break;
             case GoodRateOther: {
                 if ([dict objectForKey:@"terminal_rate"]) {
-                    _ratePercent = [NSString stringWithFormat:@"%@",[dict objectForKey:@"terminal_rate"]];
+                    _ratePercent = [[dict objectForKey:@"terminal_rate"] floatValue] / 1000;
                 }
                 if ([dict objectForKey:@"trade_value"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"trade_value"]];
@@ -80,6 +96,9 @@
         }
         if ([dict objectForKey:@"opening_cost"]) {
             _openCost = [[dict objectForKey:@"opening_cost"] floatValue] / 100;
+        }
+        if ([dict objectForKey:@"support_type"]) {
+            _supportType = [[dict objectForKey:@"support_type"] boolValue];
         }
         id areaObject = [dict objectForKey:@"supportArea"];
         if ([areaObject isKindOfClass:[NSArray class]]) {
@@ -122,8 +141,50 @@
                 }
             }
         }
+        //对私
+        id privateObject = [dict objectForKey:@"requireMaterial_pra"];
+        if ([privateObject isKindOfClass:[NSArray class]]) {
+            NSMutableArray *privateList = [[NSMutableArray alloc] init];
+            for (int i = 0; i < [privateObject count]; i++) {
+                id privateDict = [privateObject objectAtIndex:i];
+                if ([privateDict isKindOfClass:[NSDictionary class]]) {
+                    OpenMaterialModel *model = [[OpenMaterialModel alloc] initWithParseDictionary:privateDict];
+                    [privateList addObject:model];
+                }
+            }
+            _privateInfo = [self handleOpenMaterialInfoWithArray:privateList];
+        }
+        //对公
+        id publicObject = [dict objectForKey:@"requireMaterial_pub"];
+        if ([publicObject isKindOfClass:[NSArray class]]) {
+            NSMutableArray *publicList = [[NSMutableArray alloc] init];
+            for (int i = 0; i < [publicObject count]; i++) {
+                id publicDict = [publicObject objectAtIndex:i];
+                if ([publicDict isKindOfClass:[NSDictionary class]]) {
+                    OpenMaterialModel *model = [[OpenMaterialModel alloc] initWithParseDictionary:publicDict];
+                    [publicList addObject:model];
+                }
+            }
+            _publicInfo = [self handleOpenMaterialInfoWithArray:publicList];
+        }
     }
     return self;
+}
+
+- (NSString *)handleOpenMaterialInfoWithArray:(NSArray *)materialList {
+    NSString *openString = @"";
+    for (int i = 0; i < [materialList count]; i++) {
+        OpenMaterialModel *model = [materialList objectAtIndex:i];
+        NSString *rowString = [NSString stringWithFormat:@"%d.%@",i + 1,model.name];
+        if (model.introduction) {
+            rowString = [rowString stringByAppendingString:[NSString stringWithFormat:@"（%@）",model.introduction]];
+        }
+        if (i != [materialList count] - 1) {
+            rowString = [rowString stringByAppendingString:@"\n"];
+        }
+        openString = [openString stringByAppendingString:rowString];
+    }
+    return openString;
 }
 
 @end

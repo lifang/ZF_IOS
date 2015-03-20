@@ -93,6 +93,8 @@ typedef enum {
 
 @property (nonatomic, strong) NSString *createTime;
 
+@property (nonatomic, assign) CGFloat price;
+
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 
 - (NSString *)getCellIdentifier;

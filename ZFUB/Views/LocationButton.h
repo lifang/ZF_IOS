@@ -14,4 +14,6 @@
 
 @interface LocationButton : UIButton
 
+@property (nonatomic, strong) UILabel *nameLabel;
+
 @end

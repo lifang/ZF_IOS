@@ -322,7 +322,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:imageIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:imageIdentifier];
-            CGRect rect = CGRectMake(cell.frame.size.width - 50, (cell.frame.size.height - 20) / 2, 20, 20);
+            CGRect rect = CGRectMake(kScreenWidth - 50, (cell.frame.size.height - 20) / 2, 20, 20);
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
             imageView.image = kImageName(@"upload.png");
             imageView.tag = kImageTag;

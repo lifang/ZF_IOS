@@ -17,8 +17,6 @@
 
 @interface LocationViewController : CommonViewController
 
-@property (nonatomic, assign) BOOL needShowLocation;  //是否需要定位
-
 @property (nonatomic, assign) id<LocationDelegate>delegate;
 
 @end
