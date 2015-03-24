@@ -55,7 +55,7 @@
     
     CGFloat topSpace = 15.f;
     CGFloat leftSpace = 20.f;
-    CGFloat rightSpace = 20.f;
+    CGFloat rightSpace = 30.f;
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, topSpace, 140, 20.f)];
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.textColor = [UIColor whiteColor];
@@ -74,6 +74,10 @@
     _addressLabel.textColor = [UIColor whiteColor];
     _addressLabel.font = [UIFont systemFontOfSize:14.f];
     [_addressView addSubview:_addressLabel];
+    
+    UIImageView *arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth - 28, (hearderHeight - 24) / 2, 24, 24)];
+    arrowView.image = kImageName(@"rightarrow.png");
+    [_addressView addSubview:arrowView];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100.f)];
     footerView.backgroundColor = [UIColor clearColor];
