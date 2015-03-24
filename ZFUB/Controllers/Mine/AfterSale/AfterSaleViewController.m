@@ -89,7 +89,6 @@
 
 - (IBAction)selectedModule:(id)sender {
     AfterSaleView *moduleView = (AfterSaleView *)sender;
-    NSLog(@"%ld",moduleView.tag);
     CustomerServiceController *csC = [[CustomerServiceController alloc] init];
     csC.csType = (CSType)moduleView.tag;
     [self.navigationController pushViewController:csC animated:YES];

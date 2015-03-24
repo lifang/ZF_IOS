@@ -33,6 +33,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"选择支付通道";
+    self.view.backgroundColor = kColor(244, 243, 243, 1);
     _channelItems = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self getChannelList];
@@ -46,54 +47,54 @@
 #pragma mark - UI
 
 - (void)initAndLayoutUI {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tableView.backgroundColor = kColor(244, 243, 243, 1);
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    [self.view addSubview:_tableView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1.0
-                                                           constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0]];
-    //输入框
-    CGFloat offsetX = 20.0f;
-    //支付通道
-    _channelField = [[UITextField alloc] init];
-    _channelField.borderStyle = UITextBorderStyleNone;
-    _channelField.backgroundColor = [UIColor clearColor];
-    _channelField.delegate = self;
-    _channelField.font = [UIFont systemFontOfSize:15.f];
-    UIView *channelView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
-    _channelField.leftView = channelView;
-    _channelField.leftViewMode = UITextFieldViewModeAlways;
-    _channelField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _channelField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _channelField.userInteractionEnabled = NO;
+//    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+//    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+//    _tableView.backgroundColor = kColor(244, 243, 243, 1);
+//    _tableView.delegate = self;
+//    _tableView.dataSource = self;
+//    [self.view addSubview:_tableView];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
+//                                                          attribute:NSLayoutAttributeTop
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeTop
+//                                                         multiplier:1.0
+//                                                           constant:0]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
+//                                                          attribute:NSLayoutAttributeLeft
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeLeft
+//                                                         multiplier:1.0
+//                                                           constant:0]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
+//                                                          attribute:NSLayoutAttributeRight
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeRight
+//                                                         multiplier:1.0
+//                                                           constant:0]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                         multiplier:1.0
+//                                                           constant:0]];
+//    //输入框
+//    CGFloat offsetX = 20.0f;
+//    //支付通道
+//    _channelField = [[UITextField alloc] init];
+//    _channelField.borderStyle = UITextBorderStyleNone;
+//    _channelField.backgroundColor = [UIColor clearColor];
+//    _channelField.delegate = self;
+//    _channelField.font = [UIFont systemFontOfSize:15.f];
+//    UIView *channelView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offsetX, offsetX)];
+//    _channelField.leftView = channelView;
+//    _channelField.leftViewMode = UITextFieldViewModeAlways;
+//    _channelField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//    _channelField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+//    _channelField.userInteractionEnabled = NO;
     
     [self initPickerView];
 }

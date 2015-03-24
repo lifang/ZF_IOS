@@ -35,7 +35,7 @@
                     _rateID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
                 }
                 if ([dict objectForKey:@"service_rate"]) {
-                    _ratePercent = [[dict objectForKey:@"service_rate"] floatValue] / 1000;
+                    _ratePercent = [[dict objectForKey:@"service_rate"] floatValue];
                 }
                 if ([dict objectForKey:@"name"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
@@ -47,7 +47,7 @@
                 break;
             case GoodRateStand: {
                 if ([dict objectForKey:@"standard_rate"]) {
-                    _ratePercent = [[dict objectForKey:@"standard_rate"] floatValue] / 1000;
+                    _ratePercent = [[dict objectForKey:@"standard_rate"] floatValue];
                 }
                 if ([dict objectForKey:@"name"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
@@ -59,7 +59,7 @@
                 break;
             case GoodRateOther: {
                 if ([dict objectForKey:@"terminal_rate"]) {
-                    _ratePercent = [[dict objectForKey:@"terminal_rate"] floatValue] / 1000;
+                    _ratePercent = [[dict objectForKey:@"terminal_rate"] floatValue];
                 }
                 if ([dict objectForKey:@"trade_value"]) {
                     _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"trade_value"]];
@@ -99,6 +99,18 @@
         }
         if ([dict objectForKey:@"support_type"]) {
             _supportType = [[dict objectForKey:@"support_type"] boolValue];
+        }
+        id channelFactoryObject = [dict objectForKey:@"pcfactory"];
+        if ([channelFactoryObject isKindOfClass:[NSDictionary class]]) {
+            if ([channelFactoryObject objectForKey:@"description"]) {
+                _channelFactoryDescription = [NSString stringWithFormat:@"%@",[channelFactoryObject objectForKey:@"description"]];
+            }
+            if ([channelFactoryObject objectForKey:@"website_url"]) {
+                _channelFactoryURL = [NSString stringWithFormat:@"%@",[channelFactoryObject objectForKey:@"website_url"]];
+            }
+            if ([channelFactoryObject objectForKey:@"logo_file_path"]) {
+                _channelFactoryLogo = [NSString stringWithFormat:@"%@",[channelFactoryObject objectForKey:@"logo_file_path"]];
+            }
         }
         id areaObject = [dict objectForKey:@"supportArea"];
         if ([areaObject isKindOfClass:[NSArray class]]) {

@@ -336,6 +336,11 @@
     [_tableView reloadData];
 }
 
+- (void)scanBigImage {
+    NSString *urlString = [_imageDict objectForKey:self.selectedImageKey];
+    [self showDetailImageWithURL:urlString imageRect:self.imageRect];
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -538,7 +543,10 @@
                 break;
         }
         hasImage = ([_imageDict objectForKey:key] && ![[_imageDict objectForKey:key] isEqualToString:@""]);
-        [self selectedKey:key hasImage:hasImage];
+        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+        UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:kImageViewTag];
+        CGRect convertRect = [[imageView superview] convertRect:imageView.frame toView:self.view];
+        [self selectedKey:key hasImage:hasImage imageRect:convertRect];
     }
 }
 

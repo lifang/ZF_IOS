@@ -33,6 +33,8 @@
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(locationView.bounds.size.width, 0, 50, self.bounds.size.height)];
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.font = [UIFont systemFontOfSize:14.f];
+    _nameLabel.adjustsFontSizeToFitWidth = YES;
+    _nameLabel.minimumScaleFactor = .8f;
     _nameLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_nameLabel];
     

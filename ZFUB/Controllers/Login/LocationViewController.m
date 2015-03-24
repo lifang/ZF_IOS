@@ -8,7 +8,6 @@
 
 #import "LocationViewController.h"
 #import "CitySearchController.h"
-#import <CoreLocation/CoreLocation.h>
 
 @interface CitySearchBar : UISearchBar
 
@@ -38,10 +37,9 @@
     CGRect rect = self.bounds;
     rect.origin.y -= 20;
     rect.size.height += 20;
-    
+    rect.size.width = kScreenWidth;
     UIImageView *backView = [[UIImageView alloc] initWithFrame:rect];
-    backView.image = [[UIImage imageNamed:@"orange.png"]
-                      resizableImageWithCapInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
+    backView.image = kImageName(@"orange.png");
     [self insertSubview:backView atIndex:1];
     //设置光标
     [self setCursor];
@@ -241,7 +239,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == _tableView) {
-        return [[CityHandle tableViewIndex] count] + 1;
+        return [[CityHandle shareIndexList] count] + 1;
     }
     else {
         return 1;
@@ -254,7 +252,7 @@
             return 1;
         }
         else {
-            return [[[CityHandle dataForSection] objectAtIndex:section - 1] count];
+            return [[[CityHandle shareSectionCityList] objectAtIndex:section - 1] count];
         }
     }
     else {
@@ -290,7 +288,7 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
             }
-            CityModel *city = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+            CityModel *city = [[[CityHandle shareSectionCityList] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
             cell.textLabel.text = city.cityName;
         }
         return cell;
@@ -312,7 +310,7 @@
         if (section == 0) {
             return nil;
         }
-        return [[CityHandle tableViewIndex] objectAtIndex:section - 1];
+        return [[CityHandle shareIndexList] objectAtIndex:section - 1];
     }
     return nil;
 }
@@ -323,7 +321,7 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     if (tableView == _tableView) {
-        return [CityHandle tableViewIndex];
+        return [CityHandle shareIndexList];
     }
     return nil;
 }
@@ -332,7 +330,7 @@
     CityModel *selectedCity = nil;
     if (tableView == _tableView) {
         if (indexPath.section != 0) {
-            selectedCity = [[[CityHandle dataForSection] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+            selectedCity = [[[CityHandle shareSectionCityList] objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
         }
         else {
             selectedCity = _currentCity;

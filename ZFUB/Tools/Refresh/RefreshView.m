@@ -130,6 +130,13 @@
             }
         }
     }
+    else {
+        if (_circleView.progress > 0) {
+            _circleView.progress = 0.f;
+            [_circleView setNeedsDisplay];
+            [_circleView.layer removeAllAnimations];
+        }
+    }
 }
 
 - (void)refreshViewDidEndDragging:(UIScrollView *)scrollView {
@@ -150,7 +157,7 @@
                 _circleView.progress = offsetY / maxOffsetForDownRefresh;
                 [_circleView setNeedsDisplay];
             }
-            [UIView animateWithDuration:0.2f animations:^{
+            [UIView animateWithDuration:.2f animations:^{
                 scrollView.contentInset = UIEdgeInsetsMake(60.f, 0.f, 0.f, 0.f);
             }];
         }

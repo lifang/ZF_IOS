@@ -13,7 +13,7 @@
 #import "MessageViewController.h"
 #import "MineViewController.h"
 #import "LoginViewController.h"
-
+#import "AppDelegate.h"
 #import "NavigationBarAttr.h"
 
 @interface RootViewController ()
@@ -73,13 +73,20 @@
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-//    if ([[viewController.childViewControllers objectAtIndex:0] isMemberOfClass:[MessageViewController class]]) {
-//        LoginViewController *loginC = [[LoginViewController alloc] init];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
-//        [NavigationBarAttr setNavigationBarStyle:nav];
-//        [self presentViewController:nav animated:YES completion:nil];
-//        return NO;
-//    }
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    UIViewController *controller = [viewController.childViewControllers firstObject];
+    if ([controller isMemberOfClass:[ShoppingCartController class]] ||
+        [controller isMemberOfClass:[MessageViewController class]] ||
+         [controller isMemberOfClass:[MineViewController class]]) {
+        if (!delegate.token || [delegate.token isEqualToString:@""]) {
+            LoginViewController *loginC = [[LoginViewController alloc] init];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
+            [NavigationBarAttr setNavigationBarStyle:nav];
+            [self presentViewController:nav animated:YES completion:nil];
+            return NO;
+        }
+        return YES;
+    }
     return YES;
 }
 

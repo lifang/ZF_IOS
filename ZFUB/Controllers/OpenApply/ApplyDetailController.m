@@ -16,6 +16,7 @@
 #import "ChannelSelectedController.h"
 
 #define kTextViewTag   111
+#define kApplyImageTag 112
 
 @interface ApplyInfoCell : UITableViewCell
 
@@ -70,6 +71,8 @@
 @property (nonatomic, strong) NSString *bankID;  //银行代码
 @property (nonatomic, strong) NSString *channelID; //支付通道ID
 @property (nonatomic, strong) NSString *billID;    //结算日期ID
+
+@property (nonatomic, assign) CGRect imageRect;
 
 //无作用 就是用来去掉cell中输入框的输入状态
 @property (nonatomic, strong) UITextField *tempField;
@@ -372,9 +375,12 @@
     if (_applyData.organID) {
         [_infoDict setObject:_applyData.organID forKey:key_organID];
     }
-    if (_applyData.channelID) {
-        [_infoDict setObject:_applyData.channelID forKey:key_channel];
+    if (_applyData.channelOpenName && _applyData.billingName) {
+        [_infoDict setObject:[NSString stringWithFormat:@"%@ %@",_applyData.channelOpenName,_applyData.billingName] forKey:key_channel];
     }
+    _channelID = _applyData.channelID;
+    _billID = _applyData.billingID;
+
     [_infoDict setObject:[NSNumber numberWithInt:_applyData.sex] forKey:key_sex];
     _merchantID = _applyData.merchantID;
 }
@@ -475,6 +481,7 @@
     if (value && ![value isEqualToString:@""]) {
         if (buttonIndex == 0) {
             //查看大图
+            [self scanBigImage];
             return;
         }
         else if (buttonIndex == 1) {
@@ -504,6 +511,11 @@
         imagePickerController.sourceType = sourceType;
         [self presentViewController:imagePickerController animated:YES completion:nil];
     }
+}
+
+- (void)scanBigImage {
+    NSString *urlString = [_infoDict objectForKey:_selectedKey];
+    [self showDetailImageWithURL:urlString imageRect:self.imageRect];
 }
 
 #pragma mark - UIImagePickerDelegate
@@ -740,6 +752,7 @@
                 CGRect rect = CGRectMake(kScreenWidth - 40, (cell.frame.size.height - 20) / 2, 20, 20);
                 UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
                 imageView.image = kImageName(@"upload.png");
+                imageView.tag = kApplyImageTag;
                 [cell.contentView addSubview:imageView];
                 
                 cell.key = model.materialID;
@@ -826,7 +839,11 @@
             [self.navigationController pushViewController:bankC animated:YES];
         }
         else if (cell.type == MaterialImage) {
+            //图片
             _selectedKey = cell.key;
+            UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+            UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:kApplyImageTag];
+            _imageRect = [[imageView superview] convertRect:imageView.frame toView:self.view];
             [self showImageOption];
         }
         else {
@@ -1176,9 +1193,9 @@
         else {
             value = [_infoDict objectForKey:model.materialID];
         }
-        [dict setObject:model.materialName forKey:@"Key"];
+        [dict setObject:model.materialName forKey:@"key"];
         if (value) {
-            [dict setObject:value forKey:@"Value"];
+            [dict setObject:value forKey:@"value"];
         }
         [dict setObject:[NSNumber numberWithInt:model.materialType] forKey:@"types"];
         [dict setObject:[NSNumber numberWithInt:[model.materialID intValue]] forKey:@"targetId"];

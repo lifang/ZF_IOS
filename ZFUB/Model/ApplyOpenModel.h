@@ -65,6 +65,10 @@ typedef enum {
 @property (nonatomic, strong) NSString *taxID;
 @property (nonatomic, strong) NSString *organID;
 @property (nonatomic, strong) NSString *channelID;
+@property (nonatomic, strong) NSString *channelOpenName; //选择中的支付通道名 区别去上面的channelName
+@property (nonatomic, strong) NSString *billingID;   //结算周期id
+@property (nonatomic, strong) NSString *billingName; //结算周期名
+
 
 @property (nonatomic, strong) NSMutableArray *merchantList;
 @property (nonatomic, strong) NSMutableArray *materialList; //需要提交的材料数组

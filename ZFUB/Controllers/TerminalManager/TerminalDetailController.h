@@ -6,10 +6,10 @@
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import "ScanImageViewController.h"
 #import "TerminalManagerModel.h"
 
-@interface TerminalDetailController : CommonViewController
+@interface TerminalDetailController : ScanImageViewController
 
 @property (nonatomic, strong) TerminalManagerModel *terminalModel;
 

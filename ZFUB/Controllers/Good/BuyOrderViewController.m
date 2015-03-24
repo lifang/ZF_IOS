@@ -84,7 +84,7 @@
             id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             if ([object isKindOfClass:[NSDictionary class]]) {
                 NSString *errorCode = [object objectForKey:@"code"];
-                if ([errorCode intValue] == RequestFail) {
+                if ([errorCode intValue] == RequestFail || [errorCode intValue] == RequestShortInventory) {
                     //返回错误代码
                     hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
                 }
@@ -115,7 +115,7 @@
 
 - (void)updatPrice {
     self.payLabel.text = [NSString stringWithFormat:@"实付：￥%.2f",[self getSummaryPrice]];
-    self.deliveryLabel.text = [NSString stringWithFormat:@"(含配送费：￥%@)",@"123"];
+    self.deliveryLabel.text = [NSString stringWithFormat:@"(含配送费：￥%@)",@"0"];
 }
 
 #pragma mark - UITableView
@@ -138,7 +138,7 @@
         cell.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",_goodDetail.defaultChannel.channelName];
         if ([_goodDetail.goodImageList count] > 0) {
             [cell.pictureView sd_setImageWithURL:[NSURL URLWithString:[_goodDetail.goodImageList objectAtIndex:0]]
-                                placeholderImage:kImageName(@"test1.png")];
+                                placeholderImage:nil];
         }
         return cell;
 
@@ -167,7 +167,7 @@
         deliveryLabel.backgroundColor = [UIColor clearColor];
         deliveryLabel.font = [UIFont systemFontOfSize:11.f];
         deliveryLabel.adjustsFontSizeToFitWidth = YES;
-        deliveryLabel.text = [NSString stringWithFormat:@"配送费：￥%@",@"123"];
+        deliveryLabel.text = [NSString stringWithFormat:@"配送费：￥%@",@"0"];
         [cell.contentView addSubview:deliveryLabel];
         
         UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, 10, kScreenWidth - 220, 20)];

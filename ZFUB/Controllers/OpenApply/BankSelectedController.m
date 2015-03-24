@@ -70,8 +70,8 @@
     [backView addSubview:_bankField];
     
     _searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _searchBtn.frame = CGRectMake(kScreenWidth - 60, 2, 40, 40);
-    [_searchBtn setBackgroundImage:kImageName(@"add.png") forState:UIControlStateNormal];
+    _searchBtn.frame = CGRectMake(kScreenWidth - 40, 10, 24, 24);
+    [_searchBtn setBackgroundImage:kImageName(@"search.png") forState:UIControlStateNormal];
     [_searchBtn addTarget:self action:@selector(searchBank:) forControlEvents:UIControlEventTouchUpInside];
     [backView addSubview:_searchBtn];
 }

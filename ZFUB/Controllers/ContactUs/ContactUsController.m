@@ -7,6 +7,7 @@
 //
 
 #import "ContactUsController.h"
+#import "IntentionViewController.h"
 
 @interface ContactUsController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -107,12 +108,37 @@
     }
     cell.textLabel.font = [UIFont systemFontOfSize:16.f];
     cell.textLabel.text = title;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (indexPath.row == 2) {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
+        imageView.image = kImageName(@"qrcode.png");
+        cell.accessoryView = imageView;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.row) {
+        case 0: {
+            //购买意向单
+            IntentionViewController *intentionC = [[IntentionViewController alloc] init];
+            [self.navigationController pushViewController:intentionC animated:YES];
+        }
+            break;
+        case 1: {
+            //联系客服
+        }
+            break;
+        case 2: {
+            //微信
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

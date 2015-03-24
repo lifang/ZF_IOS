@@ -296,6 +296,11 @@
 #pragma mark - Action
 
 - (IBAction)goShoppingCart:(id)sender {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+        [self showLoginViewController];
+        return;
+    }
     [self.tabBarController setSelectedIndex:1];
 }
 
@@ -331,7 +336,7 @@
     }
     GoodListModel *good = [_dataItem objectAtIndex:indexPath.row];
     [cell.pictureView sd_setImageWithURL:[NSURL URLWithString:good.goodImagePath]
-                        placeholderImage:kImageName(@"test1.png")];
+                        placeholderImage:nil];
     cell.titleLabel.text = good.goodName;
     cell.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",good.goodPrice];
     cell.salesVolumeLabel.text = [NSString stringWithFormat:@"已售%@",good.goodSaleNumber];

@@ -121,6 +121,15 @@
             if ([primaryDict objectForKey:@"pay_channel_id"]) {
                 _channelID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"pay_channel_id"]];
             }
+            if ([primaryDict objectForKey:@"channelname"]) {
+                _channelOpenName = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"channelname"]];
+            }
+            if ([primaryDict objectForKey:@"billing_cyde_id"]) {
+                _billingID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"billing_cyde_id"]];
+            }
+            if ([primaryDict objectForKey:@"billingname"]) {
+                _billingName = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"billingname"]];
+            }
         }
         id matList = [dict objectForKey:@"materialName"];
         if ([matList isKindOfClass:[NSArray class]]) {

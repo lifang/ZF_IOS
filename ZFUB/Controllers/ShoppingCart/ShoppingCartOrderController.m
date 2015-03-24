@@ -79,7 +79,7 @@
 
 - (void)setContentsForControls {
     self.payLabel.text = [NSString stringWithFormat:@"实付：￥%.2f",[self getSummaryPrice]];
-    self.deliveryLabel.text = [NSString stringWithFormat:@"(含配送费：￥%@)",@"123"];
+    self.deliveryLabel.text = [NSString stringWithFormat:@"(含配送费：￥%@)",@"0"];
 }
 
 //计算总价
@@ -137,7 +137,7 @@
         deliveryLabel.backgroundColor = [UIColor clearColor];
         deliveryLabel.font = [UIFont systemFontOfSize:11.f];
         deliveryLabel.adjustsFontSizeToFitWidth = YES;
-        deliveryLabel.text = [NSString stringWithFormat:@"配送费：￥%@",@"123"];
+        deliveryLabel.text = [NSString stringWithFormat:@"配送费：￥%@",@"0"];
         [cell.contentView addSubview:deliveryLabel];
         
         UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, 10, kScreenWidth - 220, 20)];
@@ -164,7 +164,7 @@
         cell.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",model.cartModel];
         cell.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",model.cartChannel];
         [cell.pictureView sd_setImageWithURL:[NSURL URLWithString:model.cartImagePath]
-                            placeholderImage:kImageName(@"test1.png")];
+                            placeholderImage:nil];
         return cell;
     }
 }

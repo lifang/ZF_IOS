@@ -192,7 +192,7 @@
         cell.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",_goodDetail.defaultChannel.channelName];
         if ([_goodDetail.goodImageList count] > 0) {
             [cell.pictureView sd_setImageWithURL:[NSURL URLWithString:[_goodDetail.goodImageList objectAtIndex:0]]
-                                placeholderImage:kImageName(@"test1.png")];
+                                placeholderImage:nil];
         }
         return cell;
         

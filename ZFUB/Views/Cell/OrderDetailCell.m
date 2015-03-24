@@ -168,7 +168,7 @@
     self.numberLabel.text = [NSString stringWithFormat:@"X %d",[data.goodNumber intValue]];
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",data.goodBrand];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",data.goodChannel];
-    [self.pictureView sd_setImageWithURL:data.goodPicture placeholderImage:kImageName(@"test1.png")];
+    [self.pictureView sd_setImageWithURL:[NSURL URLWithString:data.goodPicture] placeholderImage:nil];
 }
 
 @end

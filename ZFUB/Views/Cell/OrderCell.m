@@ -575,7 +575,7 @@ typedef enum {
     self.totalCountLabel.text = [NSString stringWithFormat:@"共计：%@件",_cellData.orderTotalNum];
     self.deliveryFeeLabel.text = [NSString stringWithFormat:@"配送费：￥%.2f",_cellData.orderDeliverFee];
     self.payLabel.text = [NSString stringWithFormat:@"实付：￥%.2f",_cellData.orderTotalPrice];
-    [self.pictureView sd_setImageWithURL:_cellData.orderGood.goodPicture placeholderImage:kImageName(@"test1.png")];
+    [self.pictureView sd_setImageWithURL:[NSURL URLWithString:_cellData.orderGood.goodPicture] placeholderImage:nil];
 }
 
 

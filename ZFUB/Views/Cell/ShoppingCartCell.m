@@ -501,7 +501,7 @@
 - (void)setShoppingCartData:(ShoppingCartModel *)cart {
     _cartData = cart;
     [self.pictureView sd_setImageWithURL:[NSURL URLWithString:cart.cartImagePath]
-                        placeholderImage:kImageName(@"test1.png")];
+                        placeholderImage:nil];
     self.titleLabel.text = cart.cartTitle;
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号   %@",cart.cartModel];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",cart.cartChannel];

@@ -11,6 +11,9 @@
 static NSArray *s_cityList = nil;
 static NSArray *s_provinceList = nil;
 
+static NSArray *s_sectionCityList = nil;
+static NSArray *s_indexList = nil;
+
 @implementation CityHandle
 
 + (NSArray *)shareProvinceList {
@@ -31,6 +34,26 @@ static NSArray *s_provinceList = nil;
         }
     });
     return s_cityList;
+}
+
++ (NSArray *)shareSectionCityList {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!s_sectionCityList) {
+            s_sectionCityList = [[self class] dataForSection];
+        }
+    });
+    return s_sectionCityList;
+}
+
++ (NSArray *)shareIndexList {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (!s_indexList) {
+            s_indexList = [[self class] tableViewIndex];
+        }
+    });
+    return s_indexList;
 }
 
 //省

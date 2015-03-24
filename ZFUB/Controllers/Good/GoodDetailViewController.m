@@ -22,6 +22,7 @@
 #import "TradeRateViewController.h"
 #import "RentDescriptionController.h"
 #import "OpenInfoViewController.h"
+#import "FactoryDetailController.h"
 
 static CGFloat topImageHeight = 160.f;
 
@@ -337,9 +338,9 @@ static CGFloat topImageHeight = 160.f;
     [_mainScrollView addSubview:factoryLabel];
     
     //厂家按钮
-    UIButton *factoryBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    UIButton *factoryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [factoryBtn setBackgroundImage:kImageName(@"info.png") forState:UIControlStateNormal];
     factoryBtn.frame = CGRectMake(factoryLabel.frame.origin.x + factoryLabel.frame.size.width + vSpace, originY, labelHeight, labelHeight);
-    factoryBtn.enabled = NO;
     [factoryBtn addTarget:self action:@selector(scanFactoryInfo:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:factoryBtn];
     
@@ -349,14 +350,14 @@ static CGFloat topImageHeight = 160.f;
     firstLine.backgroundColor = kColor(255, 102, 36, 1);
     [_mainScrollView addSubview:firstLine];
     
-    //厂家图片
+    //支付通道厂家图片
     originY += vSpace + 1;
     UIImageView *factoryImageView = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace, originY, leftLabelWidth, labelHeight)];
-    [factoryImageView sd_setImageWithURL:[NSURL URLWithString:_detailModel.factoryImagePath]];
+    [factoryImageView sd_setImageWithURL:[NSURL URLWithString:_detailModel.defaultChannel.channelFactoryLogo]];
     [_mainScrollView addSubview:factoryImageView];
     //厂家网址
     UILabel *websiteLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace + leftLabelWidth, originY, kScreenWidth - leftLabelWidth - leftSpace, labelHeight)];
-    [self setLabel:websiteLabel withTitle:_detailModel.factoryWebsite font:[UIFont systemFontOfSize:13.f]];
+    [self setLabel:websiteLabel withTitle:_detailModel.defaultChannel.channelFactoryURL font:[UIFont systemFontOfSize:13.f]];
     
     //厂家简介
     originY += vSpace + labelHeight;
@@ -366,7 +367,7 @@ static CGFloat topImageHeight = 160.f;
     CGFloat summaryHeight = 40.f;
     UILabel *factorySummaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, summaryHeight)];
     factorySummaryLabel.numberOfLines = 2;
-    [self setLabel:factorySummaryLabel withTitle:_detailModel.factorySummary font:[UIFont systemFontOfSize:13.f]];
+    [self setLabel:factorySummaryLabel withTitle:_detailModel.defaultChannel.channelFactoryDescription font:[UIFont systemFontOfSize:13.f]];
     factorySummaryLabel.textColor = kColor(102, 102, 102, 1);
     
     //按钮view
@@ -733,6 +734,7 @@ static CGFloat topImageHeight = 160.f;
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"添加到购物车成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshShoppingCartNotification object:nil];
                 }
             }
             else {
@@ -793,7 +795,13 @@ static CGFloat topImageHeight = 160.f;
 #pragma mark - Action
 
 - (IBAction)goShoppingCart:(id)sender {
-    [self.tabBarController setSelectedIndex:1];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+        [self showLoginViewController];
+    }
+    else {
+        [self.tabBarController setSelectedIndex:1];
+    }
 }
 
 - (IBAction)selectedChannel:(id)sender {
@@ -847,7 +855,9 @@ static CGFloat topImageHeight = 160.f;
 }
 
 - (IBAction)scanFactoryInfo:(id)sender {
-    
+    FactoryDetailController *factoryC = [[FactoryDetailController alloc] init];
+    factoryC.goodDetail = _detailModel;
+    [self.navigationController pushViewController:factoryC animated:YES];
 }
 
 - (IBAction)scanComment:(id)sender {
@@ -885,20 +895,33 @@ static CGFloat topImageHeight = 160.f;
         hud.labelText = @"未获取到此商品信息";
         return;
     }
-    [self addGoodIntoShoppingCart];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+        [self showLoginViewController];
+    }
+    else {
+        [self addGoodIntoShoppingCart];
+    }
 }
 
 //立即购买、租赁
 - (IBAction)buyNow:(id)sender {
-    if ([_buyGoodButton.titleLabel.text isEqualToString:@"立即购买"]) {
-        BuyOrderViewController *buyC = [[BuyOrderViewController alloc] init];
-        buyC.goodDetail = _detailModel;
-        [self.navigationController pushViewController:buyC animated:YES];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+        [self showLoginViewController];
     }
     else {
-        RentOrderViewController *rentC = [[RentOrderViewController alloc] init];
-        rentC.goodDetail = _detailModel;
-        [self.navigationController pushViewController:rentC animated:YES];
+        if ([_buyGoodButton.titleLabel.text isEqualToString:@"立即购买"]) {
+            BuyOrderViewController *buyC = [[BuyOrderViewController alloc] init];
+            buyC.goodDetail = _detailModel;
+            [self.navigationController pushViewController:buyC animated:YES];
+        }
+        else {
+            RentOrderViewController *rentC = [[RentOrderViewController alloc] init];
+            rentC.goodDetail = _detailModel;
+            [self.navigationController pushViewController:rentC animated:YES];
+        }
+
     }
 }
 

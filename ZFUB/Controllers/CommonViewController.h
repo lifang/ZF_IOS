@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginViewController.h"
+#import "NavigationBarAttr.h"
 
 @interface CommonViewController : UIViewController
+
+- (void)showLoginViewController;
 
 @end

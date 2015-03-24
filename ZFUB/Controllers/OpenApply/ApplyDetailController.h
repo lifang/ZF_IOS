@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 ___MyCompanyName___. All rights reserved.
 //
 
-#import "CommonViewController.h"
+#import "ScanImageViewController.h"
 
 static NSString *key_selected = @"key_selected";
 static NSString *key_name = @"key_name";
@@ -29,7 +29,7 @@ typedef enum {
     OpenStatusReopen,   //重新开通
 }OpenStatus;
 
-@interface ApplyDetailController : CommonViewController
+@interface ApplyDetailController : ScanImageViewController
 
 @property (nonatomic, strong) NSString *terminalID;
 @property (nonatomic, assign) OpenStatus openStatus;

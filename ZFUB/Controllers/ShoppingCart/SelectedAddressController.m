@@ -8,6 +8,7 @@
 
 #import "SelectedAddressController.h"
 #import "AppDelegate.h"
+#import "AddressManagerController.h"
 
 @interface SelectedAddressController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -146,7 +147,8 @@
 #pragma mark - Action
 
 - (IBAction)addressManager:(id)sender {
-    
+    AddressManagerController *addressC = [[AddressManagerController alloc] init];
+    [self.navigationController pushViewController:addressC animated:YES];
 }
 
 #pragma mark - UITableView

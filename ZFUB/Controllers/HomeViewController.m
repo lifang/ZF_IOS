@@ -20,9 +20,9 @@
 #import "HomeImageModel.h"
 #import "LocationViewController.h"
 #import "ContactUsController.h"
-#import "UIImageView+WebCache.h"
+#import "AppDelegate.h"
 
-@interface HomeViewController ()<LocationDelegate>
+@interface HomeViewController ()<LocationDelegate,CLLocationManagerDelegate>
 
 @property (nonatomic, strong) PollingView *pollingView;
 
@@ -31,6 +31,8 @@
 @property (nonatomic, strong) LocationButton *locationBtn;
 
 @property (nonatomic, strong) UIImageView *imageView;
+
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -44,6 +46,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _pictureItem = [[NSMutableArray alloc] init];
     [self loadHomeImageList];
+    [self getUserLocation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,25 +75,6 @@
     [self initPollingView];
     //模块按钮
     [self initModuleView];
-    
-//    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, 220, 220)];
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tt)];
-//    _imageView.backgroundColor = [UIColor blackColor];
-//    _imageView.userInteractionEnabled = YES;
-//    [_imageView addGestureRecognizer:tap];
-//    [self.view addSubview:_imageView];
-}
-
-- (void)tt {
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:@"http://pic42.nipic.com/20140608/18347945_020920394000_2.jpg"]
-                 placeholderImage:nil
-                          options:SDWebImageProgressiveDownload
-                         progress:^(NSInteger receivedSize, NSInteger expectedSize){
-                             NSLog(@"!!!%f",(float)receivedSize / expectedSize);
-                         }
-                        completed:^(UIImage *image,NSError *error, SDImageCacheType cacheType, NSURL *imageURL){
-                            NSLog(@"%f,%f",image.size.width,image.size.height);
-                        }];
 }
 
 //********导航栏*********
@@ -252,6 +236,7 @@
 #pragma mark - Action
 
 - (IBAction)moduleSelected:(id)sender {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
     ModuleView *moduleView = (ModuleView *)sender;
     switch (moduleView.tag) {
         case ModuleBuyPOS: {
@@ -263,6 +248,10 @@
             break;
         case ModuleAuthentication: {
             //开通认证
+            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+                [self showLoginViewController];
+                return;
+            }
             OpenApplyController *applyC = [[OpenApplyController alloc] init];
             applyC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:applyC animated:YES];
@@ -270,6 +259,10 @@
             break;
         case ModuleManageTerminal: {
             //终端管理
+            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+                [self showLoginViewController];
+                return;
+            }
             TerminalManagerController *managerC = [[TerminalManagerController alloc] init];
             managerC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:managerC animated:YES];
@@ -277,6 +270,10 @@
             break;
         case ModuletDealFlow: {
             //交易流水
+            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+                [self showLoginViewController];
+                return;
+            }
             DealFlowViewController *dealFlowC = [[DealFlowViewController alloc] init];
             dealFlowC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:dealFlowC animated:YES];
@@ -324,12 +321,55 @@
 
 #pragma mark - 定位
 
+- (void)getUserLocation {
+    if ([CLLocationManager locationServicesEnabled]) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; //控制定位精度,越高耗电量越大。
+        _locationManager.distanceFilter = 100; //控制定位服务更新频率。单位是“米”
+        [_locationManager startUpdatingLocation];
+        //在ios 8.0下要授权
+        if (kDeviceVersion >= 8.0)
+            [_locationManager requestWhenInUseAuthorization];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *currentLocation = [locations lastObject];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error) {
+            if ([placemarks count] > 0) {
+                CLPlacemark *placemark = [placemarks lastObject];
+                NSString *cityName = placemark.locality;
+                [self getCurrentCityInfoWithCityName:cityName];
+            }
+        }
+    }];
+}
+
+- (void)getCurrentCityInfoWithCityName:(NSString *)cityName {
+    CityModel *currentCity = nil;
+    for (CityModel *model in [CityHandle shareCityList]) {
+        if ([cityName containsString:model.cityName]) {
+            currentCity = model;
+            break;
+        }
+    }
+    if (currentCity) {
+        _locationBtn.nameLabel.text = currentCity.cityName;
+    }
+    else {
+        _locationBtn.nameLabel.text = @"定位失败";
+    }
+}
+
 - (void)getSelectedLocation:(CityModel *)selectedCity {
     if (selectedCity) {
         _locationBtn.nameLabel.text = selectedCity.cityName;
     }
     else {
-        _locationBtn.nameLabel.text = @"无法定位";
+        _locationBtn.nameLabel.text = @"定位失败";
     }
 }
 

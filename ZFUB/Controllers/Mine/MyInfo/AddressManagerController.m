@@ -371,10 +371,20 @@
         cell = [[MultipleDeleteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
     AddressModel *model = [_addressItems objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont systemFontOfSize:15.f];
+    NSString *receiver = [NSString stringWithFormat:@"收件人：%@",model.addressReceiver];
+    NSString *totalString = [NSString stringWithFormat:@"%@   %@",receiver,model.addressPhone];
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:totalString];
+    NSDictionary *receiverAttr = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [UIFont boldSystemFontOfSize:15.f],NSFontAttributeName,
+                                  nil];
+    NSDictionary *phoneAttr = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [UIFont systemFontOfSize:14],NSFontAttributeName,
+                               nil];
+    [attrString addAttributes:receiverAttr range:NSMakeRange(0, [receiver length])];
+    [attrString addAttributes:phoneAttr range:NSMakeRange([receiver length], [attrString length] - [receiver length])];
+    cell.textLabel.attributedText = attrString;
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14.f];
-    cell.detailTextLabel.numberOfLines = 0;
-    cell.textLabel.text = [NSString stringWithFormat:@"收件人：%@  %@",model.addressReceiver,model.addressPhone];
+    cell.detailTextLabel.numberOfLines = 2;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"收件地址：%@",model.address];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;

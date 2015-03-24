@@ -533,7 +533,7 @@ typedef enum {
     CGFloat rightSpce = 20.f;
     CGFloat labelHeight = 18.f;
     CGFloat vSpace = 10.f;
-    CGFloat titleWidth = 60.f;
+    CGFloat titleWidth = 80.f;
     
     //标题label
     UILabel *titleLabel = [[UILabel alloc] init];
@@ -542,6 +542,7 @@ typedef enum {
     titleLabel.font = [UIFont systemFontOfSize:13.f];
     titleLabel.textColor = kColor(108, 108, 108, 1);
     titleLabel.text = title;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
     [_scrollView addSubview:titleLabel];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:titleLabel
                                                           attribute:NSLayoutAttributeTop
@@ -966,8 +967,14 @@ typedef enum {
 #pragma mark - Action
 
 - (IBAction)scanImage:(id)sender {
-    NSLog(@"%ld",(long)[(UIButton *)sender tag]);
-
+    UIButton *btn = (UIButton *)sender;
+    CGRect convertRect = [[btn superview] convertRect:btn.frame toView:self.view];
+    for (OpeningModel *model in _openItems) {
+        if (model.type == ResourceImage && btn.tag == model.index + 1) {
+            [self showDetailImageWithURL:model.resourceValue imageRect:convertRect];
+            break;
+        }
+    }
 }
 
 //同步

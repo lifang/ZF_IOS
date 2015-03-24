@@ -22,6 +22,9 @@
         if ([dict objectForKey:@"good_price"]) {
             _goodPrice = [[dict objectForKey:@"good_price"] floatValue] / 100;
         }
+        else if ([dict objectForKey:@"good_actualprice"]) {
+            _goodPrice = [[dict objectForKey:@"good_actualprice"] floatValue] / 100;
+        }
         if ([dict objectForKey:@"good_channel"]) {
             _goodChannel = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_channel"]];
         }

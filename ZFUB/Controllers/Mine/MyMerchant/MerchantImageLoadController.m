@@ -101,6 +101,10 @@
     [self saveWithURLString:urlString];
 }
 
+- (void)scanBigImage {
+    //重写
+}
+
 #pragma mark - Action
 
 - (IBAction)modifyLocation:(id)sender {
@@ -110,9 +114,11 @@
 #pragma mark -
 
 - (void)selectedKey:(NSString *)imageKey
-           hasImage:(BOOL)hasImage {
+           hasImage:(BOOL)hasImage
+          imageRect:(CGRect)rect {
     _alreadyHasImage = hasImage;
     _selectedImageKey = imageKey;
+    _imageRect = rect;
     UIActionSheet *sheet = nil;
     if (hasImage) {
         sheet = [[UIActionSheet alloc] initWithTitle:@""
@@ -136,6 +142,7 @@
     if (_alreadyHasImage) {
         if (buttonIndex == 0) {
             //查看大图
+            [self scanBigImage];
             return;
         }
         else if (buttonIndex == 1) {

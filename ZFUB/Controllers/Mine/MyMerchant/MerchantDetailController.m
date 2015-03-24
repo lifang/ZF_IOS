@@ -211,6 +211,32 @@
     [_tableView reloadData];
 }
 
+- (void)scanBigImage {
+    NSString *urlString = nil;
+    if ([self.selectedImageKey isEqualToString:key_frontImage]) {
+        urlString = _mercahtnDetail.frontPath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_backImage]) {
+        urlString = _mercahtnDetail.bankPath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_bodyImage]) {
+        urlString = _mercahtnDetail.bodyPath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_licenseImage]) {
+        urlString = _mercahtnDetail.licensePath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_taxImage]) {
+        urlString = _mercahtnDetail.taxPath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_organizationImage]) {
+        urlString = _mercahtnDetail.organizationPath;
+    }
+    else if ([self.selectedImageKey isEqualToString:key_bankImage]) {
+        urlString = _mercahtnDetail.bankPath;
+    }
+    [self showDetailImageWithURL:urlString imageRect:self.imageRect];
+}
+
 #pragma mark - Action
 
 - (IBAction)modifyMerchant:(id)sender {
@@ -448,7 +474,10 @@
             default:
                 break;
         }
-        [self selectedKey:key hasImage:hasImage];
+        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+        UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:kImageTag];
+        CGRect convertRect = [[imageView superview] convertRect:imageView.frame toView:self.view];
+        [self selectedKey:key hasImage:hasImage imageRect:convertRect];
     }
 }
 

@@ -88,7 +88,8 @@
 @class MerchantDetailModel;
 
 typedef enum {
-    RequestTokenOverdue = -2,   //token失效
+    RequestTokenOverdue = -3,   //token失效
+    RequestShortInventory = -2, //库存不足
     RequestFail = -1,           //请求错误
     RequestSuccess = 1,         //请求成功
 }RequestCode;
@@ -411,6 +412,9 @@ static NSString *s_homeImageList_method = @"index/sysshufflingfigure/getList";
 
 //找回密码
 static NSString *s_findPassword_method = @"user/updatePassword";
+
+//购买意向
+static NSString *s_intention_method = @"paychannel/intention/add";
 
 @interface NetworkInterface : NSObject
 
@@ -1347,6 +1351,18 @@ static NSString *s_findPassword_method = @"user/updatePassword";
 + (void)findPasswordWithUsername:(NSString *)username
                         password:(NSString *)password
                     validateCode:(NSString *)validateCode
+                        finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 购买意向
+ @param name  姓名
+ @param phoneNumber  手机号
+ @param content  内容
+ @result finish  请求回调结果
+ */
++ (void)sendBuyIntentionWithName:(NSString *)name
+                     phoneNumber:(NSString *)phoneNumber
+                         content:(NSString *)content
                         finished:(requestDidFinished)finish;
 
 

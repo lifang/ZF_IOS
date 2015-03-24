@@ -8,6 +8,7 @@
 
 #import "CommonViewController.h"
 #import "CityHandle.h"
+#import <CoreLocation/CoreLocation.h>
 
 @protocol LocationDelegate <NSObject>
 

@@ -11,8 +11,8 @@
 
 @interface CityHandle : NSObject
 
-+ (NSArray *)tableViewIndex;
-+ (NSArray *)dataForSection;
++ (NSArray *)shareIndexList;       //索引数组
++ (NSArray *)shareSectionCityList; //tableview 数据源
 
 + (NSArray *)shareProvinceList;  //省份数组
 + (NSArray *)shareCityList;      //城市数组

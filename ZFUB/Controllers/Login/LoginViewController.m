@@ -10,6 +10,7 @@
 #import "FindPasswordViewController.h"
 #import "RegisterViewController.h"
 #import "NetworkInterface.h"
+#import "AppDelegate.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -25,6 +26,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"登录";
+    if (kDeviceVersion >= 7.0) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回"
                                                                  style:UIBarButtonItemStyleDone
                                                                 target:self
@@ -348,6 +352,7 @@
                 }
                 else if (errorCode == RequestSuccess) {
                     NSLog(@"%@",object);
+                    [self parseLoginDataWithDictionary:object];
                 }
             }
             else {
@@ -358,6 +363,21 @@
             hud.labelText = kNetworkFailed;
         }
     }];
+}
+
+#pragma mark - Data
+
+- (void)parseLoginDataWithDictionary:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    NSDictionary *infoDict = [dict objectForKey:@"result"];
+    NSString *token = @"123";
+    NSString *userID = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"id"]];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    delegate.token = token;
+    delegate.userID = userID;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Action

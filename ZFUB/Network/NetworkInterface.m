@@ -133,7 +133,9 @@ static NSString *HTTP_GET  = @"GET";
                      finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customersId"];
     [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
     [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"rows"];
@@ -153,7 +155,9 @@ static NSString *HTTP_GET  = @"GET";
                      finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:[NSNumber numberWithInt:[terminalID intValue]] forKey:@"terminalsId"];
     [paramDict setObject:[NSNumber numberWithInt:applyStatus] forKey:@"status"];
@@ -171,7 +175,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[merchantID intValue]] forKey:@"merchantId"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applyMerchant_method];
@@ -186,7 +192,9 @@ static NSString *HTTP_GET  = @"GET";
                         finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applyChannel_method];
     [[self class] requestWithURL:urlString
@@ -200,7 +208,9 @@ static NSString *HTTP_GET  = @"GET";
                      finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applyBank_method];
     [[self class] requestWithURL:urlString
@@ -230,7 +240,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[terminalID intValue]] forKey:@"terminalId"];
     [paramDict setObject:[NSNumber numberWithInt:type] forKey:@"status"];
     //url
@@ -246,19 +258,26 @@ static NSString *HTTP_GET  = @"GET";
                       params:(NSArray *)paramList
                     finished:(requestDidFinished)finish {
     //参数
-//    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-//    [paramDict setObject:token forKey:@"token"];
-//    [paramDict setObject:paramList forKey:@"paramMap"];
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
+    [paramDict setObject:paramList forKey:@"paramMap"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applySubmit_method];
-    NetworkRequest *request = [[NetworkRequest alloc] initWithRequestURL:urlString
-                                                              httpMethod:HTTP_POST
-                                                                finished:finish];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:paramList
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:nil];
-    [request setPostBody:postData];
-    [request start];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+//    NetworkRequest *request = [[NetworkRequest alloc] initWithRequestURL:urlString
+//                                                              httpMethod:HTTP_POST
+//                                                                finished:finish];
+//    NSLog(@"url = %@,params = %@",urlString,params);
+//    NSData *postData = [NSJSONSerialization dataWithJSONObject:paramList
+//                                                       options:NSJSONWritingPrettyPrinted
+//                                                         error:nil];
+//    [request setPostBody:postData];
+//    [request start];
 }
 
 //15.
@@ -269,7 +288,9 @@ static NSString *HTTP_GET  = @"GET";
                                finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customersId"];
     [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
     [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"rows"];
@@ -286,7 +307,9 @@ static NSString *HTTP_GET  = @"GET";
                              finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_organzationList_method];
     [[self class] requestWithURL:urlString
@@ -304,7 +327,9 @@ static NSString *HTTP_GET  = @"GET";
                     finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:[NSNumber numberWithInt:[institutionID intValue]] forKey:@"payChannelId"];
     [paramDict setObject:terminalNumber forKey:@"serialNum"];
@@ -323,7 +348,9 @@ static NSString *HTTP_GET  = @"GET";
                         finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:tmID forKey:@"terminalid"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_terminalFindPsw_method];
@@ -339,7 +366,9 @@ static NSString *HTTP_GET  = @"GET";
                   finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
 //    [paramDict setObject:tmID forKey:@"terminalid"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_videoAuth_method];
@@ -355,7 +384,9 @@ static NSString *HTTP_GET  = @"GET";
                     finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
 //    [paramDict setObject:tmID forKey:@"terminalid"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_synchronize_method];
@@ -372,7 +403,9 @@ static NSString *HTTP_GET  = @"GET";
                           finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[tmID intValue]] forKey:@"terminalsId"];
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     //url
@@ -516,7 +549,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_shoppingList_method];
@@ -534,7 +569,9 @@ static NSString *HTTP_GET  = @"GET";
                         finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
     [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"paychannelId"];
@@ -552,7 +589,9 @@ static NSString *HTTP_GET  = @"GET";
                            finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:cartID forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_deleteShoppingList_method];
@@ -569,7 +608,9 @@ static NSString *HTTP_GET  = @"GET";
                            finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:cartID forKey:@"id"];
     [paramDict setObject:[NSNumber numberWithInt:count] forKey:@"quantity"];
     //url
@@ -587,7 +628,9 @@ static NSString *HTTP_GET  = @"GET";
                              finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
     [paramDict setObject:phoneNumber forKey:@"phone"];
     //url
@@ -610,7 +653,9 @@ static NSString *HTTP_GET  = @"GET";
                             finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:cartsID forKey:@"cartid"];
     [paramDict setObject:[NSNumber numberWithInt:[addressID intValue]] forKey:@"addressId"];
@@ -646,7 +691,9 @@ static NSString *HTTP_GET  = @"GET";
                                finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
     [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"paychannelId"];
@@ -684,7 +731,9 @@ static NSString *HTTP_GET  = @"GET";
                                 finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
     [paramDict setObject:[NSNumber numberWithInt:[channelID intValue]] forKey:@"paychannelId"];
@@ -713,7 +762,9 @@ static NSString *HTTP_GET  = @"GET";
                           userID:(NSString *)userID
                         finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_terminalList_method,userID];
     [[self class] requestWithURL:urlString
@@ -732,7 +783,9 @@ static NSString *HTTP_GET  = @"GET";
                               rows:(int)rows
                           finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d/%@/%@/%@/%d/%d",kServiceURL,s_tradeRecord_method,tradeType,terminalNum,startTime,endTime,page,rows];
     [[self class] requestWithURL:urlString
@@ -748,7 +801,9 @@ static NSString *HTTP_GET  = @"GET";
                         tradeID:(NSString *)tradeID
                        finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d/%@",kServiceURL,s_tradeDetail_method,tradeType,tradeID];
     [[self class] requestWithURL:urlString
@@ -765,7 +820,9 @@ static NSString *HTTP_GET  = @"GET";
                        endTime:(NSString *)endTime
                       finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d/%@/%@/%@",kServiceURL,s_tradeTotal_method,tradeType,terminalNum,startTime,endTime];
     [[self class] requestWithURL:urlString
@@ -779,7 +836,9 @@ static NSString *HTTP_GET  = @"GET";
                       userID:(NSString *)userID
                     finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_userInfo_method,userID];
     [[self class] requestWithURL:urlString
@@ -798,7 +857,9 @@ static NSString *HTTP_GET  = @"GET";
                         finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
     if (username) {
         [paramDict setObject:username forKey:@"name"];
@@ -828,7 +889,9 @@ static NSString *HTTP_GET  = @"GET";
                            finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
     [paramDict setObject:[EncryptHelper MD5_encryptWithString:primayPassword] forKey:@"passwordOld"];
     [paramDict setObject:[EncryptHelper MD5_encryptWithString:newPassword] forKey:@"password"];
@@ -847,7 +910,9 @@ static NSString *HTTP_GET  = @"GET";
                          rows:(int)rows
                      finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/%d/%d",kServiceURL,s_scoreList_method,userID,page,rows];
     [[self class] requestWithURL:urlString
@@ -861,7 +926,9 @@ static NSString *HTTP_GET  = @"GET";
                         userID:(NSString *)userID
                       finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_scoreTotal_method,userID];
     [[self class] requestWithURL:urlString
@@ -879,7 +946,9 @@ static NSString *HTTP_GET  = @"GET";
                       finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:handlerName forKey:@"name"];
     [paramDict setObject:phoneNumber forKey:@"phone"];
@@ -897,7 +966,9 @@ static NSString *HTTP_GET  = @"GET";
                          usedID:(NSString *)userID
                        finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_addressList_method,userID];
     [[self class] requestWithURL:urlString
@@ -918,7 +989,9 @@ static NSString *HTTP_GET  = @"GET";
                    finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     [paramDict setObject:cityID forKey:@"cityId"];
     [paramDict setObject:receiverName forKey:@"receiver"];
@@ -945,7 +1018,9 @@ static NSString *HTTP_GET  = @"GET";
                       finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[addressID intValue]] forKey:@"id"];
     [paramDict setObject:cityID forKey:@"cityId"];
     [paramDict setObject:receiverName forKey:@"receiver"];
@@ -967,7 +1042,9 @@ static NSString *HTTP_GET  = @"GET";
                       finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:addressIDs forKey:@"ids"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_addressDelete_method];
@@ -984,7 +1061,9 @@ static NSString *HTTP_GET  = @"GET";
                             rows:(int)rows
                         finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/%d/%d",kServiceURL,s_merchantList_method,userID,page,rows];
     [[self class] requestWithURL:urlString
@@ -998,7 +1077,9 @@ static NSString *HTTP_GET  = @"GET";
                         merchantID:(NSString *)merchantID
                           finished:(requestDidFinished)finish {
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_merchantDetail_method,merchantID];
     [[self class] requestWithURL:urlString
@@ -1029,7 +1110,9 @@ static NSString *HTTP_GET  = @"GET";
                        finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     if (merchantName) {
         [paramDict setObject:merchantName forKey:@"title"];
@@ -1093,7 +1176,9 @@ static NSString *HTTP_GET  = @"GET";
                        finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     if (merchant.merchantID) {
         [paramDict setObject:[NSNumber numberWithInt:[merchant.merchantID intValue]] forKey:@"id"];
     }
@@ -1172,7 +1257,9 @@ static NSString *HTTP_GET  = @"GET";
                        finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:merchantsID forKey:@"ids"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_merchantDelete_method];
@@ -1220,7 +1307,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
     [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"rows"];
@@ -1239,7 +1328,9 @@ static NSString *HTTP_GET  = @"GET";
                            finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:[messageID intValue]] forKey:@"id"];
     //url
@@ -1257,7 +1348,9 @@ static NSString *HTTP_GET  = @"GET";
                             finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:[messageID intValue]] forKey:@"id"];
     //url
@@ -1275,7 +1368,9 @@ static NSString *HTTP_GET  = @"GET";
                             finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:messagesID forKey:@"ids"];
     //url
@@ -1293,7 +1388,9 @@ static NSString *HTTP_GET  = @"GET";
                     finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:messagesID forKey:@"ids"];
     //url
@@ -1314,7 +1411,9 @@ static NSString *HTTP_GET  = @"GET";
                        finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     if (type > OrderTypeAll) {
         [paramDict setObject:[NSNumber numberWithInt:type] forKey:@"p"];
@@ -1335,7 +1434,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderDetail_method];
@@ -1351,7 +1452,9 @@ static NSString *HTTP_GET  = @"GET";
                       finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderCancel_method];
@@ -1370,7 +1473,9 @@ static NSString *HTTP_GET  = @"GET";
                        finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"good_id"];
     [paramDict setObject:[NSNumber numberWithInt:score] forKey:@"score"];
@@ -1413,7 +1518,9 @@ static NSString *HTTP_GET  = @"GET";
                   finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
     [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"rows"];
@@ -1462,7 +1569,9 @@ static NSString *HTTP_GET  = @"GET";
                  finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
     //url
     NSString *method = nil;
@@ -1510,7 +1619,9 @@ static NSString *HTTP_GET  = @"GET";
                     finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
     //url
     NSString *method = nil;
@@ -1559,7 +1670,9 @@ static NSString *HTTP_GET  = @"GET";
                    finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
     [paramDict setObject:companyName forKey:@"computer_name"];
@@ -1600,7 +1713,9 @@ static NSString *HTTP_GET  = @"GET";
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    [paramDict setObject:token forKey:@"token"];
+    if (token && ![token isEqualToString:@""]) {
+        [paramDict setObject:token forKey:@"token"];
+    }
     [paramDict setObject:[NSNumber numberWithInt:[csID intValue]] forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_cancelSubmit_method];
@@ -1630,9 +1745,26 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:username forKey:@"username"];
     NSString *encryptPassword = [EncryptHelper MD5_encryptWithString:password];
     [paramDict setObject:encryptPassword forKey:@"password"];
-    [paramDict setObject:validateCode forKey:@"Code"];
+    [paramDict setObject:validateCode forKey:@"code"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_findPassword_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
++ (void)sendBuyIntentionWithName:(NSString *)name
+                     phoneNumber:(NSString *)phoneNumber
+                         content:(NSString *)content
+                        finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:name forKey:@"name"];
+    [paramDict setObject:phoneNumber forKey:@"phone"];
+    [paramDict setObject:content forKey:@"content"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_intention_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST

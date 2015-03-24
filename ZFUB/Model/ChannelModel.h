@@ -64,6 +64,11 @@ typedef enum {
 //开通对公材料
 @property (nonatomic, strong) NSString *publicInfo;
 
+//支付通道厂家信息
+@property (nonatomic, strong) NSString *channelFactoryDescription;
+@property (nonatomic, strong) NSString *channelFactoryURL;
+@property (nonatomic, strong) NSString *channelFactoryLogo;
+
 @property (nonatomic, assign) BOOL canCanceled;
 
 //是否已经加载过详情

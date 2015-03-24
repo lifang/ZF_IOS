@@ -420,7 +420,7 @@
     self.nameLabel.text = data.goodName;
     self.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",data.goodBrand];
     self.channelLabel.text = [NSString stringWithFormat:@"支付通道 %@",data.goodChannel];
-    [self.pictureView sd_setImageWithURL:data.goodPicture];
+    [self.pictureView sd_setImageWithURL:[NSURL URLWithString:data.goodPicture]];
 }
 
 #pragma mark - Action
@@ -448,7 +448,7 @@
         [textView resignFirstResponder];
         return NO;
     }
-    else if ([textView.text length] >= 20 && ![text isEqualToString:@""]) {
+    else if ([textView.text length] >= 200 && ![text isEqualToString:@""]) {
         return NO;
     }
     return YES;

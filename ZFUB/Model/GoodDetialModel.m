@@ -71,7 +71,7 @@
                 _goodSaleNumber = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"volume_number"]];
             }
             if ([goodInfo objectForKey:@"has_lease"]) {
-                _canRent = [goodInfo objectForKey:@"has_lease"];
+                _canRent = [[goodInfo objectForKey:@"has_lease"] boolValue];
             }
             if ([goodInfo objectForKey:@"retail_price"]) {
                 _goodPrice = [[goodInfo objectForKey:@"retail_price"] floatValue] / 100;
