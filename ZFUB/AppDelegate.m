@@ -31,8 +31,8 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
     _cityID = @"1";
-    _userID = @"80";
-    _token = @"123";
+//    _userID = @"80";
+//    _token = @"123";
     [self testInterface];
     return YES;
 }
