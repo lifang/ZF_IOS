@@ -21,6 +21,8 @@
 @property (nonatomic, strong) UITextField *nameField;
 @property (nonatomic, strong) UITextField *phoneField;
 
+@property (nonatomic, strong) UILabel *tipLabel;
+
 @end
 
 @implementation IntentionViewController
@@ -123,6 +125,12 @@
     _phoneField.textColor = kColor(108, 108, 108, 1);
     _phoneField.clearButtonMode = UITextFieldViewModeWhileEditing;
     _phoneField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    
+    _tipLabel = [[UILabel alloc] init];
+    _tipLabel.backgroundColor = [UIColor clearColor];
+    _tipLabel.textAlignment = NSTextAlignmentRight;
+    _tipLabel.font = [UIFont systemFontOfSize:12.f];
+    _tipLabel.text = @"最多填写200个汉字";
 }
 
 #pragma mark - UITableView
@@ -173,12 +181,8 @@
             [cell.contentView addSubview:_textView];
             [cell.contentView addSubview:_placeholderLabel];
             
-            UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 , 200, kScreenWidth - 30, 20)];
-            tipLabel.backgroundColor = [UIColor clearColor];
-            tipLabel.textAlignment = NSTextAlignmentRight;
-            tipLabel.font = [UIFont systemFontOfSize:12.f];
-            tipLabel.text = @"最多填写200个汉字";
-            [cell.contentView addSubview:tipLabel];
+            _tipLabel.frame = CGRectMake(20 , 200, kScreenWidth - 30, 20);
+            [cell.contentView addSubview:_tipLabel];
         }
             break;
         default:
@@ -292,6 +296,7 @@
     else {
         _placeholderLabel.text = @"";
     }
+    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", 200 - [textView.text length]];
 }
 
 #pragma mark - UITextField

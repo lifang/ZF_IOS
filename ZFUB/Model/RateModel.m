@@ -19,13 +19,13 @@
             _rateName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"trade_value"]];
         }
         if ([dict objectForKey:@"service_rate"]) {
-            _rateService = [NSString stringWithFormat:@"%@",[dict objectForKey:@"service_rate"]];
+            _rateService = [[dict objectForKey:@"service_rate"] floatValue];
         }
         if ([dict objectForKey:@"service_rate"]) {
-            _rateTerminal = [NSString stringWithFormat:@"%@",[dict objectForKey:@"terminal_rate"]];
+            _rateTerminal = [[dict objectForKey:@"terminal_rate"] floatValue];
         }
         if ([dict objectForKey:@"base_rate"]) {
-            _rateBase = [NSString stringWithFormat:@"%@",[dict objectForKey:@"base_rate"]];
+            _rateBase = [[dict objectForKey:@"base_rate"] floatValue];
         }
         if ([dict objectForKey:@"status"]) {
             _rateStatus = (RateStatus)[[dict objectForKey:@"status"] intValue];

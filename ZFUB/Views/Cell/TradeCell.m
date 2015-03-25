@@ -270,7 +270,7 @@
     _tradeTimeLabel.text = [NSString stringWithFormat:@"交易时间：%@",tradeModel.tradeTime];
     _terminalLabel.text = [NSString stringWithFormat:@"终  端  号：%@",tradeModel.terminalNumber];
     _statusLabel.text = [self statusForIndex:tradeModel.tradeStatus];
-    _priceLabel.text = [NSString stringWithFormat:@"￥%@",tradeModel.amount];
+    _priceLabel.text = [NSString stringWithFormat:@"￥%.2f",tradeModel.amount];
     switch (tradeType) {
         case TradeTypeTransfer:
             _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",tradeModel.payFromAccount];
@@ -278,7 +278,7 @@
             break;
         case TradeTypeConsume:
             _payFromLabel.text = [NSString stringWithFormat:@"结算时间：%@",tradeModel.payedTime];
-            _payToLabel.text = [NSString stringWithFormat:@"手  续  费：%@",tradeModel.poundage];
+            _payToLabel.text = [NSString stringWithFormat:@"手  续  费：%.2f",tradeModel.poundage];
             break;
         case TradeTypeRepayment:
             _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",tradeModel.payFromAccount];

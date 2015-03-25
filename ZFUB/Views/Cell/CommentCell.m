@@ -234,7 +234,6 @@
     _nameLabel.text = model.name;
     _timeLabel.text = model.createTime;
     _contentLabel.text = model.content;
-    
     for (UIImageView *starView in self.contentView.subviews) {
         if (starView.tag >= 1 && starView.tag <= 5) {
             if (starView.tag <= model.score) {

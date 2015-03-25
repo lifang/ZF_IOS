@@ -407,6 +407,22 @@
                 dateLabel.textColor = kColor(116, 116, 116, 1);
                 dateLabel.text = [NSString stringWithFormat:@"订单日期：%@",_orderDetail.orderTime];
                 [cell.contentView addSubview:dateLabel];
+                
+                int status = [_orderDetail.orderStatus intValue];
+                if (status == OrderStatusPaid || status == OrderStatusSending || status == OrderStatusReview) {
+                    UIButton *terminalBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    terminalBtn.frame = CGRectMake(kScreenWidth - btnWidth - 10, 10, btnWidth, 30);
+                    terminalBtn.layer.cornerRadius = 4;
+                    terminalBtn.layer.masksToBounds = YES;
+                    terminalBtn.layer.borderWidth = 1.f;
+                    terminalBtn.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+                    [terminalBtn setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+                    [terminalBtn setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+                    terminalBtn.titleLabel.font = [UIFont boldSystemFontOfSize:10.f];
+                    [terminalBtn setTitle:@"查看终端号" forState:UIControlStateNormal];
+                    [terminalBtn addTarget:self action:@selector(scanTerminalNumber:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.contentView addSubview:terminalBtn];
+                }
             }
             else if (indexPath.row == [_orderDetail.goodList count] + 1) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -492,6 +508,10 @@
 }
 
 #pragma mark - Action
+
+- (IBAction)scanTerminalNumber:(id)sender {
+    
+}
 
 - (IBAction)cancelOrder:(id)sender {
     [self cancelOrder];

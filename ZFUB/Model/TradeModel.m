@@ -15,7 +15,7 @@
         _tradeID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"id"]];
         _tradeStatus = [NSString stringWithFormat:@"%@",[dict objectForKey:@"tradedStatus"]];
         _terminalNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"terminalNumber"]];
-        _amount = [NSString stringWithFormat:@"%@",[dict objectForKey:@"amount"]];
+        _amount = [[dict objectForKey:@"amount"] floatValue];
         _tradeTime = [NSString stringWithFormat:@"%@",[dict objectForKey:@"tradedTimeStr"]];
         if ([dict objectForKey:@"payIntoAccount"]) {
             _payIntoAccount = [NSString stringWithFormat:@"%@",[dict objectForKey:@"payIntoAccount"]];
@@ -27,7 +27,7 @@
             _payedTime = [NSString stringWithFormat:@"%@",[dict objectForKey:@"payedTimeStr"]];
         }
         if ([dict objectForKey:@"poundage"]) {
-            _poundage = [NSString stringWithFormat:@"%@",[dict objectForKey:@"poundage"]];
+            _poundage = [[dict objectForKey:@"poundage"] floatValue];
         }
         if ([dict objectForKey:@"account_name"]) {
             _accountName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"account_name"]];

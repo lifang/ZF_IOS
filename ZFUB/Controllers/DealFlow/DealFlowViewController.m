@@ -201,8 +201,7 @@ static NSString *s_defaultTerminalNum = @"选择终端号";
 
 //根据终端名长度布局
 - (void)layoutSubViewWithCell:(UITableViewCell *)cell {
-    CGSize size = cell.contentView.bounds.size;
-    size.width = kScreenWidth;
+    CGSize size = CGSizeMake(kScreenWidth, 44);
     CGFloat space = 5.f;
     [_terminalLabel sizeToFit];
     CGRect rect = _terminalLabel.frame;

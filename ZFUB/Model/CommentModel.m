@@ -19,7 +19,7 @@
             _name = [NSString stringWithFormat:@"%@",[dict objectForKey:@"name"]];
         }
         if ([dict objectForKey:@"score"]) {
-            _score = [[dict objectForKey:@"score"] floatValue];
+            _score = [[dict objectForKey:@"score"] floatValue] / 10;
         }
         if ([dict objectForKey:@"created_at"]) {
             _createTime = [NSString stringWithFormat:@"%@",[dict objectForKey:@"created_at"]];

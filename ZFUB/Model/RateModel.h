@@ -19,9 +19,9 @@ typedef enum {
 
 @property (nonatomic, strong) NSString *rateID;
 @property (nonatomic, strong) NSString *rateName;
-@property (nonatomic, strong) NSString *rateService;
-@property (nonatomic, strong) NSString *rateTerminal;
-@property (nonatomic, strong) NSString *rateBase;
+@property (nonatomic, assign) CGFloat rateService;
+@property (nonatomic, assign) CGFloat rateTerminal;
+@property (nonatomic, assign) CGFloat rateBase;
 @property (nonatomic, assign) RateStatus rateStatus;
 
 - (id)initWithParseDictionary:(NSDictionary *)dict;

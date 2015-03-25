@@ -401,14 +401,14 @@
 //开通申请
 - (void)terminalManagerOpenApplyWithData:(TerminalManagerModel *)model {
     ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = model.TM_serialNumber;
+    detail.terminalID = model.TM_ID;
     [self.navigationController pushViewController:detail animated:YES];
 }
 
 //重新开通申请
 - (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model {
     ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = model.TM_serialNumber;
+    detail.terminalID = model.TM_ID;
     [self.navigationController pushViewController:detail animated:YES];
 }
 

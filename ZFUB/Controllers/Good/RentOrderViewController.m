@@ -8,6 +8,7 @@
 
 #import "RentOrderViewController.h"
 #import "RegularFormat.h"
+#import "RentDescriptionController.h"
 
 @interface RentOrderViewController ()<UITextFieldDelegate>
 
@@ -212,7 +213,7 @@
         cell.textLabel.text = @"押金";
         cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:16.f];
         cell.detailTextLabel.textColor = kColor(255, 102, 36, 1);
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",_goodDetail.deposit];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",_goodDetail.deposit * _count];
         return cell;
     }
     else if (indexPath.row == 3) {
@@ -259,8 +260,8 @@
         self.reviewField.frame = CGRectMake(10, 80, kScreenWidth - 20, 32);
         [cell.contentView addSubview:self.reviewField];
         
-        _rentButton.frame = CGRectMake(120, 14, 80, 32);
-        [cell.contentView addSubview:_rentButton];
+//        _rentButton.frame = CGRectMake(120, 14, 80, 32);
+//        [cell.contentView addSubview:_rentButton];
         return cell;
     }
     return nil;
@@ -294,7 +295,9 @@
 }
 
 - (IBAction)scanProtocol:(id)sender {
-    
+    RentDescriptionController *descC = [[RentDescriptionController alloc] init];
+    descC.goodDetail = _goodDetail;
+    [self.navigationController pushViewController:descC animated:YES];
 }
 
 - (IBAction)agreeRent:(id)sender {

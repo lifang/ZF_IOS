@@ -26,6 +26,8 @@
 
 @property (nonatomic, strong) UILabel *placeholderLabel;
 
+@property (nonatomic, strong) UILabel *tipLabel;
+
 @property (nonatomic, strong) ReviewModel *goodModel;
 
 - (void)setContentsWithData:(ReviewModel *)data;

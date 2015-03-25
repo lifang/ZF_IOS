@@ -23,7 +23,7 @@ typedef enum {
 //终端号
 @property (nonatomic, strong) NSString *terminalNumber;
 //总额
-@property (nonatomic, strong) NSString *amount;
+@property (nonatomic, assign) CGFloat amount;
 //交易时间
 @property (nonatomic, strong) NSString *tradeTime;
 
@@ -33,7 +33,7 @@ typedef enum {
 
 /*2.消费字段*/
 @property (nonatomic, strong) NSString *payedTime;  //结算时间
-@property (nonatomic, strong) NSString *poundage;   //手续费
+@property (nonatomic, assign) CGFloat poundage;   //手续费
 
 /*4.生活充值字段*/
 @property (nonatomic, strong) NSString *accountName;   //账户名

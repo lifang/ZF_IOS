@@ -334,35 +334,35 @@
                                                                 multiplier:0.0
                                                                   constant:20.f]];
     //字数提示
-    UILabel *tipLabel = [[UILabel alloc] init];
-    tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    tipLabel.backgroundColor = [UIColor clearColor];
-    tipLabel.textAlignment = NSTextAlignmentRight;
-    tipLabel.font = [UIFont systemFontOfSize:12.f];
-    tipLabel.text = @"最多填写200个汉字";
-    [self.contentView addSubview:tipLabel];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:tipLabel
+    _tipLabel = [[UILabel alloc] init];
+    _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _tipLabel.backgroundColor = [UIColor clearColor];
+    _tipLabel.textAlignment = NSTextAlignmentRight;
+    _tipLabel.font = [UIFont systemFontOfSize:12.f];
+    _tipLabel.text = @"最多填写200个汉字";
+    [self.contentView addSubview:_tipLabel];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipLabel
                                                                  attribute:NSLayoutAttributeTop
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:_textView
                                                                  attribute:NSLayoutAttributeBottom
                                                                 multiplier:1.0
                                                                   constant:0.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:tipLabel
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipLabel
                                                                  attribute:NSLayoutAttributeLeft
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeLeft
                                                                 multiplier:1.0
                                                                   constant:leftSpace]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:tipLabel
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipLabel
                                                                  attribute:NSLayoutAttributeRight
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeRight
                                                                 multiplier:1.0
                                                                   constant:-10.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:tipLabel
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipLabel
                                                                  attribute:NSLayoutAttributeHeight
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:nil
@@ -465,6 +465,7 @@
     else {
         _placeholderLabel.text = @"";
     }
+    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", 200 - [textView.text length]];
 }
 
 @end
