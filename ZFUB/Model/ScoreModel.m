@@ -28,7 +28,7 @@
             tips = @"获得  +";
             break;
         case ScoreExpend:
-            tips = @"支出  -";
+            tips = @"支出  ";
             break;
         default:
             break;

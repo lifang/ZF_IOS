@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */; };
 		7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938B1A8AF0BC0096FE0B /* LocationViewController.m */; };
 		773093921A8B1B8B0096FE0B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938F1A8B1B8B0096FE0B /* CircleView.m */; };
 		773093931A8B1B8B0096FE0B /* RefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093911A8B1B8B0096FE0B /* RefreshView.m */; };
@@ -194,6 +195,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelWebsiteController.h; sourceTree = "<group>"; };
+		772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelWebsiteController.m; sourceTree = "<group>"; };
 		7730938A1A8AF0BC0096FE0B /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
 		7730938B1A8AF0BC0096FE0B /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		7730938E1A8B1B8B0096FE0B /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
@@ -828,6 +831,8 @@
 				7736D6E81AB9963A001628C7 /* RentDescriptionController.m */,
 				7736D6EA1AB9A207001628C7 /* OpenInfoViewController.h */,
 				7736D6EB1AB9A207001628C7 /* OpenInfoViewController.m */,
+				772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */,
+				772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */,
 			);
 			path = Good;
 			sourceTree = "<group>";
@@ -1410,6 +1415,7 @@
 				7740B4391A85A7210057EED7 /* KxMenu.m in Sources */,
 				773BDF3D1AA992BD008D3DC7 /* OrderDetailModel.m in Sources */,
 				776144A21AAD7FF600FAE3B6 /* OrderCommentController.m in Sources */,
+				772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */,
 				7742DB111A899D0800EF16FB /* NetworkInterface.m in Sources */,
 				7742DB211A89F13100EF16FB /* RegularFormat.m in Sources */,
 				775AB4E11AAED788000E01C5 /* ShoppingCartOrderController.m in Sources */,
@@ -1551,7 +1557,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1586,7 +1592,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

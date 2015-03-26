@@ -84,7 +84,7 @@
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeTop
                                                                 multiplier:1.0
-                                                                  constant:topSpace]];
+                                                                  constant:topSpace + 8]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_orderNumberLabel
                                                                  attribute:NSLayoutAttributeRight
                                                                  relatedBy:NSLayoutRelationEqual
@@ -108,10 +108,10 @@
                                                                   constant:labelHeight]];
     //交易时间
     _timeLabel = [[UILabel alloc] init];
-    [self setLabel:_timeLabel withTopView:_orderNumberLabel middleSpace:middleSpace];
-    //实付金额
-    _priceLabel = [[UILabel alloc] init];
-    [self setLabel:_priceLabel withTopView:_timeLabel middleSpace:middleSpace];
+    [self setLabel:_timeLabel withTopView:_orderNumberLabel middleSpace:5.f];
+//    //实付金额
+//    _priceLabel = [[UILabel alloc] init];
+//    [self setLabel:_priceLabel withTopView:_timeLabel middleSpace:middleSpace];
 }
 
 - (void)setLabel:(UILabel *)label
@@ -161,7 +161,7 @@
     _scoreLabel.text = [NSString stringWithFormat:@"%@%@分",tipString,data.score];
     _orderNumberLabel.text = [NSString stringWithFormat:@"订单编号：%@",data.orderNumber];
     _timeLabel.text = [NSString stringWithFormat:@"交易时间：%@",data.payedTime];
-    _priceLabel.text = [NSString stringWithFormat:@"实付金额：￥%@",data.actualPrice];
+//    _priceLabel.text = [NSString stringWithFormat:@"实付金额：￥%@",data.actualPrice];
 }
 
 @end

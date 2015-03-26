@@ -41,6 +41,8 @@ static NSString *StoppedStatusIdentifier = @"StoppedStatusIdentifier";
 
 @property (nonatomic, strong) NSString *identifier;
 
+@property (nonatomic, strong) UIImageView *arrowView;  //箭头
+
 @property (nonatomic, strong) TerminalManagerModel *cellData;
 
 - (void)setContentsWithData:(TerminalManagerModel *)data;

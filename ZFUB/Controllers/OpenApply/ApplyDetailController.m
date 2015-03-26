@@ -56,6 +56,8 @@
 @property (nonatomic, strong) UILabel *terminalLabel;
 @property (nonatomic, strong) UILabel *channelLabel;
 
+@property (nonatomic, strong) NSMutableArray *bankItems;//银行信息
+
 //用于记录点击的是哪一行
 @property (nonatomic, strong) NSString *selectedKey;
 
@@ -68,7 +70,6 @@
 @property (nonatomic, strong) NSArray *cityArray;  //pickerView 第二列
 
 @property (nonatomic, strong) NSString *merchantID;
-@property (nonatomic, strong) NSString *bankID;  //银行代码
 @property (nonatomic, strong) NSString *channelID; //支付通道ID
 @property (nonatomic, strong) NSString *billID;    //结算日期ID
 
@@ -86,12 +87,14 @@
     // Do any additional setup after loading the view.
     self.title = @"开通申请";
     _applyType = OpenApplyPublic;
+    _bankItems = [[NSMutableArray alloc] init];
     _infoDict = [[NSMutableDictionary alloc] init];
     _tempField = [[UITextField alloc] init];
     _tempField.hidden = YES;
     [self.view addSubview:_tempField];
     [self initAndLayoutUI];
     [self beginApply];
+    [self getBankList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -320,6 +323,31 @@
     }];
 }
 
+//银行信息
+- (void)getBankList {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    [NetworkInterface selectedBankWithToken:delegate.token finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                    [self parseBankListWithDictionary:object];
+                }
+            }
+            else {
+                //返回错误数据
+            }
+        }
+        else {
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseApplyDataWithDictionary:(NSDictionary *)dict {
@@ -335,6 +363,20 @@
     _channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",_applyData.channelName];
     [self setPrimaryData];
     [_tableView reloadData];
+}
+
+- (void)parseBankListWithDictionary:(NSDictionary *)dict {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    NSArray *bankList = [dict objectForKey:@"result"];
+    for (int i = 0; i < [bankList count]; i++) {
+        id bankDict = [bankList objectAtIndex:i];
+        if ([bankDict isKindOfClass:[NSDictionary class]]) {
+            BankModel *model = [[BankModel alloc] initWithParseDictionary:bankDict];
+            [_bankItems addObject:model];
+        }
+    }
 }
 
 //保存获取的内容
@@ -383,27 +425,44 @@
 
     [_infoDict setObject:[NSNumber numberWithInt:_applyData.sex] forKey:key_sex];
     _merchantID = _applyData.merchantID;
+    
+    /*之前上传过对公对私资料 保存*/
+    for (ApplyInfoModel *model in _applyData.applyList) {
+        if (model.value && ![model.value isEqualToString:@""]) {
+            [_infoDict setObject:model.value forKey:model.targetID];
+        }
+    }
 }
 
 //根据对公对私材料的id找到是否已经提交过材料
 - (NSString *)getApplyValueForKey:(NSString *)key {
     NSLog(@"!!%@,key = %@",[_infoDict objectForKey:key],key);
-    if ([_infoDict objectForKey:key] && ![[_infoDict objectForKey:@""] isEqualToString:@""]) {
-        //若修改过值 返回保存的值
+    if ([_infoDict objectForKey:key] && ![[_infoDict objectForKey:key] isEqualToString:@""]) {
+        //setPrimaryData方法中已经保存此值， 若修改则返回修改的值
         return [_infoDict objectForKey:key];
     }
-    else {
-        //是否之前提交过
-        if ([_applyData.applyList count] <= 0) {
-            return nil;
-        }
-        for (ApplyInfoModel *model in _applyData.applyList) {
-            if ([model.targetID isEqualToString:key]) {
-                if (model.value && ![model.value isEqualToString:@""]) {
-                    [_infoDict setObject:model.value forKey:key];
-                }
-                return model.value;
-            }
+//    else {
+//        //是否之前提交过
+//        if ([_applyData.applyList count] <= 0) {
+//            return nil;
+//        }
+//        for (ApplyInfoModel *model in _applyData.applyList) {
+//            if ([model.targetID isEqualToString:key]) {
+//                if (model.value && ![model.value isEqualToString:@""]) {
+//                    [_infoDict setObject:model.value forKey:key];
+//                }
+//                return model.value;
+//            }
+//        }
+//    }
+    return nil;
+}
+
+//根据银行编码获取银行名
+- (NSString *)getBankNameWithBankCode:(NSString *)bankCode {
+    for (BankModel *model in _bankItems) {
+        if ([model.bankCode isEqualToString:bankCode]) {
+            return model.bankName;
         }
     }
     return nil;
@@ -722,7 +781,8 @@
                 [self setTextFieldAttr:textField];
                 textField.userInteractionEnabled = NO;
                 textField.key = model.materialID;
-                textField.text = [self getApplyValueForKey:textField.key];
+                NSString *bankCode = [self getApplyValueForKey:textField.key];
+                textField.text = [self getBankNameWithBankCode:bankCode];
                 [cell.contentView addSubview:textField];
                 cell.key = model.materialID;
                 cell.type = MaterialList;
@@ -836,6 +896,7 @@
             //结算银行
             BankSelectedController *bankC = [[BankSelectedController alloc] init];
             bankC.delegate = self;
+            bankC.bankItems = self.bankItems;
             [self.navigationController pushViewController:bankC animated:YES];
         }
         else if (cell.type == MaterialImage) {
@@ -1187,13 +1248,10 @@
     for (MaterialModel *model in _applyData.materialList) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         NSString *value = nil;
-        if (model.materialType == MaterialList) {
-            value = _bankID;
+        value = [_infoDict objectForKey:model.materialID];
+        if (model.materialName) {
+            [dict setObject:model.materialName forKey:@"key"];
         }
-        else {
-            value = [_infoDict objectForKey:model.materialID];
-        }
-        [dict setObject:model.materialName forKey:@"key"];
         if (value) {
             [dict setObject:value forKey:@"value"];
         }
@@ -1253,8 +1311,7 @@
 - (void)getSelectedBank:(BankModel *)model {
     if (model) {
         //此处没有保存对象 因为infoDict的值都为NSString，防止报错
-        [_infoDict setObject:model.bankName forKey:_selectedKey];
-        _bankID = model.bankCode;
+        [_infoDict setObject:model.bankCode forKey:_selectedKey];
         [_tableView reloadData];
     }
 }

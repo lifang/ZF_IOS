@@ -23,6 +23,7 @@
 #import "RentDescriptionController.h"
 #import "OpenInfoViewController.h"
 #import "FactoryDetailController.h"
+#import "ChannelWebsiteController.h"
 
 static CGFloat topImageHeight = 160.f;
 
@@ -357,6 +358,9 @@ static CGFloat topImageHeight = 160.f;
     [_mainScrollView addSubview:factoryImageView];
     //厂家网址
     UILabel *websiteLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace + leftLabelWidth, originY, kScreenWidth - leftLabelWidth - leftSpace, labelHeight)];
+    websiteLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *websiteTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpForWebsite:)];
+    [websiteLabel addGestureRecognizer:websiteTap];
     [self setLabel:websiteLabel withTitle:_detailModel.defaultChannel.channelFactoryURL font:[UIFont systemFontOfSize:13.f]];
     
     //厂家简介
@@ -793,6 +797,13 @@ static CGFloat topImageHeight = 160.f;
 }
 
 #pragma mark - Action
+
+- (IBAction)jumpForWebsite:(id)sender {
+    ChannelWebsiteController *websiteC = [[ChannelWebsiteController alloc] init];
+    websiteC.title = @"支付通道";
+    websiteC.urlString = _detailModel.defaultChannel.channelFactoryURL;
+    [self.navigationController pushViewController:websiteC animated:YES];
+}
 
 - (IBAction)goShoppingCart:(id)sender {
     AppDelegate *delegate = [AppDelegate shareAppDelegate];

@@ -173,32 +173,32 @@
                                                                 multiplier:0.0
                                                                   constant:labelHeight]];
     //箭头
-    UIImageView *arrowView = [[UIImageView alloc] init];
-    arrowView.translatesAutoresizingMaskIntoConstraints = NO;
-    arrowView.image = kImageName(@"arrow_right.png");
-    [self.contentView addSubview:arrowView];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:arrowView
+    _arrowView = [[UIImageView alloc] init];
+    _arrowView.translatesAutoresizingMaskIntoConstraints = NO;
+    _arrowView.image = kImageName(@"arrow_right.png");
+    [self.contentView addSubview:_arrowView];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_arrowView
                                                                  attribute:NSLayoutAttributeTop
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeTop
                                                                 multiplier:1.0
                                                                   constant:20.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:arrowView
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_arrowView
                                                                  attribute:NSLayoutAttributeRight
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:self.contentView
                                                                  attribute:NSLayoutAttributeRight
                                                                 multiplier:1.0
                                                                   constant:-10.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:arrowView
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_arrowView
                                                                  attribute:NSLayoutAttributeWidth
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:nil
                                                                  attribute:NSLayoutAttributeNotAnAttribute
                                                                 multiplier:0.0
                                                                   constant:8.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:arrowView
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_arrowView
                                                                  attribute:NSLayoutAttributeHeight
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:nil
@@ -213,6 +213,14 @@
     CGFloat middleSpace = 10.f;
     CGFloat btnWidth = (kScreenWidth - 5 * middleSpace) / 4;
     CGFloat btnHeight = 28.f;
+    //自助开通无法查看终端
+    if ([_identifier isEqualToString:OpenedSecondStatusIdentifier]) {
+        _arrowView.hidden = YES;
+    }
+    else {
+        _arrowView.hidden = NO;
+    }
+    
     if ([_identifier isEqualToString:CanceledStatusIdentifier]) {
         //已注销
         return;

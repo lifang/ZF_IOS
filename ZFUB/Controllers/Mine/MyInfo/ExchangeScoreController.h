@@ -14,6 +14,6 @@ static NSString *ExchangeScoreNotification = @"ExchangeScoreNotification";
 
 @property (nonatomic, strong) NSString *totalScore;
 
-@property (nonatomic, strong) NSString *totalPrice;
+@property (nonatomic, assign) CGFloat totalPrice;
 
 @end

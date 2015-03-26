@@ -61,7 +61,7 @@
     _totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, kScreenWidth - 15, 20)];
     _totalPriceLabel.backgroundColor = [UIColor clearColor];
     _totalPriceLabel.font = [UIFont systemFontOfSize:14.f];
-    _totalPriceLabel.text = [NSString stringWithFormat:@"最高可兑换手续费：￥%@",_totalPrice];
+    _totalPriceLabel.text = [NSString stringWithFormat:@"最高可兑换手续费：￥%.2f",_totalPrice];
     [headerView addSubview:_totalPriceLabel];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
@@ -217,7 +217,7 @@
         hud.labelText = @"兑换金额必须为整数";
         return;
     }
-    if ([_moneyField.text intValue] > [_totalPrice intValue]) {
+    if ([_moneyField.text intValue] > _totalPrice) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;

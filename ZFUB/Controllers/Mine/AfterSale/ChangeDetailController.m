@@ -291,7 +291,7 @@
         resourceLabel.backgroundColor = [UIColor clearColor];
         resourceLabel.textColor = kColor(108, 108, 108, 1);
         resourceLabel.font = [UIFont systemFontOfSize:16.f];
-        resourceLabel.text = @"退货所需资料";
+        resourceLabel.text = @"换货所需资料";
         [self.scrollView addSubview:resourceLabel];
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:resourceLabel
                                                               attribute:NSLayoutAttributeTop
@@ -496,7 +496,7 @@
     merchantNameLabel.text = [NSString stringWithFormat:@"商 户  名  %@",_merchantName];
     merchantPhoneLabel.text = [NSString stringWithFormat:@"商户电话  %@",_merchantPhone];
     addressLabel.text = [NSString stringWithFormat:@"收货地址  %@",_address];
-    reasonLabel.text = [NSString stringWithFormat:@"退款银行  %@",_reason];
+    reasonLabel.text = [NSString stringWithFormat:@"换货原因  %@",_reason];
 
     
     //添加按钮

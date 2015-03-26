@@ -70,6 +70,12 @@
     return [emailTest evaluateWithObject:email];
 }
 
++ (BOOL)isZipCode:(NSString *)zipCode {
+    NSString *zipCodeRegex = @"[1-9]\\d{5}(?!\\d)";
+    NSPredicate *zipCodeTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",zipCodeRegex];
+    return [zipCodeTest evaluateWithObject:zipCode];
+}
+
 + (BOOL)isNumber:(NSString *)string {
     NSString *regex = @"^[0-9]+$";
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];

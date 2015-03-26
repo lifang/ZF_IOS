@@ -421,6 +421,14 @@
         hud.labelText = @"请填写正确的电话";
         return;
     }
+    if (!([RegularFormat isZipCode:_zipField.text])) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写正确的邮编";
+        return;
+    }
     if (_type == AddressModify) {
         [self modifyAddress];
     }

@@ -29,7 +29,7 @@
 @property (nonatomic, strong) UILabel *totalLabel;  //总积分label
 //请求获取
 @property (nonatomic, strong) NSString *totalScore; //总积分
-@property (nonatomic, strong) NSString *totalMoney; //总金额
+@property (nonatomic, assign) CGFloat totalMoney; //总金额
 
 @property (nonatomic, strong) NSMutableArray *scoreItems;
 
@@ -157,7 +157,7 @@
                     [hud hide:YES];
                     NSDictionary *dict = [object objectForKey:@"result"];
                     _totalScore = [NSString stringWithFormat:@"%@",[dict objectForKey:@"quantityTotal"]];
-                    _totalMoney = [NSString stringWithFormat:@"%@",[dict objectForKey:@"moneyTotal"]];
+                    _totalMoney = [[dict objectForKey:@"moneyTotal"] floatValue] / 100;
                     _totalLabel.text = [NSString stringWithFormat:@"总积分 %@",_totalScore];
                 }
             }

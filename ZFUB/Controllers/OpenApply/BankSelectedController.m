@@ -18,8 +18,6 @@
 
 @property (nonatomic, strong) UIButton *searchBtn;
 
-@property (nonatomic, strong) NSMutableArray *bankItems;
-
 @property (nonatomic, strong) NSMutableArray *searchItem; //搜索结果
 
 @end
@@ -30,10 +28,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"选择银行";
-    _bankItems = [[NSMutableArray alloc] init];
+    if (!_bankItems) {
+        _bankItems = [[NSMutableArray alloc] init];
+        [self getBankList];
+    }
     _searchItem = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
-    [self getBankList];
 }
 
 - (void)didReceiveMemoryWarning {
