@@ -248,8 +248,19 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
 #pragma mark - Action
 
+- (void)signOutAfterDelay {
+    [self.tabBarController setSelectedIndex:0];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+}
+
 - (IBAction)signOut:(id)sender {
-    
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    delegate.userID = nil;
+    delegate.token = nil;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    [hud hide:YES afterDelay:1.f];
+    hud.labelText = @"正在退出...";
+    [self performSelector:@selector(signOutAfterDelay) withObject:nil afterDelay:1.f];
 }
 
 - (IBAction)modifyLocation:(id)sender {

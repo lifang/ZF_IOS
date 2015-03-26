@@ -522,7 +522,7 @@
         if ([model.rateName isEqualToString:@"消费"]) {
             rate = model.rateService + model.rateBase;
         }
-        [dict setObject:[NSString stringWithFormat:@"%2.f%%",rate] forKey:@"1"];
+        [dict setObject:[NSString stringWithFormat:@"%2.f‰",rate] forKey:@"1"];
         if ([model statusString]) {
             [dict setObject:[model statusString] forKey:@"2"];
         }
