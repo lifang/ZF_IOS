@@ -265,7 +265,12 @@ static CGFloat topImageHeight = 160.f;
     //价格
     CGFloat originX = leftSpace + leftLabelWidth + firstSpace + 80;
     _priceLabel.frame = CGRectMake(originX, originY, kScreenWidth - originX - rightSpace, labelHeight);
-    [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice + _detailModel.defaultChannel.openCost]];
+    if (_buyButton.isSelected) {
+        [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice + _detailModel.defaultChannel.openCost]];
+    }
+    else {
+        [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.deposit + _detailModel.defaultChannel.openCost]];
+    }
     [_mainScrollView addSubview:_priceLabel];
     
     originY += vSpace + labelHeight;

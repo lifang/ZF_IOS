@@ -360,7 +360,7 @@
 - (void)getCurrentCityInfoWithCityName:(NSString *)cityName {
     CityModel *currentCity = nil;
     for (CityModel *model in [CityHandle shareCityList]) {
-        if ([cityName containsString:model.cityName]) {
+        if ([cityName rangeOfString:model.cityName].length != 0) {
             currentCity = model;
             break;
         }

@@ -245,6 +245,14 @@
         hud.labelText = @"请输入内容";
         return;
     }
+    if ([_textView.text length] > 200) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"输入内容超过限制";
+        return;
+    }
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
     [NetworkInterface sendBuyIntentionWithName:_nameField.text phoneNumber:_phoneField.text content:_textView.text finished:^(BOOL success, NSData *response) {
@@ -283,7 +291,7 @@
         [textView resignFirstResponder];
         return NO;
     }
-    else if ([textView.text length] >= 200 && ![text isEqualToString:@""]) {
+    else if ([textView.text length] + [text length] > 200 && ![text isEqualToString:@""]) {
         return NO;
     }
     return YES;
@@ -296,7 +304,11 @@
     else {
         _placeholderLabel.text = @"";
     }
-    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", 200 - [textView.text length]];
+    NSInteger number = 200 - [textView.text length];
+    if (number < 0) {
+        number = 0;
+    }
+    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", number];
 }
 
 #pragma mark - UITextField

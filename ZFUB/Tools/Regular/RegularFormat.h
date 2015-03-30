@@ -22,5 +22,7 @@
 + (BOOL)isNumber:(NSString *)string;
 //整形
 + (BOOL)isInt:(NSString*)string;
+//计算字符串长度
++ (int)stringLength:(NSString *)string;
 
 @end

@@ -243,14 +243,14 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@""]) {
         //删除
-        if ([textField.text length] > 0 && [[textField.text substringToIndex:[textField.text length] - 1] containsString:@"@"]) {
+        if ([textField.text length] > 0 && [[textField.text substringToIndex:[textField.text length] - 1] rangeOfString:@"@"].length != 0) {
             self.sendType = SendTypeEmail;
         }
         else {
             self.sendType = SendTypeMobile;
         }
     }
-    else if ([textField.text containsString:@"@"] || [string containsString:@"@"]) {
+    else if ([textField.text rangeOfString:@"@"].length != 0 || [string rangeOfString:@"@"].length != 0) {
         self.sendType = SendTypeEmail;
     }
     else {

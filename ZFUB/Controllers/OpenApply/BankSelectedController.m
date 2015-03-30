@@ -176,7 +176,7 @@
 - (IBAction)searchBank:(id)sender {
     [_searchItem removeAllObjects];
     for (BankModel *model in _bankItems) {
-        if ([model.bankName containsString:_bankField.text]) {
+        if ([model.bankName rangeOfString:_bankField.text].length != 0) {
             [_searchItem addObject:model];
         }
     }

@@ -178,7 +178,7 @@
 
 - (void)getCurrentCityInfoWithCityName:(NSString *)cityName {
     for (CityModel *model in [CityHandle shareCityList]) {
-        if ([cityName containsString:model.cityName]) {
+        if ([cityName rangeOfString:model.cityName].length != 0) {
             _currentCity = model;
             break;
         }
@@ -203,7 +203,7 @@
     }
     [_resultArray removeAllObjects];
     for (CityModel *city in [CityHandle shareCityList]) {
-        if ([city.cityName containsString:_searchBar.text]) {
+        if ([city.cityName rangeOfString:_searchBar.text].length != 0) {
             [_resultArray addObject:city];
         }
     }

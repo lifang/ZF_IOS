@@ -36,6 +36,7 @@
     // Do any additional setup after loading the view.
     self.title = @"注册";
     [self initAndLayoutUI];
+    [self initPickerView];
     [self countDownStart];
 }
 

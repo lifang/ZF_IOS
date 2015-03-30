@@ -448,7 +448,7 @@
         [textView resignFirstResponder];
         return NO;
     }
-    else if ([textView.text length] >= 200 && ![text isEqualToString:@""]) {
+    else if ([textView.text length] + [text length] > 200 && ![text isEqualToString:@""]) {
         return NO;
     }
     return YES;
@@ -465,7 +465,11 @@
     else {
         _placeholderLabel.text = @"";
     }
-    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", 200 - [textView.text length]];
+    NSInteger number = 200 - [textView.text length];
+    if (number < 0) {
+        number = 0;
+    }
+    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", number];
 }
 
 @end

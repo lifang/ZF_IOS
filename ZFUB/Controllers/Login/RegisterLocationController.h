@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) NSArray *cityArray;  //pickerView 第二列
 
+- (void)initPickerView;
 - (IBAction)modifyLocation:(id)sender;
 - (void)pickerScrollIn;
 
