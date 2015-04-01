@@ -538,6 +538,7 @@
     }
     OrderReviewController *reviewC = [[OrderReviewController alloc] init];
     reviewC.goodList = reviewList;
+    reviewC.orderID = _orderID;
     [self.navigationController pushViewController:reviewC animated:YES];
 }
 

@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) NSArray *goodList;
 
+@property (nonatomic, strong) NSString *orderID;
+
 @end

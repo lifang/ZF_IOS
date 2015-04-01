@@ -100,7 +100,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"提交中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface reviewMultiOrderWithToken:delegate.token reviewList:reviewList finished:^(BOOL success, NSData *response) {
+    [NetworkInterface reviewMultiOrderWithToken:delegate.token orderID:_orderID reviewList:reviewList finished:^(BOOL success, NSData *response) {
         NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;

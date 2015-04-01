@@ -1257,10 +1257,12 @@ static NSString *s_intention_method = @"paychannel/intention/add";
 /*!
  @abstract 63.订单批量评论
  @param token       登录返回
+ @param orderID     订单id
  @param reviewList  评论数组
  @result finish  请求回调结果
  */
 + (void)reviewMultiOrderWithToken:(NSString *)token
+                          orderID:(NSString *)orderID
                        reviewList:(NSArray *)reviewList
                          finished:(requestDidFinished)finish;
 

@@ -1489,11 +1489,13 @@ static NSString *HTTP_GET  = @"GET";
 }
 
 + (void)reviewMultiOrderWithToken:(NSString *)token
+                          orderID:(NSString *)orderID
                        reviewList:(NSArray *)reviewList
                          finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
     [paramDict setObject:reviewList forKey:@"json"];
+    [paramDict setObject:[NSNumber numberWithInt:[orderID intValue]] forKey:@"id"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_orderMultiReview_method];
     [[self class] requestWithURL:urlString

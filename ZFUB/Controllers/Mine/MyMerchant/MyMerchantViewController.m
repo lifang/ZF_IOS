@@ -217,7 +217,8 @@
                     if (!isMore) {
                         [_merchantItems removeAllObjects];
                     }
-                    if ([[object objectForKey:@"result"] count] > 0) {
+                    id list = [[object objectForKey:@"result"] objectForKey:@"list"];
+                    if ([list isKindOfClass:[NSArray class]] && [list count] > 0) {
                         //有数据
                         self.page++;
                         [hud hide:YES];
