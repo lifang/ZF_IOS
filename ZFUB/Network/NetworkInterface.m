@@ -929,8 +929,9 @@ static NSString *HTTP_GET  = @"GET";
     if (token && ![token isEqualToString:@""]) {
         [paramDict setObject:token forKey:@"token"];
     }
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customer_id"];
     //url
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_scoreTotal_method,userID];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_scoreTotal_method];
     [[self class] requestWithURL:urlString
                           params:paramDict
                       httpMethod:HTTP_POST

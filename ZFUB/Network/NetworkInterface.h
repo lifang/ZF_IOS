@@ -267,7 +267,7 @@ static NSString *s_mofityUserPassword_method = @"customers/updatePassword";
 static NSString *s_scoreList_method = @"customers/getIntegralList";
 
 //我的积分总计
-static NSString *s_scoreTotal_method = @"customers/getIntegralTotal";
+static NSString *s_scoreTotal_method = @"customers/getjifen";
 
 //积分兑换
 static NSString *s_exchangeScore_method = @"customers/insertIntegralConvert";

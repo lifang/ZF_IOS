@@ -158,7 +158,7 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                                    message:@"用户信息修改成功"
+                                                                    message:@"密码修改成功"
                                                                    delegate:nil
                                                           cancelButtonTitle:@"确定"
                                                           otherButtonTitles:nil];

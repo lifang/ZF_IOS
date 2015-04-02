@@ -142,6 +142,7 @@
     hud.labelText = @"加载中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     [NetworkInterface getScoreTotalWithToken:delegate.token userID:delegate.userID finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
@@ -157,7 +158,7 @@
                     [hud hide:YES];
                     NSDictionary *dict = [object objectForKey:@"result"];
                     _totalScore = [NSString stringWithFormat:@"%@",[dict objectForKey:@"quantityTotal"]];
-                    _totalMoney = [[dict objectForKey:@"moneyTotal"] floatValue] / 100;
+                    _totalMoney = [[dict objectForKey:@"dh_total"] floatValue];
                     _totalLabel.text = [NSString stringWithFormat:@"总积分 %@",_totalScore];
                 }
             }
