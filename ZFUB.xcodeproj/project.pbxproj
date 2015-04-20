@@ -1603,8 +1603,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -1618,8 +1618,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
