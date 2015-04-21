@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D336B181AE505D8002640F9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B171AE505D8002640F9 /* CFNetwork.framework */; };
+		0D336B1A1AE505E4002640F9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B191AE505E4002640F9 /* CoreFoundation.framework */; };
+		0D336B1C1AE505EC002640F9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */; };
+		0D336B1E1AE505FC002640F9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1D1AE505FC002640F9 /* SystemConfiguration.framework */; };
+		0D336B201AE50608002640F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1F1AE50608002640F9 /* CoreGraphics.framework */; };
+		0D336B221AE5061A002640F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B211AE5061A002640F9 /* Foundation.framework */; };
+		0D336B241AE5062B002640F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B231AE5062B002640F9 /* UIKit.framework */; };
+		0D336B261AE5063D002640F9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B251AE5063D002640F9 /* Security.framework */; };
+		0D336B281AE50650002640F9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B271AE50650002640F9 /* libz.dylib */; };
+		0D336B331AE5E4C1002640F9 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B311AE5E4C0002640F9 /* libMobClickLibrary.a */; };
+		0D336B361AE5E53C002640F9 /* libPushSDK-1.8.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */; };
 		772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */; };
 		7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938B1A8AF0BC0096FE0B /* LocationViewController.m */; };
 		773093921A8B1B8B0096FE0B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938F1A8B1B8B0096FE0B /* CircleView.m */; };
@@ -195,6 +206,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D336B171AE505D8002640F9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		0D336B191AE505E4002640F9 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		0D336B1D1AE505FC002640F9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0D336B1F1AE50608002640F9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0D336B211AE5061A002640F9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0D336B231AE5062B002640F9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0D336B251AE5063D002640F9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0D336B271AE50650002640F9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0D336B311AE5E4C0002640F9 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ../UMAnalytics_Sdk_3.4.6/libMobClickLibrary.a; sourceTree = "<group>"; };
+		0D336B321AE5E4C1002640F9 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = ../UMAnalytics_Sdk_3.4.6/MobClick.h; sourceTree = "<group>"; };
+		0D336B341AE5E53C002640F9 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APService.h; path = ../../APService.h; sourceTree = "<group>"; };
+		0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPushSDK-1.8.3.a"; path = "../../libPushSDK-1.8.3.a"; sourceTree = "<group>"; };
 		772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelWebsiteController.h; sourceTree = "<group>"; };
 		772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelWebsiteController.m; sourceTree = "<group>"; };
 		7730938A1A8AF0BC0096FE0B /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
@@ -553,6 +577,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D336B281AE50650002640F9 /* libz.dylib in Frameworks */,
+				0D336B261AE5063D002640F9 /* Security.framework in Frameworks */,
+				0D336B241AE5062B002640F9 /* UIKit.framework in Frameworks */,
+				0D336B361AE5E53C002640F9 /* libPushSDK-1.8.3.a in Frameworks */,
+				0D336B221AE5061A002640F9 /* Foundation.framework in Frameworks */,
+				0D336B201AE50608002640F9 /* CoreGraphics.framework in Frameworks */,
+				0D336B1E1AE505FC002640F9 /* SystemConfiguration.framework in Frameworks */,
+				0D336B1C1AE505EC002640F9 /* CoreTelephony.framework in Frameworks */,
+				0D336B1A1AE505E4002640F9 /* CoreFoundation.framework in Frameworks */,
+				0D336B181AE505D8002640F9 /* CFNetwork.framework in Frameworks */,
+				0D336B331AE5E4C1002640F9 /* libMobClickLibrary.a in Frameworks */,
 				77390D141ABABBCC00AFD1B0 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -567,6 +602,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D336B371AE5E56C002640F9 /* Youmeng */ = {
+			isa = PBXGroup;
+			children = (
+				0D336B311AE5E4C0002640F9 /* libMobClickLibrary.a */,
+				0D336B321AE5E4C1002640F9 /* MobClick.h */,
+			);
+			name = Youmeng;
+			sourceTree = "<group>";
+		};
+		0D336B391AE5E589002640F9 /* JPush */ = {
+			isa = PBXGroup;
+			children = (
+				0D336B341AE5E53C002640F9 /* APService.h */,
+				0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */,
+			);
+			name = JPush;
+			sourceTree = "<group>";
+		};
 		7730938D1A8B1B8B0096FE0B /* Refresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1092,6 +1145,8 @@
 		775873D51A72349A00EB3AE5 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				0D336B391AE5E589002640F9 /* JPush */,
+				0D336B371AE5E56C002640F9 /* Youmeng */,
 				7742DB221A89F22200EF16FB /* HUD */,
 				7740B4361A85A7210057EED7 /* KxMenu */,
 				775873D61A7234A900EB3AE5 /* SDWebImage */,
@@ -1155,6 +1210,15 @@
 		7792CB421A709C8F00C44A64 = {
 			isa = PBXGroup;
 			children = (
+				0D336B271AE50650002640F9 /* libz.dylib */,
+				0D336B251AE5063D002640F9 /* Security.framework */,
+				0D336B231AE5062B002640F9 /* UIKit.framework */,
+				0D336B211AE5061A002640F9 /* Foundation.framework */,
+				0D336B1F1AE50608002640F9 /* CoreGraphics.framework */,
+				0D336B1D1AE505FC002640F9 /* SystemConfiguration.framework */,
+				0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */,
+				0D336B191AE505E4002640F9 /* CoreFoundation.framework */,
+				0D336B171AE505D8002640F9 /* CFNetwork.framework */,
 				77390D131ABABBCC00AFD1B0 /* CoreLocation.framework */,
 				7792CB4D1A709C8F00C44A64 /* ZFUB */,
 				7792CB671A709C8F00C44A64 /* ZFUBTests */,
@@ -1603,12 +1667,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/wwwd/Desktop/umsdk_IOS_analytics_idfa_v3.4.6/UMAnalytics_Sdk_3.4.6,
+					"/Users/wwwd/Downloads/JPush-iOS-SDK-1.8-2.3/lib",
+					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -1618,12 +1689,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZFUB/ZFUB-Prefix.pch";
 				INFOPLIST_FILE = ZFUB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/wwwd/Desktop/umsdk_IOS_analytics_idfa_v3.4.6/UMAnalytics_Sdk_3.4.6,
+					"/Users/wwwd/Downloads/JPush-iOS-SDK-1.8-2.3/lib",
+					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

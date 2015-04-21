@@ -20,7 +20,8 @@
 
 #define kPageSize 10   //分页加载每页行数
 
-#define kServiceURL @"http://114.215.149.242:18080/ZFMerchant/api"
+//#define kServiceURL @"http://114.215.149.242:18080/ZFMerchant/api"
+#define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
 
 #define kImageName(name) [UIImage imageNamed:name]
 
