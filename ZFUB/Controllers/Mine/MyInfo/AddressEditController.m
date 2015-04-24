@@ -11,6 +11,7 @@
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 #import "RegularFormat.h"
+#import "SelectedAddressController.h"
 
 @interface AddressEditController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
@@ -230,6 +231,7 @@
                     [hud hide:YES];
                     hud.labelText = @"地址修改成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
                     [self.navigationController popViewControllerAnimated:YES];
                 }
             }
@@ -269,6 +271,7 @@
                     [hud hide:YES];
                     hud.labelText = @"新增地址成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
                     [self.navigationController popViewControllerAnimated:YES];
                 }
             }

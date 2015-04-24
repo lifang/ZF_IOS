@@ -41,9 +41,15 @@ static NSString *StoppedStatusIdentifier = @"StoppedStatusIdentifier";
 
 @property (nonatomic, strong) NSString *identifier;
 
+@property (nonatomic, assign) BOOL hasVideoAuth;
+
 @property (nonatomic, strong) UIImageView *arrowView;  //箭头
 
 @property (nonatomic, strong) TerminalManagerModel *cellData;
+
+- (id)initWithStyle:(UITableViewCellStyle)style
+    reuseIdentifier:(NSString *)reuseIdentifier
+       hasVideoAuth:(BOOL)hasVideoAuth;
 
 - (void)setContentsWithData:(TerminalManagerModel *)data;
 

@@ -12,7 +12,7 @@
 #import "MobileFindController.h"
 #import "EmailFindController.h"
 
-@interface FindPasswordViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface FindPasswordViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -194,8 +194,15 @@
             if ([object isKindOfClass:[NSDictionary class]]) {
                 if ([[object objectForKey:@"code"] intValue] == RequestSuccess) {
                     [hud setHidden:YES];
-                    EmailFindController *emailC = [[EmailFindController alloc] init];
-                    [self.navigationController pushViewController:emailC animated:YES];
+//                    EmailFindController *emailC = [[EmailFindController alloc] init];
+//                    [self.navigationController pushViewController:emailC animated:YES];
+                    NSString *info = [NSString stringWithFormat:@"重置密码邮件已发送至%@，请注意查收",_inputField.text];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                                    message:info
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"确定"
+                                                          otherButtonTitles:nil];
+                    [alert show];
                 }
                 else {
                     hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
@@ -267,6 +274,14 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - UIAlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 @end

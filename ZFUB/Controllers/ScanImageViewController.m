@@ -7,6 +7,7 @@
 //
 
 #import "ScanImageViewController.h"
+#import "MBProgressHUD.h"
 
 @interface ScanImageViewController ()<ImageScrollViewDelegate>
 
@@ -56,7 +57,7 @@
 
 - (void)showDetailImageWithURL:(NSString *)urlString
                      imageRect:(CGRect)rect {
-    urlString = @"http://pic42.nipic.com/20140608/18347945_020920394000_2.jpg";
+//    urlString = @"http://pic42.nipic.com/20140608/18347945_020920394000_2.jpg";
     [self.view bringSubviewToFront:self.scrollPanel];
     self.scrollPanel.alpha = 1.0;
     
@@ -65,8 +66,10 @@
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
 //    imageView.hidden = YES;
 //    [self.view addSubview:imageView];
-
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"获取中...";
     [imageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:nil options:SDWebImageProgressiveDownload progress:nil completed:^(UIImage *image,NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        hud.hidden = YES;
 //        CGRect convertRect = [[imageView superview] convertRect:imageView.frame toView:self.view];
         CGPoint contentOffset = self.imagesScrollView.contentOffset;
         

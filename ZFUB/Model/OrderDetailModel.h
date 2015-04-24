@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong) NSString *orderTotalNumber;    //总数量
 
+@property (nonatomic, strong) NSString *terminals;
+
 @property (nonatomic, strong) NSMutableArray *goodList;
 
 @property (nonatomic, strong) NSMutableArray *recordList;

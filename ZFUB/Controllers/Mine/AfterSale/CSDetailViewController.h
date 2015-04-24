@@ -11,6 +11,7 @@
 #import "RecordView.h"
 #import "ResourceModel.h"
 #import "LogisticViewController.h"
+#import "ChannelWebsiteController.h"
 
 typedef enum {
     OperationBtnFirst = 1,

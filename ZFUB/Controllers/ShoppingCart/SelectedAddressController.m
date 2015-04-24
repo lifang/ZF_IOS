@@ -20,6 +20,10 @@
 
 @implementation SelectedAddressController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -27,6 +31,11 @@
     _addressItems = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self getAddressList];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshSelectAddressList:)
+                                                 name:RefreshSelectedAddressNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,6 +144,7 @@
     if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
         return;
     }
+    [_addressItems removeAllObjects];
     NSArray *addressList = [dict objectForKey:@"result"];
     for (int i = 0; i < [addressList count]; i++) {
         NSDictionary *addressDict = [addressList objectAtIndex:i];
@@ -204,6 +214,10 @@
     }
 }
 
+#pragma mark - Notification
 
+- (void)refreshSelectAddressList:(NSNotification *)notification {
+    [self getAddressList];
+}
 
 @end

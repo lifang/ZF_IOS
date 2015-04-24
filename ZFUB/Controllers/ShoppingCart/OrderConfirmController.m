@@ -300,6 +300,9 @@
     for (int i = 0; i < [addressList count]; i++) {
         NSDictionary *addressDict = [addressList objectAtIndex:i];
         AddressModel *model = [[AddressModel alloc] initWithParseDictionary:addressDict];
+        if (i == 0) {
+            _defaultAddress = model;
+        }
         if ([model.isDefault intValue] == AddressDefault) {
             _defaultAddress = model;
             break;

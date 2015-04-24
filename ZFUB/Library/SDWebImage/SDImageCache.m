@@ -74,7 +74,7 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
         // Init the disk cache
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         _diskCachePath = [paths[0] stringByAppendingPathComponent:fullNamespace];
-
+        
         dispatch_sync(_ioQueue, ^{
             _fileManager = [NSFileManager new];
         });

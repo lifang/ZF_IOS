@@ -26,7 +26,13 @@ static NSString *partOpenedApplyIdentifier = @"partOpenedApplyIdentifier";
 
 @property (nonatomic, strong) NSString *identifier;
 
+@property (nonatomic, assign) BOOL hasVideoAuth;
+
 @property (nonatomic, strong) TerminalManagerModel *cellData;
+
+- (id)initWithStyle:(UITableViewCellStyle)style
+    reuseIdentifier:(NSString *)reuseIdentifier
+       hasVideoAuth:(BOOL)hasVideo;
 
 - (void)setContentsWithData:(TerminalManagerModel *)data;
 

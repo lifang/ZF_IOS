@@ -510,7 +510,7 @@ static CGFloat topImageHeight = 160.f;
                                           width:kScreenWidth - leftSpace - rightSpace
                                        fontSize:13.f];
     descriptionHeight = descriptionHeight < labelHeight ? labelHeight : descriptionHeight;
-    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, openHeight)];
+    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, descriptionHeight)];
     descriptionLabel.numberOfLines = 0;
     [self setLabel:descriptionLabel withTitle:_detailModel.goodDescription font:[UIFont systemFontOfSize:13.f]];
     
@@ -543,8 +543,10 @@ static CGFloat topImageHeight = 160.f;
         rect.origin.x += relateViewWidth + middleSpace;
     }
     
-    int relateRow = (int)([_detailModel.relativeItem count] - 1) / 2 + 1;
-    originY += relateRow * (relateViewHeight + middleSpace);
+    if ([_detailModel.relativeItem count] > 0) {
+        int relateRow = (int)([_detailModel.relativeItem count] - 1) / 2 + 1;
+        originY += relateRow * (relateViewHeight + middleSpace);
+    }
     
     _mainScrollView.contentSize = CGSizeMake(kScreenWidth, originY);
 }
@@ -1014,7 +1016,7 @@ static CGFloat topImageHeight = 160.f;
 }
 
 #pragma mark - scroll delegate
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == _imagesScrollView) {
         CGFloat pageWidth = scrollView.frame.size.width;
         _currentIndex = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;

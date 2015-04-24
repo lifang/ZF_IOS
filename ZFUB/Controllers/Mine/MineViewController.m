@@ -12,6 +12,7 @@
 #import "PersonInfoViewController.h"
 #import "MyMerchantViewController.h"
 #import "ProgressCheckViewController.h"
+#import "SettingViewController.h"
 
 @interface MineViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -27,6 +28,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"我的";
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"setting.png")
+                                                                  style:UIBarButtonItemStyleBordered
+                                                                 target:self
+                                                                 action:@selector(goSetting:)];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     //初始化静态数据
     [self initStaticData];
     [self initAndLauoutUI];
@@ -94,6 +101,14 @@
                   @"我的商户",
                   @"申请进度查询",
                   nil];
+}
+
+#pragma mark - Action
+
+- (IBAction)goSetting:(id)sender {
+    SettingViewController *settingC = [[SettingViewController alloc] init];
+    settingC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:settingC animated:YES];
 }
 
 #pragma mark - TableView

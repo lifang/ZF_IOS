@@ -359,6 +359,8 @@
     OrderModel *model = [_orderItems objectAtIndex:indexPath.section];
     OrderDetailController *detailC = [[OrderDetailController alloc] init];
     detailC.orderID = model.orderID;
+    detailC.goodName = model.orderGood.goodName;
+    detailC.fromType = PayWayFromNone;
     [self.navigationController pushViewController:detailC animated:YES];
 }
 
@@ -486,6 +488,8 @@
     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
     payWayC.orderID = _selectedModel.orderID;
     payWayC.totalPrice = _selectedModel.orderTotalPrice;
+    payWayC.goodName = _selectedModel.orderGood.goodName;
+    payWayC.fromType = PayWayFromOrder;
     [self.navigationController pushViewController:payWayC animated:YES];
 }
 

@@ -331,6 +331,8 @@
             RepairDetailController *detailC = [[RepairDetailController alloc] init];
             detailC.csID = model.csID;
             detailC.csType = _csType;
+            detailC.fromType = PayWayFromNone;
+            detailC.goodName = @"维修费";
             [self.navigationController pushViewController:detailC animated:YES];
         }
             break;
@@ -507,6 +509,8 @@
     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
     payWayC.orderID = model.csID;
     payWayC.totalPrice = model.price;
+    payWayC.goodName = @"维修费";
+    payWayC.fromType = PayWayFromCS;
     [self.navigationController pushViewController:payWayC animated:YES];
 }
 

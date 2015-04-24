@@ -7,6 +7,7 @@
 //
 
 #import "CommonViewController.h"
+#import "PayWayViewController.h"
 
 //操作成功后刷新订单列表
 static NSString *RefreshMyOrderListNotification = @"RefreshMyOrderListNotification";
@@ -14,5 +15,9 @@ static NSString *RefreshMyOrderListNotification = @"RefreshMyOrderListNotificati
 @interface OrderDetailController : CommonViewController
 
 @property (nonatomic, strong) NSString *orderID;
+
+@property (nonatomic, strong) NSString *goodName;
+
+@property (nonatomic, assign) PayWayFromType fromType;
 
 @end

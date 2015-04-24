@@ -8,6 +8,7 @@
 
 #import "RepairDetailController.h"
 #import "PayWayViewController.h"
+#import "CustomerServiceController.h"
 
 @interface RepairDetailController ()
 
@@ -30,6 +31,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"back.png")
+                                                                 style:UIBarButtonItemStyleBordered
+                                                                target:self
+                                                                action:@selector(goPervious:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -377,6 +383,8 @@
     }
 }
 
+
+
 #pragma mark - 重写
 
 - (void)parseCSDetailDataWithDictionary:(NSDictionary *)dict {
@@ -439,6 +447,27 @@
 
 #pragma mark - Action
 
+- (IBAction)goPervious:(id)sender {
+    if (_fromType == PayWayFromNone) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (_fromType == PayWayFromCS) {
+        UIViewController *controller = nil;
+        for (UIViewController *listC in self.navigationController.childViewControllers) {
+            if ([listC isMemberOfClass:[CustomerServiceController class]]) {
+                controller = listC;
+                break;
+            }
+        }
+        if (controller) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+        else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+}
+
 - (IBAction)cancelApply:(id)sender {
     [self cancelApply];
 }
@@ -447,6 +476,8 @@
     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
     payWayC.orderID = self.csID;
     payWayC.totalPrice = _repairPrice;
+    payWayC.fromType = PayWayFromCS;
+    payWayC.goodName = _goodName;
     [self.navigationController pushViewController:payWayC animated:YES];
 }
 

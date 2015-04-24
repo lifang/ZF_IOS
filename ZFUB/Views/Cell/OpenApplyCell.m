@@ -10,9 +10,12 @@
 
 @implementation OpenApplyCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style
+    reuseIdentifier:(NSString *)reuseIdentifier
+       hasVideoAuth:(BOOL)hasVideo {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         _identifier = reuseIdentifier;
+        _hasVideoAuth = hasVideo;
         [self initAndLayoutUI];
     }
     return self;
@@ -263,13 +266,24 @@
                                                                  attribute:NSLayoutAttributeBottom
                                                                 multiplier:1.0
                                                                   constant:middleSpace * 2]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0
-                                                                  constant:10.f]];
+    if (_hasVideoAuth) {
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
+                                                                     attribute:NSLayoutAttributeLeft
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.contentView
+                                                                     attribute:NSLayoutAttributeLeft
+                                                                    multiplier:1.0
+                                                                      constant:10.f]];
+    }
+    else {
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.contentView
+                                                                     attribute:NSLayoutAttributeCenterX
+                                                                    multiplier:1.0
+                                                                      constant:0.f]];
+    }
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
                                                                  attribute:NSLayoutAttributeWidth
                                                                  relatedBy:NSLayoutRelationEqual
@@ -284,35 +298,38 @@
                                                                  attribute:NSLayoutAttributeNotAnAttribute
                                                                 multiplier:0.0
                                                                   constant:btnHeight]];
-    [self.contentView addSubview:videoAuthBtn];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                 attribute:NSLayoutAttributeTop
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_terminalLabel
-                                                                 attribute:NSLayoutAttributeBottom
-                                                                multiplier:1.0
-                                                                  constant:middleSpace * 2]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                 attribute:NSLayoutAttributeRight
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeRight
-                                                                multiplier:1.0
-                                                                  constant:-10.f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:nil
-                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                multiplier:0.0
-                                                                  constant:btnWidth]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:nil
-                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                multiplier:0.0
-                                                                  constant:btnHeight]];
+    if (_hasVideoAuth) {
+        [self.contentView addSubview:videoAuthBtn];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:_terminalLabel
+                                                                     attribute:NSLayoutAttributeBottom
+                                                                    multiplier:1.0
+                                                                      constant:middleSpace * 2]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
+                                                                     attribute:NSLayoutAttributeRight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.contentView
+                                                                     attribute:NSLayoutAttributeRight
+                                                                    multiplier:1.0
+                                                                      constant:-10.f]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                                    multiplier:0.0
+                                                                      constant:btnWidth]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                                    multiplier:0.0
+                                                                      constant:btnHeight]];
+
+    }
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)titleName action:(SEL)action {

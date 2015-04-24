@@ -165,7 +165,9 @@
             break;
         }
     }
-    [_channelItem replaceObjectAtIndex:oldIndex withObject:_defaultChannel];
+    if (oldIndex >= 0 && oldIndex < [_channelItem count]) {
+        [_channelItem replaceObjectAtIndex:oldIndex withObject:_defaultChannel];
+    }
 }
 
 @end

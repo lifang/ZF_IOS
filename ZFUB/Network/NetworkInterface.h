@@ -416,6 +416,12 @@ static NSString *s_findPassword_method = @"user/updatePassword";
 //购买意向
 static NSString *s_intention_method = @"paychannel/intention/add";
 
+//订单信息
+static NSString *s_orderConfirm_method = @"order/payOrder";
+
+//维修单付款
+static NSString *s_repairPay_method = @"cs/repair/repairPay";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -1366,6 +1372,20 @@ static NSString *s_intention_method = @"paychannel/intention/add";
                      phoneNumber:(NSString *)phoneNumber
                          content:(NSString *)content
                         finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 订单信息
+ @result finish  请求回调结果
+ */
++ (void)orderConfirmWithOrderID:(NSString *)orderID
+                       finished:(requestDidFinished)finish;
+
+/*!
+ @abstract 维修单支付
+ @result finish  请求回调结果
+ */
++ (void)repairConfirmWithRepairID:(NSString *)repairID
+                         finished:(requestDidFinished)finish;
 
 
 @end

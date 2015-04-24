@@ -7,7 +7,12 @@
 //
 
 #import "CSDetailViewController.h"
+#import "PayWayViewController.h"
 
 @interface RepairDetailController : CSDetailViewController
+
+@property (nonatomic, strong) NSString *goodName;
+
+@property (nonatomic, assign) PayWayFromType fromType;
 
 @end

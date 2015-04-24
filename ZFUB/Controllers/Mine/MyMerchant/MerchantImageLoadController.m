@@ -93,11 +93,11 @@
 }
 
 - (void)parseImageUploadInfo:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSDictionary class]]) {
+    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSString class]]) {
         return;
     }
-    NSDictionary *infoDict = [dict objectForKey:@"result"];
-    NSString *urlString = [infoDict objectForKey:@"filePath"];
+//    NSDictionary *infoDict = [dict objectForKey:@"result"];
+    NSString *urlString = [dict objectForKey:@"result"];
     [self saveWithURLString:urlString];
 }
 

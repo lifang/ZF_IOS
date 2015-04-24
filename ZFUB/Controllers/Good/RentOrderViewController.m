@@ -135,8 +135,12 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
+                    NSString *orderID = [NSString stringWithFormat:@"%@",[object objectForKey:@"result"]];
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshShoppingCartNotification object:nil];
                     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
+                    payWayC.orderID = orderID;
+                    payWayC.goodName = _goodDetail.goodName;
+                    payWayC.fromType = PayWayFromGood;
                     payWayC.totalPrice = [self getSummaryPrice];
                     [self.navigationController pushViewController:payWayC animated:YES];
                 }

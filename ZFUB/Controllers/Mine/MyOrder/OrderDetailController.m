@@ -12,8 +12,11 @@
 #import "OrderDetailModel.h"
 #import "OrderDetailCell.h"
 #import "RecordView.h"
-#import "PayWayViewController.h"
 #import "OrderReviewController.h"
+#import "MyOrderViewController.h"
+#import "GoodListViewController.h"
+#import "ShoppingCartController.h"
+#import "OrderTerminalListController.h"
 
 @interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -33,6 +36,11 @@
     self.title = @"订单详情";
     self.view.backgroundColor = kColor(244, 243, 243, 1);
     [self downloadDetail];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"back.png")
+                                                                 style:UIBarButtonItemStyleBordered
+                                                                target:self
+                                                                action:@selector(goPervious:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -199,7 +207,7 @@
 - (CGFloat)heightForString:(NSString *)string
                  withWidth:(CGFloat)width {
     NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [UIFont systemFontOfSize:14.f],NSFontAttributeName,
+                          [UIFont systemFontOfSize:13.f],NSFontAttributeName,
                           nil];
     CGRect rect = [string boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                        options:NSStringDrawingUsesLineFragmentOrigin
@@ -265,7 +273,7 @@
                     [hud hide:YES];
                     hud.labelText = @"订单取消成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [self goPervious:nil];
                 }
             }
             else {
@@ -509,8 +517,75 @@
 
 #pragma mark - Action
 
+- (IBAction)goPervious:(id)sender {
+    if (_fromType == PayWayFromNone) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if (_fromType == PayWayFromOrder) {
+        UIViewController *controller = nil;
+        for (UIViewController *listC in self.navigationController.childViewControllers) {
+            if ([listC isMemberOfClass:[MyOrderViewController class]]) {
+                controller = listC;
+                break;
+            }
+        }
+        if (controller) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+        else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+    else if (_fromType == PayWayFromGood) {
+        UIViewController *controller = nil;
+        for (UIViewController *listC in self.navigationController.childViewControllers) {
+            if ([listC isMemberOfClass:[GoodListViewController class]]) {
+                controller = listC;
+                break;
+            }
+        }
+        if (controller) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+        else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+    else if (_fromType == PayWayFromCart) {
+        UIViewController *controller = nil;
+        for (UIViewController *listC in self.navigationController.childViewControllers) {
+            if ([listC isMemberOfClass:[ShoppingCartController class]]) {
+                controller = listC;
+                break;
+            }
+        }
+        if (controller) {
+            [self.navigationController popToViewController:controller animated:YES];
+        }
+        else {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }
+    else if (_fromType == PayWayFromCS) {
+        
+    }
+}
+
 - (IBAction)scanTerminalNumber:(id)sender {
-    
+    NSArray *terminalList = [_orderDetail.terminals componentsSeparatedByString:@" "];
+    if ([terminalList count] <= 0 || [_orderDetail.terminals isEqualToString:@""]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"没有终端";
+        return;
+    }
+    else {
+        OrderTerminalListController *listC = [[OrderTerminalListController alloc] init];
+        listC.terminalList = terminalList;
+        [self.navigationController pushViewController:listC animated:YES];
+    }
 }
 
 - (IBAction)cancelOrder:(id)sender {
@@ -521,6 +596,13 @@
     PayWayViewController *payWayC = [[PayWayViewController alloc] init];
     payWayC.totalPrice = _orderDetail.orderTotalPrice;
     payWayC.orderID = _orderID;
+    payWayC.goodName = _goodName;
+    if (_fromType == PayWayFromNone) {
+        payWayC.fromType = PayWayFromOrder;
+    }
+    else {
+        payWayC.fromType = _fromType;
+    }
     [self.navigationController pushViewController:payWayC animated:YES];
 }
 

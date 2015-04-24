@@ -42,14 +42,27 @@
         if ([dict objectForKey:@"order_number"]) {
             _orderNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_number"]];
         }
+        _orderPayType = @"其他";
         if ([dict objectForKey:@"order_payment_type"]) {
-            _orderPayType = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_payment_type"]];
+            int payTag = [[dict objectForKey:@"order_payment_type"] intValue];
+            if (payTag == 1) {
+                _orderPayType = @"支付宝";
+            }
+            else if (payTag == 2) {
+                _orderPayType = @"银联";
+            }
+            else if (payTag == 3) {
+                _orderPayType = @"现金";
+            }
         }
         if ([dict objectForKey:@"order_createTime"]) {
             _orderTime = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_createTime"]];
         }
         if ([dict objectForKey:@"order_totalNum"]) {
             _orderTotalNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_totalNum"]];
+        }
+        if ([dict objectForKey:@"terminals"]) {
+            _terminals = [NSString stringWithFormat:@"%@",[dict objectForKey:@"terminals"]];
         }
         id recordObject = [[dict objectForKey:@"comments"] objectForKey:@"content"];
         if ([recordObject isKindOfClass:[NSArray class]]) {

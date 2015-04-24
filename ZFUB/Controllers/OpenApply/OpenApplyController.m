@@ -13,6 +13,7 @@
 #import "OpenApplyCell.h"
 #import "ApplyDetailController.h"
 #import "TerminalDetailController.h"
+#import "VideoAuthController.h"
 
 @interface OpenApplyController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,OpenApplyCellDelegate>
 
@@ -199,7 +200,7 @@
     }
     OpenApplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[OpenApplyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[OpenApplyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier hasVideoAuth:model.hasVideoAuth];
         cell.delegate = self;
     }
     [cell setContentsWithData:model];
@@ -328,7 +329,9 @@
 }
 //视频认证
 - (void)videoAuthWithData:(TerminalManagerModel *)model {
-    
+    VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
+    videoAuthC.terminalID = model.TM_ID;
+    [self.navigationController pushViewController:videoAuthC animated:YES];
 }
 //重新申请开通
 - (void)reopenApplyWithData:(TerminalManagerModel *)model {

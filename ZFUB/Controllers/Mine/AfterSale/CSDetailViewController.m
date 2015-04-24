@@ -270,6 +270,7 @@
                     [hud hide:YES];
                     hud.labelText = @"提交成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }
             else {

@@ -10,6 +10,7 @@
 #import "NetworkInterface.h"
 #import "TreeDataHandle.h"
 #import "RegularFormat.h"
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface AppDelegate ()
 
@@ -31,7 +32,7 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
     _cityID = @"1";
-    _userID = @"80";
+    _userID = @"108";
     _token = @"123";
     [self testInterface];
     return YES;
@@ -57,6 +58,22 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    NSLog(@"%@",url);
+    if ([url.host isEqualToString:@"safepay"]) {
+        NSLog(@"!!!");
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            for (NSString *key in resultDic) {
+                NSLog(@"%@->%@",key,[resultDic objectForKey:key]);
+            }
+        }];
+    }
+    return YES;
 }
 
 

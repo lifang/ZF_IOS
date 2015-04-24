@@ -8,10 +8,18 @@
 
 #import "TerminalManagerCell.h"
 
+typedef enum {
+    TMButtonFirst = 1,
+    TMButtonSecond,
+    TMButtonThird,
+    TMButtonForth,
+}TMButtonPosition;
+
 @implementation TerminalManagerCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier hasVideoAuth:(BOOL)hasVideoAuth {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        _hasVideoAuth = hasVideoAuth;
         _identifier = reuseIdentifier;
         [self initAndLayoutUI];
     }
@@ -269,66 +277,13 @@
         [self addLine];
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
         UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
-        [self.contentView addSubview:videoAuthBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:0.5
-                                                                      constant:-middleSpace / 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        
-        [self.contentView addSubview:findPswBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        
+        if (_hasVideoAuth) {
+            [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:2];
+            [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+        }
+        else {
+            [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:1];
+        }
     }
     else if ([_identifier isEqualToString:UnOpenedFirstStatusIdentifier]) {
         //未开通 同步、开通申请、视频认证
@@ -336,158 +291,28 @@
         UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
         UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        [self.contentView addSubview:openApplyBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeCenterX
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeCenterX
-                                                                    multiplier:1.0
-                                                                      constant:0.f]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:synBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                    multiplier:1.0
-                                                                      constant:-middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:videoAuthBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        
+        if (_hasVideoAuth) {
+            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+            [self layoutView:openApplyBtn withPosition:TMButtonSecond totalCount:3];
+            [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+        }
+        else {
+            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+            [self layoutView:openApplyBtn withPosition:TMButtonSecond totalCount:2];
+        }
     }
     else if ([_identifier isEqualToString:UnOpenedSecondStatusIdentifier]) {
         //未开通 申请开通、视频认证
         [self addLine];
         UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        [self.contentView addSubview:openApplyBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:0.5
-                                                                      constant:-middleSpace / 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:videoAuthBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:openApplyBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
+        if (_hasVideoAuth) {
+            [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:2];
+            [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+        }
+        else {
+            [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:1];
+        }
     }
     else if ([_identifier isEqualToString:PartOpenedStatusIdentifier]) {
         //部分开通 同步、重新申请开通、视频认证、找回POS密码
@@ -496,123 +321,17 @@
         UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
         UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
-        [self.contentView addSubview:synBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:openConfirmBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openConfirmBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openConfirmBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:synBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openConfirmBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:openConfirmBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:videoAuthBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:openConfirmBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        [self.contentView addSubview:findPswBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeLeft
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:videoAuthBtn
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:findPswBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
-        
+        if (_hasVideoAuth) {
+            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:4];
+            [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:4];
+            [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
+            [self layoutView:videoAuthBtn withPosition:TMButtonForth totalCount:4];
+        }
+        else {
+            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+            [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
+            [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
+        }
     }
     else if ([_identifier isEqualToString:StoppedStatusIdentifier]) {
         //已停用 同步
@@ -698,6 +417,144 @@
     [button setTitle:titleName forState:UIControlStateNormal];
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     return button;
+}
+
+- (void)layoutView:(UIView *)view
+      withPosition:(TMButtonPosition)position
+        totalCount:(int)totalCount {
+    CGFloat middleSpace = 10.f;
+    CGFloat btnWidth = (kScreenWidth - 5 * middleSpace) / 4;
+    CGFloat btnHeight = 28.f;
+    [self.contentView addSubview:view];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                 attribute:NSLayoutAttributeTop
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:_terminalLabel
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                multiplier:1.0
+                                                                  constant:middleSpace * 2]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:nil
+                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                multiplier:0.0
+                                                                  constant:btnWidth]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                 attribute:NSLayoutAttributeHeight
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:nil
+                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                multiplier:0.0
+                                                                  constant:btnHeight]];
+    switch (totalCount) {
+        case 1: {
+            //总按钮数1个
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.contentView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1.0
+                                                                          constant:0.f]];
+        }
+            break;
+        case 2: {
+            //总按钮数2个
+            if (position == TMButtonFirst) {
+                //第一个
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeRight
+                                                                            multiplier:.5
+                                                                              constant:-middleSpace / 2]];
+            }
+            else {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:middleSpace / 2]];
+            }
+        }
+            break;
+        case 3: {
+            //总按钮数3个
+            if (position == TMButtonFirst) {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:-middleSpace - btnWidth / 2]];
+            }
+            else if (position == TMButtonSecond) {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:0.f]];
+            }
+            else {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeCenterX
+                                                                            multiplier:1.0
+                                                                              constant:middleSpace + btnWidth / 2]];
+            }
+        }
+            break;
+        case 4: {
+            if (position == TMButtonFirst) {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                            multiplier:1.0
+                                                                              constant:middleSpace]];
+            }
+            else if (position == TMButtonSecond) {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                            multiplier:1.0
+                                                                              constant:middleSpace * 2 + btnWidth]];
+            }
+            else if (position == TMButtonThird) {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeLeft
+                                                                            multiplier:1.0
+                                                                              constant:middleSpace * 3 + btnWidth * 2]];
+            }
+            else {
+                [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.contentView
+                                                                             attribute:NSLayoutAttributeRight
+                                                                            multiplier:1.0
+                                                                              constant:-middleSpace]];
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - Data

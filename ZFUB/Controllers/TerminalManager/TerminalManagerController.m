@@ -14,6 +14,7 @@
 #import "AddTerminalController.h"
 #import "TerminalDetailController.h"
 #import "ApplyDetailController.h"
+#import "VideoAuthController.h"
 
 @interface TerminalManagerController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,TerminalManagerDelegate>
 
@@ -257,7 +258,7 @@
     }
     TerminalManagerCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier hasVideoAuth:model.hasVideoAuth];
         cell.delegate = self;
     }
     [cell setContentsWithData:model];
@@ -397,7 +398,9 @@
 #pragma mark - TerminalManagerDelegate
 //视频认证
 - (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model {
-    
+    VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
+    videoAuthC.terminalID = model.TM_ID;
+    [self.navigationController pushViewController:videoAuthC animated:YES];
 }
 
 //找回POS密码
