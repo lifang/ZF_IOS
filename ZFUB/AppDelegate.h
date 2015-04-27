@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
 
+#define UMENG_APPKEY @"5514cefefd98c59e51000561"
+
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
