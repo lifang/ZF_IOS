@@ -379,6 +379,7 @@
         [hud hide:YES afterDelay:0.5f];
         if (success) {
             id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            NSLog(@"%@",object);
             if ([object isKindOfClass:[NSDictionary class]]) {
                 NSString *errorCode = [object objectForKey:@"code"];
                 if ([errorCode intValue] == RequestFail) {
@@ -408,27 +409,31 @@
         return;
     }
     NSDictionary *infoDict = [dict objectForKey:@"result"];
-    NSString *amountTotal = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"amountTotal"]];
-    NSString *channelName = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"payChannelName"]];
-    NSString *terminalNum = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"terminalNumber"]];
-    NSString *tradeTotal = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"tradeTotal"]];
-    NSString *tradeType = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"tradeTypeId"]];
-    
-    
+    CGFloat amountTotal = [[infoDict objectForKey:@"amountTotal"] floatValue] / 100;
+    NSString *channelName = @"";
+    if ([infoDict objectForKey:@"payChannelName"]) {
+        channelName = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"payChannelName"]];
+    }
+    NSString *terminalNum = @"";
+    if ([infoDict objectForKey:@"terminalNumber"]) {
+        terminalNum = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"terminalNumber"]];
+    }
+    int tradeTotal = [[infoDict objectForKey:@"tradeTotal"] intValue];
+//    NSString *tradeType = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"tradeTypeId"]];
+
     NSString *start = [self transformDateStringWithStrting:_startTime];
     NSString *end = [self transformDateStringWithStrting:_endTime];
-    _priceLabel.text = [NSString stringWithFormat:@"￥%@",amountTotal];
-    _countLabel.text = [NSString stringWithFormat:@"交易笔数：%@",tradeTotal];
+    _priceLabel.text = [NSString stringWithFormat:@"￥%.2f",amountTotal];
+    _countLabel.text = [NSString stringWithFormat:@"交易笔数：%d",tradeTotal];
     _timeLabel.text = [NSString stringWithFormat:@"%@-%@",start,end];
     _terminalLabel.text = [NSString stringWithFormat:@"终端号：%@",terminalNum];
     _channelLabel.text = [NSString stringWithFormat:@"支付通道：%@",channelName];
-    _typeLabel.text = [NSString stringWithFormat:@"%@",[self tradeTypeWithIndex:tradeType]];
+    _typeLabel.text = [NSString stringWithFormat:@"%@",[self tradeTypeWithIndex:_tradeType]];
     
 }
 
-- (NSString *)tradeTypeWithIndex:(NSString *)indexString {
-    NSString *tradeString = nil;
-    int index = [indexString intValue];
+- (NSString *)tradeTypeWithIndex:(int)index {
+    NSString *tradeString = @"无";
     switch (index) {
         case TradeTypeTransfer:
             tradeString = @"转账";

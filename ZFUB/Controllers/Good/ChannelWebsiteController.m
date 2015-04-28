@@ -62,8 +62,8 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:0]];
-//    NSURL *url = [[NSBundle mainBundle] pathForResource:@"" ofType:@"doc"];
-    _urlString = @"http://121.40.84.2:8888/file/user/terminal/471/update/1429846235279.doc";
+
+//    _urlString = @"http://121.40.84.2:8888/file/user/terminal/471/update/1429846235279.doc";
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_urlString]];
     [_webView loadRequest:request];
 }

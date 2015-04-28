@@ -814,7 +814,7 @@ static CGFloat topImageHeight = 160.f;
 
 - (IBAction)goShoppingCart:(id)sender {
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+    if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
         [self showLoginViewController];
     }
     else {
@@ -914,7 +914,7 @@ static CGFloat topImageHeight = 160.f;
         return;
     }
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+    if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
         [self showLoginViewController];
     }
     else {
@@ -925,7 +925,7 @@ static CGFloat topImageHeight = 160.f;
 //立即购买、租赁
 - (IBAction)buyNow:(id)sender {
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+    if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
         [self showLoginViewController];
     }
     else {

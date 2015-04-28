@@ -15,6 +15,8 @@
 #import "MobClick.h"
 #import "APService.h"
 
+#import "UserArchiveHelper.h"
+
 @interface AppDelegate ()
 
 @end
@@ -34,10 +36,10 @@
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
-    _cityID = @"1";
-    _userID = @"108";
-    _token = @"123";
-    [self testInterface];
+//    _cityID = @"1";
+//    _userID = @"108";
+    _cityID = kDefaultCityID;
+//    _token = @"123";
     
     //友盟
     // [MobClick startWithAppkey:@"5514cefefd98c59e51000561" reportPolicy:BATCH   channelId:@"App Store"];
@@ -234,35 +236,18 @@ fetchCompletionHandler: (void (^)(UIBackgroundFetchResult))completionHandler {
     return YES;
 }
 
+#pragma mark - 退出
 
-- (void)testInterface {
-//    [NetworkInterface sendBuyIntentionWithName:@"我" phoneNumber:@"我我问" content:@"苏州苏州" finished:^(BOOL success, NSData *response) {
-//        NSLog(@"!!!!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface selectedChannelWithToken:_token finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface selectedBankWithToken:_token finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface selectedMerchantWithToken:_token merchantID:@"19" finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface goodSearchInfoWithCityID:_cityID finished:^(BOOL success,NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface modifyUserInfoWithUserID:@"8" username:@"123" mobilePhone:@"123" email:@"123@qq.com" cityID:@"1" finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-////    }];
-//    [NetworkInterface registerWithActivation:@"L1GDxr" username:@"13964915263" userPassword:@"123456" cityID:@"1" isEmailRegister:NO finished:^(BOOL success, NSData *response) {
-//        NSLog(@"!!%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface getGoodListWithCityID:@"1" sortType:OrderFilterNone brandID:nil category:nil channelID:nil payCardID:nil tradeID:nil slipID:nil date:nil maxPrice:-1 minPrice:-1 keyword:nil onlyRent:NO page:1 rows:10 finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
-//    [NetworkInterface getRegisterValidateCodeWithMobileNumber:@"1214" finished:^(BOOL success, NSData *response) {
-//        NSLog(@"%d,%@",success,[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-//    }];
+- (void)loginOut {
+    self.userID = @"";
+    self.cityID = kDefaultCityID;
+    LoginUserModel *user = [UserArchiveHelper getLastestUser];
+    if (user) {
+        user.password = nil;
+        user.cityID = @"";
+        user.userID = @"";
+        [UserArchiveHelper savePasswordForUser:user];
+    }
 }
 
 @end

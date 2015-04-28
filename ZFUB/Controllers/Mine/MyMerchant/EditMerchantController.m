@@ -9,6 +9,7 @@
 #import "EditMerchantController.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
+#import "RegularFormat.h"
 
 @interface EditMerchantController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
@@ -248,6 +249,16 @@
         [hud hide:YES afterDelay:1.f];
         hud.labelText = @"修改信息不能为空";
         return;
+    }
+    if (_editType == MerchantEditPersonID) {
+        if (![RegularFormat isCorrectIdentificationCard:_editField.text]) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"请填写正确的身份证号";
+            return;
+        }
     }
     [_editField becomeFirstResponder];
     [_editField resignFirstResponder];

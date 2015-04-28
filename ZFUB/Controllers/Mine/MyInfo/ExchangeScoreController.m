@@ -119,7 +119,7 @@
 
 - (void)initSubViews {
     _nameField = [[UITextField alloc] init];
-    [self setAttrForTextField:_nameField placeholder:@"请输入姓名"];
+    [self setAttrForTextField:_nameField placeholder:@"请输入姓名，20字符以内"];
     _phoneField = [[UITextField alloc] init];
     [self setAttrForTextField:_phoneField placeholder:@"请输入电话"];
     _moneyField = [[UITextField alloc] init];
@@ -199,6 +199,14 @@
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
         hud.labelText = @"请填写兑换金额";
+        return;
+    }
+    if ([RegularFormat stringLength:_nameField.text] > 20) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"姓名长度超过20字符";
         return;
     }
     if (!([RegularFormat isMobileNumber:_phoneField.text] || [RegularFormat isTelephoneNumber:_phoneField.text])) {

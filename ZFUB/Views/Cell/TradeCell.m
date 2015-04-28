@@ -250,14 +250,14 @@
     NSString *statusString = nil;
     int index = [indexString intValue];
     switch (index) {
-        case TradeStatusUnPaid:
-            statusString = @"待付款";
-            break;
         case TradeStatusFinish:
             statusString = @"交易完成";
             break;
         case TradeStatusFail:
             statusString = @"交易失败";
+            break;
+        case TradeStatusWaiting:
+            statusString = @"交易结果待确认";
             break;
         default:
             break;
@@ -273,28 +273,50 @@
     _priceLabel.text = [NSString stringWithFormat:@"￥%.2f",tradeModel.amount];
     switch (tradeType) {
         case TradeTypeTransfer:
-            _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",tradeModel.payFromAccount];
-            _payToLabel.text = [NSString stringWithFormat:@"收款账号：%@",tradeModel.payIntoAccount];
+            _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",[self serectString:tradeModel.payFromAccount]];
+            _payToLabel.text = [NSString stringWithFormat:@"收款账号：%@",[self serectString:tradeModel.payIntoAccount]];
             break;
         case TradeTypeConsume:
             _payFromLabel.text = [NSString stringWithFormat:@"结算时间：%@",tradeModel.payedTime];
             _payToLabel.text = [NSString stringWithFormat:@"手  续  费：%.2f",tradeModel.poundage];
             break;
         case TradeTypeRepayment:
-            _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",tradeModel.payFromAccount];
-            _payToLabel.text = [NSString stringWithFormat:@"转入账号：%@",tradeModel.payIntoAccount];
+            _payFromLabel.text = [NSString stringWithFormat:@"付款账号：%@",[self serectString:tradeModel.payFromAccount]];
+            _payToLabel.text = [NSString stringWithFormat:@"转入账号：%@",[self serectString:tradeModel.payIntoAccount]];
             break;
         case TradeTypeLife:
-            _payFromLabel.text = [NSString stringWithFormat:@"账  户  名：%@",tradeModel.accountName];
-            _payToLabel.text = [NSString stringWithFormat:@"账户号码：%@",tradeModel.accountNumber];
+            _payFromLabel.text = [NSString stringWithFormat:@"账  户  名：%@",[self serectNameString:tradeModel.accountName]];
+            _payToLabel.text = [NSString stringWithFormat:@"账户号码：%@",[self serectString:tradeModel.accountNumber]];
             break;
         case TradeTypeTelephoneFare:
             _payFromLabel.text = @"";
-            _payToLabel.text = [NSString stringWithFormat:@"手机号码：%@",tradeModel.phoneNumber];
+            _payToLabel.text = [NSString stringWithFormat:@"手机号码：%@",[self serectString:tradeModel.phoneNumber]];
             break;
         default:
             break;
     }
+}
+
+- (NSString *)serectString:(NSString *)string {
+    //倒数5-8位星号
+    NSInteger length = [string length];
+    if (length < 8) {
+        return string;
+    }
+    NSMutableString *encryptString = [NSMutableString stringWithString:string];
+    [encryptString replaceCharactersInRange:NSMakeRange(length - 8, 4) withString:@"****"];
+    return encryptString;
+}
+
+- (NSString *)serectNameString:(NSString *)string {
+    //名字第二位
+    NSInteger length = [string length];
+    if (length < 2) {
+        return string;
+    }
+    NSMutableString *encryptString = [NSMutableString stringWithString:string];
+    [encryptString replaceCharactersInRange:NSMakeRange(length - 2, 1) withString:@"*"];
+    return encryptString;
 }
 
 @end

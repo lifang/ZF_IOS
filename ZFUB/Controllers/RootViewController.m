@@ -78,7 +78,7 @@
     if ([controller isMemberOfClass:[ShoppingCartController class]] ||
         [controller isMemberOfClass:[MessageViewController class]] ||
          [controller isMemberOfClass:[MineViewController class]]) {
-        if (!delegate.token || [delegate.token isEqualToString:@""]) {
+        if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
             LoginViewController *loginC = [[LoginViewController alloc] init];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
             [NavigationBarAttr setNavigationBarStyle:nav];

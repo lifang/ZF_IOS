@@ -10,7 +10,6 @@
 		0D336B181AE505D8002640F9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B171AE505D8002640F9 /* CFNetwork.framework */; };
 		0D336B1A1AE505E4002640F9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B191AE505E4002640F9 /* CoreFoundation.framework */; };
 		0D336B1C1AE505EC002640F9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */; };
-		0D336B1E1AE505FC002640F9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1D1AE505FC002640F9 /* SystemConfiguration.framework */; };
 		0D336B201AE50608002640F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1F1AE50608002640F9 /* CoreGraphics.framework */; };
 		0D336B221AE5061A002640F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B211AE5061A002640F9 /* Foundation.framework */; };
 		0D336B241AE5062B002640F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B231AE5062B002640F9 /* UIKit.framework */; };
@@ -30,6 +29,8 @@
 		773093AA1A8B40D70096FE0B /* FilterContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093A91A8B40D70096FE0B /* FilterContentViewController.m */; };
 		773093AD1A8B41330096FE0B /* TreeNodeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093AC1A8B41330096FE0B /* TreeNodeModel.m */; };
 		773093B01A8B41AC0096FE0B /* TreeDataHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 773093AF1A8B41AC0096FE0B /* TreeDataHandle.m */; };
+		773293011AEF2CA90038942C /* LoginUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 773293001AEF2CA90038942C /* LoginUserModel.m */; };
+		773293041AEF2D870038942C /* UserArchiveHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 773293031AEF2D870038942C /* UserArchiveHelper.m */; };
 		7736D6DA1AB919DF001628C7 /* OrderCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736D6D91AB919DF001628C7 /* OrderCommentCell.m */; };
 		7736D6DD1AB921A1001628C7 /* OrderReviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736D6DC1AB921A1001628C7 /* OrderReviewController.m */; };
 		7736D6E01AB9408A001628C7 /* ReviewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7736D6DF1AB9408A001628C7 /* ReviewModel.m */; };
@@ -296,6 +297,10 @@
 		773093AC1A8B41330096FE0B /* TreeNodeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeNodeModel.m; sourceTree = "<group>"; };
 		773093AE1A8B41AC0096FE0B /* TreeDataHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeDataHandle.h; sourceTree = "<group>"; };
 		773093AF1A8B41AC0096FE0B /* TreeDataHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeDataHandle.m; sourceTree = "<group>"; };
+		773292FF1AEF2CA90038942C /* LoginUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginUserModel.h; sourceTree = "<group>"; };
+		773293001AEF2CA90038942C /* LoginUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginUserModel.m; sourceTree = "<group>"; };
+		773293021AEF2D870038942C /* UserArchiveHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserArchiveHelper.h; sourceTree = "<group>"; };
+		773293031AEF2D870038942C /* UserArchiveHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserArchiveHelper.m; sourceTree = "<group>"; };
 		7736D6D81AB919DF001628C7 /* OrderCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderCommentCell.h; sourceTree = "<group>"; };
 		7736D6D91AB919DF001628C7 /* OrderCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderCommentCell.m; sourceTree = "<group>"; };
 		7736D6DB1AB921A1001628C7 /* OrderReviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderReviewController.h; sourceTree = "<group>"; };
@@ -776,7 +781,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				77641DF61AE8E3100022F31A /* libc++.dylib in Frameworks */,
 				77641DF41AE8E3070022F31A /* libstdc++.dylib in Frameworks */,
 				77641DF21AE8E2FB0022F31A /* libstdc++.6.dylib in Frameworks */,
@@ -805,19 +809,16 @@
 				77641DD41AE8E26B0022F31A /* libanychatcore.a in Frameworks */,
 				77641DD21AE8E26B0022F31A /* librtc_base_approved.a in Frameworks */,
 				77641DE41AE8E26B0022F31A /* libyuv_neon.a in Frameworks */,
-
 				0D336B281AE50650002640F9 /* libz.dylib in Frameworks */,
 				0D336B261AE5063D002640F9 /* Security.framework in Frameworks */,
 				0D336B241AE5062B002640F9 /* UIKit.framework in Frameworks */,
 				0D336B361AE5E53C002640F9 /* libPushSDK-1.8.3.a in Frameworks */,
 				0D336B221AE5061A002640F9 /* Foundation.framework in Frameworks */,
 				0D336B201AE50608002640F9 /* CoreGraphics.framework in Frameworks */,
-				0D336B1E1AE505FC002640F9 /* SystemConfiguration.framework in Frameworks */,
 				0D336B1C1AE505EC002640F9 /* CoreTelephony.framework in Frameworks */,
 				0D336B1A1AE505E4002640F9 /* CoreFoundation.framework in Frameworks */,
 				0D336B181AE505D8002640F9 /* CFNetwork.framework in Frameworks */,
 				0D336B331AE5E4C1002640F9 /* libMobClickLibrary.a in Frameworks */,
-
 				77390D141ABABBCC00AFD1B0 /* CoreLocation.framework in Frameworks */,
 				7755D7DD1AE7A87F00F273BD /* AlipaySDK.framework in Frameworks */,
 				77641DDF1AE8E26B0022F31A /* libswscale.a in Frameworks */,
@@ -938,6 +939,8 @@
 				773C1F631AB7F31C001734F6 /* MessageModel.m */,
 				7736D6DE1AB9408A001628C7 /* ReviewModel.h */,
 				7736D6DF1AB9408A001628C7 /* ReviewModel.m */,
+				773292FF1AEF2CA90038942C /* LoginUserModel.h */,
+				773293001AEF2CA90038942C /* LoginUserModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1253,6 +1256,8 @@
 			children = (
 				774D67721A79FFA200DDCEE4 /* SearchHistoryHelper.h */,
 				774D67731A79FFA200DDCEE4 /* SearchHistoryHelper.m */,
+				773293021AEF2D870038942C /* UserArchiveHelper.h */,
+				773293031AEF2D870038942C /* UserArchiveHelper.m */,
 			);
 			path = Archive;
 			sourceTree = "<group>";
@@ -1523,13 +1528,10 @@
 		775873D51A72349A00EB3AE5 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-
 				77641DAC1AE8E26B0022F31A /* AnyChat */,
 				7755D7791AE7A87F00F273BD /* Alipay */,
-
 				0D336B391AE5E589002640F9 /* JPush */,
 				0D336B371AE5E56C002640F9 /* Youmeng */,
-
 				7742DB221A89F22200EF16FB /* HUD */,
 				7740B4361A85A7210057EED7 /* KxMenu */,
 				775873D61A7234A900EB3AE5 /* SDWebImage */,
@@ -1661,7 +1663,6 @@
 		7792CB421A709C8F00C44A64 = {
 			isa = PBXGroup;
 			children = (
-
 				77641DF51AE8E3100022F31A /* libc++.dylib */,
 				77641DF31AE8E3070022F31A /* libstdc++.dylib */,
 				77641DF11AE8E2FB0022F31A /* libstdc++.6.dylib */,
@@ -1672,7 +1673,6 @@
 				77641DE71AE8E2CF0022F31A /* CoreAudio.framework */,
 				77641DE51AE8E2B80022F31A /* QuartzCore.framework */,
 				7755D7E81AE7A8DB00F273BD /* SystemConfiguration.framework */,
-
 				0D336B271AE50650002640F9 /* libz.dylib */,
 				0D336B251AE5063D002640F9 /* Security.framework */,
 				0D336B231AE5062B002640F9 /* UIKit.framework */,
@@ -1682,7 +1682,6 @@
 				0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */,
 				0D336B191AE505E4002640F9 /* CoreFoundation.framework */,
 				0D336B171AE505D8002640F9 /* CFNetwork.framework */,
-
 				77390D131ABABBCC00AFD1B0 /* CoreLocation.framework */,
 				7792CB4D1A709C8F00C44A64 /* ZFUB */,
 				7792CB671A709C8F00C44A64 /* ZFUBTests */,
@@ -1791,7 +1790,7 @@
 		7792CB431A709C8F00C44A64 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "___MyCompanyName___";
 				TargetAttributes = {
 					7792CB4A1A709C8F00C44A64 = {
@@ -1981,6 +1980,7 @@
 				773AEBB61AB029B900598351 /* MerchantSelectedController.m in Sources */,
 				775873FC1A7234A900EB3AE5 /* UIButton+WebCache.m in Sources */,
 				773A0FFE1A9EF0B6008EA806 /* TerminalSelectedController.m in Sources */,
+				773293011AEF2CA90038942C /* LoginUserModel.m in Sources */,
 				775AB4D21AAE8FF9000E01C5 /* AddressManagerController.m in Sources */,
 				773A10011A9F1A22008EA806 /* TradeModel.m in Sources */,
 				7738E8761A9FFE9600D51CBE /* TradeCell.m in Sources */,
@@ -2014,6 +2014,7 @@
 				775873BF1A71EDDD00EB3AE5 /* MessageViewController.m in Sources */,
 				7739FAFB1AB677740043A2A6 /* MobileFindController.m in Sources */,
 				77CC84081AEA274400A9D5BA /* SettingViewController.m in Sources */,
+				773293041AEF2D870038942C /* UserArchiveHelper.m in Sources */,
 				774596371AA807A7008F3D52 /* EditMerchantController.m in Sources */,
 				7738E8791AA00D2800D51CBE /* StatisticDealFlowController.m in Sources */,
 				7742DB1D1A89D90A00EF16FB /* MobileRegisterController.m in Sources */,
@@ -2163,16 +2164,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs/audioprocess",
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs",
-
-					/Users/wwwd/Desktop/umsdk_IOS_analytics_idfa_v3.4.6/UMAnalytics_Sdk_3.4.6,
-					"/Users/wwwd/Downloads/JPush-iOS-SDK-1.8-2.3/lib",
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
-
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";
@@ -2200,16 +2196,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs/audioprocess",
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs",
-
-					/Users/wwwd/Desktop/umsdk_IOS_analytics_idfa_v3.4.6/UMAnalytics_Sdk_3.4.6,
-					"/Users/wwwd/Downloads/JPush-iOS-SDK-1.8-2.3/lib",
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
-
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";

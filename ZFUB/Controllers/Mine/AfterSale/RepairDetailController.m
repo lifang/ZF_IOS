@@ -432,8 +432,8 @@
     if ([infoDict objectForKey:@"repair_price"]) {
         _repairPrice = [[infoDict objectForKey:@"repair_price"] floatValue] / 100;
     }
-    if ([infoDict objectForKey:@"description"]) {
-        _detail = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"description"]];
+    if ([infoDict objectForKey:@"change_reason"]) {
+        _detail = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"change_reason"]];
     }
     id object = [[infoDict objectForKey:@"comments"] objectForKey:@"content"];
     if ([object isKindOfClass:[NSArray class]]) {

@@ -347,12 +347,12 @@
         [self setLabel:payToLabel withTopView:payFromLabel middleSpace:space];
         [self setLabel:channelLabel withTopView:payToLabel middleSpace:space];
     }
-    //分润金额
-    UILabel *profitLabel = [[UILabel alloc] init];
-    [self setLabel:profitLabel withTopView:channelLabel middleSpace:space];
+//    //分润金额
+//    UILabel *profitLabel = [[UILabel alloc] init];
+//    [self setLabel:profitLabel withTopView:channelLabel middleSpace:space];
     //交易金额
     UILabel *tradeMoneyLabel = [[UILabel alloc] init];
-    [self setLabel:tradeMoneyLabel withTopView:profitLabel middleSpace:space];
+    [self setLabel:tradeMoneyLabel withTopView:channelLabel middleSpace:space];
     //交易时间
     UILabel *timeLabel = [[UILabel alloc] init];
     [self setLabel:timeLabel withTopView:tradeMoneyLabel middleSpace:space];
@@ -396,29 +396,29 @@
     terminalLabel.text = [NSString stringWithFormat:@"终   端   号   %@",_terminalNumber];
     switch (_tradeType) {
         case TradeTypeTransfer:
-            payFromLabel.text = [NSString stringWithFormat:@"付 款 账 号   %@",_payFromAccount];
-            payToLabel.text = [NSString stringWithFormat:@"收 款 账 号   %@",_payToAccount];
+            payFromLabel.text = [NSString stringWithFormat:@"付 款 账 号   %@",[self serectString:_payFromAccount]];
+            payToLabel.text = [NSString stringWithFormat:@"收 款 账 号   %@",[self serectString:_payToAccount]];
             break;
         case TradeTypeConsume:
             payFromLabel.text = [NSString stringWithFormat:@"结 算 时 间   %@",_payedTime];
             payToLabel.text = [NSString stringWithFormat:@"手   续   费   %.2f",_tradePoundage];
             break;
         case TradeTypeRepayment:
-            payFromLabel.text = [NSString stringWithFormat:@"付 款 账 号   %@",_payFromAccount];
-            payToLabel.text = [NSString stringWithFormat:@"转 入 账 号   %@",_payToAccount];
+            payFromLabel.text = [NSString stringWithFormat:@"付 款 账 号   %@",[self serectString:_payFromAccount]];
+            payToLabel.text = [NSString stringWithFormat:@"转 入 账 号   %@",[self serectString:_payToAccount]];
             break;
         case TradeTypeLife:
-            payFromLabel.text = [NSString stringWithFormat:@"账   户   名   %@",_accountName];
-            payToLabel.text = [NSString stringWithFormat:@"账 户 号 码   %@",_accountNumber];
+            payFromLabel.text = [NSString stringWithFormat:@"账   户   名   %@",[self serectNameString:_accountName]];
+            payToLabel.text = [NSString stringWithFormat:@"账 户 号 码   %@",[self serectString:_accountNumber]];
             break;
         case TradeTypeTelephoneFare:
-            payFromLabel.text = [NSString stringWithFormat:@"手 机 号 码   %@",_phoneNumber];
+            payFromLabel.text = [NSString stringWithFormat:@"手 机 号 码   %@",[self serectString:_phoneNumber]];
             break;
         default:
             break;
     }
     channelLabel.text = [NSString stringWithFormat:@"支 付 通 道   %@",_channelName];
-    profitLabel.text = [NSString stringWithFormat:@"分 润 金 额   %@",_profitPrice];
+//    profitLabel.text = [NSString stringWithFormat:@"分 润 金 额   %@",_profitPrice];
     tradeMoneyLabel.text = [NSString stringWithFormat:@"交 易 金 额   %.2f",_tradeAmount];
     timeLabel.text = [NSString stringWithFormat:@"交 易 时 间   %@",_tradeTime];
     tradeStatusLabel.text = [NSString stringWithFormat:@"交 易 状 态   %@",[self statusForIndexString:_tradeStatus]];
@@ -540,19 +540,41 @@
     NSString *tradeStatus = nil;
     int index = [indexString intValue];
     switch (index) {
-        case TradeStatusUnPaid:
-            tradeStatus = @"未付款";
-            break;
         case TradeStatusFinish:
             tradeStatus = @"交易完成";
             break;
         case TradeStatusFail:
             tradeStatus = @"交易失败";
             break;
+        case TradeStatusWaiting:
+            tradeStatus = @"交易结果待确认";
+            break;
         default:
             break;
     }
     return tradeStatus;
+}
+
+- (NSString *)serectString:(NSString *)string {
+    //倒数5-8位星号
+    NSInteger length = [string length];
+    if (length < 8) {
+        return string;
+    }
+    NSMutableString *encryptString = [NSMutableString stringWithString:string];
+    [encryptString replaceCharactersInRange:NSMakeRange(length - 8, 4) withString:@"****"];
+    return encryptString;
+}
+
+- (NSString *)serectNameString:(NSString *)string {
+    //名字第二位
+    NSInteger length = [string length];
+    if (length < 2) {
+        return string;
+    }
+    NSMutableString *encryptString = [NSMutableString stringWithString:string];
+    [encryptString replaceCharactersInRange:NSMakeRange(length - 2, 1) withString:@"*"];
+    return encryptString;
 }
 
 @end

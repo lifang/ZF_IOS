@@ -574,8 +574,8 @@
     if ([infoDict objectForKey:@"receiver_addr"]) {
         _address = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"receiver_addr"]];
     }
-    if ([infoDict objectForKey:@"receiver_person"]) {
-        _reason = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"receiver_person"]];
+    if ([infoDict objectForKey:@"change_reason"]) {
+        _reason = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"change_reason"]];
     }
     id resourceObject = [infoDict objectForKey:@"resource_info"];
     if ([resourceObject isKindOfClass:[NSArray class]]) {

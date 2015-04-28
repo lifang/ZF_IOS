@@ -166,7 +166,6 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
-                    [_dataItem removeAllObjects];
                     [self parseDataWithDictionary:object];
                 }
             }
@@ -186,6 +185,8 @@
     if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
         return;
     }
+    [_dataItem removeAllObjects];
+    [self getSummaryPrice];
     NSArray *cartList = [dict objectForKey:@"result"];
     for (int i = 0; i < [cartList count]; i++) {
         NSDictionary *dict = [cartList objectAtIndex:i];
@@ -396,6 +397,7 @@
                     [_tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section]
                               withRowAnimation:UITableViewRowAnimationAutomatic];
                     [_tableView endUpdates];
+                    [self getSummaryPrice];
                 }
             }
             else {

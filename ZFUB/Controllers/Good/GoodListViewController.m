@@ -298,7 +298,7 @@
 
 - (IBAction)goShoppingCart:(id)sender {
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    if (!delegate.token || [delegate.token isEqualToString:@""]) {
+    if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
         [self showLoginViewController];
         return;
     }

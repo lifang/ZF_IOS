@@ -166,7 +166,16 @@
     }
     if ([_passwordField.text length] < 6) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
-                                                        message:@"密码不能少于6位!"
+                                                        message:@"密码长度不能少于6位!"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    if ([_passwordField.text length] > 20) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"密码长度不能大于20位!"
                                                        delegate:nil
                                               cancelButtonTitle:@"确定"
                                               otherButtonTitles:nil];

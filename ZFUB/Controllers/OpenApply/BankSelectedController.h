@@ -19,6 +19,8 @@
 
 @property (nonatomic, assign) id<BankSelectedDelegate>delegate;
 
-@property (nonatomic, strong) NSMutableArray *bankItems;
+@property (nonatomic, strong) NSMutableArray *dataItem;
+
+@property (nonatomic, strong) NSString *terminalID;
 
 @end

@@ -204,13 +204,22 @@ static NSString *HTTP_GET  = @"GET";
 }
 
 //10.
-+ (void)selectedBankWithToken:(NSString *)token
-                     finished:(requestDidFinished)finish {
++ (void)getBankListWithToken:(NSString *)token
+                  terminalID:(NSString *)terminalID
+                     keyword:(NSString *)keyword
+                        page:(int)page
+                        rows:(int)rows
+                    finished:(requestDidFinished)finish {
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-    if (token && ![token isEqualToString:@""]) {
-        [paramDict setObject:token forKey:@"token"];
+    if (terminalID) {
+        [paramDict setObject:[NSNumber numberWithInt:[terminalID intValue]] forKey:@"terminalId"];
     }
+    if (keyword) {
+        [paramDict setObject:keyword forKey:@"keyword"];
+    }
+    [paramDict setObject:[NSNumber numberWithInt:page] forKey:@"page"];
+    [paramDict setObject:[NSNumber numberWithInt:rows] forKey:@"pageSize"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_applyBank_method];
     [[self class] requestWithURL:urlString
@@ -221,9 +230,10 @@ static NSString *HTTP_GET  = @"GET";
 
 //11.
 + (void)uploadImageWithImage:(UIImage *)image
+                  terminalID:(NSString *)terminalID
                     finished:(requestDidFinished)finish {
     //url
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_loadImage_method];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@",kServiceURL,s_loadImage_method,terminalID];
     NetworkRequest *request = [[NetworkRequest alloc] initWithRequestURL:urlString
                                                               httpMethod:HTTP_POST
                                                                 finished:finish];
@@ -351,7 +361,7 @@ static NSString *HTTP_GET  = @"GET";
     if (token && ![token isEqualToString:@""]) {
         [paramDict setObject:token forKey:@"token"];
     }
-    [paramDict setObject:tmID forKey:@"terminalid"];
+    [paramDict setObject:[NSNumber numberWithInt:[tmID intValue]] forKey:@"terminalid"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_terminalFindPsw_method];
     [[self class] requestWithURL:urlString
@@ -387,7 +397,7 @@ static NSString *HTTP_GET  = @"GET";
     if (token && ![token isEqualToString:@""]) {
         [paramDict setObject:token forKey:@"token"];
     }
-//    [paramDict setObject:tmID forKey:@"terminalid"];
+    [paramDict setObject:tmID forKey:@"terminalid"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_synchronize_method];
     [[self class] requestWithURL:urlString

@@ -56,11 +56,14 @@
     
     _orderItems = [[NSMutableArray alloc] init];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshOrderList:)
+                                                 name:RefreshMyOrderListNotification
+                                               object:nil];
+    
     [self initAndLayoutUI];
     self.currentType = OrderTypeAll;
     [self firstLoadData];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshOrderList:) name:RefreshMyOrderListNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -200,7 +200,7 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
                                                                     message:info
                                                                    delegate:self
-                                                          cancelButtonTitle:@"确定"
+                                                          cancelButtonTitle:@"马上登录"
                                                           otherButtonTitles:nil];
                     [alert show];
                 }

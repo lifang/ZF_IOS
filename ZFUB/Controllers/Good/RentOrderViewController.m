@@ -214,10 +214,10 @@
     else if (indexPath.row == 2) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
         cell.textLabel.font = [UIFont systemFontOfSize:14.f];
-        cell.textLabel.text = @"押金";
+        cell.textLabel.text = @"押金和开通费用";
         cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:16.f];
         cell.detailTextLabel.textColor = kColor(255, 102, 36, 1);
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",_goodDetail.deposit * _count];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",(_goodDetail.defaultChannel.openCost + _goodDetail.deposit) * _count];
         return cell;
     }
     else if (indexPath.row == 3) {

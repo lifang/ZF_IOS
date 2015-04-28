@@ -171,7 +171,7 @@ static NSString *s_applyChannel_method = @"apply/getChannels";
 static NSString *s_applyBank_method = @"apply/ChooseBank";
 
 //上传图片
-static NSString *s_loadImage_method = @"comment/upload/tempImage";
+static NSString *s_loadImage_method = @"terminal/upload/tempImage";
 
 //对公对私材料
 static NSString *s_applyMaterial_method = @"apply/getMaterialName";
@@ -528,8 +528,12 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
  @param token       登录返回
  @result finish  请求回调结果
  */
-+ (void)selectedBankWithToken:(NSString *)token
-                     finished:(requestDidFinished)finish;
++ (void)getBankListWithToken:(NSString *)token
+                  terminalID:(NSString *)terminalID
+                     keyword:(NSString *)keyword
+                        page:(int)page
+                        rows:(int)rows
+                    finished:(requestDidFinished)finish;
 
 /*!
  @abstract 11.上传图片
@@ -537,6 +541,7 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
  @result finish  请求回调结果
  */
 + (void)uploadImageWithImage:(UIImage *)image
+                  terminalID:(NSString *)terminalID
                     finished:(requestDidFinished)finish;
 
 /*!

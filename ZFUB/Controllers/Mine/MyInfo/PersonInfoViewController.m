@@ -254,9 +254,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 }
 
 - (IBAction)signOut:(id)sender {
-    AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    delegate.userID = nil;
-    delegate.token = nil;
+    [[AppDelegate shareAppDelegate] loginOut];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     [hud hide:YES afterDelay:1.f];
     hud.labelText = @"正在退出...";

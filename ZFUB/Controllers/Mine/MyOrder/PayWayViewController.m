@@ -11,6 +11,7 @@
 #import "NetworkInterface.h"
 #import "AlipayHelper.h"
 #import "RepairDetailController.h"
+#import "MyOrderViewController.h"
 
 @interface PayWayViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 
@@ -197,18 +198,23 @@
 - (void)payWithAlipay {
     //支付宝
     if (_payNumber) {
-        [AlipayHelper alipayWithOrderNumber:_payNumber goodName:_goodName totalPrice:_totalPrice payResult:^(NSDictionary *resultDict) {
+        BOOL isOrderPay = YES;
+        if (_fromType == PayWayFromCS) {
+            isOrderPay = NO;
+        }
+        [AlipayHelper alipayWithOrderNumber:_payNumber goodName:_goodName totalPrice:_totalPrice isOrderPay:isOrderPay payResult:^(NSDictionary *resultDict) {
             int resultCode = [[resultDict objectForKey:@"resultStatus"] intValue];
             NSString *tipString = @"";
             if (resultCode == 9000) {
                 tipString = @"订单支付成功";
                 if (_fromType == PayWayFromCS) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
+                    [self performSelector:@selector(showRepairDetail) withObject:nil afterDelay:0.5];
                 }
                 else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
+                    [self performSelector:@selector(showDetail) withObject:nil afterDelay:0.5];
                 }
-                [self performSelector:@selector(showDetail) withObject:nil afterDelay:0.5];
             }
             else {
                 if (resultCode == 8000) {
@@ -320,6 +326,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         [self payWithAlipay];
+    }
+    else if (indexPath.section == 1) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"尚未接入银联支付";
     }
 }
 

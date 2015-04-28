@@ -22,6 +22,7 @@
 #import "ContactUsController.h"
 #import "AppDelegate.h"
 #import "ChannelWebsiteController.h"
+#import "UserArchiveHelper.h"
 
 @interface HomeViewController ()<LocationDelegate,CLLocationManagerDelegate>
 
@@ -48,6 +49,7 @@
     _pictureItem = [[NSMutableArray alloc] init];
     [self loadHomeImageList];
     [self getUserLocation];
+    [self fillingUser];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -249,7 +251,7 @@
             break;
         case ModuleAuthentication: {
             //开通认证
-            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+            if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
                 [self showLoginViewController];
                 return;
             }
@@ -260,7 +262,7 @@
             break;
         case ModuleManageTerminal: {
             //终端管理
-            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+            if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
                 [self showLoginViewController];
                 return;
             }
@@ -271,7 +273,7 @@
             break;
         case ModuletDealFlow: {
             //交易流水
-            if (!delegate.token || [delegate.token isEqualToString:@""]) {
+            if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
                 [self showLoginViewController];
                 return;
             }
@@ -327,6 +329,19 @@
     }
 }
 
+#pragma mark - 数据处理
+
+//初始化完成后查找上次登录的用户
+- (void)fillingUser {
+    LoginUserModel *user = [UserArchiveHelper getLastestUser];
+    if (user) {
+        AppDelegate *delegate = [AppDelegate shareAppDelegate];
+        delegate.userID = user.userID;
+        if (user.cityID && ![user.cityID isEqualToString:@""]) {
+            delegate.cityID = user.cityID;
+        }
+    }
+}
 
 #pragma mark - 定位
 
@@ -365,20 +380,26 @@
             break;
         }
     }
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
     if (currentCity) {
         _locationBtn.nameLabel.text = currentCity.cityName;
+        delegate.cityID = currentCity.cityID;
     }
     else {
         _locationBtn.nameLabel.text = @"定位失败";
+        delegate.cityID = kDefaultCityID;
     }
 }
 
 - (void)getSelectedLocation:(CityModel *)selectedCity {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
     if (selectedCity) {
         _locationBtn.nameLabel.text = selectedCity.cityName;
+        delegate.cityID = selectedCity.cityID;
     }
     else {
         _locationBtn.nameLabel.text = @"定位失败";
+        delegate.cityID = kDefaultCityID;
     }
 }
 

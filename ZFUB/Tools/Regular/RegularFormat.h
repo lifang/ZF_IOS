@@ -24,5 +24,7 @@
 + (BOOL)isInt:(NSString*)string;
 //计算字符串长度
 + (int)stringLength:(NSString *)string;
+//身份证
++ (BOOL)isCorrectIdentificationCard:(NSString *)string;
 
 @end

@@ -88,8 +88,8 @@
             if ([primaryDict objectForKey:@"sex"]) {
                 _sex = [[primaryDict objectForKey:@"sex"] intValue];
             }
-            if ([primaryDict objectForKey:@"birthday"]) {
-                _birthday = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"birthday"]];
+            if ([primaryDict objectForKey:@"birthdays"]) {
+                _birthday = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"birthdays"]];
             }
             if ([primaryDict objectForKey:@"card_id"]) {
                 _cardID = [NSString stringWithFormat:@"%@",[primaryDict objectForKey:@"card_id"]];

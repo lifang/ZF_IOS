@@ -11,6 +11,7 @@
 
 #define UMENG_APPKEY @"5514cefefd98c59e51000561"
 
+#define kDefaultCityID  @"0"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -25,6 +26,8 @@
 @property (nonatomic, strong) NSString *token;
 
 + (AppDelegate *)shareAppDelegate;
+
+- (void)loginOut;
 
 @end
 

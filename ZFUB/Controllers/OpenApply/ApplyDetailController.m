@@ -14,6 +14,7 @@
 #import "CityHandle.h"
 #import "BankSelectedController.h"
 #import "ChannelSelectedController.h"
+#import "RegularFormat.h"
 
 #define kTextViewTag   111
 #define kApplyImageTag 112
@@ -56,8 +57,6 @@
 @property (nonatomic, strong) UILabel *terminalLabel;
 @property (nonatomic, strong) UILabel *channelLabel;
 
-@property (nonatomic, strong) NSMutableArray *bankItems;//银行信息
-
 //用于记录点击的是哪一行
 @property (nonatomic, strong) NSString *selectedKey;
 
@@ -87,14 +86,12 @@
     // Do any additional setup after loading the view.
     self.title = @"开通申请";
     _applyType = OpenApplyPublic;
-    _bankItems = [[NSMutableArray alloc] init];
     _infoDict = [[NSMutableDictionary alloc] init];
     _tempField = [[UITextField alloc] init];
     _tempField.hidden = YES;
     [self.view addSubview:_tempField];
     [self initAndLayoutUI];
     [self beginApply];
-    [self getBankList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -323,30 +320,6 @@
     }];
 }
 
-//银行信息
-- (void)getBankList {
-    AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface selectedBankWithToken:delegate.token finished:^(BOOL success, NSData *response) {
-        NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-        if (success) {
-            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
-            if ([object isKindOfClass:[NSDictionary class]]) {
-                NSString *errorCode = [NSString stringWithFormat:@"%@",[object objectForKey:@"code"]];
-                if ([errorCode intValue] == RequestFail) {
-                    //返回错误代码
-                }
-                else if ([errorCode intValue] == RequestSuccess) {
-                    [self parseBankListWithDictionary:object];
-                }
-            }
-            else {
-                //返回错误数据
-            }
-        }
-        else {
-        }
-    }];
-}
 
 #pragma mark - Data
 
@@ -363,20 +336,6 @@
     _channelLabel.text = [NSString stringWithFormat:@"支付通道   %@",_applyData.channelName];
     [self setPrimaryData];
     [_tableView reloadData];
-}
-
-- (void)parseBankListWithDictionary:(NSDictionary *)dict {
-    if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSArray class]]) {
-        return;
-    }
-    NSArray *bankList = [dict objectForKey:@"result"];
-    for (int i = 0; i < [bankList count]; i++) {
-        id bankDict = [bankList objectAtIndex:i];
-        if ([bankDict isKindOfClass:[NSDictionary class]]) {
-            BankModel *model = [[BankModel alloc] initWithParseDictionary:bankDict];
-            [_bankItems addObject:model];
-        }
-    }
 }
 
 //保存获取的内容
@@ -458,16 +417,6 @@
     return nil;
 }
 
-//根据银行编码获取银行名
-- (NSString *)getBankNameWithBankCode:(NSString *)bankCode {
-    for (BankModel *model in _bankItems) {
-        if ([model.bankCode isEqualToString:bankCode]) {
-            return model.bankName;
-        }
-    }
-    return nil;
-}
-
 - (void)parseImageUploadInfo:(NSDictionary *)dict {
     if (![dict objectForKey:@"result"] || ![[dict objectForKey:@"result"] isKindOfClass:[NSString class]]) {
         return;
@@ -484,7 +433,7 @@
 - (void)uploadPictureWithImage:(UIImage *)image {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"上传中...";
-    [NetworkInterface uploadImageWithImage:image finished:^(BOOL success, NSData *response) {
+    [NetworkInterface uploadImageWithImage:image terminalID:_terminalID finished:^(BOOL success, NSData *response) {
         NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
@@ -724,7 +673,7 @@
             switch (indexPath.row) {
                 case 0:
                     textKey = key_bank;
-                    titleName = @"结算银行名称";
+                    titleName = @"结算银行账号名";
                     break;
                 case 1:
                     textKey = key_bankID;
@@ -732,7 +681,7 @@
                     break;
                 case 2:
                     textKey = key_bankAccount;
-                    titleName = @"结算银行账户";
+                    titleName = @"结算银行卡号";
                     break;
                 case 3:
                     textKey = key_taxID;
@@ -750,7 +699,7 @@
                     break;
             }
             textFiled.key = textKey;
-            if (indexPath.row == 5) {
+            if (indexPath.row == 1 || indexPath.row == 5) {
                 CGRect rect = CGRectMake(kScreenWidth - 180, (cell.frame.size.height - 30) / 2, 150, 30);
                 textFiled.frame = rect;
                 textFiled.userInteractionEnabled = NO;
@@ -782,7 +731,7 @@
                 textField.userInteractionEnabled = NO;
                 textField.key = model.materialID;
                 NSString *bankCode = [self getApplyValueForKey:textField.key];
-                textField.text = [self getBankNameWithBankCode:bankCode];
+                textField.text = bankCode;
                 [cell.contentView addSubview:textField];
                 cell.key = model.materialID;
                 cell.type = MaterialList;
@@ -874,6 +823,15 @@
             _selectedKey = cell.key;
             [self pickerScrollIn];
         }
+        else if (indexPath.section == 1 && indexPath.row == 1) {
+            ApplyInfoCell *cell = (ApplyInfoCell *)[_tableView cellForRowAtIndexPath:indexPath];
+            _selectedKey = cell.key;
+            //结算银行
+            BankSelectedController *bankC = [[BankSelectedController alloc] init];
+            bankC.delegate = self;
+            bankC.terminalID = _terminalID;
+            [self.navigationController pushViewController:bankC animated:YES];
+        }
         else if (indexPath.section == 1 && indexPath.row == 5) {
             //选择支付通道
             ChannelSelectedController *channelC = [[ChannelSelectedController alloc] init];
@@ -896,7 +854,7 @@
             //结算银行
             BankSelectedController *bankC = [[BankSelectedController alloc] init];
             bankC.delegate = self;
-            bankC.bankItems = self.bankItems;
+            bankC.terminalID = _terminalID;
             [self.navigationController pushViewController:bankC animated:YES];
         }
         else if (cell.type == MaterialImage) {
@@ -1128,6 +1086,14 @@
         hud.labelText = @"请填写身份证号";
         return;
     }
+    if (![RegularFormat isCorrectIdentificationCard:[_infoDict objectForKey:key_cardID]]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写正确的身份证号";
+        return;
+    }
     if (![_infoDict objectForKey:key_phone]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
@@ -1136,12 +1102,29 @@
         hud.labelText = @"请填写电话";
         return;
     }
+    if (!([RegularFormat isMobileNumber:[_infoDict objectForKey:key_phone]] ||
+        [RegularFormat isTelephoneNumber:[_infoDict objectForKey:key_phone]])) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写正确的电话";
+        return;
+    }
     if (![_infoDict objectForKey:key_email]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
         hud.labelText = @"请填写邮箱";
+        return;
+    }
+    if (![RegularFormat isCorrectEmail:[_infoDict objectForKey:key_email]]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请填写正确的邮箱";
         return;
     }
     if (![_infoDict objectForKey:key_location]) {
@@ -1263,23 +1246,6 @@
     [self submitApplyInfoWithArray:paramList];
 }
 
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [self pickerScrollOut];
-}
-
-- (void)textFieldDidEndEditing:(InputTextField *)textField {
-    if (textField.text && ![textField.text isEqualToString:@""]) {
-        [_infoDict setObject:textField.text forKey:textField.key];
-    }
-}
-
 #pragma mark - ApplyMerchantSelectedDelegate
 //选中商户后 带入商户的一些信息
 - (void)getSelectedMerchant:(MerchantDetailModel *)model {
@@ -1324,6 +1290,56 @@
     _channelID = model.channelID;
     _billID = billModel.billID;
     [_tableView reloadData];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.editingField = textField;
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.editingField = nil;
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self pickerScrollOut];
+}
+
+- (void)textFieldDidEndEditing:(InputTextField *)textField {
+    if (textField.text && ![textField.text isEqualToString:@""]) {
+        [_infoDict setObject:textField.text forKey:textField.key];
+    }
+}
+
+#pragma mark - 键盘
+
+- (void)handleKeyboardDidShow:(NSNotification *)paramNotification {
+    //获取键盘高度
+    CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect fieldRect = [[self.editingField superview] convertRect:self.editingField.frame toView:self.view];
+    CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height);
+    if (offsetY > 0 && self.offset == 0) {
+        self.primaryPoint = self.tableView.contentOffset;
+        self.offset = offsetY;
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y + self.offset) animated:YES];
+    }
+}
+
+- (void)handleKeyboardDidHidden {
+    [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+    self.offset = 0;
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if (self.editingField) {
+        self.offset = 0;
+        [self.editingField resignFirstResponder];
+    }
 }
 
 @end

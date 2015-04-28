@@ -176,12 +176,12 @@
         }
             break;
         case 1: {
-            _textView.frame = CGRectMake(0, 0, kScreenWidth, 200);
+            _textView.frame = CGRectMake(0, 0, kScreenWidth, 180);
             _placeholderLabel.frame = CGRectMake(5, 7, kScreenWidth, 20.f);
             [cell.contentView addSubview:_textView];
             [cell.contentView addSubview:_placeholderLabel];
             
-            _tipLabel.frame = CGRectMake(20 , 200, kScreenWidth - 30, 20);
+            _tipLabel.frame = CGRectMake(20 , 180, kScreenWidth - 30, 20);
             [cell.contentView addSubview:_tipLabel];
         }
             break;
@@ -193,7 +193,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        return 220.f;
+        return 200.f;
     }
     return 44.f;
 }
@@ -219,6 +219,14 @@
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:1.f];
         hud.labelText = @"请填写姓名";
+        return;
+    }
+    if ([RegularFormat stringLength:_nameField.text] > 20) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"姓名长度超过20字符";
         return;
     }
     if (!_phoneField.text || [_phoneField.text isEqualToString:@""]) {
@@ -308,7 +316,7 @@
     if (number < 0) {
         number = 0;
     }
-    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个汉字", number];
+    _tipLabel.text = [NSString stringWithFormat:@"最多填写%ld个文字", number];
 }
 
 #pragma mark - UITextField
@@ -316,6 +324,41 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//    int stringLength = [RegularFormat stringLength:textField.text] + [RegularFormat stringLength:string];
+//    if (stringLength > 20 && ![string isEqualToString:@""]) {
+//        return NO;
+//    }
+//    return YES;
+//}
+
+#pragma mark - 键盘
+
+- (void)handleKeyboardDidShow:(NSNotification *)paramNotification {
+    //获取键盘高度
+    CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect fieldRect = [[_textView superview] convertRect:_textView.frame toView:self.view];
+    CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height);
+    if (offsetY > 0 && self.offset == 0) {
+        self.primaryPoint = self.tableView.contentOffset;
+        self.offset = offsetY;
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y + self.offset) animated:YES];
+    }
+}
+
+- (void)handleKeyboardDidHidden {
+    [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+    self.offset = 0;
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if (_textView.isFirstResponder) {
+        self.offset = 0;
+        [_textView resignFirstResponder];
+    }
 }
 
 @end

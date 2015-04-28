@@ -9,6 +9,8 @@
 #import "OrderReviewController.h"
 #import "AppDelegate.h"
 #import "NetworkInterface.h"
+#import "MyOrderViewController.h"
+#import "OrderDetailController.h"
 
 @interface OrderReviewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -115,6 +117,20 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"评论成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
+                    UIViewController *controller = nil;
+                    for (UIViewController *cc in self.navigationController.childViewControllers) {
+                        if ([cc isMemberOfClass:[MyOrderViewController class]]) {
+                            controller = cc;
+                            break;
+                        }
+                    }
+                    if (controller) {
+                        [self.navigationController popToViewController:controller animated:YES];
+                    }
+                    else {
+                        [self.navigationController popToRootViewControllerAnimated:YES];
+                    }
                 }
             }
             else {

@@ -11,6 +11,7 @@
 #import "RegisterViewController.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
+#import "UserArchiveHelper.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -35,11 +36,30 @@
                                                                 action:@selector(goPervious:)];
     self.navigationItem.leftBarButtonItem = backItem;
     [self initAndLayoutUI];
+    CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    self.primaryPoint = CGPointMake(0, self.view.frame.origin.y + topHeight);
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self fillingUser];
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(handleKeyboardDidShow:)
+                                                name:UIKeyboardDidShowNotification
+                                              object:nil];
+    //注册通知，监听键盘消失事件
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(handleKeyboardDidHidden)
+                                                name:UIKeyboardDidHideNotification
+                                              object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UI
@@ -52,6 +72,7 @@
     
     UIImageView *backgroundView = [[UIImageView alloc] init];
     backgroundView.image = kImageName(@"login_back.png");
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:backgroundView];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
@@ -374,6 +395,8 @@
     NSDictionary *infoDict = [dict objectForKey:@"result"];
     NSString *token = @"123";
     NSString *userID = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"id"]];
+    NSString *cityID = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"cityId"]];
+    [self saveLoginUserWithUserID:userID cityID:cityID];
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     delegate.token = token;
     delegate.userID = userID;
@@ -409,11 +432,62 @@
     [self.navigationController pushViewController:registerC animated:YES];
 }
 
+#pragma mark - 数据处理
+
+//初始化完成后查找上次登录的用户
+- (void)fillingUser {
+    LoginUserModel *user = [UserArchiveHelper getLastestUser];
+    if (user) {
+        _usernameField.text = user.username;
+        _passwordField.text = user.password;
+    }
+}
+
+//保存登录用户
+- (void)saveLoginUserWithUserID:(NSString *)userID
+                         cityID:(NSString *)cityID {
+    LoginUserModel *user = [[LoginUserModel alloc] init];
+    user.username = _usernameField.text;
+    user.password = _passwordField.text;
+    user.userID = userID;
+    user.cityID = cityID;
+    [UserArchiveHelper savePasswordForUser:user];
+}
+
 #pragma mark - UITextField
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.editingField = textField;
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.editingField = nil;
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - 键盘
+
+- (void)handleKeyboardDidShow:(NSNotification *)paramNotification {
+    //获取键盘高度
+    CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect fieldRect = [[self.editingField superview] convertRect:self.editingField.frame toView:self.view];
+    CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height);
+    if (offsetY > 0 && self.offset == 0) {
+        self.offset = offsetY;
+        [UIView animateWithDuration:0.3f animations:^{
+            self.view.frame = CGRectMake(self.primaryPoint.x, self.primaryPoint.y - offsetY, self.view.bounds.size.width, self.view.bounds.size.height);
+        }];
+    }
+}
+
+- (void)handleKeyboardDidHidden {
+    self.offset = 0;
+    [UIView animateWithDuration:0.3f animations:^{
+        self.view.frame = CGRectMake(self.primaryPoint.x, self.primaryPoint.y, self.view.bounds.size.width, self.view.bounds.size.height);
+    }];
 }
 
 @end
