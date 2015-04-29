@@ -20,7 +20,7 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextSetStrokeColorWithColor(context, kColor(30, 185, 255, 1).CGColor);
+    CGContextSetStrokeColorWithColor(context, kColor(255, 102, 36, 1).CGColor);
     CGContextSetLineWidth(context, 1.5f);
     CGFloat startAngle = M_PI / 3;
     _progress = _progress > 0.9 ? 0.9 : _progress;

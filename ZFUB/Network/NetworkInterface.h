@@ -168,7 +168,7 @@ static NSString *s_applyMerchant_method = @"apply/getMerchant";
 static NSString *s_applyChannel_method = @"apply/getChannels";
 
 //选择银行
-static NSString *s_applyBank_method = @"apply/ChooseBank";
+static NSString *s_applyBank_method = @"terminal/ChooseBank";
 
 //上传图片
 static NSString *s_loadImage_method = @"terminal/upload/tempImage";
@@ -1394,5 +1394,7 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
 + (void)repairConfirmWithRepairID:(NSString *)repairID
                          finished:(requestDidFinished)finish;
 
++ (void)beginVideoAuthWithTerminalID:(NSString *)terminalID
+                            finished:(requestDidFinished)finish;
 
 @end

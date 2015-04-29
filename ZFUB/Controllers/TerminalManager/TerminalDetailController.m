@@ -809,6 +809,29 @@ typedef enum {
     }];
 }
 
+//发起视频请求
+- (void)beginVideoAuth {
+    [NetworkInterface beginVideoAuthWithTerminalID:_terminalModel.TM_ID finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                }
+            }
+            else {
+                //返回错误数据
+            }
+        }
+        else {
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseTerminalDetailDataWithDictionary:(NSDictionary *)dict {
@@ -1065,6 +1088,7 @@ typedef enum {
 
 //视频认证
 - (IBAction)videoAuth:(id)sender {
+    [self beginVideoAuth];
     VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
     videoAuthC.terminalID = _terminalModel.TM_ID;
     [self.navigationController pushViewController:videoAuthC animated:YES];

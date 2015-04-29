@@ -18,50 +18,50 @@
         if ([dict objectForKey:@"title"]) {
             _merchantName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"title"]];
         }
-        if ([dict objectForKey:@"legal_person_name"]) {
-            _merchantPersonName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"legal_person_name"]];
+        if ([dict objectForKey:@"legalPersonName"]) {
+            _merchantPersonName = [NSString stringWithFormat:@"%@",[dict objectForKey:@"legalPersonName"]];
         }
-        if ([dict objectForKey:@"legal_person_card_id"]) {
-            _merchantPersonID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"legal_person_card_id"]];
+        if ([dict objectForKey:@"legalPersonCardId"]) {
+            _merchantPersonID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"legalPersonCardId"]];
         }
-        if ([dict objectForKey:@"business_license_no"]) {
-            _merchantBusinessID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"business_license_no"]];
+        if ([dict objectForKey:@"businessLicenseNo"]) {
+            _merchantBusinessID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"businessLicenseNo"]];
         }
-        if ([dict objectForKey:@"tax_registered_no"]) {
-            _merchantTaxID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"tax_registered_no"]];
+        if ([dict objectForKey:@"taxRegisteredNo"]) {
+            _merchantTaxID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"taxRegisteredNo"]];
         }
-        if ([dict objectForKey:@"organization_code_no"]) {
-            _merchantOrganizationID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"organization_code_no"]];
+        if ([dict objectForKey:@"organizationCodeNo"]) {
+            _merchantOrganizationID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"organizationCodeNo"]];
         }
-        if ([dict objectForKey:@"account_bank_name"]) {
-            _merchantBank = [NSString stringWithFormat:@"%@",[dict objectForKey:@"account_bank_name"]];
+        if ([dict objectForKey:@"accountBankName"]) {
+            _merchantBank = [NSString stringWithFormat:@"%@",[dict objectForKey:@"accountBankName"]];
         }
-        if ([dict objectForKey:@"bank_open_account"]) {
-            _merchantBankID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"bank_open_account"]];
+        if ([dict objectForKey:@"bankOpenAccount"]) {
+            _merchantBankID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"bankOpenAccount"]];
         }
-        if ([dict objectForKey:@"city_id"]) {
-            _merchantCityID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"city_id"]];
+        if ([dict objectForKey:@"cityId"]) {
+            _merchantCityID = [NSString stringWithFormat:@"%@",[dict objectForKey:@"cityId"]];
         }
-        if ([dict objectForKey:@"card_id_front_photo_path"]) {
-            _frontPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"card_id_front_photo_path"]];
+        if ([dict objectForKey:@"cardIdFrontPhotoPath"]) {
+            _frontPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"cardIdFrontPhotoPath"]];
         }
-        if ([dict objectForKey:@"card_id_back_photo_path"]) {
-            _backPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"card_id_back_photo_path"]];
+        if ([dict objectForKey:@"cardIdBackPhotoPath"]) {
+            _backPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"cardIdBackPhotoPath"]];
         }
-        if ([dict objectForKey:@"body_photo_path"]) {
-            _bodyPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"body_photo_path"]];
+        if ([dict objectForKey:@"bodyPhotoPath"]) {
+            _bodyPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"bodyPhotoPath"]];
         }
-        if ([dict objectForKey:@"license_no_pic_path"]) {
-            _licensePath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"license_no_pic_path"]];
+        if ([dict objectForKey:@"licenseNoPicPath"]) {
+            _licensePath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"licenseNoPicPath"]];
         }
-        if ([dict objectForKey:@"tax_no_pic_path"]) {
-            _taxPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"tax_no_pic_path"]];
+        if ([dict objectForKey:@"taxNoPicPath"]) {
+            _taxPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"taxNoPicPath"]];
         }
-        if ([dict objectForKey:@"org_code_no_pic_path"]) {
-            _organizationPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"org_code_no_pic_path"]];
+        if ([dict objectForKey:@"orgCodeNoPicPath"]) {
+            _organizationPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"orgCodeNoPicPath"]];
         }
-        if ([dict objectForKey:@"account_pic_path"]) {
-            _bankPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"account_pic_path"]];
+        if ([dict objectForKey:@"accountPicPath"]) {
+            _bankPath = [NSString stringWithFormat:@"%@",[dict objectForKey:@"accountPicPath"]];
         }
     }
     return self;

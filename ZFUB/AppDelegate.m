@@ -36,6 +36,7 @@
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.window makeKeyAndVisible];
+
 //    _cityID = @"1";
 //    _userID = @"108";
     _cityID = kDefaultCityID;

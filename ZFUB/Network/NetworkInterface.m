@@ -215,7 +215,7 @@ static NSString *HTTP_GET  = @"GET";
     //参数
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
     if (terminalID) {
-        [paramDict setObject:[NSNumber numberWithInt:[terminalID intValue]] forKey:@"terminalId"];
+        [paramDict setObject:terminalID forKey:@"terminalId"];
     }
     if (keyword) {
         [paramDict setObject:keyword forKey:@"keyword"];
@@ -1809,6 +1809,20 @@ static NSString *HTTP_GET  = @"GET";
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_repairPay_method];
     [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
++ (void)beginVideoAuthWithTerminalID:(NSString *)terminalID
+                            finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    if (terminalID) {
+        [paramDict setObject:terminalID forKey:@"terminalId"];
+    }
+    //url
+    [[self class] requestWithURL:kVideoServiceURL
                           params:paramDict
                       httpMethod:HTTP_POST
                         finished:finish];

@@ -23,6 +23,7 @@
 #import "AppDelegate.h"
 #import "ChannelWebsiteController.h"
 #import "UserArchiveHelper.h"
+#import "WaitingViewController.h"
 
 @interface HomeViewController ()<LocationDelegate,CLLocationManagerDelegate>
 
@@ -284,10 +285,18 @@
             break;
         case ModuleLoan: {
             //我要贷款
+            WaitingViewController *waitC = [[WaitingViewController alloc] init];
+            waitC.hidesBottomBarWhenPushed = YES;
+            waitC.title = @"我要贷款";
+            [self.navigationController pushViewController:waitC animated:YES];
         }
             break;
         case ModuleFinancial: {
             //我要理财
+            WaitingViewController *waitC = [[WaitingViewController alloc] init];
+            waitC.hidesBottomBarWhenPushed = YES;
+            waitC.title = @"我要理财";
+            [self.navigationController pushViewController:waitC animated:YES];
         }
             break;
         case ModuleSystemAnnouncement: {

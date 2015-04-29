@@ -239,6 +239,7 @@
 		77641DF61AE8E3100022F31A /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 77641DF51AE8E3100022F31A /* libc++.dylib */; };
 		77641DF91AE907200022F31A /* ScanResourceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77641DF81AE907200022F31A /* ScanResourceController.m */; };
 		77641DFC1AE909670022F31A /* OrderTerminalListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77641DFB1AE909670022F31A /* OrderTerminalListController.m */; };
+		776A6CC11AF0AB9B00F9EEA6 /* WaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776A6CC01AF0AB9B00F9EEA6 /* WaitingViewController.m */; };
 		7792CB511A709C8F00C44A64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB501A709C8F00C44A64 /* main.m */; };
 		7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB531A709C8F00C44A64 /* AppDelegate.m */; };
 		7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7792CB5B1A709C8F00C44A64 /* Images.xcassets */; };
@@ -758,6 +759,8 @@
 		77641DF81AE907200022F31A /* ScanResourceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanResourceController.m; sourceTree = "<group>"; };
 		77641DFA1AE909670022F31A /* OrderTerminalListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderTerminalListController.h; sourceTree = "<group>"; };
 		77641DFB1AE909670022F31A /* OrderTerminalListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderTerminalListController.m; sourceTree = "<group>"; };
+		776A6CBF1AF0AB9B00F9EEA6 /* WaitingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitingViewController.h; sourceTree = "<group>"; };
+		776A6CC01AF0AB9B00F9EEA6 /* WaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitingViewController.m; sourceTree = "<group>"; };
 		7792CB4B1A709C8F00C44A64 /* ZFUB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZFUB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7792CB4F1A709C8F00C44A64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7792CB501A709C8F00C44A64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1159,6 +1162,8 @@
 				7730938B1A8AF0BC0096FE0B /* LocationViewController.m */,
 				77390D101ABA994200AFD1B0 /* CitySearchController.h */,
 				77390D111ABA994200AFD1B0 /* CitySearchController.m */,
+				776A6CBF1AF0AB9B00F9EEA6 /* WaitingViewController.h */,
+				776A6CC01AF0AB9B00F9EEA6 /* WaitingViewController.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1910,6 +1915,7 @@
 				7755D7F01AE7AFA000F273BD /* Order.m in Sources */,
 				773093A51A8B3EE80096FE0B /* TreeNodeCollection.m in Sources */,
 				7738E8831AA07AC500D51CBE /* TerminalManagerModel.m in Sources */,
+				776A6CC11AF0AB9B00F9EEA6 /* WaitingViewController.m in Sources */,
 				7747DC3D1A7B2FBF002797CC /* AfterSaleViewController.m in Sources */,
 				7739FAF81AB66AA30043A2A6 /* RegisterLocationController.m in Sources */,
 				7755D7E21AE7A87F00F273BD /* DataVerifier.m in Sources */,

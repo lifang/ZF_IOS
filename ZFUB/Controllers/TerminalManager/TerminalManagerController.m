@@ -259,6 +259,29 @@
     }];
 }
 
+//发起视频请求
+- (void)beginVideoAuthWithTerminalID:(NSString *)terminalID {
+    [NetworkInterface beginVideoAuthWithTerminalID:terminalID finished:^(BOOL success, NSData *response) {
+        NSLog(@"!!!!%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                NSString *errorCode = [object objectForKey:@"code"];
+                if ([errorCode intValue] == RequestFail) {
+                    //返回错误代码
+                }
+                else if ([errorCode intValue] == RequestSuccess) {
+                }
+            }
+            else {
+                //返回错误数据
+            }
+        }
+        else {
+        }
+    }];
+}
+
 #pragma mark - Data
 
 - (void)parseTerminalDataWithDictionary:(NSDictionary *)dict {
@@ -469,6 +492,7 @@
 #pragma mark - TerminalManagerDelegate
 //视频认证
 - (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model {
+    [self beginVideoAuthWithTerminalID:model.TM_ID];
     VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
     videoAuthC.terminalID = model.TM_ID;
     [self.navigationController pushViewController:videoAuthC animated:YES];
@@ -481,7 +505,7 @@
 
 //同步
 - (void)terminalManagerSynchronizationWithData:(TerminalManagerModel *)model {
-    
+    [self synchronizeTerminalWithTerminalID:model.TM_ID];
 }
 
 //开通申请
