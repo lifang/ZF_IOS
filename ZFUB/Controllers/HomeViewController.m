@@ -51,6 +51,9 @@
     [self loadHomeImageList];
     [self getUserLocation];
     [self fillingUser];
+    
+    [NSThread sleepForTimeInterval:3.0];//延长3秒
+    
 }
 
 - (void)didReceiveMemoryWarning {

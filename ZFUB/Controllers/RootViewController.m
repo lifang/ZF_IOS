@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "NavigationBarAttr.h"
 
+
 @interface RootViewController ()
 
 @property (nonatomic, strong) ShoppingCartController *shoppingC;
@@ -37,12 +38,19 @@
                                              selector:@selector(showColumnCount:)
                                                  name:ShowColumnNotification
                                                object:nil];
+
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
 
 #pragma mark - Controllers
 
