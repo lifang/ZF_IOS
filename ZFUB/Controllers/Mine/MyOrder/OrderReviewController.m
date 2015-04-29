@@ -12,11 +12,13 @@
 #import "MyOrderViewController.h"
 #import "OrderDetailController.h"
 
-@interface OrderReviewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface OrderReviewController ()<UITableViewDelegate,UITableViewDataSource,OrderCommentDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UITextField *tempField; //退出键盘
+
+@property (nonatomic, strong) UITextView *editingView;
 
 @end
 
@@ -179,6 +181,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     OrderCommentCell *cell = [[OrderCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.delegate = self;
     ReviewModel *model = [_goodList objectAtIndex:indexPath.section];
     [cell setContentsWithData:model];
     return cell;
@@ -200,5 +203,43 @@
     return 0.001f;
 }
 
+#pragma mark - 键盘
+
+- (void)handleKeyboardDidShow:(NSNotification *)paramNotification {
+    //获取键盘高度
+    CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect fieldRect = [[_editingView superview] convertRect:_editingView.frame toView:self.view];
+    CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height);
+    self.primaryPoint = self.tableView.contentOffset;
+    if (offsetY > 0 && self.offset == 0) {
+        self.offset = offsetY;
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y + self.offset) animated:YES];
+    }
+}
+
+- (void)handleKeyboardDidHidden {
+    if (self.offset != 0) {
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+        self.offset = 0;
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if (self.editingView) {
+        self.offset = 0;
+        [self.editingView resignFirstResponder];
+    }
+}
+
+#pragma mark - OrderCommentDelegate
+
+- (void)commentViewWillEdit:(UITextView *)textView {
+    self.editingView = textView;
+}
+
+- (void)commentViewEndEdit {
+    self.editingView = nil;
+}
 
 @end

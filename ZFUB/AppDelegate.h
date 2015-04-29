@@ -25,6 +25,9 @@
 @property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSString *token;
 
+//本地新增购物车数量
+@property (nonatomic, assign) int shopcartCount;
+
 + (AppDelegate *)shareAppDelegate;
 
 - (void)loginOut;

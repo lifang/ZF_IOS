@@ -795,8 +795,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [_tempField becomeFirstResponder];
-    [_tempField resignFirstResponder];
+//    [_tempField becomeFirstResponder];
+//    [_tempField resignFirstResponder];
+    [self.editingField resignFirstResponder];
     if (indexPath.section == 0 || indexPath.section == 1) {
         if (indexPath.section == 0 && indexPath.row == 0) {
             //选择商户
@@ -1044,8 +1045,9 @@
 }
 
 - (IBAction)submitApply:(id)sender {
-    [_tempField becomeFirstResponder];
-    [_tempField resignFirstResponder];
+//    [_tempField becomeFirstResponder];
+//    [_tempField resignFirstResponder];
+    [self.editingField resignFirstResponder];
     if (![_infoDict objectForKey:key_name]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
@@ -1331,8 +1333,10 @@
 }
 
 - (void)handleKeyboardDidHidden {
-    [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
-    self.offset = 0;
+    if (self.offset != 0) {
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+        self.offset = 0;
+    }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {

@@ -746,6 +746,11 @@ static CGFloat topImageHeight = 160.f;
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"添加到购物车成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshShoppingCartNotification object:nil];
+                    delegate.shopcartCount ++;
+                    NSDictionary *shopDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              [NSNumber numberWithInt:delegate.shopcartCount],s_shopcart,
+                                              nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ShowColumnNotification object:nil userInfo:shopDict];
                 }
             }
             else {

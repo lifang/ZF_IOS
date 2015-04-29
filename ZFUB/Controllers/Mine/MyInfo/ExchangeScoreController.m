@@ -119,7 +119,7 @@
 
 - (void)initSubViews {
     _nameField = [[UITextField alloc] init];
-    [self setAttrForTextField:_nameField placeholder:@"请输入姓名，20字符以内"];
+    [self setAttrForTextField:_nameField placeholder:@"姓名长度20字符以内"];
     _phoneField = [[UITextField alloc] init];
     [self setAttrForTextField:_phoneField placeholder:@"请输入电话"];
     _moneyField = [[UITextField alloc] init];

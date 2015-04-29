@@ -49,7 +49,9 @@ static NSString *HTTP_GET  = @"GET";
     if (activation) {
         [paramDict setObject:activation forKey:@"code"];
     }
-    [paramDict setObject:username forKey:@"username"];
+    if (username) {
+        [paramDict setObject:username forKey:@"username"];
+    }
     NSString *encryptPassword = [EncryptHelper MD5_encryptWithString:userPassword];
     [paramDict setObject:encryptPassword forKey:@"password"];
     [paramDict setObject:cityID forKey:@"cityId"];
@@ -1019,6 +1021,7 @@ static NSString *HTTP_GET  = @"GET";
 }
 
 + (void)modifyAddressWithToken:(NSString *)token
+                        userID:(NSString *)userID
                      addressID:(NSString *)addressID
                         cityID:(NSString *)cityID
                   receiverName:(NSString *)receiverName
@@ -1039,6 +1042,7 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:zipCode forKey:@"zipCode"];
     [paramDict setObject:address forKey:@"address"];
     [paramDict setObject:[NSNumber numberWithInt:addressType] forKey:@"isDefault"];
+//    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_addressModify_method];
     [[self class] requestWithURL:urlString

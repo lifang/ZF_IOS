@@ -443,6 +443,13 @@
 
 #pragma mark - UITextView
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if (_delegate && [_delegate respondsToSelector:@selector(commentViewWillEdit:)]) {
+        [_delegate commentViewWillEdit:_textView];
+    }
+    return YES;
+}
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
@@ -456,6 +463,9 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     _goodModel.review = textView.text;
+    if (_delegate && [_delegate respondsToSelector:@selector(commentViewEndEdit)]) {
+        [_delegate commentViewEndEdit];
+    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView {

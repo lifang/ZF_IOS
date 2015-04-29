@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *s_shopcart = @"shopcart";
+
+static NSString *ShowColumnNotification = @"ShowColumnNotification";
+
 @interface RootViewController : UITabBarController<UITabBarControllerDelegate>
 
 @end

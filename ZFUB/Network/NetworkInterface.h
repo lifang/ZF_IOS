@@ -1027,6 +1027,7 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
 /*!
  @abstract .修改地址
  @param token       登录返回
+ @param userID      用户id
  @param addressID   地址ID
  @param cityID    城市id
  @param receiverName   收件人姓名
@@ -1037,6 +1038,7 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
  @result finish  请求回调结果
  */
 + (void)modifyAddressWithToken:(NSString *)token
+                        userID:(NSString *)userID
                      addressID:(NSString *)addressID
                         cityID:(NSString *)cityID
                   receiverName:(NSString *)receiverName

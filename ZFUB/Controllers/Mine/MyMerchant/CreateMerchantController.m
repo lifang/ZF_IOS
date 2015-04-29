@@ -151,8 +151,9 @@
 #pragma mark - Action
 
 - (IBAction)createMerchant:(id)sender {
-    [_textField_merchant becomeFirstResponder];
-    [_textField_merchant resignFirstResponder];
+//    [_textField_merchant becomeFirstResponder];
+//    [_textField_merchant resignFirstResponder];
+    [self.editingField resignFirstResponder];
     [self pickerScrollOut];
     if (!_textField_merchant.text || [_textField_merchant.text isEqualToString:@""]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -613,8 +614,10 @@
 }
 
 - (void)handleKeyboardDidHidden {
-    [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
-    self.offset = 0;
+    if (self.offset != 0) {
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+        self.offset = 0;
+    }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {

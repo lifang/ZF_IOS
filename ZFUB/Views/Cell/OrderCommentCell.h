@@ -12,7 +12,16 @@
 
 #define kCommentCellHeight 230.f
 
+@protocol OrderCommentDelegate <NSObject>
+
+- (void)commentViewWillEdit:(UITextView *)textView;
+- (void)commentViewEndEdit;
+
+@end
+
 @interface OrderCommentCell : UITableViewCell<UITextViewDelegate>
+
+@property (nonatomic, assign) id<OrderCommentDelegate>delegate;
 
 @property (nonatomic, strong) UIImageView *pictureView;
 

@@ -312,9 +312,15 @@
 }
 
 - (void)updateContentsForAddress {
-    _nameLabel.text = [NSString stringWithFormat:@"收件人：%@",_defaultAddress.addressReceiver];
+    NSString *person = @"";
+    NSString *address = @"";
+    if (_defaultAddress) {
+        person = _defaultAddress.addressReceiver;
+        address = _defaultAddress.address;
+    }
+    _nameLabel.text = [NSString stringWithFormat:@"收件人：%@",person];
     _phoneLabel.text = _defaultAddress.addressPhone;
-    _addressLabel.text = [NSString stringWithFormat:@"收件地址：%@",_defaultAddress.address];
+    _addressLabel.text = [NSString stringWithFormat:@"收件地址：%@",address];
 }
 
 #pragma mark - UITableView

@@ -18,15 +18,25 @@
 
 @interface RootViewController ()
 
+@property (nonatomic, strong) ShoppingCartController *shoppingC;
+
 @end
 
 @implementation RootViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     [self initControllers];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showColumnCount:)
+                                                 name:ShowColumnNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,11 +54,11 @@
                                              selectedImage:kImageName(@"tabbar1_selected.png")];
     UINavigationController *homeNav = [[UINavigationController alloc] initWithRootViewController:homeC];
     
-    ShoppingCartController *shoppingC = [[ShoppingCartController alloc] init];
-    shoppingC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"购物车"
+    _shoppingC = [[ShoppingCartController alloc] init];
+    _shoppingC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"购物车"
                                                          image:kImageName(@"tabbar2.png")
                                                  selectedImage:kImageName(@"tabbar2_selected.png")];
-    UINavigationController *shoppingNav = [[UINavigationController alloc] initWithRootViewController:shoppingC];
+    UINavigationController *shoppingNav = [[UINavigationController alloc] initWithRootViewController:_shoppingC];
     
     MessageViewController *messageC = [[MessageViewController alloc] init];
     messageC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的消息"
@@ -88,6 +98,15 @@
         return YES;
     }
     return YES;
+}
+
+#pragma mark - NSNotification
+
+- (void)showColumnCount:(NSNotification *)notification {
+    int shopcartCount = [[notification.userInfo objectForKey:s_shopcart] intValue];
+    if (shopcartCount > 0) {
+        _shoppingC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",shopcartCount];
+    }
 }
 
 @end

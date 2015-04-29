@@ -10,8 +10,6 @@
 #import "Order.h"
 #import "DataSigner.h"
 
-static NSString *orderCallBackURL = @"http://121.40.84.2:8080/ZFMerchant/app_notify_url.jsp";
-static NSString *CSCallBackURL = @"http://121.40.84.2:8080/ZFMerchant/repair_app_notify_url.jsp";
 
 @implementation AlipayHelper
 
@@ -29,10 +27,10 @@ static NSString *CSCallBackURL = @"http://121.40.84.2:8080/ZFMerchant/repair_app
     order.productDescription = goodName; //商品描述
     order.amount = [NSString stringWithFormat:@"%.2f",0.01]; //商品价格
     if (isOrderPay) {
-        order.notifyURL = orderCallBackURL;//回调URL
+        order.notifyURL = kOrderCallBackURL;//回调URL
     }
     else {
-        order.notifyURL = CSCallBackURL;
+        order.notifyURL = kCSCallBackURL;
     }
     order.service = @"mobile.securitypay.pay";
     order.paymentType = @"1";

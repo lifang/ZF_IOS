@@ -130,7 +130,7 @@
                                                            constant:0]];
     
     _nameField = [[UITextField alloc] init];
-    [self setFieldAttr:_nameField withPlaceholder:@"请输入收件人姓名，长度在20字符以内"];
+    [self setFieldAttr:_nameField withPlaceholder:@"姓名长度在20字符以内"];
     
     _phoneField = [[UITextField alloc] init];
     [self setFieldAttr:_phoneField withPlaceholder:@"请输入收件人手机"];
@@ -215,7 +215,7 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"提交中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface modifyAddressWithToken:delegate.token addressID:_address.addressID cityID:_selectedCityID receiverName:_nameField.text phoneNumber:_phoneField.text zipCode:_zipField.text address:_detailField.text isDefault:isDefault finished:^(BOOL success, NSData *response) {
+    [NetworkInterface modifyAddressWithToken:delegate.token userID:delegate.userID addressID:_address.addressID cityID:_selectedCityID receiverName:_nameField.text phoneNumber:_phoneField.text zipCode:_zipField.text address:_detailField.text isDefault:isDefault finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
@@ -343,8 +343,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 3) {
-        [_nameField becomeFirstResponder];
-        [_nameField resignFirstResponder];
+//        [_nameField becomeFirstResponder];
+//        [_nameField resignFirstResponder];
+        [self.editingField resignFirstResponder];
         [self pickerScrollIn];
     }
 }
@@ -549,8 +550,10 @@
 }
 
 - (void)handleKeyboardDidHidden {
-    [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
-    self.offset = 0;
+    if (self.offset != 0) {
+        [self.tableView setContentOffset:CGPointMake(0, self.primaryPoint.y) animated:YES];
+        self.offset = 0;
+    }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
