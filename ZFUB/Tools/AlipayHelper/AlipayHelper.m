@@ -25,7 +25,7 @@
     order.tradeNO = orderNumber; //订单ID
     order.productName = goodName; //商品标题
     order.productDescription = goodName; //商品描述
-    order.amount = [NSString stringWithFormat:@"%.2f",0.01]; //商品价格
+    order.amount = [NSString stringWithFormat:@"%.2f",totalPrice]; //商品价格
     if (isOrderPay) {
         order.notifyURL = kOrderCallBackURL;//回调URL
     }
