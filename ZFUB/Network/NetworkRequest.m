@@ -36,6 +36,11 @@
     [_request setHTTPBody:postData];
 }
 
+- (void)setFormPostBody:(NSData *)postData {
+    [_request setHTTPMethod:@"POST"];
+    [_request setHTTPBody:postData];
+}
+
 - (void)uploadImageData:(NSData *)imageData
               imageName:(NSString *)imageName
                     key:(NSString *)key {

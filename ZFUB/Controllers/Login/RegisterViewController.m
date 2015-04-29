@@ -179,34 +179,37 @@
 
 //发送邮箱验证码
 - (void)sendEmailValidate {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.labelText = @"正在发送...";
-    [NetworkInterface sendEmailWithEmail:_inputField.text finished:^(BOOL success, NSData *response) {
-        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:0.3f];
-        if (success) {
-            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
-            if ([object isKindOfClass:[NSDictionary class]]) {
-                if ([[object objectForKey:@"code"] intValue] == RequestSuccess) {
-                    [hud setHidden:YES];
-                    EmailRegisterController *emailC = [[EmailRegisterController alloc] init];
-                    emailC.email = _inputField.text;
-                    [self.navigationController pushViewController:emailC animated:YES];
-                }
-                else {
-                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
-                }
-            }
-            else {
-                hud.labelText = kServiceReturnWrong;
-            }
-        }
-        else {
-            hud.labelText = kNetworkFailed;
-        }
-    }];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    hud.labelText = @"正在发送...";
+//    [NetworkInterface sendEmailWithEmail:_inputField.text finished:^(BOOL success, NSData *response) {
+//        NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//        hud.customView = [[UIImageView alloc] init];
+//        hud.mode = MBProgressHUDModeCustomView;
+//        [hud hide:YES afterDelay:0.3f];
+//        if (success) {
+//            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+//            if ([object isKindOfClass:[NSDictionary class]]) {
+//                if ([[object objectForKey:@"code"] intValue] == RequestSuccess) {
+//                    [hud setHidden:YES];
+//                    EmailRegisterController *emailC = [[EmailRegisterController alloc] init];
+//                    emailC.email = _inputField.text;
+//                    [self.navigationController pushViewController:emailC animated:YES];
+//                }
+//                else {
+//                    hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
+//                }
+//            }
+//            else {
+//                hud.labelText = kServiceReturnWrong;
+//            }
+//        }
+//        else {
+//            hud.labelText = kNetworkFailed;
+//        }
+//    }];
+    EmailRegisterController *emailC = [[EmailRegisterController alloc] init];
+    emailC.email = _inputField.text;
+    [self.navigationController pushViewController:emailC animated:YES];
 }
 
 #pragma mark - UITableView

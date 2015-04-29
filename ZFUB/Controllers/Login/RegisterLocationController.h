@@ -21,5 +21,6 @@
 - (void)initPickerView;
 - (IBAction)modifyLocation:(id)sender;
 - (void)pickerScrollIn;
+- (void)pickerScrollOut;
 
 @end

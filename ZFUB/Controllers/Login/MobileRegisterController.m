@@ -536,6 +536,8 @@ static int cooldownTime = 120;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 2 && indexPath.row == 2) {
         //所在地
+        [_passwordField becomeFirstResponder];
+        [_passwordField resignFirstResponder];
         [self pickerScrollIn];
     }
 }
@@ -549,6 +551,11 @@ static int cooldownTime = 120;
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self pickerScrollOut];
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
