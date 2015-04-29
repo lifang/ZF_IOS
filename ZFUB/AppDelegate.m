@@ -19,6 +19,8 @@
 
 @interface AppDelegate ()
 
+@property (nonatomic, strong) UIScrollView *scrollView;
+
 @end
 
 @implementation AppDelegate
@@ -29,13 +31,34 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    /*
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
     _rootController = [[RootViewController alloc] init];
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+     
     [self.window makeKeyAndVisible];
+    */
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    //判断是不是第一次启动应用
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        NSLog(@"第一次启动");
+        [self showGuideViewController];
+    }
+    else
+    {
+        [self gotoMain];
+        
+    }
+
+    
+    
 //    _cityID = @"1";
 //    _userID = @"108";
     _cityID = kDefaultCityID;
@@ -81,6 +104,60 @@
     return YES;
 }
 
+-(void)showGuideViewController
+{
+
+    [NSThread sleepForTimeInterval:3.0];//延长3秒
+    
+    float wide=[[UIScreen mainScreen] bounds].size.width;
+    float high=[[UIScreen mainScreen] bounds].size.height;
+    
+    
+    NSArray *arr=[NSArray arrayWithObjects:@"useriphone1",@"useriphone2",@"useriphone3",@"useriphone4", nil];
+    //数组内存放的是我要显示的假引导页面图片
+    _scrollView=[[UIScrollView alloc] initWithFrame:self.window.bounds];
+    _scrollView.contentSize=CGSizeMake(wide*arr.count, high);
+    _scrollView.pagingEnabled=YES;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.backgroundColor=[UIColor whiteColor];
+    //[_GuideView addSubview:scrollView];
+    [self.window addSubview:_scrollView];
+    for (int i=0; i<arr.count; i++) {
+        UIImageView *img=[[UIImageView alloc] initWithFrame:CGRectMake(i*wide, 0, wide, high)];
+        img.image=[UIImage imageNamed:arr[i]];
+        [_scrollView addSubview:img];
+    }
+    
+    UIButton *useBtn=[[UIButton alloc] init];
+    useBtn.frame=CGRectMake(wide*3, 0, wide, high);
+    useBtn.backgroundColor=[UIColor clearColor];
+    [useBtn addTarget:self action:@selector(useBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollView addSubview:useBtn];
+
+
+}
+-(void)useBtnClick:(id)sender
+{
+    [_scrollView  removeFromSuperview];
+    [self gotoMain];
+    
+
+}
+
+
+-(void)gotoMain
+{
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    _rootController = [[RootViewController alloc] init];
+    self.window.rootViewController = _rootController;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self.window makeKeyAndVisible];
+
+
+}
 
 //友盟
 - (void)umengTrack {

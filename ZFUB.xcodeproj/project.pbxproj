@@ -17,6 +17,10 @@
 		0D336B281AE50650002640F9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B271AE50650002640F9 /* libz.dylib */; };
 		0D336B331AE5E4C1002640F9 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B311AE5E4C0002640F9 /* libMobClickLibrary.a */; };
 		0D336B361AE5E53C002640F9 /* libPushSDK-1.8.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */; };
+		0D9CA9B21AF0ABDF00CB37EF /* useriphone1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B11AF0ABDF00CB37EF /* useriphone1@2x.png */; };
+		0D9CA9B41AF0ABEC00CB37EF /* useriphone2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B31AF0ABEC00CB37EF /* useriphone2@2x.png */; };
+		0D9CA9B61AF0ABF100CB37EF /* useriphone3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B51AF0ABF100CB37EF /* useriphone3@2x.png */; };
+		0D9CA9B81AF0ABF600CB37EF /* useriphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B71AF0ABF600CB37EF /* useriphone4@2x.png */; };
 		772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */; };
 		7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938B1A8AF0BC0096FE0B /* LocationViewController.m */; };
 		773093921A8B1B8B0096FE0B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938F1A8B1B8B0096FE0B /* CircleView.m */; };
@@ -242,7 +246,6 @@
 		7792CB511A709C8F00C44A64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB501A709C8F00C44A64 /* main.m */; };
 		7792CB541A709C8F00C44A64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB531A709C8F00C44A64 /* AppDelegate.m */; };
 		7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7792CB5B1A709C8F00C44A64 /* Images.xcassets */; };
-		7792CB5F1A709C8F00C44A64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7792CB5D1A709C8F00C44A64 /* LaunchScreen.xib */; };
 		7792CB6B1A709C8F00C44A64 /* ZFUBTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7792CB6A1A709C8F00C44A64 /* ZFUBTests.m */; };
 		77A01A9F1ABFAFA5001A8B80 /* FactoryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A01A9E1ABFAFA4001A8B80 /* FactoryDetailController.m */; };
 		77A01AA21ABFD6D5001A8B80 /* IntentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77A01AA11ABFD6D5001A8B80 /* IntentionViewController.m */; };
@@ -273,6 +276,10 @@
 		0D336B321AE5E4C1002640F9 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = ../UMAnalytics_Sdk_3.4.6/MobClick.h; sourceTree = "<group>"; };
 		0D336B341AE5E53C002640F9 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APService.h; path = ../../APService.h; sourceTree = "<group>"; };
 		0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPushSDK-1.8.3.a"; path = "../../libPushSDK-1.8.3.a"; sourceTree = "<group>"; };
+		0D9CA9B11AF0ABDF00CB37EF /* useriphone1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone1@2x.png"; sourceTree = "<group>"; };
+		0D9CA9B31AF0ABEC00CB37EF /* useriphone2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone2@2x.png"; sourceTree = "<group>"; };
+		0D9CA9B51AF0ABF100CB37EF /* useriphone3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone3@2x.png"; sourceTree = "<group>"; };
+		0D9CA9B71AF0ABF600CB37EF /* useriphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone4@2x.png"; sourceTree = "<group>"; };
 		772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelWebsiteController.h; sourceTree = "<group>"; };
 		772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelWebsiteController.m; sourceTree = "<group>"; };
 		7730938A1A8AF0BC0096FE0B /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
@@ -329,7 +336,6 @@
 		7736E9821AB2F7D500BC2A60 /* BuyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyOrderViewController.m; sourceTree = "<group>"; };
 		7737F9801ABBC4D70094F5E9 /* ScanImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanImageViewController.h; sourceTree = "<group>"; };
 		7737F9811ABBC4D70094F5E9 /* ScanImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanImageViewController.m; sourceTree = "<group>"; };
-		7737F9831ABC029C0094F5E9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		773804F91A8C77B0003A4AA1 /* ShoppingCartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartModel.h; sourceTree = "<group>"; };
 		773804FA1A8C77B0003A4AA1 /* ShoppingCartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartModel.m; sourceTree = "<group>"; };
 		7738E8741A9FFE9600D51CBE /* TradeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeCell.h; sourceTree = "<group>"; };
@@ -764,7 +770,6 @@
 		7792CB521A709C8F00C44A64 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7792CB531A709C8F00C44A64 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7792CB5B1A709C8F00C44A64 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		7792CB5E1A709C8F00C44A64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		7792CB641A709C8F00C44A64 /* ZFUBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZFUBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7792CB691A709C8F00C44A64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ZFUBTests/Info.plist; sourceTree = "<group>"; };
 		7792CB6A1A709C8F00C44A64 /* ZFUBTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFUBTests.m; sourceTree = "<group>"; };
@@ -859,6 +864,18 @@
 				0D336B351AE5E53C002640F9 /* libPushSDK-1.8.3.a */,
 			);
 			name = JPush;
+			sourceTree = "<group>";
+		};
+		0D9CA9B01AF0AB9300CB37EF /* image */ = {
+			isa = PBXGroup;
+			children = (
+				0D9CA9B11AF0ABDF00CB37EF /* useriphone1@2x.png */,
+				0D9CA9B31AF0ABEC00CB37EF /* useriphone2@2x.png */,
+				0D9CA9B51AF0ABF100CB37EF /* useriphone3@2x.png */,
+				0D9CA9B71AF0ABF600CB37EF /* useriphone4@2x.png */,
+			);
+			name = image;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		7730938D1A8B1B8B0096FE0B /* Refresh */ = {
@@ -1710,9 +1727,9 @@
 				774129551A73471500DA0B27 /* Tools */,
 				775873D51A72349A00EB3AE5 /* Library */,
 				773093941A8B2A640096FE0B /* Model */,
+				0D9CA9B01AF0AB9300CB37EF /* image */,
 				7742DB0E1A899CC900EF16FB /* Network */,
 				7792CB5B1A709C8F00C44A64 /* Images.xcassets */,
-				7792CB5D1A709C8F00C44A64 /* LaunchScreen.xib */,
 				7792CB4E1A709C8F00C44A64 /* Supporting Files */,
 			);
 			path = ZFUB;
@@ -1795,6 +1812,7 @@
 				TargetAttributes = {
 					7792CB4A1A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = X6GEEF4LU9;
 					};
 					7792CB631A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
@@ -1827,9 +1845,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7755D7DC1AE7A87F00F273BD /* AlipaySDK.bundle in Resources */,
+				0D9CA9B41AF0ABEC00CB37EF /* useriphone2@2x.png in Resources */,
 				7757F4271A80AC22001F53D5 /* test1@2x.png in Resources */,
-				7792CB5F1A709C8F00C44A64 /* LaunchScreen.xib in Resources */,
+				0D9CA9B21AF0ABDF00CB37EF /* useriphone1@2x.png in Resources */,
+				0D9CA9B61AF0ABF100CB37EF /* useriphone3@2x.png in Resources */,
 				7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */,
+				0D9CA9B81AF0ABF600CB37EF /* useriphone4@2x.png in Resources */,
 				7742DB2E1A8A29D000EF16FB /* city.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2054,18 +2075,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		7792CB5D1A709C8F00C44A64 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7792CB5E1A709C8F00C44A64 /* Base */,
-				7737F9831ABC029C0094F5E9 /* zh-Hans */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		7792CB6C1A709C8F00C44A64 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2147,8 +2156,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2171,7 +2181,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -2179,8 +2189,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2203,7 +2214,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
