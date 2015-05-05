@@ -21,6 +21,7 @@
 		0D9CA9B41AF0ABEC00CB37EF /* useriphone2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B31AF0ABEC00CB37EF /* useriphone2@2x.png */; };
 		0D9CA9B61AF0ABF100CB37EF /* useriphone3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B51AF0ABF100CB37EF /* useriphone3@2x.png */; };
 		0D9CA9B81AF0ABF600CB37EF /* useriphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D9CA9B71AF0ABF600CB37EF /* useriphone4@2x.png */; };
+		0DB892781AF8B31D00B67FBD /* libUPPayPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DB892751AF8B31D00B67FBD /* libUPPayPlugin.a */; };
 		772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */; };
 		7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938B1A8AF0BC0096FE0B /* LocationViewController.m */; };
 		773093921A8B1B8B0096FE0B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938F1A8B1B8B0096FE0B /* CircleView.m */; };
@@ -281,6 +282,9 @@
 		0D9CA9B31AF0ABEC00CB37EF /* useriphone2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone2@2x.png"; sourceTree = "<group>"; };
 		0D9CA9B51AF0ABF100CB37EF /* useriphone3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone3@2x.png"; sourceTree = "<group>"; };
 		0D9CA9B71AF0ABF600CB37EF /* useriphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "useriphone4@2x.png"; sourceTree = "<group>"; };
+		0DB892751AF8B31D00B67FBD /* libUPPayPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUPPayPlugin.a; sourceTree = "<group>"; };
+		0DB892761AF8B31D00B67FBD /* UPPayPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPPayPlugin.h; sourceTree = "<group>"; };
+		0DB892771AF8B31D00B67FBD /* UPPayPluginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPPayPluginDelegate.h; sourceTree = "<group>"; };
 		772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelWebsiteController.h; sourceTree = "<group>"; };
 		772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelWebsiteController.m; sourceTree = "<group>"; };
 		7730938A1A8AF0BC0096FE0B /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
@@ -831,6 +835,7 @@
 				7755D7DD1AE7A87F00F273BD /* AlipaySDK.framework in Frameworks */,
 				77641DDF1AE8E26B0022F31A /* libswscale.a in Frameworks */,
 				77641DDE1AE8E26B0022F31A /* libswresample.a in Frameworks */,
+				0DB892781AF8B31D00B67FBD /* libUPPayPlugin.a in Frameworks */,
 				77641DDD1AE8E26B0022F31A /* libopencore-amrwb.a in Frameworks */,
 				7755D7DE1AE7A87F00F273BD /* libcrypto.a in Frameworks */,
 				77641DD01AE8E26B0022F31A /* libcommon_audio_neon.a in Frameworks */,
@@ -879,6 +884,16 @@
 			);
 			name = image;
 			path = Network;
+			sourceTree = "<group>";
+		};
+		0DB892741AF8B31D00B67FBD /* UnionPay */ = {
+			isa = PBXGroup;
+			children = (
+				0DB892751AF8B31D00B67FBD /* libUPPayPlugin.a */,
+				0DB892761AF8B31D00B67FBD /* UPPayPlugin.h */,
+				0DB892771AF8B31D00B67FBD /* UPPayPluginDelegate.h */,
+			);
+			path = UnionPay;
 			sourceTree = "<group>";
 		};
 		7730938D1A8B1B8B0096FE0B /* Refresh */ = {
@@ -1550,6 +1565,7 @@
 		775873D51A72349A00EB3AE5 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				0DB892741AF8B31D00B67FBD /* UnionPay */,
 				77641DAC1AE8E26B0022F31A /* AnyChat */,
 				7755D7791AE7A87F00F273BD /* Alipay */,
 				0D336B391AE5E589002640F9 /* JPush */,
@@ -1817,7 +1833,7 @@
 				TargetAttributes = {
 					7792CB4A1A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 63FVWL9TD6;
+						DevelopmentTeam = X6GEEF4LU9;
 					};
 					7792CB631A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
@@ -2164,8 +2180,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2186,9 +2202,11 @@
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs",
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -2197,8 +2215,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2219,9 +2237,11 @@
 					"$(PROJECT_DIR)/ZFUB/Library/AnyChat/libs",
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b3f77004-6211-40b1-bec6-442088ae8a77";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
