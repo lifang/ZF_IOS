@@ -20,8 +20,9 @@
 
 #define kPageSize 10   //分页加载每页行数
 
-#define kServiceURL @"http://121.40.64.167:8080/api"
 //#define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
+//#define kServiceURL @"http://114.215.149.242:18080/ZFMerchant/api"
+#define kServiceURL @"http://121.40.64.167:8080/api"
 //#define kServiceURL @"http://www.ebank007.com/api"   //线上
 
 //#define kVideoAuthIP    @"121.40.84.2"      //测试
