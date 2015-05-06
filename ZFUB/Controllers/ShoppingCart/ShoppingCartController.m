@@ -356,6 +356,19 @@
 - (void)selectRowForCell {
     //计算总价
     [self getSummaryPrice];
+    
+    int selectedCount = 0;
+    for (ShoppingCartModel *model in _dataItem) {
+        if (model.isSelected) {
+            selectedCount++;
+        }
+    }
+    if (selectedCount == [_dataItem count]) {
+        [_bottomView setSelectedStatus:YES];
+    }
+    else {
+        [_bottomView setSelectedStatus:NO];
+    }
 }
 
 - (void)editOrderForCell:(ShoppingCartCell *)cell {

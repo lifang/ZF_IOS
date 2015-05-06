@@ -266,4 +266,16 @@
     [self selectedAll:nil];
 }
 
+- (void)setSelectedStatus:(BOOL)selected {
+    _selectedButton.selected = selected;
+    if (_selectedButton.isSelected) {
+        [_selectedButton setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateNormal];
+        _selectedLabel.textColor = [UIColor blackColor];
+    }
+    else {
+        [_selectedButton setBackgroundImage:kImageName(@"btn_unselected.png") forState:UIControlStateNormal];
+        _selectedLabel.textColor = kColor(128, 126, 126, 1);
+    }
+}
+
 @end

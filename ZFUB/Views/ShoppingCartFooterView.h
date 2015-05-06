@@ -26,4 +26,6 @@
 
 @property (nonatomic, strong) UIButton *finishButton;
 
+- (void)setSelectedStatus:(BOOL)selected;
+
 @end
