@@ -15,6 +15,11 @@ typedef enum {
     RateStatusUnOpened,
 }RateStatus;
 
+typedef enum {
+    RateTypeNone = 0,
+    RateTypeConsume,   //消费
+}RateType;
+
 @interface RateModel : NSObject
 
 @property (nonatomic, strong) NSString *rateID;
@@ -23,6 +28,8 @@ typedef enum {
 @property (nonatomic, assign) CGFloat rateTerminal;
 @property (nonatomic, assign) CGFloat rateBase;
 @property (nonatomic, assign) RateStatus rateStatus;
+
+@property (nonatomic, assign) RateType rateType;    //消费类型
 
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 

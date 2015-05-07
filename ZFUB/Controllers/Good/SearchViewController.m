@@ -123,7 +123,6 @@
 #pragma mark - Action
 
 - (IBAction)dismiss:(id)sender {
-    [self searchWithString:nil];
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
