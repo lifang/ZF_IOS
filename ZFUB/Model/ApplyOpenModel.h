@@ -16,6 +16,13 @@ typedef enum {
     MaterialList,    //下拉列表
 }MaterialType;
 
+typedef enum {
+    OpenTypeNone = 0,
+    OpenTypePublic,    //对公
+    OpenTypePrivate,   //对私
+    OpenTypeAll,       //全部
+}OpenType;
+
 
 //返回对公对私需要提交的材料
 @interface MaterialModel : NSObject
@@ -49,6 +56,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *terminalNumber;
 @property (nonatomic, strong) NSString *channelName;
 @property (nonatomic, strong) NSString *terminalChannelID;
+@property (nonatomic, assign) OpenType openType;
 
 //已上传的基本信息
 @property (nonatomic, strong) NSString *personName;

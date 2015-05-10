@@ -8,6 +8,8 @@
 
 #import "CommonViewController.h"
 
+static NSString *RefreshTerminalNotification = @"RefreshTerminalNotification";
+
 @interface TerminalManagerController : CommonViewController
 
 @end

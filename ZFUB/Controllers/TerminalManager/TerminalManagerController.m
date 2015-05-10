@@ -36,6 +36,10 @@
 
 @implementation TerminalManagerController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -43,6 +47,10 @@
     _terminalItems = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTerminal:)
+                                                 name:RefreshTerminalNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -522,5 +530,10 @@
     [self.navigationController pushViewController:detail animated:YES];
 }
 
+#pragma mark - Notification
+
+- (void)refreshTerminal:(NSNotification *)notifiction {
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.1f];
+}
 
 @end

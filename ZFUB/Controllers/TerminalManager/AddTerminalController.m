@@ -206,6 +206,8 @@
                                                           cancelButtonTitle:@"确定"
                                                           otherButtonTitles:nil];
                     [alert show];
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshTerminalNotification object:nil];
                 }
             }
             else {
