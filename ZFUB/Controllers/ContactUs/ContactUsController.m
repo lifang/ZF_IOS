@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 
-static NSString *s_phoneNumber = @"4000908760";
+static NSString *s_phoneNumber = @"4000090876";
 
 @interface ContactUsController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
 
@@ -181,7 +181,7 @@ static NSString *s_phoneNumber = @"4000908760";
             title = @"填写购买意向单";
             break;
         case 1:
-            title = @"联系客服400-090-8760";
+            title = @"联系客服400-009-0876";
             break;
         case 2:
             title = @"关注我们的微信";

@@ -77,6 +77,9 @@
 }
 
 + (BOOL)isZipCode:(NSString *)zipCode {
+    if (!zipCode || [zipCode isEqualToString:@""]) {
+        return YES;
+    }
     NSString *zipCodeRegex = @"[1-9]\\d{5}(?!\\d)";
     NSPredicate *zipCodeTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",zipCodeRegex];
     return [zipCodeTest evaluateWithObject:zipCode];

@@ -372,6 +372,7 @@
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.text = self.labelText;
+        label.numberOfLines = 2;
 		
         // Update HUD size
         if (self.width < (lWidth + 2 * margin)) {
@@ -388,7 +389,6 @@
                                    floorf(indFrame.origin.y + indFrame.size.height + PADDING),
                                    lWidth, lHeight);
         label.frame = lFrame;
-		
         [self addSubview:label];
 		
         // Add details label delatils text was set

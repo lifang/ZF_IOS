@@ -10,4 +10,6 @@
 
 @interface AddressManagerController : CommonViewController
 
+@property (nonatomic, assign) BOOL isFromOrder; //从订单跳转
+
 @end

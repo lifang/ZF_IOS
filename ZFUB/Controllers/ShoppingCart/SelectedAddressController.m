@@ -158,6 +158,7 @@
 
 - (IBAction)addressManager:(id)sender {
     AddressManagerController *addressC = [[AddressManagerController alloc] init];
+    addressC.isFromOrder = YES;
     [self.navigationController pushViewController:addressC animated:YES];
 }
 

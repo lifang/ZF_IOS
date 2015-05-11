@@ -207,6 +207,7 @@
 		7761449F1AAD73C200FAE3B6 /* PayWayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7761449E1AAD73C200FAE3B6 /* PayWayViewController.m */; };
 		776144A21AAD7FF600FAE3B6 /* OrderCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776144A11AAD7FF600FAE3B6 /* OrderCommentController.m */; };
 		776144A51AAD9D4000FAE3B6 /* LogisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */; };
+		776191121B0077AF0067122B /* ProtocolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 776191111B0077AF0067122B /* ProtocolView.m */; };
 		77641DAB1AE8E2450022F31A /* VideoAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77641DAA1AE8E2450022F31A /* VideoAuthController.m */; };
 		77641DCC1AE8E26B0022F31A /* libaudio_processing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77641DB31AE8E26B0022F31A /* libaudio_processing.a */; };
 		77641DCD1AE8E26B0022F31A /* libaudio_processing_neon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77641DB41AE8E26B0022F31A /* libaudio_processing_neon.a */; };
@@ -726,6 +727,8 @@
 		776144A11AAD7FF600FAE3B6 /* OrderCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderCommentController.m; sourceTree = "<group>"; };
 		776144A31AAD9D4000FAE3B6 /* LogisticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogisticViewController.h; sourceTree = "<group>"; };
 		776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogisticViewController.m; sourceTree = "<group>"; };
+		776191101B0077AF0067122B /* ProtocolView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolView.h; sourceTree = "<group>"; };
+		776191111B0077AF0067122B /* ProtocolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtocolView.m; sourceTree = "<group>"; };
 		77641DA91AE8E2450022F31A /* VideoAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoAuthController.h; sourceTree = "<group>"; };
 		77641DAA1AE8E2450022F31A /* VideoAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoAuthController.m; sourceTree = "<group>"; };
 		77641DAE1AE8E26B0022F31A /* AnyChatDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyChatDefine.h; sourceTree = "<group>"; };
@@ -1557,6 +1560,8 @@
 				774760F61AAAD387000B34C3 /* GoodButton.m */,
 				7736E9751AB2BAF800BC2A60 /* InterestView.h */,
 				7736E9761AB2BAF800BC2A60 /* InterestView.m */,
+				776191101B0077AF0067122B /* ProtocolView.h */,
+				776191111B0077AF0067122B /* ProtocolView.m */,
 				774D67751A7A255D00DDCEE4 /* Cell */,
 			);
 			path = Views;
@@ -1987,6 +1992,7 @@
 				774760F41AAA9ADA000B34C3 /* ChannelModel.m in Sources */,
 				775873FE1A7234A900EB3AE5 /* UIImage+MultiFormat.m in Sources */,
 				7739DE451AA6F89100A4B9FE /* UpdateDetailController.m in Sources */,
+				776191121B0077AF0067122B /* ProtocolView.m in Sources */,
 				773C1F711AB84680001734F6 /* SystemMessageController.m in Sources */,
 				774D67781A7A257700DDCEE4 /* GoodsCell.m in Sources */,
 				7736E97A1AB2D92200BC2A60 /* CommentViewController.m in Sources */,

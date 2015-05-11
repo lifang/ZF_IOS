@@ -18,9 +18,14 @@ typedef enum {
     OperationBtnSecond,
 }OperationBtn; //详情有几个操作按钮 用来定位置
 
+typedef enum {
+    AlertViewCancelTag = 1,
+    AlertViewSubmitTag,
+}AlertViewTag;
+
 static NSString *RefreshCSListNotification = @"RefreshCSListNotification";
 
-@interface CSDetailViewController : CommonViewController
+@interface CSDetailViewController : CommonViewController<UIAlertViewDelegate>
 
 @property (nonatomic, assign) CSType csType;
 

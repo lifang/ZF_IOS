@@ -341,6 +341,7 @@
     }
     AddressEditController *modifyC = [[AddressEditController alloc] init];
     modifyC.type = AddressAdd;
+    modifyC.isFromOrder = YES;
     [self.navigationController pushViewController:modifyC animated:YES];
 }
 

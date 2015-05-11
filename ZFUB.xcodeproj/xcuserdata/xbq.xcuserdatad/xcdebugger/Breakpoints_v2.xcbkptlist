@@ -9,13 +9,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ZFUB/Controllers/Mine/AfterSale/CustomerServiceController.m"
-            timestampString = "451904958.457465"
+            filePath = "ZFUB/Controllers/Mine/MyInfo/AddressEditController.m"
+            timestampString = "453029005.446814"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
-            landmarkName = "-refreshList:"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
+            landmarkName = "-addAddress"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ZFUB/Controllers/Mine/MyInfo/AddressEditController.m"
+            timestampString = "453029007.834564"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "-addAddress"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

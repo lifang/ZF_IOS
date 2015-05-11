@@ -1039,7 +1039,9 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:cityID forKey:@"cityId"];
     [paramDict setObject:receiverName forKey:@"receiver"];
     [paramDict setObject:phoneNumber forKey:@"moblephone"];
-    [paramDict setObject:zipCode forKey:@"zipCode"];
+    if (zipCode && ![zipCode isEqualToString:@""]) {
+        [paramDict setObject:zipCode forKey:@"zipCode"];
+    }
     [paramDict setObject:address forKey:@"address"];
     [paramDict setObject:[NSNumber numberWithInt:addressType] forKey:@"isDefault"];
 //    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"customerId"];

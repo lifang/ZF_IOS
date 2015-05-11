@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "RegularFormat.h"
 #import "SelectedAddressController.h"
+#import "OrderConfirmController.h"
 
 @interface AddressEditController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
@@ -260,6 +261,7 @@
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
         if (success) {
+            NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
             id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             if ([object isKindOfClass:[NSDictionary class]]) {
                 NSString *errorCode = [object objectForKey:@"code"];
@@ -270,9 +272,33 @@
                 else if ([errorCode intValue] == RequestSuccess) {
                     [hud hide:YES];
                     hud.labelText = @"新增地址成功";
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    if (_isFromOrder) {
+                        NSLog(@"%@",[[object objectForKey:@"result"] class]);
+                        if ([[object objectForKey:@"result"] isKindOfClass:[NSNumber class]]) {
+                            int addressID = [[object objectForKey:@"result"] intValue];
+                            AddressModel *newAddress = [self createAddressWithID:addressID];
+                            NSDictionary *addressDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                         newAddress,newAddressKey,
+                                                         nil];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:SelectedAddressNotification object:nil userInfo:addressDict];
+                            UIViewController *orderController = nil;
+                            for (UIViewController *controller in self.navigationController.childViewControllers) {
+                                if ([controller isKindOfClass:[OrderConfirmController class]]) {
+                                    orderController = controller;
+                                    break;
+                                }
+                            }
+                            if (orderController) {
+                                [self.navigationController popToViewController:orderController animated:YES];
+                            }
+                        }
+                        else {
+                            [self updateAfterAddAddress];
+                        }
+                    }
+                    else {
+                        [self updateAfterAddAddress];
+                    }
                 }
             }
             else {
@@ -285,6 +311,23 @@
         }
 
     }];
+}
+
+- (AddressModel *)createAddressWithID:(int)addressID {
+    AddressModel *model = [[AddressModel alloc] init];
+    model.addressID = [NSString stringWithFormat:@"%d",addressID];
+    model.addressReceiver = _nameField.text;
+    model.addressPhone = _phoneField.text;
+    model.zipCode = _zipField.text;
+    model.cityID = _selectedCityID;
+    model.address = _detailField.text;
+    return model;
+}
+
+- (void)updateAfterAddAddress {
+    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshAddressListNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableView
@@ -385,14 +428,14 @@
         hud.labelText = @"请填写收件人电话";
         return;
     }
-    if (!_zipField.text || [_zipField.text isEqualToString:@""]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请填写邮编";
-        return;
-    }
+//    if (!_zipField.text || [_zipField.text isEqualToString:@""]) {
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//        hud.customView = [[UIImageView alloc] init];
+//        hud.mode = MBProgressHUDModeCustomView;
+//        [hud hide:YES afterDelay:1.f];
+//        hud.labelText = @"请填写邮编";
+//        return;
+//    }
     if (!_cityField.text || [_cityField.text isEqualToString:@""]) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];

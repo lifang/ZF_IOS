@@ -52,7 +52,7 @@
     [self getUserLocation];
     [self fillingUser];
     
-    [NSThread sleepForTimeInterval:3.0];//延长3秒
+//    [NSThread sleepForTimeInterval:3.0];//延长3秒
     
 }
 

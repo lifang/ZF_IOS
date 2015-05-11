@@ -487,6 +487,7 @@
                                                    delegate:self
                                           cancelButtonTitle:@"取消"
                                           otherButtonTitles:@"确定", nil];
+    alert.tag = AlertViewCancelTag;
     [alert show];
 }
 
@@ -501,7 +502,13 @@
 //重新提交注销申请
 - (void)csCellSubmitInfoWithData:(CustomerServiceModel *)model {
     _selectedModel = model;
-    [self submitCanncelApply];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确定提交申请？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
+    alert.tag = AlertViewSubmitTag;
+    [alert show];
 }
 
 //付款
@@ -518,7 +525,12 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != alertView.cancelButtonIndex) {
-        [self cancelApply];
+        if (alertView.tag == AlertViewCancelTag) {
+            [self cancelApply];
+        }
+        else if (alertView.tag == AlertViewSubmitTag) {
+            [self submitCanncelApply];
+        }
     }
 }
 

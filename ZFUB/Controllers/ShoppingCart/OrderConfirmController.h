@@ -26,6 +26,10 @@ typedef enum {
 
 static NSString *RefreshShoppingCartNotification = @"RefreshShoppingCartNotification";
 
+static NSString *SelectedAddressNotification = @"SelectedAddressNotification";
+
+static NSString *newAddressKey = @"newAddressKey";
+
 @interface OrderConfirmController : CommonViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;

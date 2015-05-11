@@ -16,6 +16,7 @@
 #import "RecordView.h"
 #import "ApplyDetailController.h"
 #import "VideoAuthController.h"
+#import "ProtocolView.h"
 
 typedef enum {
     TerDetailBtnTopRight = 1,
@@ -24,7 +25,7 @@ typedef enum {
     TerDetailBtnBottomLeft,
 }TerDetailBtnPosition;
 
-@interface TerminalDetailController ()
+@interface TerminalDetailController ()<ProtocolAgreeDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
@@ -1096,15 +1097,18 @@ typedef enum {
 
 //开通申请
 - (IBAction)openApply:(id)sender {
-    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
-    detail.terminalID = _terminalModel.TM_ID;
-    if ([_terminalModel.TM_status intValue] == TerminalStatusPartOpened) {
-        detail.openStatus = OpenStatusReopen;
-    }
-    else {
-        detail.openStatus = OpenStatusNew;
-    }
-    [self.navigationController pushViewController:detail animated:YES];
+    ProtocolView *protocolView = [[ProtocolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) string:@"博物馆现有藏品1000多件，工作人员50余人，现设有办公室、业务部、保卫部等部门。展览的主题：触摸农家记忆—传统农耕文明中的百姓文化生活，突出农家农耕文化特点和器物制作的成就，展现出传统农耕文明中百姓家庭生活的情趣和喜怒哀乐等。博物馆主要从事农业、民俗、餐饮等文化相关的藏品收藏、保护、研究、展示和文化交流。把历史悠久的文物打造成新时期具有教育性、研究性、欣赏性、利用性为一体的红色教育基地。活的情趣和喜怒哀乐等。博物馆主要从事农业、民俗、餐饮等文化相关的藏品收藏、保护、研究、展示和文化交流。把历史悠久的文物打造成新时期具有教育性、研究性、欣赏性、利用性为一体的红色教育基地"];
+    protocolView.delegate = self;
+    [[AppDelegate shareAppDelegate].window addSubview:protocolView];
+//    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
+//    detail.terminalID = _terminalModel.TM_ID;
+//    if ([_terminalModel.TM_status intValue] == TerminalStatusPartOpened) {
+//        detail.openStatus = OpenStatusReopen;
+//    }
+//    else {
+//        detail.openStatus = OpenStatusNew;
+//    }
+//    [self.navigationController pushViewController:detail animated:YES];
 }
 
 //重新开通申请
@@ -1123,6 +1127,31 @@ typedef enum {
 //找回POS密码
 - (IBAction)findPassword:(id)sender {
     [self findPOSPassword];
+}
+
+#pragma mark - ProcotolAgreeDelegate
+
+- (void)protocolView:(ProtocolView *)view agreeProtocolWithStatus:(BOOL)isSelected{
+    if (!isSelected) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[AppDelegate shareAppDelegate].window animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.5f];
+        hud.labelText = @"请仔细阅读开通协议，并接受协议";
+        return;
+    }
+    else {
+        [view removeFromSuperview];
+        ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
+        detailC.terminalID = _terminalModel.TM_ID;
+        if ([_terminalModel.TM_status intValue] == TerminalStatusPartOpened) {
+            detailC.openStatus = OpenStatusReopen;
+        }
+        else {
+            detailC.openStatus = OpenStatusNew;
+        }
+        [self.navigationController pushViewController:detailC animated:YES];
+    }
 }
 
 @end

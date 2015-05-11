@@ -18,7 +18,7 @@
 #import "ShoppingCartController.h"
 #import "OrderTerminalListController.h"
 
-@interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate>
+@interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -118,7 +118,7 @@
     _tableView.backgroundColor = kColor(244, 243, 243, 1);
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    [self setHeaderAndFooterView];
+//    [self setHeaderAndFooterView];
     [self.view addSubview:_tableView];
     if (kDeviceVersion >= 7.0) {
         _tableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 10);
@@ -589,7 +589,12 @@
 }
 
 - (IBAction)cancelOrder:(id)sender {
-    [self cancelOrder];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确认取消此订单？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定",nil];
+    [alert show];
 }
 
 - (IBAction)payOrder:(id)sender {
@@ -622,6 +627,14 @@
     reviewC.goodList = reviewList;
     reviewC.orderID = _orderID;
     [self.navigationController pushViewController:reviewC animated:YES];
+}
+
+#pragma mark - UIAlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.cancelButtonIndex != buttonIndex) {
+        [self cancelOrder];
+    }
 }
 
 @end

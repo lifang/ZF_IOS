@@ -22,4 +22,6 @@ static NSString *RefreshAddressListNotification = @"RefreshAddressListNotificati
 
 @property (nonatomic, strong) AddressModel *address;
 
+@property (nonatomic, assign) BOOL isFromOrder;
+
 @end

@@ -22,6 +22,10 @@
 
 @implementation OrderConfirmController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -30,6 +34,10 @@
     _billType = BillTypeCompany;
     [self initAndLauoutUI];
     [self getAddressList];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(getNewAddress:)
+                                                 name:SelectedAddressNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -407,6 +415,16 @@
 - (void)getSelectedAddress:(AddressModel *)addressModel {
     self.defaultAddress = addressModel;
     [self updateContentsForAddress];
+}
+
+#pragma mark - NSNotification
+
+- (void)getNewAddress:(NSNotification *)notification {
+    id address = [notification.userInfo objectForKey:newAddressKey];
+    if ([address isKindOfClass:[AddressModel class]]) {
+        self.defaultAddress = address;
+        [self updateContentsForAddress];
+    }
 }
 
 @end

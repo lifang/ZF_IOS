@@ -209,7 +209,14 @@
 #pragma mark - Action
 
 - (IBAction)ensureOrder:(id)sender {
-    NSLog(@"!!");
+    if (!self.defaultAddress) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请选择收件地址";
+        return;
+    }
     [self createOrderForBuy];
 }
 
