@@ -249,6 +249,7 @@
     }
     BankModel *model = [_dataItem objectAtIndex:indexPath.row];
     cell.textLabel.text = model.bankName;
+    cell.textLabel.numberOfLines = 2;
     cell.imageView.image = kImageName(@"btn_selected");
     if (model.isSelected) {
         cell.imageView.hidden = NO;
@@ -306,6 +307,10 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001f;
+}
+
 #pragma mark - Refresh
 
 - (void)refreshViewReloadData {
@@ -355,6 +360,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView == _tableView) {
+        if (_bottomRefreshView.frame.origin.y != scrollView.contentSize.height) {
+            [self updateFooterViewFrame];
+        }
         CGPoint newPoint = scrollView.contentOffset;
         if (_primaryOffsetY < newPoint.y) {
             //上拉

@@ -72,16 +72,16 @@ static CGFloat stableHeight = 160.f;
     originY += 1 + 15;
     //选中按钮
     _agreeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _agreeBtn.frame = CGRectMake(30, originY, 18, 18);
+    _agreeBtn.frame = CGRectMake(30, originY, 20, 20);
     [_agreeBtn setBackgroundImage:kImageName(@"btn_unselected.png") forState:UIControlStateNormal];
     [_agreeBtn setBackgroundImage:kImageName(@"btn_selected.png") forState:UIControlStateHighlighted];
     [_agreeBtn addTarget:self action:@selector(agreeProtocol:) forControlEvents:UIControlEventTouchUpInside];
     [self setSelectedStatus];
     [_markView addSubview:_agreeBtn];
     
-    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, originY, _markView.bounds.size.width - 50, 20)];
+    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(52, originY, _markView.bounds.size.width - 52, 20)];
     tipLabel.backgroundColor = [UIColor clearColor];
-    tipLabel.font = [UIFont systemFontOfSize:13.f];
+    tipLabel.font = [UIFont systemFontOfSize:14.f];
     tipLabel.userInteractionEnabled = YES;
     tipLabel.text = @"我接受此开通协议";
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(agreeProtocol:)];
