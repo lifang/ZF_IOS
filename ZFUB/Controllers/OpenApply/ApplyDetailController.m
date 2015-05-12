@@ -419,6 +419,7 @@
     }
     _channelID = _applyData.channelID;
     _billID = _applyData.billingID;
+    _bankTitleName = _applyData.bankTitleName;
 
     [_infoDict setObject:[NSNumber numberWithInt:_applyData.sex] forKey:key_sex];
     _merchantID = _applyData.merchantID;
@@ -1398,7 +1399,7 @@
 }
 
 - (void)textFieldDidEndEditing:(InputTextField *)textField {
-    if (textField.text && ![textField.text isEqualToString:@""]) {
+    if (textField.text) {
         [_infoDict setObject:textField.text forKey:textField.key];
         if ([textField.key isEqualToString:key_name] &&
             (![_infoDict objectForKey:key_bank] || [[_infoDict objectForKey:key_bank] isEqualToString:@""])) {

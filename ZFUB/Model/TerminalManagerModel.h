@@ -28,6 +28,8 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL hasVideoAuth;
 
+@property (nonatomic, strong) NSString *protocol;
+
 /*
  若有值，订单状态为已开通，有视频认证和找回POS密码操作,否则是自助开通
  若有值，订单状态为未开通，无同步操作

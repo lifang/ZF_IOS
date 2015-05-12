@@ -25,6 +25,12 @@
         else {
             _hasVideoAuth = NO;
         }
+        if ([dict objectForKey:@"openingProtocol"]) {
+            _protocol = [NSString stringWithFormat:@"%@",[dict objectForKey:@"openingProtocol"]];
+        }
+        else {
+            _protocol = @"无";
+        }
     }
     return self;
 }

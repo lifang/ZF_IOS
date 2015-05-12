@@ -145,7 +145,7 @@
 }
 
 - (void)saveSearchHistory {
-    if (![self.historyItems containsObject:self.searchBar.text]) {
+    if (![self.historyItems containsObject:self.searchBar.text] && self.searchBar.text && ![self.searchBar.text isEqualToString:@""]) {
         [self.historyItems addObject:self.searchBar.text];
         //保存搜索历史到本地
         [SearchHistoryHelper saveGoodsHistory:self.historyItems];

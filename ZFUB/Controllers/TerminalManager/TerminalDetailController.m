@@ -1097,7 +1097,7 @@ typedef enum {
 
 //开通申请
 - (IBAction)openApply:(id)sender {
-    ProtocolView *protocolView = [[ProtocolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) string:@"博物馆现有藏品1000多件，工作人员50余人，现设有办公室、业务部、保卫部等部门。展览的主题：触摸农家记忆—传统农耕文明中的百姓文化生活，突出农家农耕文化特点和器物制作的成就，展现出传统农耕文明中百姓家庭生活的情趣和喜怒哀乐等。博物馆主要从事农业、民俗、餐饮等文化相关的藏品收藏、保护、研究、展示和文化交流。把历史悠久的文物打造成新时期具有教育性、研究性、欣赏性、利用性为一体的红色教育基地。活的情趣和喜怒哀乐等。博物馆主要从事农业、民俗、餐饮等文化相关的藏品收藏、保护、研究、展示和文化交流。把历史悠久的文物打造成新时期具有教育性、研究性、欣赏性、利用性为一体的红色教育基地"];
+    ProtocolView *protocolView = [[ProtocolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) string:_terminalModel.protocol];
     protocolView.delegate = self;
     [[AppDelegate shareAppDelegate].window addSubview:protocolView];
 //    ApplyDetailController *detail = [[ApplyDetailController alloc] init];
