@@ -39,6 +39,10 @@
 
 @property (nonatomic, strong) NSString *orderTotalNumber;    //总数量
 
+@property (nonatomic, strong) NSString *logisticCompany;
+
+@property (nonatomic, strong) NSString *logisticNumber;
+
 @property (nonatomic, strong) NSString *terminals;
 
 @property (nonatomic, strong) NSMutableArray *goodList;

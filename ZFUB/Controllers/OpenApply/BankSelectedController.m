@@ -249,6 +249,7 @@
     }
     BankModel *model = [_dataItem objectAtIndex:indexPath.row];
     cell.textLabel.text = model.bankName;
+    cell.textLabel.font = [UIFont systemFontOfSize:15.f];
     cell.textLabel.numberOfLines = 2;
     cell.imageView.image = kImageName(@"btn_selected");
     if (model.isSelected) {

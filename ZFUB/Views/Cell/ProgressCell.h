@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) UILabel *terminalLabel;
 
+@property (nonatomic, strong) UILabel *tipLabel;
+
 - (void)setContentsWithData:(ProgressModel *)model;
 
 @end

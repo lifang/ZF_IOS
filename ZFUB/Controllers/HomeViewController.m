@@ -379,6 +379,7 @@
                 CLPlacemark *placemark = [placemarks lastObject];
                 NSString *cityName = placemark.locality;
                 [self getCurrentCityInfoWithCityName:cityName];
+                [_locationManager stopUpdatingLocation];
             }
         }
     }];

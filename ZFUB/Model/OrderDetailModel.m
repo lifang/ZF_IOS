@@ -42,6 +42,18 @@
         if ([dict objectForKey:@"order_number"]) {
             _orderNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_number"]];
         }
+        if ([dict objectForKey:@"logistics_name"]) {
+            _logisticCompany = [NSString stringWithFormat:@"%@",[dict objectForKey:@"logistics_name"]];
+        }
+        else {
+            _logisticCompany = @"";
+        }
+        if ([dict objectForKey:@"logistics_number"]) {
+            _logisticNumber = [NSString stringWithFormat:@"%@",[dict objectForKey:@"logistics_number"]];
+        }
+        else {
+            _logisticNumber = @"";
+        }
         _orderPayType = @"其他";
         if ([dict objectForKey:@"order_payment_type"]) {
             int payTag = [[dict objectForKey:@"order_payment_type"] intValue];

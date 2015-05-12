@@ -170,6 +170,7 @@
 		7755D7F01AE7AFA000F273BD /* Order.m in Sources */ = {isa = PBXBuildFile; fileRef = 7755D7EE1AE7AFA000F273BD /* Order.m */; };
 		7757F4251A809EFD001F53D5 /* ShoppingCartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7757F4241A809EFD001F53D5 /* ShoppingCartCell.m */; };
 		7757F4271A80AC22001F53D5 /* test1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7757F4261A80AC22001F53D5 /* test1@2x.png */; };
+		775845BF1B023AFD00F08B76 /* OrderLogisticController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775845BE1B023AFD00F08B76 /* OrderLogisticController.m */; };
 		775873B01A71EC3100EB3AE5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873AF1A71EC3100EB3AE5 /* RootViewController.m */; };
 		775873B31A71ECA600EB3AE5 /* CommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873B21A71ECA600EB3AE5 /* CommonViewController.m */; };
 		775873B61A71ECBB00EB3AE5 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775873B51A71ECBB00EB3AE5 /* HomeViewController.m */; };
@@ -650,6 +651,8 @@
 		7757F4231A809EFD001F53D5 /* ShoppingCartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartCell.h; sourceTree = "<group>"; };
 		7757F4241A809EFD001F53D5 /* ShoppingCartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartCell.m; sourceTree = "<group>"; };
 		7757F4261A80AC22001F53D5 /* test1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test1@2x.png"; sourceTree = "<group>"; };
+		775845BD1B023AFD00F08B76 /* OrderLogisticController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderLogisticController.h; sourceTree = "<group>"; };
+		775845BE1B023AFD00F08B76 /* OrderLogisticController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderLogisticController.m; sourceTree = "<group>"; };
 		775873AE1A71EC3100EB3AE5 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		775873AF1A71EC3100EB3AE5 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		775873B11A71ECA600EB3AE5 /* CommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonViewController.h; sourceTree = "<group>"; };
@@ -1077,6 +1080,8 @@
 				773BDF391AA98C2F008D3DC7 /* OrderDetailController.m */,
 				77641DFA1AE909670022F31A /* OrderTerminalListController.h */,
 				77641DFB1AE909670022F31A /* OrderTerminalListController.m */,
+				775845BD1B023AFD00F08B76 /* OrderLogisticController.h */,
+				775845BE1B023AFD00F08B76 /* OrderLogisticController.m */,
 				7736D6DB1AB921A1001628C7 /* OrderReviewController.h */,
 				7736D6DC1AB921A1001628C7 /* OrderReviewController.m */,
 				7761449D1AAD73C200FAE3B6 /* PayWayViewController.h */,
@@ -1929,6 +1934,7 @@
 				775873B31A71ECA600EB3AE5 /* CommonViewController.m in Sources */,
 				7792CB511A709C8F00C44A64 /* main.m in Sources */,
 				773C1F5E1AB7C3BA001734F6 /* ProgressModel.m in Sources */,
+				775845BF1B023AFD00F08B76 /* OrderLogisticController.m in Sources */,
 				773B12CA1AA55A23005C2B91 /* CustomerServiceModel.m in Sources */,
 				7755D7EF1AE7AFA000F273BD /* AlipayHelper.m in Sources */,
 				775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */,

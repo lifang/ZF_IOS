@@ -34,6 +34,12 @@
         if ([dict objectForKey:@"serial_num"]) {
             _terminalNum = [NSString stringWithFormat:@"%@",[dict objectForKey:@"serial_num"]];
         }
+        if ([dict objectForKey:@"error"]) {
+            _tipInfo = [NSString stringWithFormat:@"%@",[dict objectForKey:@"error"]];
+        }
+        else {
+            _tipInfo = @"";
+        }
         id openStatus = [dict objectForKey:@"openStatus"];
         if ([openStatus isKindOfClass:[NSArray class]]) {
             _openList = [[NSMutableArray alloc] init];

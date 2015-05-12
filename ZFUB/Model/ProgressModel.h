@@ -22,6 +22,7 @@
 
 @property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSString *terminalNum;
+@property (nonatomic, strong) NSString *tipInfo;
 @property (nonatomic, strong) NSMutableArray *openList;
 
 - (id)initWithParseDictionary:(NSDictionary *)dict;

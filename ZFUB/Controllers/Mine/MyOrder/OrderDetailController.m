@@ -17,6 +17,7 @@
 #import "GoodListViewController.h"
 #import "ShoppingCartController.h"
 #import "OrderTerminalListController.h"
+#import "OrderLogisticController.h"
 
 @interface OrderDetailController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 
@@ -419,7 +420,7 @@
                 int status = [_orderDetail.orderStatus intValue];
                 if (status == OrderStatusPaid || status == OrderStatusSending || status == OrderStatusReview) {
                     UIButton *terminalBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-                    terminalBtn.frame = CGRectMake(kScreenWidth - btnWidth - 10, 10, btnWidth, 30);
+                    terminalBtn.frame = CGRectMake(kScreenWidth - btnWidth - 10, 5, btnWidth, 30);
                     terminalBtn.layer.cornerRadius = 4;
                     terminalBtn.layer.masksToBounds = YES;
                     terminalBtn.layer.borderWidth = 1.f;
@@ -430,6 +431,19 @@
                     [terminalBtn setTitle:@"查看终端号" forState:UIControlStateNormal];
                     [terminalBtn addTarget:self action:@selector(scanTerminalNumber:) forControlEvents:UIControlEventTouchUpInside];
                     [cell.contentView addSubview:terminalBtn];
+                    
+                    UIButton *logistBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    logistBtn.frame = CGRectMake(kScreenWidth - btnWidth - 10, 45, btnWidth, 30);
+                    logistBtn.layer.cornerRadius = 4;
+                    logistBtn.layer.masksToBounds = YES;
+                    logistBtn.layer.borderWidth = 1.f;
+                    logistBtn.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+                    [logistBtn setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+                    [logistBtn setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+                    logistBtn.titleLabel.font = [UIFont boldSystemFontOfSize:10.f];
+                    [logistBtn setTitle:@"查看物流" forState:UIControlStateNormal];
+                    [logistBtn addTarget:self action:@selector(scanLogistic:) forControlEvents:UIControlEventTouchUpInside];
+                    [cell.contentView addSubview:logistBtn];
                 }
             }
             else if (indexPath.row == [_orderDetail.goodList count] + 1) {
@@ -586,6 +600,13 @@
         listC.terminalList = terminalList;
         [self.navigationController pushViewController:listC animated:YES];
     }
+}
+
+- (IBAction)scanLogistic:(id)sender {
+    OrderLogisticController *logisticC = [[OrderLogisticController alloc] init];
+    logisticC.logisticCompany = _orderDetail.logisticCompany;
+    logisticC.logisticNumber = _orderDetail.logisticNumber;
+    [self.navigationController pushViewController:logisticC animated:YES];
 }
 
 - (IBAction)cancelOrder:(id)sender {
