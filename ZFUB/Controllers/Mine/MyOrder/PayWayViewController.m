@@ -37,6 +37,7 @@
 
 
 #define kMode_Development             @"01"
+#define kMode_Production             @"00"
 
 #define kURL_TN_Normal                @"http://202.101.25.178:8080/sim/gettn"
 
@@ -367,6 +368,7 @@
     }
     else if (indexPath.section == 1) {
         _tnMode = kMode_Development;
+        // _tnMode = kMode_Production;
         [self startUnionPayRequest];
     }
 }
@@ -444,6 +446,12 @@
     if ([result isEqualToString:@"success"]) {
         [self UnionPaySucess];
     }
+    if ([result isEqualToString:@"fail"]) {
+        [self showAlertMessage:result];
+    }
+    if ([result isEqualToString:@"cancel"]) {
+        [self showAlertMessage:result];
+    }
 }
 
 
@@ -452,7 +460,8 @@
 {
     [self showAlertWait];
     
-    NSURL *URL=[NSURL URLWithString:@"http://192.168.10.120:8080/DemoProject/unionpay.do"];
+    //NSURL *URL=[NSURL URLWithString:@"http://121.40.64.167:8080/unionpay.do"]; //Production URL
+    NSURL *URL=[NSURL URLWithString:@"http://121.40.84.2:8080/ZFMerchant/unionpay.do"];//test URL
     
     NSString *Price=[NSString stringWithFormat:@"%.0f", _totalPrice*100];
     NSString *str = [NSString stringWithFormat:@"frontOrBack=back&orderId=%@&txnAmt=%@&wap=wap&txnType=01&android=android", _payNumber,Price];
@@ -505,16 +514,19 @@
     hud.labelText = @"订单支付成功";
     if (_fromType == PayWayFromCS) {
         
+        [self performSelector:@selector(showRepairDetail) withObject:nil afterDelay:3];
         [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
-        [self performSelector:@selector(showRepairDetail) withObject:nil afterDelay:0.5];
+       
     }
     else
     {
+        [self performSelector:@selector(showDetail) withObject:nil afterDelay:3];
         [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
-        [self performSelector:@selector(showDetail) withObject:nil afterDelay:0.5];
+       
     }
     
 }
+
 
 
 
