@@ -502,8 +502,6 @@
     }];
     
     
-    
-    
 }
 
 
@@ -516,20 +514,30 @@
     hud.labelText = @"订单支付成功";
     if (_fromType == PayWayFromCS) {
         
-        [self performSelector:@selector(showRepairDetail) withObject:nil afterDelay:3];
-        [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
-       
+        [self performSelector:@selector(goRepairDetail) withObject:nil afterDelay:3];
+        
     }
     else
     {
-        [self performSelector:@selector(showDetail) withObject:nil afterDelay:3];
-        [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
-       
+        [self performSelector:@selector(goDetail) withObject:nil afterDelay:3];
+    
     }
     
 }
 
+-(void)goRepairDetail
+{
+ [[NSNotificationCenter defaultCenter] postNotificationName:RefreshCSListNotification object:nil];
+    [self showRepairDetail];
 
+}
+
+-(void)goDetail
+{
+     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMyOrderListNotification object:nil];
+     [self showDetail];
+    
+}
 
 
 
