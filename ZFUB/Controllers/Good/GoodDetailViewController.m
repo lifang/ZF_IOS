@@ -24,6 +24,7 @@
 #import "OpenInfoViewController.h"
 #import "FactoryDetailController.h"
 #import "ChannelWebsiteController.h"
+#import "GoodImageController.h"
 
 //static CGFloat topImageHeight = 160.f;
 
@@ -577,9 +578,9 @@
 }
 
 - (UIView *)handleViewWithOriginY:(CGFloat)originY {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, 90)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, 135)];
     view.backgroundColor = [UIColor whiteColor];
-    for (int i = 0; i < 3; i++ ) {
+    for (int i = 0; i < 4; i++ ) {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 45 * i - 1, kScreenWidth, 0.5f)];
         line.backgroundColor = kColor(201, 201, 201, 1);
         [view addSubview:line];
@@ -616,6 +617,15 @@
         [rentButton addTarget:self action:@selector(scanRent:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:rentButton];
     }
+    UIButton *imageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    imageButton.frame = CGRectMake(0, 90, kScreenWidth, 45);
+    [imageButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [imageButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [imageButton setTitle:@"图文详情" forState:UIControlStateNormal];
+    [imageButton setImage:kImageName(@"arrow_right.png") forState:UIControlStateNormal];
+    imageButton.imageEdgeInsets = UIEdgeInsetsMake(0, kScreenWidth - 30, 0, 0);
+    [imageButton addTarget:self action:@selector(scanGoodImage:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:imageButton];
     //竖线
     UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(kScreenWidth / 2, 10, 0.5f, 25)];
     firstLine.backgroundColor = kColor(201, 201, 201, 1);
@@ -936,6 +946,12 @@
     RentDescriptionController *descC = [[RentDescriptionController alloc] init];
     descC.goodDetail = _detailModel;
     [self.navigationController pushViewController:descC animated:YES];
+}
+
+- (IBAction)scanGoodImage:(id)sender {
+    GoodImageController *imageC = [[GoodImageController alloc] init];
+    imageC.goodID = _goodID;
+    [self.navigationController pushViewController:imageC animated:YES];
 }
 
 //加入购物车

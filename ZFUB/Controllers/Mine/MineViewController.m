@@ -13,6 +13,8 @@
 #import "MyMerchantViewController.h"
 #import "ProgressCheckViewController.h"
 #import "SettingViewController.h"
+#import "AppDelegate.h"
+#import "MBProgressHUD.h"
 
 @interface MineViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -50,6 +52,19 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 18 * kScaling)];
     headerView.backgroundColor = [UIColor clearColor];
     _tableView.tableHeaderView = headerView;
+    
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+    footerView.backgroundColor = [UIColor clearColor];
+    UIButton *signOut = [UIButton buttonWithType:UIButtonTypeCustom];
+    signOut.frame = CGRectMake(80, 20, kScreenWidth - 160, 40);
+    signOut.layer.cornerRadius = 4;
+    signOut.layer.masksToBounds = YES;
+    signOut.titleLabel.font = [UIFont systemFontOfSize:16.f];
+    [signOut setTitle:@"退出登录" forState:UIControlStateNormal];
+    [signOut setBackgroundImage:[UIImage imageNamed:@"red.png"] forState:UIControlStateNormal];
+    [signOut addTarget:self action:@selector(signOut:) forControlEvents:UIControlEventTouchUpInside];
+    [footerView addSubview:signOut];
+    _tableView.tableFooterView = footerView;
 }
 
 - (void)initAndLauoutUI {
@@ -109,6 +124,19 @@
     SettingViewController *settingC = [[SettingViewController alloc] init];
     settingC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:settingC animated:YES];
+}
+
+- (IBAction)signOut:(id)sender {
+    [[AppDelegate shareAppDelegate] loginOut];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    [hud hide:YES afterDelay:1.f];
+    hud.labelText = @"正在退出...";
+    [self performSelector:@selector(signOutAfterDelay) withObject:nil afterDelay:1.f];
+}
+
+- (void)signOutAfterDelay {
+    [self.tabBarController setSelectedIndex:0];
+//    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 #pragma mark - TableView

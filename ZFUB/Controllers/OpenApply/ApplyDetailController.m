@@ -625,7 +625,7 @@
             switch (indexPath.row) {
                 case 0:
                     textKey = key_selected;
-                    titleName = @"选择已有商户";
+                    titleName = @"可选择的常用商户";
                     break;
                 case 1:
                     textKey = key_name;

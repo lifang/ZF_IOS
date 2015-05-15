@@ -428,6 +428,9 @@ static NSString *s_modifyMobileValidate_method = @"index/getPhoneCode";
 //修改邮箱验证码
 static NSString *s_modifyEmailValidate_method = @"customers/getUpdateEmailDentcode";
 
+//商品图片
+static NSString *s_goodImage_method = @"good/getGoodImgUrl";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -1409,5 +1412,8 @@ static NSString *s_modifyEmailValidate_method = @"customers/getUpdateEmailDentco
 + (void)getModifyEmailValidateWithUserID:(NSString *)userID
                                    email:(NSString *)email
                                finished:(requestDidFinished)finish;
+
++ (void)getGoodImageWithGoodID:(NSString *)goodID
+                      finished:(requestDidFinished)finish;
 
 @end

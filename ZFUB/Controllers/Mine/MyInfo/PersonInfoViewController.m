@@ -70,18 +70,18 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
     headerView.backgroundColor = [UIColor clearColor];
     _tableView.tableHeaderView = headerView;
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
-    footerView.backgroundColor = [UIColor clearColor];
-    UIButton *signOut = [UIButton buttonWithType:UIButtonTypeCustom];
-    signOut.frame = CGRectMake(80, 20, kScreenWidth - 160, 40);
-    signOut.layer.cornerRadius = 4;
-    signOut.layer.masksToBounds = YES;
-    signOut.titleLabel.font = [UIFont systemFontOfSize:16.f];
-    [signOut setTitle:@"退出登录" forState:UIControlStateNormal];
-    [signOut setBackgroundImage:[UIImage imageNamed:@"red.png"] forState:UIControlStateNormal];
-    [signOut addTarget:self action:@selector(signOut:) forControlEvents:UIControlEventTouchUpInside];
-    [footerView addSubview:signOut];
-    _tableView.tableFooterView = footerView;
+//    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+//    footerView.backgroundColor = [UIColor clearColor];
+//    UIButton *signOut = [UIButton buttonWithType:UIButtonTypeCustom];
+//    signOut.frame = CGRectMake(80, 20, kScreenWidth - 160, 40);
+//    signOut.layer.cornerRadius = 4;
+//    signOut.layer.masksToBounds = YES;
+//    signOut.titleLabel.font = [UIFont systemFontOfSize:16.f];
+//    [signOut setTitle:@"退出登录" forState:UIControlStateNormal];
+//    [signOut setBackgroundImage:[UIImage imageNamed:@"red.png"] forState:UIControlStateNormal];
+//    [signOut addTarget:self action:@selector(signOut:) forControlEvents:UIControlEventTouchUpInside];
+//    [footerView addSubview:signOut];
+//    _tableView.tableFooterView = footerView;
 }
 
 - (void)initAndLauoutUI {
@@ -251,18 +251,18 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
 #pragma mark - Action
 
-- (void)signOutAfterDelay {
-    [self.tabBarController setSelectedIndex:0];
-    [self.navigationController popToRootViewControllerAnimated:NO];
-}
+//- (void)signOutAfterDelay {
+//    [self.tabBarController setSelectedIndex:0];
+//    [self.navigationController popToRootViewControllerAnimated:NO];
+//}
 
-- (IBAction)signOut:(id)sender {
-    [[AppDelegate shareAppDelegate] loginOut];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    [hud hide:YES afterDelay:1.f];
-    hud.labelText = @"正在退出...";
-    [self performSelector:@selector(signOutAfterDelay) withObject:nil afterDelay:1.f];
-}
+//- (IBAction)signOut:(id)sender {
+//    [[AppDelegate shareAppDelegate] loginOut];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    [hud hide:YES afterDelay:1.f];
+//    hud.labelText = @"正在退出...";
+//    [self performSelector:@selector(signOutAfterDelay) withObject:nil afterDelay:1.f];
+//}
 
 - (IBAction)modifyLocation:(id)sender {
     [self pickerScrollOut];

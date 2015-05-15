@@ -218,7 +218,7 @@
             break;
         case TerminalStatusUnOpened:
             //未开通
-            if (model.appID) {
+            if (model.appID && ![model.appID isEqualToString:@""]) {
                 //重新开通
                 cellIdentifier = unOpenedApplyFirstIdentifier;
             }

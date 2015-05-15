@@ -1860,4 +1860,17 @@ static NSString *HTTP_GET  = @"GET";
                         finished:finish];
 }
 
++ (void)getGoodImageWithGoodID:(NSString *)goodID
+                      finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:[NSNumber numberWithInt:[goodID intValue]] forKey:@"goodId"];
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_goodImage_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
 @end
