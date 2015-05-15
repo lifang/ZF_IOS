@@ -56,17 +56,31 @@
     CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
     self.primaryPoint = CGPointMake(0, self.view.frame.origin.y + topHeight);
 
+    UIImageView *backgroundView = [[UIImageView alloc] init];
+    backgroundView.image = kImageName(@"bkg");
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:backgroundView];
+    [backgroundView makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
     
+    /*
     UIImageView *loginView = [[UIImageView alloc] init];
     loginView.image = kImageName(@"login_logo.png");
     loginView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:loginView];
     [loginView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(80);
+       // make.top.equalTo(self.view.mas_top).offset(80);
         make.centerX.equalTo(self.view.centerX);
         make.width.equalTo(@(self.view.frame.size.width));
         make.bottom.equalTo(self.view.centerY).offset(-60);
+        make.height.equalTo(@((self.view.frame.size.height)*0.25));
     }];
+     */
 
     UIView *view=[[UIView alloc] init];
     view.backgroundColor=[UIColor whiteColor];

@@ -11,6 +11,7 @@
 #import "NetworkInterface.h"
 #import "MBProgressHUD.h"
 
+
 @interface PasswordViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) UILabel *phoneLB;
@@ -82,7 +83,7 @@
     _pwdTF.delegate = self;
     _pwdTF.textAlignment = NSTextAlignmentLeft;
     _pwdTF.leftViewMode = UITextFieldViewModeAlways;
-    _pwdTF.font = FONT18;
+    _pwdTF.font = FONT15;
     _pwdTF.secureTextEntry=YES;
     _pwdTF.textColor = [UIColor colorWithHexString:@"b5b5b6"];
     UILabel *pwdLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 130, 36)];
@@ -129,7 +130,7 @@
     _confpwdTF.delegate = self;
     _confpwdTF.textAlignment = NSTextAlignmentLeft;
     _confpwdTF.leftViewMode = UITextFieldViewModeAlways;
-    _confpwdTF.font = FONT18;
+    _confpwdTF.font = FONT15;
     _confpwdTF.secureTextEntry=YES;
     _confpwdTF.textColor = [UIColor colorWithHexString:@"b5b5b6"];
     UILabel *confpwdLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 130, 36)];
@@ -261,11 +262,7 @@
     }
 
     [self registerWithMobile];
-/*
-    SuccessRegisterViewController *successRVC=[[SuccessRegisterViewController alloc] init];
-    successRVC.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:successRVC animated:YES];
- */
+
 
 
 }
@@ -288,7 +285,8 @@
     
     if (buttonIndex==0)
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        //[self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
     }
 }
 

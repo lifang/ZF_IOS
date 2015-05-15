@@ -38,6 +38,8 @@
     // Do any additional setup after loading the view.
     self.title = @"登录";
     self.view.backgroundColor=[UIColor whiteColor];
+   //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bk"]]];
+    
     if (kDeviceVersion >= 7.0) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -92,17 +94,32 @@
     CGFloat rightSpace = 30.f;
     CGFloat textFieldHeight = 44.f;
     
+    UIImageView *backgroundView = [[UIImageView alloc] init];
+    backgroundView.image = kImageName(@"bkg");
+    backgroundView.backgroundColor = [UIColor lightGrayColor];
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:backgroundView];
+    [backgroundView makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    
+    /*
     UIImageView *loginView = [[UIImageView alloc] init];
     loginView.image = kImageName(@"login_logo.png");
     loginView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:loginView];
     [loginView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(80);
+        //make.top.equalTo(self.view.mas_top).offset(80);
         make.centerX.equalTo(self.view.centerX);
         make.width.equalTo(@(self.view.frame.size.width));
         make.bottom.equalTo(self.view.centerY).offset(-60);
+        make.height.equalTo(@((self.view.frame.size.height)*0.24));
 
     }];
+    */
     
     //用户名
     _userTF = [[UITextField alloc] init];
@@ -175,7 +192,7 @@
         make.left.equalTo(self.view.left).offset(leftSpace);
         make.right.equalTo(self.view.right).offset(-rightSpace);
         make.top.equalTo(_pwdTF.bottom).offset(30);
-        make.height.equalTo(@40);
+        make.height.equalTo(@44);
     }];
     
     

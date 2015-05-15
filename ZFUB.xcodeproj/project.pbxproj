@@ -47,6 +47,9 @@
 		0DE4925C1B05A1790083A32E /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE4924F1B05A1790083A32E /* NSArray+MASAdditions.m */; };
 		0DE4925D1B05A1790083A32E /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE492521B05A1790083A32E /* NSLayoutConstraint+MASDebugAdditions.m */; };
 		0DE4925E1B05A1790083A32E /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE492541B05A1790083A32E /* View+MASAdditions.m */; };
+		0DE492661B05FA340083A32E /* bkg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DE492651B05FA340083A32E /* bkg.png */; };
+		0DE492681B05FA390083A32E /* bkg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DE492671B05FA390083A32E /* bkg@2x.png */; };
+		0DE4926A1B05FA3E0083A32E /* bkg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DE492691B05FA3E0083A32E /* bkg@3x.png */; };
 		772A9C611AC3E731002A0B72 /* ChannelWebsiteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */; };
 		7730938C1A8AF0BC0096FE0B /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938B1A8AF0BC0096FE0B /* LocationViewController.m */; };
 		773093921A8B1B8B0096FE0B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7730938F1A8B1B8B0096FE0B /* CircleView.m */; };
@@ -360,6 +363,9 @@
 		0DE492531B05A1790083A32E /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
 		0DE492541B05A1790083A32E /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
 		0DE492551B05A1790083A32E /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		0DE492651B05FA340083A32E /* bkg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bkg.png; sourceTree = "<group>"; };
+		0DE492671B05FA390083A32E /* bkg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bkg@2x.png"; sourceTree = "<group>"; };
+		0DE492691B05FA3E0083A32E /* bkg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bkg@3x.png"; sourceTree = "<group>"; };
 		772A9C5F1AC3E731002A0B72 /* ChannelWebsiteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelWebsiteController.h; sourceTree = "<group>"; };
 		772A9C601AC3E731002A0B72 /* ChannelWebsiteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelWebsiteController.m; sourceTree = "<group>"; };
 		7730938A1A8AF0BC0096FE0B /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
@@ -960,6 +966,9 @@
 		0D9CA9B01AF0AB9300CB37EF /* image */ = {
 			isa = PBXGroup;
 			children = (
+				0DE492651B05FA340083A32E /* bkg.png */,
+				0DE492671B05FA390083A32E /* bkg@2x.png */,
+				0DE492691B05FA3E0083A32E /* bkg@3x.png */,
 				0DE4921D1B059F890083A32E /* pwd_lock.png */,
 				0DE4921B1B059F7B0083A32E /* user_login.png */,
 				0DE492191B059F760083A32E /* sigIn@2x.png */,
@@ -2041,14 +2050,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DE492661B05FA340083A32E /* bkg.png in Resources */,
 				0DE4921E1B059F890083A32E /* pwd_lock.png in Resources */,
 				0DE492161B059F560083A32E /* ebankProtocol.html in Resources */,
 				7755D7DC1AE7A87F00F273BD /* AlipaySDK.bundle in Resources */,
 				0D9CA9B41AF0ABEC00CB37EF /* useriphone2@2x.png in Resources */,
+				0DE4926A1B05FA3E0083A32E /* bkg@3x.png in Resources */,
 				0D9CA9B21AF0ABDF00CB37EF /* useriphone1@2x.png in Resources */,
 				0D9CA9B61AF0ABF100CB37EF /* useriphone3@2x.png in Resources */,
 				0DE4923C1B05A1710083A32E /* LICENCE in Resources */,
 				0DE492181B059F6A0083A32E /* city_right1.png in Resources */,
+				0DE492681B05FA390083A32E /* bkg@2x.png in Resources */,
 				0DE4921C1B059F7B0083A32E /* user_login.png in Resources */,
 				7759C7C21B043A670032B848 /* View.xib in Resources */,
 				0DE4921A1B059F760083A32E /* sigIn@2x.png in Resources */,
