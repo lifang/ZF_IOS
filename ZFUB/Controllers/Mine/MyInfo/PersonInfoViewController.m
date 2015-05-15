@@ -15,8 +15,9 @@
 #import "EditPersonInfoController.h"
 #import "ScoreViewController.h"
 #import "AddressManagerController.h"
+#import "ModifyViewController.h"
 
-static NSInteger s_firstSectionCount = 5;    ///第一分组列数
+static NSInteger s_firstSectionCount = 6;    ///第一分组列数
 static NSInteger s_secondSectionCount = 1;   ///第二分组列数
 static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
@@ -157,6 +158,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];
         if (success) {
+            NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
             id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
             if ([object isKindOfClass:[NSDictionary class]]) {
                 NSString *errorCode = [object objectForKey:@"code"];
@@ -224,6 +226,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
 
 - (void)initStaticData {
     _itemNames = [NSArray arrayWithObjects:
+                  @"用户名",
                   @"姓名",
                   @"手机",
                   @"邮箱",
@@ -305,23 +308,28 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
         case 0: {
             if (indexPath.row <= [_itemNames count]) {
                 titleName = [_itemNames objectAtIndex:indexPath.row];
-                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row + 1];
+                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row];
             }
             NSString *detailInfo = nil;
             switch (indexPath.row) {
-                case 0:
+                case 0: {
+                    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+                    detailInfo = delegate.username;
+                    break;
+                }
+                case 1:
                     detailInfo = _userInfo.userName;
                     break;
-                case 1:
+                case 2:
                     detailInfo = _userInfo.phoneNumber;
                     break;
-                case 2:
+                case 3:
                     detailInfo = _userInfo.email;
                     break;
-                case 3:
+                case 4:
                     detailInfo = [CityHandle getCityNameWithCityID:_userInfo.cityID];
                     break;
-                case 4:
+                case 5:
                     detailInfo = _userInfo.userScore;
                     break;
                 default:
@@ -333,7 +341,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
         case 1: {
             if (indexPath.row + s_firstSectionCount <= [_itemNames count]) {
                 titleName = [_itemNames objectAtIndex:indexPath.row + s_firstSectionCount];
-                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row + s_firstSectionCount + 1];
+                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row + s_firstSectionCount];
                 cell.detailTextLabel.text = nil;
             }
         }
@@ -341,7 +349,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
         case 2: {
             if (indexPath.row + s_firstSectionCount + s_thirdSectionCount <= [_itemNames count]) {
                 titleName = [_itemNames objectAtIndex:indexPath.row + s_firstSectionCount + s_secondSectionCount];
-                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row + s_firstSectionCount + s_secondSectionCount + 1];
+                imageName = [NSString stringWithFormat:@"myinfo%ld.png",indexPath.row + s_firstSectionCount + s_secondSectionCount];
                 cell.detailTextLabel.text = nil;
             }
         }
@@ -353,7 +361,12 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14.f];
     cell.textLabel.text = titleName;
     cell.imageView.image = kImageName(imageName);
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     return cell;
 }
 
@@ -376,7 +389,7 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
     switch (indexPath.section) {
         case 0: {
             switch (indexPath.row) {
-                case 0: {
+                case 1: {
                     //姓名
                     EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
                     editC.modifyType = ModifyUsername;
@@ -384,28 +397,30 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                     [self.navigationController pushViewController:editC animated:YES];
                 }
                     break;
-                case 1: {
-                    //手机
-                    EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
-                    editC.modifyType = ModifyPhoneNumber;
-                    editC.userInfo = _userInfo;
-                    [self.navigationController pushViewController:editC animated:YES];
-                }
-                    break;
                 case 2: {
-                    //邮箱
-                    EditPersonInfoController *editC = [[EditPersonInfoController alloc] init];
-                    editC.modifyType = ModifyEmail;
+                    //手机
+                    ModifyViewController *editC = [[ModifyViewController alloc] init];
+                    editC.editType = EditViewModify;
+                    editC.type = ModifyUserMobile;
                     editC.userInfo = _userInfo;
                     [self.navigationController pushViewController:editC animated:YES];
                 }
                     break;
                 case 3: {
+                    //邮箱
+                    ModifyViewController *editC = [[ModifyViewController alloc] init];
+                    editC.editType = EditViewModify;
+                    editC.type = ModifyUserEmail;
+                    editC.userInfo = _userInfo;
+                    [self.navigationController pushViewController:editC animated:YES];
+                }
+                    break;
+                case 4: {
                     //所在地
                     [self pickerScrollIn];
                 }
                     break;
-                case 4: {
+                case 5: {
                     //我的积分
                     ScoreViewController *scoreC = [[ScoreViewController alloc] init];
                     [self.navigationController pushViewController:scoreC animated:YES];

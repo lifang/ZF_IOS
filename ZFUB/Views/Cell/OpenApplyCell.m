@@ -11,11 +11,9 @@
 @implementation OpenApplyCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style
-    reuseIdentifier:(NSString *)reuseIdentifier
-       hasVideoAuth:(BOOL)hasVideo {
+    reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         _identifier = reuseIdentifier;
-        _hasVideoAuth = hasVideo;
         [self initAndLayoutUI];
     }
     return self;
@@ -242,10 +240,14 @@
                                                                  attribute:NSLayoutAttributeNotAnAttribute
                                                                 multiplier:0.0
                                                                   constant:1.0]];
-    [self setContentForReuseIdentifier];
 }
 
-- (void)setContentForReuseIdentifier {
+- (void)setContentForReuseIdentifierWithVideoAuth:(BOOL)_hasVideoAuth {
+    for (UIView *button in self.contentView.subviews) {
+        if ([button isKindOfClass:[UIButton class]]) {
+            [button removeFromSuperview];
+        }
+    }
     //按钮
     CGFloat middleSpace = 10.f;
     CGFloat btnWidth = (kScreenWidth - 4 * middleSpace) / 2;
@@ -254,7 +256,10 @@
     if ([_identifier isEqualToString:partOpenedApplyIdentifier]) {
         openApplyBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openApplyRepeat:)];
     }
-    else if ([_identifier isEqualToString:unOpenedApplyIdentifier]) {
+    else if ([_identifier isEqualToString:unOpenedApplyFirstIdentifier]) {
+        openApplyBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openApplyRepeat:)];
+    }
+    else if ([_identifier isEqualToString:unOpenedApplySecondIdentifier]) {
         openApplyBtn = [self buttonWithTitle:@"申请开通" action:@selector(openApply:)];
     }
     UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
@@ -355,20 +360,20 @@
 #pragma mark - Action
 
 - (IBAction)openApply:(id)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(openApplyWithData:)]) {
-        [_delegate openApplyWithData:_cellData];
+    if (_delegate && [_delegate respondsToSelector:@selector(openApplyWithData:identifier:)]) {
+        [_delegate openApplyWithData:_cellData identifier:_identifier];
     }
 }
 
 - (IBAction)videoAuth:(id)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(videoAuthWithData:)]) {
-        [_delegate videoAuthWithData:_cellData];
+    if (_delegate && [_delegate respondsToSelector:@selector(videoAuthWithData:identifier:)]) {
+        [_delegate videoAuthWithData:_cellData identifier:_identifier];
     }
 }
 
 - (IBAction)openApplyRepeat:(id)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(reopenApplyWithData:)]) {
-        [_delegate reopenApplyWithData:_cellData];
+    if (_delegate && [_delegate respondsToSelector:@selector(reopenApplyWithData:identifier:)]) {
+        [_delegate reopenApplyWithData:_cellData identifier:_identifier];
     }
 }
 

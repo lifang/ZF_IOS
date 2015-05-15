@@ -9,14 +9,9 @@
 #import "CommonViewController.h"
 #import "UserModel.h"
 
-//修改用户姓名、手机号、邮箱
-static NSString *EditUserInfoNotification = @"EditUserInfoNotification";
-
 typedef enum {
     ModifyNone = 0,
     ModifyUsername,
-    ModifyPhoneNumber,
-    ModifyEmail,
 }ModifyType;
 
 @interface EditPersonInfoController : CommonViewController

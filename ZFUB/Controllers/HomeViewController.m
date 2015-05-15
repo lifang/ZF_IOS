@@ -237,7 +237,7 @@
     for (HomeImageModel *model in _pictureItem) {
         [urlList addObject:model.pictureURL];
     }
-    [_pollingView downloadImageWithURLs:urlList target:self action:@selector(tapPicture:)];
+    [_pollingView downloadImageWithURLs:urlList target:self action:@selector(tapPicture:) scaleImage:YES];
 }
 
 #pragma mark - Action
@@ -349,6 +349,7 @@
     if (user) {
         AppDelegate *delegate = [AppDelegate shareAppDelegate];
         delegate.userID = user.userID;
+        delegate.username = user.username;
         if (user.cityID && ![user.cityID isEqualToString:@""]) {
             delegate.cityID = user.cityID;
         }

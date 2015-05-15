@@ -218,16 +218,24 @@
             break;
         case TerminalStatusUnOpened:
             //未开通
-            cellIdentifier = unOpenedApplyIdentifier;
+            if (model.appID) {
+                //重新开通
+                cellIdentifier = unOpenedApplyFirstIdentifier;
+            }
+            else {
+                //申请开通
+                cellIdentifier = unOpenedApplySecondIdentifier;
+            }
             break;
         default:
             break;
     }
     OpenApplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[OpenApplyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier hasVideoAuth:model.hasVideoAuth];
+        cell = [[OpenApplyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.delegate = self;
     }
+    [cell setContentForReuseIdentifierWithVideoAuth:model.hasVideoAuth];
     [cell setContentsWithData:model];
     return cell;
 }
@@ -346,7 +354,7 @@
 
 #pragma mark - OpenApplyCellDelegate
 //申请开通
-- (void)openApplyWithData:(TerminalManagerModel *)model {
+- (void)openApplyWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier {
     ProtocolView *protocolView = [[ProtocolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) string:model.protocol];
     protocolView.delegate = self;
     [[AppDelegate shareAppDelegate].window addSubview:protocolView];
@@ -355,14 +363,30 @@
 }
 
 //视频认证
-- (void)videoAuthWithData:(TerminalManagerModel *)model {
+- (void)videoAuthWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier {
+    if ([identifier isEqualToString:unOpenedApplySecondIdentifier]) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请先申请开通终端";
+        return;
+    }
     [self beginVideoAuthWithTerminalID:model.TM_ID];
     VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
     videoAuthC.terminalID = model.TM_ID;
     [self.navigationController pushViewController:videoAuthC animated:YES];
 }
 //重新申请开通
-- (void)reopenApplyWithData:(TerminalManagerModel *)model {
+- (void)reopenApplyWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier {
+    if ([identifier isEqualToString:unOpenedApplyFirstIdentifier] && model.openStatus == 6) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"正在第三方审核,请耐心等待...";
+        return;
+    }
     ApplyDetailController *detailC = [[ApplyDetailController alloc] init];
     detailC.terminalID = model.TM_ID;
     detailC.openStatus = OpenStatusReopen;

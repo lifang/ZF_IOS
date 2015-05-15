@@ -16,20 +16,9 @@
 
 @protocol TerminalManagerDelegate;
 
-//已开通状态一
-static NSString *OpenedFirstStatusIdentifier = @"OpenedFirstStatusIdentifier";
-//已开通状态二
-static NSString *OpenedSecondStatusIdentifier = @"OpenedSecondStatusIdentifier";
-//部分开通
-static NSString *PartOpenedStatusIdentifier = @"PartOpenedStatusIdentifier";
-//未开通状态一
-static NSString *UnOpenedFirstStatusIdentifier = @"UnOpenedFirstStatusIdentifier";
-//未开通状态二
-static NSString *UnOpenedSecondStatusIdentifier = @"UnOpenedSecondStatusIdentifier";
-//已注销
-static NSString *CanceledStatusIdentifier = @"CanceledStatusIdentifier";
-//已停用
-static NSString *StoppedStatusIdentifier = @"StoppedStatusIdentifier";
+static NSString *TMMiddleHeightIdentifier = @"TMMiddleHeightIdentifier";
+static NSString *TMShortHeightIdentifier = @"TMShortHeightIdentifier";
+static NSString *TMLongHeightIdentifier = @"TMLongHeightIdentifier";
 
 @interface TerminalManagerCell : UITableViewCell
 
@@ -41,23 +30,17 @@ static NSString *StoppedStatusIdentifier = @"StoppedStatusIdentifier";
 
 @property (nonatomic, strong) NSString *identifier;
 
-@property (nonatomic, assign) BOOL hasVideoAuth;
-
 @property (nonatomic, strong) UIImageView *arrowView;  //箭头
 
 @property (nonatomic, strong) TerminalManagerModel *cellData;
 
-- (id)initWithStyle:(UITableViewCellStyle)style
-    reuseIdentifier:(NSString *)reuseIdentifier
-       hasVideoAuth:(BOOL)hasVideoAuth;
-
-- (void)setContentsWithData:(TerminalManagerModel *)data;
+- (void)setContentForReuseIdentifierWithTerminalModel:(TerminalManagerModel *)model;
 
 @end
 
 @protocol TerminalManagerDelegate <NSObject>
-//视频认证
-- (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model;
+//视频认证  是否需要提示
+- (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model needNotice:(BOOL)needNotice;
 //找回POS密码
 - (void)terminalManagerFindPasswordWithData:(TerminalManagerModel *)model;
 //同步
@@ -65,6 +48,6 @@ static NSString *StoppedStatusIdentifier = @"StoppedStatusIdentifier";
 //申请开通
 - (void)terminalManagerOpenApplyWithData:(TerminalManagerModel *)model;
 //重新申请开通
-- (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model;
+- (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model needNotice:(BOOL)needNotice;
 
 @end

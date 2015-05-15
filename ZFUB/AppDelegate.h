@@ -24,6 +24,7 @@
 //登录后返回
 @property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSString *token;
+@property (nonatomic, strong) NSString *username;  //用户名
 
 //本地新增购物车数量
 @property (nonatomic, assign) int shopcartCount;

@@ -8,6 +8,9 @@
 
 #import "TerminalManagerCell.h"
 
+#define kTipLabelTag  200
+#define kLineTag      201
+
 typedef enum {
     TMButtonFirst = 1,
     TMButtonSecond,
@@ -17,9 +20,8 @@ typedef enum {
 
 @implementation TerminalManagerCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier hasVideoAuth:(BOOL)hasVideoAuth {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        _hasVideoAuth = hasVideoAuth;
         _identifier = reuseIdentifier;
         [self initAndLayoutUI];
     }
@@ -214,29 +216,35 @@ typedef enum {
                                                                 multiplier:0.0
                                                                   constant:15.f]];
     
-    [self setContentForReuseIdentifier];
 }
 
-- (void)setContentForReuseIdentifier {
-    CGFloat middleSpace = 10.f;
-    CGFloat btnWidth = (kScreenWidth - 5 * middleSpace) / 4;
-    CGFloat btnHeight = 28.f;
+- (void)setContentForReuseIdentifierWithTerminalModel:(TerminalManagerModel *)model {
+    [self setContentsWithData:model];
+//    CGFloat middleSpace = 10.f;
+//    CGFloat btnWidth = (kScreenWidth - 5 * middleSpace) / 4;
+//    CGFloat btnHeight = 28.f;
     //自助开通无法查看终端
-    if ([_identifier isEqualToString:OpenedSecondStatusIdentifier]) {
+    if ([_identifier isEqualToString:TMMiddleHeightIdentifier]) {
         _arrowView.hidden = YES;
     }
     else {
         _arrowView.hidden = NO;
     }
     
-    if ([_identifier isEqualToString:CanceledStatusIdentifier]) {
-        //已注销
+    if ([_identifier isEqualToString:TMShortHeightIdentifier]) {
+        //已停用
         return;
     }
-    else if ([_identifier isEqualToString:OpenedSecondStatusIdentifier]) {
-        //已开通 自助开通
+    else if ([_identifier isEqualToString:TMMiddleHeightIdentifier]) {
+        //自助开通
+        UIView *lineView = [self.contentView viewWithTag:kLineTag];
+        [lineView removeFromSuperview];
+        UIView *tipView = [self.contentView viewWithTag:kTipLabelTag];
+        [tipView removeFromSuperview];
+        
         [self addLine];
         UILabel *infoLabel = [[UILabel alloc] init];
+        infoLabel.tag = kTipLabelTag;
         infoLabel.translatesAutoresizingMaskIntoConstraints = NO;
         infoLabel.backgroundColor = [UIColor clearColor];
         infoLabel.font = [UIFont systemFontOfSize:12.f];
@@ -272,105 +280,133 @@ typedef enum {
                                                                     multiplier:0.0
                                                                       constant:20.f]];
     }
-    else if ([_identifier isEqualToString:OpenedFirstStatusIdentifier]) {
+    else if ([_identifier isEqualToString:TMLongHeightIdentifier]) {
+        UIView *lineView = [self.contentView viewWithTag:kLineTag];
+        [lineView removeFromSuperview];
+        
+        [self addLine];
+        for (UIView *button in self.contentView.subviews) {
+            if ([button isKindOfClass:[UIButton class]]) {
+                [button removeFromSuperview];
+            }
+        }
         //已开通
-        [self addLine];
-        UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
-        if (_hasVideoAuth) {
-            [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:2];
-            [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+        if ([_cellData.TM_status intValue] == TerminalStatusOpened) {
+            UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+            if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
+                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                }
+                else {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
+                }
+            }
+            else {
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+                }
+                else {
+                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:1];
+                }
+
+            }
         }
-        else {
-            [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:1];
+        else if ([_cellData.TM_status intValue] == TerminalStatusPartOpened) {
+            //部分开通
+            UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
+            UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+            if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
+                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:4];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:4];
+                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonForth totalCount:4];
+                }
+                else {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
+                }
+            }
+            else {
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                }
+                else {
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
+                }
+            }
         }
-    }
-    else if ([_identifier isEqualToString:UnOpenedFirstStatusIdentifier]) {
-        //未开通 同步、开通申请、视频认证
-        [self addLine];
-        UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
-        UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
-        UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        if (_hasVideoAuth) {
-            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-            [self layoutView:openApplyBtn withPosition:TMButtonSecond totalCount:3];
-            [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+        else if ([_cellData.TM_status intValue] == TerminalStatusUnOpened) {
+            //未开通
+            UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
+            UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuthNotice:)];
+            UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirmNotice:)];
+            if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
+                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                }
+                else {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+                }
+            }
+            else {
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+                }
+                else {
+                    [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:1];
+                }
+            }
         }
-        else {
-            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
-            [self layoutView:openApplyBtn withPosition:TMButtonSecond totalCount:2];
+        else if ([_cellData.TM_status intValue] == TerminalStatusCanceled) {
+            //已注销
+            UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
+            UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
+            if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
+                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                }
+                else {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+                }
+            }
+            else {
+                if (_cellData.hasVideoAuth) {
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+                }
+                else {
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:1];
+                }
+            }
         }
-    }
-    else if ([_identifier isEqualToString:UnOpenedSecondStatusIdentifier]) {
-        //未开通 申请开通、视频认证
-        [self addLine];
-        UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
-        UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        if (_hasVideoAuth) {
-            [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:2];
-            [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
-        }
-        else {
-            [self layoutView:openApplyBtn withPosition:TMButtonFirst totalCount:1];
-        }
-    }
-    else if ([_identifier isEqualToString:PartOpenedStatusIdentifier]) {
-        //部分开通 同步、重新申请开通、视频认证、找回POS密码
-        [self addLine];
-        UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
-        UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
-        UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-        UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
-        if (_hasVideoAuth) {
-            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:4];
-            [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:4];
-            [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
-            [self layoutView:videoAuthBtn withPosition:TMButtonForth totalCount:4];
-        }
-        else {
-            [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-            [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
-            [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
-        }
-    }
-    else if ([_identifier isEqualToString:StoppedStatusIdentifier]) {
-        //已停用 同步
-        [self addLine];
-        UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
-        [self.contentView addSubview:synBtn];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_terminalLabel
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0
-                                                                      constant:middleSpace * 2]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeCenterX
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeCenterX
-                                                                    multiplier:1.0
-                                                                      constant:0.f]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnWidth]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:synBtn
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:nil
-                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                    multiplier:0.0
-                                                                      constant:btnHeight]];
     }
 }
 
 - (void)addLine {
     UIImageView *line = [[UIImageView alloc] init];
+    line.tag = kLineTag;
     line.image = kImageName(@"gray.png");
     line.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:line];
@@ -567,9 +603,27 @@ typedef enum {
 
 #pragma mark - Action
 
+//未开通视频提示
+- (IBAction)videoAuthNotice:(id)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerVideoAuthWithData:needNotice:)]) {
+        [_delegate terminalManagerVideoAuthWithData:_cellData needNotice:YES];
+    }
+}
+
+//未开通重新开通提示
+- (IBAction)openConfirmNotice:(id)sender {
+    BOOL needNotice = NO;
+    if (_cellData.openStatus == 6) {
+        needNotice = YES;
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerOpenConfirmWithData:needNotice:)]) {
+        [_delegate terminalManagerOpenConfirmWithData:_cellData needNotice:needNotice];
+    }
+}
+
 - (IBAction)videoAuth:(id)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerVideoAuthWithData:)]) {
-        [_delegate terminalManagerVideoAuthWithData:_cellData];
+    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerVideoAuthWithData:needNotice:)]) {
+        [_delegate terminalManagerVideoAuthWithData:_cellData needNotice:NO];
     }
 }
 
@@ -592,8 +646,8 @@ typedef enum {
 }
 
 - (IBAction)openConfirm:(id)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerOpenConfirmWithData:)]) {
-        [_delegate terminalManagerOpenConfirmWithData:_cellData];
+    if (_delegate && [_delegate respondsToSelector:@selector(terminalManagerOpenConfirmWithData:needNotice:)]) {
+        [_delegate terminalManagerOpenConfirmWithData:_cellData needNotice:NO];
     }
 }
 

@@ -13,7 +13,10 @@
 
 @protocol OpenApplyCellDelegate;
 
-static NSString *unOpenedApplyIdentifier = @"unOpenedApplyIdentifier";
+//重新申请开通
+static NSString *unOpenedApplyFirstIdentifier = @"unOpenedApplyFirstIdentifier";
+//申请开通 视频认证弹出提示
+static NSString *unOpenedApplySecondIdentifier = @"unOpenedApplySecondIdentifier";
 static NSString *partOpenedApplyIdentifier = @"partOpenedApplyIdentifier";
 
 @interface OpenApplyCell : UITableViewCell
@@ -26,25 +29,21 @@ static NSString *partOpenedApplyIdentifier = @"partOpenedApplyIdentifier";
 
 @property (nonatomic, strong) NSString *identifier;
 
-@property (nonatomic, assign) BOOL hasVideoAuth;
-
 @property (nonatomic, strong) TerminalManagerModel *cellData;
 
-- (id)initWithStyle:(UITableViewCellStyle)style
-    reuseIdentifier:(NSString *)reuseIdentifier
-       hasVideoAuth:(BOOL)hasVideo;
-
 - (void)setContentsWithData:(TerminalManagerModel *)data;
+
+- (void)setContentForReuseIdentifierWithVideoAuth:(BOOL)_hasVideoAuth;
 
 @end
 
 @protocol OpenApplyCellDelegate <NSObject>
 
 //申请开通
-- (void)openApplyWithData:(TerminalManagerModel *)model;
+- (void)openApplyWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier;
 //视频认证
-- (void)videoAuthWithData:(TerminalManagerModel *)model;
+- (void)videoAuthWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier;
 //重新申请开通
-- (void)reopenApplyWithData:(TerminalManagerModel *)model;
+- (void)reopenApplyWithData:(TerminalManagerModel *)model identifier:(NSString *)identifier;
 
 @end

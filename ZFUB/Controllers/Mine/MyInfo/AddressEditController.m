@@ -379,6 +379,7 @@
         default:
             break;
     }
+    cell.textLabel.font = [UIFont systemFontOfSize:16.f];
     cell.textLabel.text = titleName;
     return cell;
 }

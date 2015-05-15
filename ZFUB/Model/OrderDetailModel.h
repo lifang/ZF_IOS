@@ -45,6 +45,8 @@
 
 @property (nonatomic, strong) NSString *terminals;
 
+@property (nonatomic, assign) int needInvoice;
+
 @property (nonatomic, strong) NSMutableArray *goodList;
 
 @property (nonatomic, strong) NSMutableArray *recordList;

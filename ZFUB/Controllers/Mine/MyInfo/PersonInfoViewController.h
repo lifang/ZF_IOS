@@ -8,6 +8,9 @@
 
 #import "CommonViewController.h"
 
+//修改用户姓名、手机号、邮箱
+static NSString *EditUserInfoNotification = @"EditUserInfoNotification";
+
 @interface PersonInfoViewController : CommonViewController
 
 @end

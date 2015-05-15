@@ -221,7 +221,13 @@
     [self footerViewAddSubview];
     
     _reviewField = [[UITextField alloc] init];
-    _reviewField.borderStyle = UITextBorderStyleLine;
+    _reviewField.borderStyle = UITextBorderStyleNone;
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 10)];
+    leftView.backgroundColor = [UIColor clearColor];
+    _reviewField.leftView = leftView;
+    _reviewField.leftViewMode = UITextFieldViewModeAlways;
+    _reviewField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _reviewField.layer.borderWidth = 1.f;
     _reviewField.delegate = self;
     _reviewField.placeholder = @"留言";
     _reviewField.font = [UIFont systemFontOfSize:14.f];

@@ -398,6 +398,7 @@
     NSString *cityID = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"cityId"]];
     [self saveLoginUserWithUserID:userID cityID:cityID];
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    delegate.username = _usernameField.text;
     delegate.token = token;
     delegate.userID = userID;
     [self dismissViewControllerAnimated:YES completion:nil];

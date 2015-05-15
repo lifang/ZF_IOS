@@ -64,28 +64,28 @@
 #pragma mark - UI
 
 - (void)setHeaderAndFooterView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 78)];
-    headerView.backgroundColor = kColor(244, 243, 243, 1);
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addBtn.frame = CGRectMake(80, 15, kScreenWidth - 160, 40);
-    addBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
-    [addBtn setImage:kImageName(@"add.png") forState:UIControlStateNormal];
-    [addBtn addTarget:self action:@selector(addTerminal:) forControlEvents:UIControlEventTouchUpInside];
-    [addBtn setTitle:@"添加其他终端" forState:UIControlStateNormal];
-    [addBtn setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
-    [addBtn setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
-    addBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 18, 0, 10);
-    [headerView addSubview:addBtn];
-    
-    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(116, 45, kScreenWidth - 200, 20)];
-    infoLabel.backgroundColor = [UIColor clearColor];
-    infoLabel.textAlignment = NSTextAlignmentCenter;
-    infoLabel.font = [UIFont systemFontOfSize:10.f];
-    infoLabel.textColor = kColor(132, 131, 131, 1);
-    infoLabel.text = @"方便您查看交易流水";
-    [headerView addSubview:infoLabel];
-    
-    _tableView.tableHeaderView = headerView;
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 78)];
+//    headerView.backgroundColor = kColor(244, 243, 243, 1);
+//    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    addBtn.frame = CGRectMake(80, 15, kScreenWidth - 160, 40);
+//    addBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
+//    [addBtn setImage:kImageName(@"add.png") forState:UIControlStateNormal];
+//    [addBtn addTarget:self action:@selector(addTerminal:) forControlEvents:UIControlEventTouchUpInside];
+//    [addBtn setTitle:@"添加其他终端" forState:UIControlStateNormal];
+//    [addBtn setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+//    [addBtn setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+//    addBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 18, 0, 10);
+//    [headerView addSubview:addBtn];
+//    
+//    UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(116, 45, kScreenWidth - 200, 20)];
+//    infoLabel.backgroundColor = [UIColor clearColor];
+//    infoLabel.textAlignment = NSTextAlignmentCenter;
+//    infoLabel.font = [UIFont systemFontOfSize:10.f];
+//    infoLabel.textColor = kColor(132, 131, 131, 1);
+//    infoLabel.text = @"方便您查看交易流水";
+//    [headerView addSubview:infoLabel];
+//    
+//    _tableView.tableHeaderView = headerView;
     
 //    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
 //    footerView.backgroundColor = [UIColor clearColor];
@@ -327,64 +327,63 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
     NSString *cellIdentifier = nil;
-    switch ([model.TM_status intValue]) {
-        case TerminalStatusOpened:
-            //已开通
-            if (model.appID) {
-                cellIdentifier = OpenedFirstStatusIdentifier;
-            }
-            else {
-                cellIdentifier = OpenedSecondStatusIdentifier;
-            }
-            break;
-        case TerminalStatusPartOpened:
-            //部分开通
-            cellIdentifier = PartOpenedStatusIdentifier;
-            break;
-        case TerminalStatusUnOpened:
-            //未开通
-            if (model.appID) {
-                cellIdentifier = UnOpenedSecondStatusIdentifier;
-            }
-            else {
-                cellIdentifier = UnOpenedFirstStatusIdentifier;
-            }
-            break;
-        case TerminalStatusCanceled:
-            //已注销
-            cellIdentifier = CanceledStatusIdentifier;
-            break;
-        case TerminalStatusStopped:
-            //已停用
-            cellIdentifier = StoppedStatusIdentifier;
-            break;
-        default:
-            break;
+    if (model.type == 2) {
+        //自助开通
+        cellIdentifier = TMMiddleHeightIdentifier;
+    }
+    else {
+        if ([model.TM_status intValue] == TerminalStatusStopped) {
+            //已停用 无操作
+            cellIdentifier = TMShortHeightIdentifier;
+        }
+        else if ([model.TM_status intValue] == TerminalStatusOpened ||
+                 [model.TM_status intValue] == TerminalStatusPartOpened ||
+                 [model.TM_status intValue] == TerminalStatusUnOpened ||
+                 [model.TM_status intValue] == TerminalStatusCanceled) {
+            //已开通、部分开通、未开通、已注销显示按钮
+            cellIdentifier = TMLongHeightIdentifier;
+        }
+        else {
+            cellIdentifier = TMShortHeightIdentifier;
+        }
     }
     TerminalManagerCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier hasVideoAuth:model.hasVideoAuth];
+        cell = [[TerminalManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.delegate = self;
     }
-    [cell setContentsWithData:model];
+    [cell setContentForReuseIdentifierWithTerminalModel:model];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
-    if ([model.TM_status intValue] == TerminalStatusCanceled) {
-        return kTMShortCellHeight;
-    }
-    else if ([model.TM_status intValue] == TerminalStatusOpened && !model.appID) {
+    if (model.type == 2) {
+        //自助开通
         return kTMMiddleCellHeight;
     }
-    return kTMLongCellHeight;
+    else {
+        if ([model.TM_status intValue] == TerminalStatusStopped) {
+            //已停用 无操作
+            return kTMShortCellHeight;
+        }
+        else if ([model.TM_status intValue] == TerminalStatusOpened ||
+                 [model.TM_status intValue] == TerminalStatusPartOpened ||
+                 [model.TM_status intValue] == TerminalStatusUnOpened ||
+                 [model.TM_status intValue] == TerminalStatusCanceled) {
+            //已开通、部分开通、未开通、已注销显示按钮
+            return kTMLongCellHeight;
+        }
+        else {
+            return kTMShortCellHeight;
+        }
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     TerminalManagerModel *model = [_terminalItems objectAtIndex:indexPath.section];
-    if ([model.TM_status intValue] == TerminalStatusOpened && !model.appID) {
+    if (model.type == 2) {
         //自助开通无法查看详情
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.customView = [[UIImageView alloc] init];
@@ -502,7 +501,15 @@
 
 #pragma mark - TerminalManagerDelegate
 //视频认证
-- (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model {
+- (void)terminalManagerVideoAuthWithData:(TerminalManagerModel *)model needNotice:(BOOL)needNotice {
+    if (needNotice) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"请先申请开通终端";
+        return;
+    }
     [self beginVideoAuthWithTerminalID:model.TM_ID];
     VideoAuthController *videoAuthC = [[VideoAuthController alloc] init];
     videoAuthC.terminalID = model.TM_ID;
@@ -529,7 +536,15 @@
 }
 
 //重新开通申请
-- (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model {
+- (void)terminalManagerOpenConfirmWithData:(TerminalManagerModel *)model needNotice:(BOOL)needNotice {
+    if (needNotice) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        hud.customView = [[UIImageView alloc] init];
+        hud.mode = MBProgressHUDModeCustomView;
+        [hud hide:YES afterDelay:1.f];
+        hud.labelText = @"正在第三方审核,请耐心等待...";
+        return;
+    }
     ApplyDetailController *detail = [[ApplyDetailController alloc] init];
     detail.terminalID = model.TM_ID;
     detail.openStatus = OpenStatusReopen;

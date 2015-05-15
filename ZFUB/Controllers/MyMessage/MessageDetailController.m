@@ -10,7 +10,7 @@
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 
-@interface MessageDetailController ()
+@interface MessageDetailController ()<UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
@@ -295,6 +295,15 @@
 #pragma mark - Action
 
 - (IBAction)deleteMessage:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确认删除消息？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确认", nil];
+    [alert show];
+}
+
+- (void)deleteMessage {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"提交中...";
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
@@ -336,6 +345,14 @@
     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_message,@"message", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMessageListNotification object:nil userInfo:info];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - AlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        [self deleteMessage];
+    }
 }
 
 @end

@@ -1828,4 +1828,36 @@ static NSString *HTTP_GET  = @"GET";
     [request start];
 }
 
++ (void)getModifyMobileValidateWithPhoneNumber:(NSString *)phoneNumber
+                                      finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    if (phoneNumber) {
+        [paramDict setObject:phoneNumber forKey:@"phone"];
+    }
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_modifyMobileValidate_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
++ (void)getModifyEmailValidateWithUserID:(NSString *)userID
+                                   email:(NSString *)email
+                                finished:(requestDidFinished)finish {
+    //参数
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
+    [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
+    if (email) {
+        [paramDict setObject:email forKey:@"email"];
+    }
+    //url
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_modifyEmailValidate_method];
+    [[self class] requestWithURL:urlString
+                          params:paramDict
+                      httpMethod:HTTP_POST
+                        finished:finish];
+}
+
 @end

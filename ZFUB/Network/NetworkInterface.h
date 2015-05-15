@@ -422,6 +422,12 @@ static NSString *s_orderConfirm_method = @"order/payOrder";
 //维修单付款
 static NSString *s_repairPay_method = @"cs/repair/repairPay";
 
+//修改手机验证码
+static NSString *s_modifyMobileValidate_method = @"index/getPhoneCode";
+
+//修改邮箱验证码
+static NSString *s_modifyEmailValidate_method = @"customers/getUpdateEmailDentcode";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -1396,5 +1402,12 @@ static NSString *s_repairPay_method = @"cs/repair/repairPay";
 
 + (void)beginVideoAuthWithTerminalID:(NSString *)terminalID
                             finished:(requestDidFinished)finish;
+
++ (void)getModifyMobileValidateWithPhoneNumber:(NSString *)phoneNumber
+                                      finished:(requestDidFinished)finish;
+
++ (void)getModifyEmailValidateWithUserID:(NSString *)userID
+                                   email:(NSString *)email
+                               finished:(requestDidFinished)finish;
 
 @end

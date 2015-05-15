@@ -126,7 +126,7 @@
     [self setAttrForInputView:_textField_location];
     [self setAttrForInputView:_textField_bank];
     [self setAttrForInputView:_textField_bank_ID];
-    _textField_merchant.placeholder = @"请输入商户名";
+    _textField_merchant.placeholder = @"地址+经营商铺名+行业";
     _textField_person.placeholder = @"请输入法人姓名";
     _textField_person_ID.placeholder = @"请输入法人身份证号";
     _textField_licence.placeholder = @"请输入营业执照号";

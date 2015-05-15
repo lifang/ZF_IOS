@@ -52,25 +52,25 @@
 #pragma mark - UI
 
 - (void)setHeaderAndFooterView {
-    //追踪记录
-    if ([_orderDetail.recordList count] > 0) {
-        CGFloat leftSpace = 20.f;
-        UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, 20, kScreenWidth - leftSpace * 2 , 14)];
-        tipLabel.backgroundColor = [UIColor clearColor];
-        tipLabel.font = [UIFont systemFontOfSize:10.f];
-        tipLabel.text = @"追踪记录：";
-        RecordView *recordView = [[RecordView alloc] initWithRecords:_orderDetail.recordList
-                                                               width:(kScreenWidth - leftSpace * 2)];
-        CGFloat recordHeight = [recordView getHeight];
-        recordView.frame = CGRectMake(leftSpace, 34, kScreenWidth - leftSpace * 2, recordHeight);
-        
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, recordHeight + 40)];
-        footerView.backgroundColor = [UIColor clearColor];
-        [footerView addSubview:tipLabel];
-        [footerView addSubview:recordView];
-        _tableView.tableFooterView = footerView;
-        [recordView initAndLayoutUI];
-    }
+//    //追踪记录
+//    if ([_orderDetail.recordList count] > 0) {
+//        CGFloat leftSpace = 20.f;
+//        UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, 20, kScreenWidth - leftSpace * 2 , 14)];
+//        tipLabel.backgroundColor = [UIColor clearColor];
+//        tipLabel.font = [UIFont systemFontOfSize:10.f];
+//        tipLabel.text = @"追踪记录：";
+//        RecordView *recordView = [[RecordView alloc] initWithRecords:_orderDetail.recordList
+//                                                               width:(kScreenWidth - leftSpace * 2)];
+//        CGFloat recordHeight = [recordView getHeight];
+//        recordView.frame = CGRectMake(leftSpace, 34, kScreenWidth - leftSpace * 2, recordHeight);
+//        
+//        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, recordHeight + 40)];
+//        footerView.backgroundColor = [UIColor clearColor];
+//        [footerView addSubview:tipLabel];
+//        [footerView addSubview:recordView];
+//        _tableView.tableFooterView = footerView;
+//        [recordView initAndLayoutUI];
+//    }
 }
 
 - (void)initAndLayoutUI {
@@ -376,11 +376,17 @@
                     [self setLabel:commentLabel withString:comment];
                     [cell.contentView addSubview:commentLabel];
                     //发票
+                    NSString *invoiceTitle = _orderDetail.orderInvoceTitle;
+                    NSString *invoiceType = _orderDetail.orderInvoceType;
+                    if (_orderDetail.needInvoice == 0) {
+                        invoiceTitle = @"无";
+                        invoiceType = @"无";
+                    }
                     UILabel *invoceTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, 10 + height, kScreenWidth - originX * 2, 20.f)];
-                    [self setLabel:invoceTypeLabel withString:[NSString stringWithFormat:@"发票类型：%@",_orderDetail.orderInvoceType]];
+                    [self setLabel:invoceTypeLabel withString:[NSString stringWithFormat:@"发票类型：%@",invoiceType]];
                     [cell.contentView addSubview:invoceTypeLabel];
                     UILabel *invoceTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, 30 + height, kScreenWidth - originX * 2, 20.f)];
-                    [self setLabel:invoceTitleLabel withString:[NSString stringWithFormat:@"发票抬头：%@",_orderDetail.orderInvoceTitle]];
+                    [self setLabel:invoceTitleLabel withString:[NSString stringWithFormat:@"发票抬头：%@",invoiceTitle]];
                     
                     [cell.contentView addSubview:invoceTitleLabel];
                 }

@@ -47,11 +47,11 @@
     self.title = @"我的积分";
     _scoreItems = [[NSMutableArray alloc] init];
     
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"兑换"
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(exchangeScore:)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"兑换"
+//                                                                  style:UIBarButtonItemStylePlain
+//                                                                 target:self
+//                                                                 action:@selector(exchangeScore:)];
+//    self.navigationItem.rightBarButtonItem = rightItem;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateScore:)

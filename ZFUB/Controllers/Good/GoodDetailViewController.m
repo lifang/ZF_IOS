@@ -25,7 +25,7 @@
 #import "FactoryDetailController.h"
 #import "ChannelWebsiteController.h"
 
-static CGFloat topImageHeight = 160.f;
+//static CGFloat topImageHeight = 160.f;
 
 @interface GoodDetailViewController ()<UIScrollViewDelegate,ImageScrollViewDelegate>
 
@@ -150,7 +150,7 @@ static CGFloat topImageHeight = 160.f;
                                                          multiplier:1.0
                                                            constant:0]];
     //image
-    _topScorllView = [[PollingView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, topImageHeight)];
+    _topScorllView = [[PollingView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth)];
     [_mainScrollView addSubview:_topScorllView];
     
     _priceLabel = [[UILabel alloc] init];
@@ -236,7 +236,7 @@ static CGFloat topImageHeight = 160.f;
     CGFloat vSpace = 2.f;  //label 垂直间距
     CGFloat hSpace = 10.f;
     CGFloat leftLabelWidth = 60.f;  //左侧标题label宽度
-    CGFloat btnHeight = 20.f;  //支付通道 和 购买方式 按钮高度
+    CGFloat btnHeight = 30.f;  //支付通道 和 购买方式 按钮高度
     CGFloat btnWidth = (kScreenWidth - leftSpace - rightSpace - leftLabelWidth - firstSpace - 2 * hSpace) / 3;
     CGFloat originY = _topScorllView.frame.origin.y + _topScorllView.frame.size.height + vSpace;
     //商品名
@@ -303,16 +303,32 @@ static CGFloat topImageHeight = 160.f;
     originY += labelHeight + 10.f;
     UILabel *channelTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, leftLabelWidth, btnHeight)];
     [self setLabel:channelTitleLabel withTitle:@"支付通道" font:[UIFont systemFontOfSize:13.f]];
-    originX = leftSpace + leftLabelWidth + firstSpace;
+    CGFloat firstOrigin = leftSpace + leftLabelWidth + firstSpace;
+    CGFloat btnMaxWidth = kScreenWidth - firstOrigin - rightSpace;
+    originX = firstOrigin;
     CGFloat channelOriginY = originY;
+    int channelRows = 1; //支付通道行数
     for (int i = 0; i < [_detailModel.channelItem count]; i++) {
-        if (i % 3 == 0 && i != 0) {
-            originX = leftSpace + leftLabelWidth + firstSpace;
+        ChannelModel *model = [_detailModel.channelItem objectAtIndex:i];
+        NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [UIFont systemFontOfSize:14.f],NSFontAttributeName,
+                              nil];
+        CGRect rect = [model.channelName boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, btnHeight)
+                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                         attributes:attr
+                                            context:nil];
+        rect.size.width += 2; //防止文字靠边界
+        //设置最小宽度
+        CGFloat flexibleWidth = rect.size.width < btnWidth ? btnWidth : rect.size.width;
+        //设置最大宽度
+        flexibleWidth = flexibleWidth > btnMaxWidth ? btnMaxWidth : flexibleWidth;
+        if (kScreenWidth - originX - rightSpace < flexibleWidth) {
+            channelRows ++;
+            originX = firstOrigin;
             channelOriginY += btnHeight + hSpace;
         }
-        ChannelModel *model = [_detailModel.channelItem objectAtIndex:i];
         GoodButton *btn = [GoodButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(originX, channelOriginY, btnWidth, btnHeight);
+        btn.frame = CGRectMake(originX, channelOriginY, flexibleWidth, btnHeight);
         btn.ID = model.channelID;
         [btn setButtonAttrWithTitle:model.channelName];
         if ([model.channelID isEqualToString:_detailModel.defaultChannel.channelID]) {
@@ -320,10 +336,12 @@ static CGFloat topImageHeight = 160.f;
         }
         [btn addTarget:self action:@selector(selectedChannel:) forControlEvents:UIControlEventTouchUpInside];
         [_mainScrollView addSubview:btn];
-        originX += btnWidth + hSpace;
+        originX += flexibleWidth + hSpace;
     }
-    int rows = (int)([_detailModel.channelItem count] - 1) / 3 + 1;
-    originY += rows * (btnHeight + hSpace);
+//    int rows = (int)([_detailModel.channelItem count] - 1) / 3 + 1;
+//    originY += rows * (btnHeight + hSpace);
+    
+    originY += channelRows * (btnHeight + hSpace);
     
     //购买方式
     UILabel *buyTypeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, leftLabelWidth, btnHeight)];
@@ -341,53 +359,53 @@ static CGFloat topImageHeight = 160.f;
     
     //厂家信息
     originY += btnHeight + hSpace;
-    UILabel *factoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, 90.f, labelHeight)];
-    factoryLabel.backgroundColor = [UIColor clearColor];
-    factoryLabel.font = [UIFont systemFontOfSize:12.f];
-    factoryLabel.text = @"查看厂家信息";
-    [_mainScrollView addSubview:factoryLabel];
-    
-    //厂家按钮
-    UIButton *factoryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [factoryBtn setBackgroundImage:kImageName(@"info.png") forState:UIControlStateNormal];
-    factoryBtn.frame = CGRectMake(factoryLabel.frame.origin.x + factoryLabel.frame.size.width + vSpace, originY, labelHeight, labelHeight);
-    [factoryBtn addTarget:self action:@selector(scanFactoryInfo:) forControlEvents:UIControlEventTouchUpInside];
-    [_mainScrollView addSubview:factoryBtn];
-    
-    //划线
-    originY += labelHeight + vSpace;
-    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(10, originY, kScreenWidth - 20, 1)];
-    firstLine.backgroundColor = kColor(255, 102, 36, 1);
-    [_mainScrollView addSubview:firstLine];
-    
-    //支付通道厂家图片
-    originY += vSpace + 1;
-    UIImageView *factoryImageView = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace, originY, leftLabelWidth, labelHeight)];
-    [factoryImageView sd_setImageWithURL:[NSURL URLWithString:_detailModel.defaultChannel.channelFactoryLogo]];
-    [_mainScrollView addSubview:factoryImageView];
-    //厂家网址
-    UILabel *websiteLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace + leftLabelWidth, originY, kScreenWidth - leftLabelWidth - leftSpace, labelHeight)];
-    websiteLabel.userInteractionEnabled = YES;
-    UITapGestureRecognizer *websiteTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpForWebsite:)];
-    [websiteLabel addGestureRecognizer:websiteTap];
-    [self setLabel:websiteLabel withTitle:_detailModel.defaultChannel.channelFactoryURL font:[UIFont systemFontOfSize:13.f]];
-    
-    //厂家简介
-    originY += vSpace + labelHeight;
-//    CGFloat summaryHeight = [self heightWithString:_detailModel.factorySummary
-//                                             width:kScreenWidth - leftSpace - rightSpace
-//                                          fontSize:13.f];
-
-    CGFloat summaryHeight = [self heightWithString:_detailModel.defaultChannel.channelFactoryDescription
-                                          width:kScreenWidth - leftSpace - rightSpace
-                                       fontSize:13.f];
-    UILabel *factorySummaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, summaryHeight)];
-    factorySummaryLabel.numberOfLines = 0;
-    [self setLabel:factorySummaryLabel withTitle:_detailModel.defaultChannel.channelFactoryDescription font:[UIFont systemFontOfSize:13.f]];
-    factorySummaryLabel.textColor = kColor(102, 102, 102, 1);
+//    UILabel *factoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, 90.f, labelHeight)];
+//    factoryLabel.backgroundColor = [UIColor clearColor];
+//    factoryLabel.font = [UIFont systemFontOfSize:12.f];
+//    factoryLabel.text = @"查看厂家信息";
+//    [_mainScrollView addSubview:factoryLabel];
+//    
+//    //厂家按钮
+//    UIButton *factoryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [factoryBtn setBackgroundImage:kImageName(@"info.png") forState:UIControlStateNormal];
+//    factoryBtn.frame = CGRectMake(factoryLabel.frame.origin.x + factoryLabel.frame.size.width + vSpace, originY, labelHeight, labelHeight);
+//    [factoryBtn addTarget:self action:@selector(scanFactoryInfo:) forControlEvents:UIControlEventTouchUpInside];
+//    [_mainScrollView addSubview:factoryBtn];
+//    
+//    //划线
+//    originY += labelHeight + vSpace;
+//    UIView *firstLine = [[UIView alloc] initWithFrame:CGRectMake(10, originY, kScreenWidth - 20, 1)];
+//    firstLine.backgroundColor = kColor(255, 102, 36, 1);
+//    [_mainScrollView addSubview:firstLine];
+//    
+//    //支付通道厂家图片
+//    originY += vSpace + 1;
+//    UIImageView *factoryImageView = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace, originY, leftLabelWidth, labelHeight)];
+//    [factoryImageView sd_setImageWithURL:[NSURL URLWithString:_detailModel.defaultChannel.channelFactoryLogo]];
+//    [_mainScrollView addSubview:factoryImageView];
+//    //厂家网址
+//    UILabel *websiteLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace + leftLabelWidth, originY, kScreenWidth - leftLabelWidth - leftSpace, labelHeight)];
+//    websiteLabel.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *websiteTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jumpForWebsite:)];
+//    [websiteLabel addGestureRecognizer:websiteTap];
+//    [self setLabel:websiteLabel withTitle:_detailModel.defaultChannel.channelFactoryURL font:[UIFont systemFontOfSize:13.f]];
+//    
+//    //厂家简介
+//    originY += vSpace + labelHeight;
+////    CGFloat summaryHeight = [self heightWithString:_detailModel.factorySummary
+////                                             width:kScreenWidth - leftSpace - rightSpace
+////                                          fontSize:13.f];
+//
+//    CGFloat summaryHeight = [self heightWithString:_detailModel.defaultChannel.channelFactoryDescription
+//                                          width:kScreenWidth - leftSpace - rightSpace
+//                                       fontSize:13.f];
+//    UILabel *factorySummaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, summaryHeight)];
+//    factorySummaryLabel.numberOfLines = 0;
+//    [self setLabel:factorySummaryLabel withTitle:_detailModel.defaultChannel.channelFactoryDescription font:[UIFont systemFontOfSize:13.f]];
+//    factorySummaryLabel.textColor = kColor(102, 102, 102, 1);
     
     //按钮view
-    originY += summaryHeight + 10;
+//    originY += summaryHeight + 10;
     UIView *handleView = [self handleViewWithOriginY:originY];
     [_mainScrollView addSubview:handleView];
     
@@ -523,37 +541,37 @@ static CGFloat topImageHeight = 160.f;
     
     //感兴趣的
     originY += descriptionHeight + 20;
-    UIView *sixthLine = [[UIView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, 1)];
-    sixthLine.backgroundColor = kColor(200, 198, 199, 1);
-    [_mainScrollView addSubview:sixthLine];
-    UILabel *interestLabel = [[UILabel alloc] initWithFrame:CGRectMake((kScreenWidth - 80) / 2, originY - 10, 80, labelHeight)];
-    [self setLabel:interestLabel withTitle:@"您感兴趣的" font:[UIFont systemFontOfSize:13.f]];
-    interestLabel.textAlignment = NSTextAlignmentCenter;
-    interestLabel.backgroundColor = kColor(244, 243, 243, 1);
-    
-    originY += 20;
-    CGFloat middleSpace = 10.f;
-    CGFloat relateViewWidth = (kScreenWidth - leftSpace - rightSpace - middleSpace) / 2;
-    CGFloat relateViewHeight = relateViewWidth + 40 + 20 + 10;
-    CGRect rect = CGRectMake(leftSpace, originY, relateViewWidth, relateViewHeight);
-    for (int i = 0; i < [_detailModel.relativeItem count]; i++) {
-        if (i % 2 == 0 && i != 0) {
-            rect.origin.x = leftSpace;
-            rect.origin.y += relateViewHeight + middleSpace;
-        }
-        InterestView *interestView = [[InterestView alloc] initWithFrame:rect];
-        RelativeGood *relativeGood = [_detailModel.relativeItem objectAtIndex:i];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectedRelativeGood:)];
-        [interestView addGestureRecognizer:tap];
-        [interestView setRelationData:relativeGood];
-        [_mainScrollView addSubview:interestView];
-        rect.origin.x += relateViewWidth + middleSpace;
-    }
-    
-    if ([_detailModel.relativeItem count] > 0) {
-        int relateRow = (int)([_detailModel.relativeItem count] - 1) / 2 + 1;
-        originY += relateRow * (relateViewHeight + middleSpace);
-    }
+//    UIView *sixthLine = [[UIView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, 1)];
+//    sixthLine.backgroundColor = kColor(200, 198, 199, 1);
+//    [_mainScrollView addSubview:sixthLine];
+//    UILabel *interestLabel = [[UILabel alloc] initWithFrame:CGRectMake((kScreenWidth - 80) / 2, originY - 10, 80, labelHeight)];
+//    [self setLabel:interestLabel withTitle:@"您感兴趣的" font:[UIFont systemFontOfSize:13.f]];
+//    interestLabel.textAlignment = NSTextAlignmentCenter;
+//    interestLabel.backgroundColor = kColor(244, 243, 243, 1);
+//    
+//    originY += 20;
+//    CGFloat middleSpace = 10.f;
+//    CGFloat relateViewWidth = (kScreenWidth - leftSpace - rightSpace - middleSpace) / 2;
+//    CGFloat relateViewHeight = relateViewWidth + 40 + 20 + 10;
+//    CGRect rect = CGRectMake(leftSpace, originY, relateViewWidth, relateViewHeight);
+//    for (int i = 0; i < [_detailModel.relativeItem count]; i++) {
+//        if (i % 2 == 0 && i != 0) {
+//            rect.origin.x = leftSpace;
+//            rect.origin.y += relateViewHeight + middleSpace;
+//        }
+//        InterestView *interestView = [[InterestView alloc] initWithFrame:rect];
+//        RelativeGood *relativeGood = [_detailModel.relativeItem objectAtIndex:i];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectedRelativeGood:)];
+//        [interestView addGestureRecognizer:tap];
+//        [interestView setRelationData:relativeGood];
+//        [_mainScrollView addSubview:interestView];
+//        rect.origin.x += relateViewWidth + middleSpace;
+//    }
+//    
+//    if ([_detailModel.relativeItem count] > 0) {
+//        int relateRow = (int)([_detailModel.relativeItem count] - 1) / 2 + 1;
+//        originY += relateRow * (relateViewHeight + middleSpace);
+//    }
     
     _mainScrollView.contentSize = CGSizeMake(kScreenWidth, originY);
 }
@@ -785,7 +803,7 @@ static CGFloat topImageHeight = 160.f;
     NSDictionary *detailDict = [dict objectForKey:@"result"];
     _detailModel = [[GoodDetialModel alloc] initWithParseDictionary:detailDict];
     [self initAndLayoutUI];
-    [_topScorllView downloadImageWithURLs:_detailModel.goodImageList target:self action:@selector(touchPicture:)];
+    [_topScorllView downloadImageWithURLs:_detailModel.goodImageList target:self action:@selector(touchPicture:) scaleImage:NO];
     self.totalPage = [_detailModel.goodImageList count];
     self.imagesScrollView.contentSize = CGSizeMake(self.totalPage * self.view.bounds.size.width, self.view.bounds.size.height);
 }
@@ -841,7 +859,7 @@ static CGFloat topImageHeight = 160.f;
 
 - (IBAction)selectedChannel:(id)sender {
     GoodButton *btn = (GoodButton *)sender;
-    btn.selected = YES;
+//    btn.selected = YES;
     if ([_detailModel.defaultChannel.channelID isEqualToString:btn.ID]) {
         NSLog(@"!");
     }

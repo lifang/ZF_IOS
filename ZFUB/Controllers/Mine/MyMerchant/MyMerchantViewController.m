@@ -15,7 +15,12 @@
 #import "MerchantDetailController.h"
 #import "MultipleDeleteCell.h"
 
-@interface MyMerchantViewController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate>
+typedef enum {
+    MerchantSingleDeleteTag = 10,
+    MerchantMultiDeleteTag,
+}MerchantDeleteTag;
+
+@interface MyMerchantViewController ()<UITableViewDataSource,UITableViewDelegate,RefreshDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -35,6 +40,8 @@
 @property (nonatomic, strong) NSMutableDictionary *selectedItem; //多选的行
 
 @property (nonatomic, strong) UIView *bottomView;
+
+@property (nonatomic, strong) NSIndexPath *deletePath;
 
 @end
 
@@ -394,7 +401,13 @@
 }
 
 - (IBAction)deleteMerchant:(id)sender {
-    [self deleteMultiMerchant];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:@"确认删除商户？"
+                                                   delegate:self
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
+    alert.tag = MerchantMultiDeleteTag;
+    [alert show];
 }
 
 #pragma mark - UITableView
@@ -437,7 +450,14 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self deleteSingleMerchantWithIndexPath:indexPath];
+        _deletePath = indexPath;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"确认删除商户？"
+                                                       delegate:self
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定", nil];
+        alert.tag = MerchantSingleDeleteTag;
+        [alert show];
     }
     else if (editingStyle == 3) {
         NSLog(@"33333");
@@ -571,6 +591,21 @@
 
 - (void)refreshMerchantList:(NSNotification *)notification {
     [self firstLoadData];
+}
+
+#pragma mark - UIAlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        if (alertView.tag == MerchantSingleDeleteTag) {
+            if (_deletePath) {
+                [self deleteSingleMerchantWithIndexPath:_deletePath];
+            }
+        }
+        else if (alertView.tag == MerchantMultiDeleteTag) {
+            [self deleteMultiMerchant];
+        }
+    }
 }
 
 @end

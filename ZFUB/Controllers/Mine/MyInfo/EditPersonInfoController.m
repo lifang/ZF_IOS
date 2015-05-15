@@ -10,6 +10,7 @@
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 #import "RegularFormat.h"
+#import "PersonInfoViewController.h"
 
 @interface EditPersonInfoController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
@@ -155,12 +156,6 @@
         case ModifyUsername:
             _editField.text = _userInfo.userName;
             break;
-        case ModifyPhoneNumber:
-            _editField.text = _userInfo.phoneNumber;
-            break;
-        case ModifyEmail:
-            _editField.text = _userInfo.email;
-            break;
         default:
             break;
     }
@@ -172,12 +167,6 @@
         case ModifyUsername:
             model.userName = _editField.text;
             break;
-        case ModifyPhoneNumber:
-            model.phoneNumber = _editField.text;
-            break;
-        case ModifyEmail:
-            model.email = _editField.text;
-            break;
         default:
             break;
     }
@@ -188,12 +177,6 @@
     switch (_modifyType) {
         case ModifyUsername:
             _userInfo.userName = model.userName;
-            break;
-        case ModifyPhoneNumber:
-            _userInfo.phoneNumber = model.phoneNumber;
-            break;
-        case ModifyEmail:
-            _userInfo.email = model.email;
             break;
         default:
             break;
@@ -211,22 +194,22 @@
         hud.labelText = @"修改信息不能为空";
         return;
     }
-    if (_modifyType == ModifyPhoneNumber && ![RegularFormat isMobileNumber:_editField.text]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请输入正确的手机号";
-        return;
-    }
-    if (_modifyType == ModifyEmail && ![RegularFormat isCorrectEmail:_editField.text]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请输入正确的邮箱";
-        return;
-    }
+//    if (_modifyType == ModifyPhoneNumber && ![RegularFormat isMobileNumber:_editField.text]) {
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//        hud.customView = [[UIImageView alloc] init];
+//        hud.mode = MBProgressHUDModeCustomView;
+//        [hud hide:YES afterDelay:1.f];
+//        hud.labelText = @"请输入正确的手机号";
+//        return;
+//    }
+//    if (_modifyType == ModifyEmail && ![RegularFormat isCorrectEmail:_editField.text]) {
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//        hud.customView = [[UIImageView alloc] init];
+//        hud.mode = MBProgressHUDModeCustomView;
+//        [hud hide:YES afterDelay:1.f];
+//        hud.labelText = @"请输入正确的邮箱";
+//        return;
+//    }
     [_editField becomeFirstResponder];
     [_editField resignFirstResponder];
     [self modifyUserInfo];
