@@ -20,6 +20,7 @@
 @interface RootViewController ()
 
 @property (nonatomic, strong) ShoppingCartController *shoppingC;
+@property (nonatomic, strong) MessageViewController *messageC;
 
 @end
 
@@ -65,11 +66,11 @@
                                                  selectedImage:kImageName(@"tabbar2_selected.png")];
     UINavigationController *shoppingNav = [[UINavigationController alloc] initWithRootViewController:_shoppingC];
     
-    MessageViewController *messageC = [[MessageViewController alloc] init];
-    messageC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的消息"
+    _messageC = [[MessageViewController alloc] init];
+    _messageC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的消息"
                                                         image:kImageName(@"tabbar3.png")
                                                 selectedImage:kImageName(@"tabbar3_selected.png")];
-    UINavigationController *messageNav = [[UINavigationController alloc] initWithRootViewController:messageC];
+    UINavigationController *messageNav = [[UINavigationController alloc] initWithRootViewController:_messageC];
     
     MineViewController *mineC = [[MineViewController alloc] init];
     mineC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的"
@@ -109,8 +110,18 @@
 
 - (void)showColumnCount:(NSNotification *)notification {
     int shopcartCount = [[notification.userInfo objectForKey:s_shopcart] intValue];
+    int messageCount = [[notification.userInfo objectForKey:s_messageTab] intValue];
     if (shopcartCount > 0) {
         _shoppingC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",shopcartCount];
+    }
+    else {
+        _messageC.tabBarItem.badgeValue = nil;
+    }
+    if (messageCount > 0) {
+        _messageC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",messageCount];
+    }
+    else {
+        _messageC.tabBarItem.badgeValue = nil;
     }
 }
 

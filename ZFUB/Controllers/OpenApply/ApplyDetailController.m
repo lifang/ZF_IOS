@@ -1244,21 +1244,23 @@
         hud.labelText = @"请填写结算银行名称";
         return;
     }
-    if (![_infoDict objectForKey:key_taxID]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请填写税务登记证号";
-        return;
-    }
-    if (![_infoDict objectForKey:key_organID]) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        hud.customView = [[UIImageView alloc] init];
-        hud.mode = MBProgressHUDModeCustomView;
-        [hud hide:YES afterDelay:1.f];
-        hud.labelText = @"请填写组织机构号";
-        return;
+    if (_applyType == OpenTypePublic) {
+        if (![_infoDict objectForKey:key_taxID]) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"请填写税务登记证号";
+            return;
+        }
+        if (![_infoDict objectForKey:key_organID]) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"请填写组织机构号";
+            return;
+        }
     }
     if (!_channelID || !_billID) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -1295,7 +1297,9 @@
     [params setObject:[NSNumber numberWithInt:_openStatus] forKey:@"status"];
     [params setObject:[NSNumber numberWithInt:[delegate.userID intValue]] forKey:@"applyCustomerId"];
     [params setObject:[NSNumber numberWithInt:_applyType] forKey:@"publicPrivateStatus"];
-    [params setObject:[NSNumber numberWithInt:[_merchantID intValue]] forKey:@"merchantId"];
+    if (_merchantID) {
+        [params setObject:[NSNumber numberWithInt:[_merchantID intValue]] forKey:@"merchantId"];
+    }
     [params setObject:[_infoDict objectForKey:key_merchantName] forKey:@"merchantName"];
     [params setObject:[_infoDict objectForKey:key_sex] forKey:@"sex"];
     [params setObject:[_infoDict objectForKey:key_birth] forKey:@"birthday"];

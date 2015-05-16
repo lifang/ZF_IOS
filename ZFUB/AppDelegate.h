@@ -28,6 +28,8 @@
 
 //本地新增购物车数量
 @property (nonatomic, assign) int shopcartCount;
+//消息数量
+@property (nonatomic, assign) int messageCount;
 
 + (AppDelegate *)shareAppDelegate;
 

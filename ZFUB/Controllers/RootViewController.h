@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 static NSString *s_shopcart = @"shopcart";
+static NSString *s_messageTab = @"s_messageTab";
 
 static NSString *ShowColumnNotification = @"ShowColumnNotification";
 

@@ -969,10 +969,11 @@ typedef enum {
     else if ([_terminalModel.TM_status intValue] == TerminalStatusUnOpened) {
         //未开通
         UIButton *openApplyBtn = [self buttonWithTitle:@"开通申请" action:@selector(openApply:)];
-        UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuthNotice:)];
+        UIButton *videoAuthBtn;
         UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirmNotice:)];
         if (_terminalModel.appID && ![_terminalModel.appID isEqualToString:@""]) {
             UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+            videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
             if (_terminalModel.hasVideoAuth) {
                 [self layoutButton:synBtn position:TerDetailBtnTopRight];
                 [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
@@ -984,6 +985,7 @@ typedef enum {
             }
         }
         else {
+            videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuthNotice:)];
             if (_terminalModel.hasVideoAuth) {
                 [self layoutButton:openApplyBtn position:TerDetailBtnTopRight];
                 [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];

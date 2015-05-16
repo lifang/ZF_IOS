@@ -14,6 +14,7 @@
 #import "UserArchiveHelper.h"
 
 #import "NewRegisterViewController.h"
+#import "BPush.h"
 
 
 
@@ -292,6 +293,8 @@
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     delegate.token = token;
     delegate.userID = userID;
+    //绑定推送
+    [BPush bindChannel];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -227,6 +227,8 @@
 		775AB4D81AAE9B86000E01C5 /* AddressEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4D71AAE9B86000E01C5 /* AddressEditController.m */; };
 		775AB4DE1AAECC00000E01C5 /* OrderConfirmController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4DD1AAECC00000E01C5 /* OrderConfirmController.m */; };
 		775AB4E11AAED788000E01C5 /* ShoppingCartOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775AB4E01AAED788000E01C5 /* ShoppingCartOrderController.m */; };
+		775B4EE51B07104C0037E698 /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 775B4EE41B07104C0037E698 /* libBPush.a */; };
+		775B4EE81B0721D10037E698 /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B4EE71B0721D10037E698 /* UIBarButtonItem+Badge.m */; };
 		775B86911AA189EF002434F4 /* AddTerminalController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86901AA189EF002434F4 /* AddTerminalController.m */; };
 		775B86941AA18FCD002434F4 /* InstitutionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86931AA18FCD002434F4 /* InstitutionModel.m */; };
 		775B86971AA19294002434F4 /* InstitutionSelectedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 775B86961AA19294002434F4 /* InstitutionSelectedController.m */; };
@@ -794,6 +796,10 @@
 		775AB4DD1AAECC00000E01C5 /* OrderConfirmController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmController.m; sourceTree = "<group>"; };
 		775AB4DF1AAED788000E01C5 /* ShoppingCartOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartOrderController.h; sourceTree = "<group>"; };
 		775AB4E01AAED788000E01C5 /* ShoppingCartOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingCartOrderController.m; sourceTree = "<group>"; };
+		775B4EE31B07104C0037E698 /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
+		775B4EE41B07104C0037E698 /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
+		775B4EE61B0721D10037E698 /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
+		775B4EE71B0721D10037E698 /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
 		775B868F1AA189EF002434F4 /* AddTerminalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTerminalController.h; sourceTree = "<group>"; };
 		775B86901AA189EF002434F4 /* AddTerminalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTerminalController.m; sourceTree = "<group>"; };
 		775B86921AA18FCD002434F4 /* InstitutionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionModel.h; sourceTree = "<group>"; };
@@ -904,6 +910,7 @@
 				77641DE21AE8E26B0022F31A /* libx264.a in Frameworks */,
 				77641DCF1AE8E26B0022F31A /* libcommon_audio.a in Frameworks */,
 				77641DCE1AE8E26B0022F31A /* libaudio_processing_sse2.a in Frameworks */,
+				775B4EE51B07104C0037E698 /* libBPush.a in Frameworks */,
 				77641DCC1AE8E26B0022F31A /* libaudio_processing.a in Frameworks */,
 				7755D7DF1AE7A87F00F273BD /* libssl.a in Frameworks */,
 				77641DE31AE8E26B0022F31A /* libyuv.a in Frameworks */,
@@ -1276,6 +1283,8 @@
 		774129551A73471500DA0B27 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				775B4EE61B0721D10037E698 /* UIBarButtonItem+Badge.h */,
+				775B4EE71B0721D10037E698 /* UIBarButtonItem+Badge.m */,
 				7755D7EA1AE7AFA000F273BD /* AlipayHelper */,
 				7730938D1A8B1B8B0096FE0B /* Refresh */,
 				774129571A73474800DA0B27 /* Format_UI */,
@@ -1753,6 +1762,7 @@
 		775873D51A72349A00EB3AE5 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				775B4EE21B07104C0037E698 /* LibBPush */,
 				0DE4923E1B05A1790083A32E /* Masonry */,
 				0DE492351B05A1710083A32E /* HexColors */,
 				0DE492311B05A1550083A32E /* Base */,
@@ -1802,6 +1812,15 @@
 				775873F31A7234A900EB3AE5 /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		775B4EE21B07104C0037E698 /* LibBPush */ = {
+			isa = PBXGroup;
+			children = (
+				775B4EE31B07104C0037E698 /* BPush.h */,
+				775B4EE41B07104C0037E698 /* libBPush.a */,
+			);
+			path = LibBPush;
 			sourceTree = "<group>";
 		};
 		775B869B1AA1BCE9002434F4 /* OpenApply */ = {
@@ -2023,7 +2042,7 @@
 				TargetAttributes = {
 					7792CB4A1A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = X6GEEF4LU9;
+						DevelopmentTeam = 63FVWL9TD6;
 					};
 					7792CB631A709C8F00C44A64 = {
 						CreatedOnToolsVersion = 6.1;
@@ -2163,6 +2182,7 @@
 				7738E8831AA07AC500D51CBE /* TerminalManagerModel.m in Sources */,
 				776A6CC11AF0AB9B00F9EEA6 /* WaitingViewController.m in Sources */,
 				7747DC3D1A7B2FBF002797CC /* AfterSaleViewController.m in Sources */,
+				775B4EE81B0721D10037E698 /* UIBarButtonItem+Badge.m in Sources */,
 				7739FAF81AB66AA30043A2A6 /* RegisterLocationController.m in Sources */,
 				7755D7E21AE7A87F00F273BD /* DataVerifier.m in Sources */,
 				773BDF371AA943DB008D3DC7 /* OpeningModel.m in Sources */,
@@ -2438,6 +2458,8 @@
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
+					"$(PROJECT_DIR)/ZFUB/Library/Alipay/LibBPush",
+					"$(PROJECT_DIR)/ZFUB/Library/LibBPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2473,6 +2495,8 @@
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
+					"$(PROJECT_DIR)/ZFUB/Library/Alipay/LibBPush",
+					"$(PROJECT_DIR)/ZFUB/Library/LibBPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -24,12 +24,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"消息详情";
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"merchant1.png")
-                                                                  style:UIBarButtonItemStyleDone
-                                                                 target:self
-                                                                 action:@selector(deleteMessage:)];
-    self.navigationItem.rightBarButtonItem = rightItem;
+
+    if (_isFromPush) {
+        //推送
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"返回"
+                                                                     style:UIBarButtonItemStyleDone
+                                                                    target:self
+                                                                    action:@selector(goBack:)];
+        self.navigationItem.leftBarButtonItem = leftItem;
+        
+    }
+    else {
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"merchant1.png")
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(deleteMessage:)];
+        self.navigationItem.rightBarButtonItem = rightItem;
+    }
     [self initAndLayoutUI];
     [self getMessageDetail];
 }
@@ -249,8 +260,12 @@
 - (void)getMessageDetail {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"加载中...";
+    NSString *messageID = _message.messageID;
+    if (_isFromPush) {
+        messageID = _messageID;
+    }
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface getMyMessageDetailWithToken:delegate.token userID:delegate.userID messageID:_message.messageID finished:^(BOOL success, NSData *response) {
+    [NetworkInterface getMyMessageDetailWithToken:delegate.token userID:delegate.userID messageID:messageID finished:^(BOOL success, NSData *response) {
         NSLog(@"%@",[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
@@ -294,6 +309,10 @@
 
 #pragma mark - Action
 
+- (IBAction)goBack:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)deleteMessage:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
                                                     message:@"确认删除消息？"
@@ -306,8 +325,12 @@
 - (void)deleteMessage {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.labelText = @"提交中...";
+    NSString *messageID = _message.messageID;
+    if (_isFromPush) {
+        messageID = _messageID;
+    }
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    [NetworkInterface messageDeleteSingleWithToken:delegate.token userID:delegate.userID messageID:_message.messageID finished:^(BOOL success, NSData *response) {
+    [NetworkInterface messageDeleteSingleWithToken:delegate.token userID:delegate.userID messageID:messageID finished:^(BOOL success, NSData *response) {
         hud.customView = [[UIImageView alloc] init];
         hud.mode = MBProgressHUDModeCustomView;
         [hud hide:YES afterDelay:0.5f];

@@ -25,6 +25,7 @@
 #import "FactoryDetailController.h"
 #import "ChannelWebsiteController.h"
 #import "GoodImageController.h"
+#import "UIBarButtonItem+Badge.h"
 
 //static CGFloat topImageHeight = 160.f;
 
@@ -64,11 +65,20 @@
     // Do any additional setup after loading the view.
     self.title = @"商品详情";
     self.view.backgroundColor = kColor(244, 243, 243, 1);
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"good_right1.png")
-                                                                  style:UIBarButtonItemStyleDone
-                                                                 target:self
-                                                                 action:@selector(goShoppingCart:)];
+//    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"good_right1.png")
+//                                                                  style:UIBarButtonItemStyleDone
+//                                                                 target:self
+//                                                                 action:@selector(goShoppingCart:)];
+//    self.navigationItem.rightBarButtonItem = rightItem;
+    
+    UIButton *shoppingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    shoppingButton.frame = CGRectMake(0, 0, 24, 24);
+    [shoppingButton setBackgroundImage:kImageName(@"good_right1.png") forState:UIControlStateNormal];
+    [shoppingButton addTarget:self action:@selector(goShoppingCart:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:shoppingButton];
     self.navigationItem.rightBarButtonItem = rightItem;
+    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
     
     [self downloadGoodDetail];
 }
@@ -76,6 +86,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    if (delegate.shopcartCount > 0) {
+        self.navigationItem.rightBarButtonItem.badgeValue = [NSString stringWithFormat:@"%d",delegate.shopcartCount];
+    }
 }
 
 #pragma mark - UI
@@ -787,6 +804,7 @@
                     hud.labelText = @"添加到购物车成功";
                     [[NSNotificationCenter defaultCenter] postNotificationName:RefreshShoppingCartNotification object:nil];
                     delegate.shopcartCount ++;
+                    self.navigationItem.rightBarButtonItem.badgeValue = [NSString stringWithFormat:@"%d",delegate.shopcartCount];
                     NSDictionary *shopDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                               [NSNumber numberWithInt:delegate.shopcartCount],s_shopcart,
                                               nil];
@@ -858,6 +876,7 @@
 }
 
 - (IBAction)goShoppingCart:(id)sender {
+    self.navigationItem.rightBarButtonItem.badgeValue = nil;
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     if (!delegate.userID || [delegate.userID isEqualToString:@""]) {
         [self showLoginViewController];
