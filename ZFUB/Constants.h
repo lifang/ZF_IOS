@@ -41,6 +41,13 @@
 #define kOrderCallBackURL  @"http://www.ebank007.com/app_notify_url.jsp"
 #define kCSCallBackURL     @"http://www.ebank007.com/repair_app_notify_url.jsp"
 
+//#define kMode_Production             @"01" //测试
+//#define kUnionPayURL  @"http://121.40.84.2:8080/ZFMerchant/unionpay.do" //测试
+
+#define kMode_Production             @"00"  //线上
+#define kUnionPayURL  @"http://121.40.64.167:8080/unionpay.do" //线上
+
+
 #define kImageName(name) [UIImage imageNamed:name]
 
 #define kServiceReturnWrong  @"服务端数据返回错误"
