@@ -74,6 +74,7 @@ static NSString *s_defaultTerminalNum = @"选择终端号";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     [self layoutSubViewWithCell:cell];

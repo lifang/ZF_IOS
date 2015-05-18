@@ -240,6 +240,7 @@
 		776144A51AAD9D4000FAE3B6 /* LogisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776144A41AAD9D4000FAE3B6 /* LogisticViewController.m */; };
 		776191121B0077AF0067122B /* ProtocolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 776191111B0077AF0067122B /* ProtocolView.m */; };
 		776221691B05A47E0053C951 /* GoodImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776221681B05A47E0053C951 /* GoodImageController.m */; };
+		7763E6351B09CE8300ED94EB /* MappingPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7763E6341B09CE8300ED94EB /* MappingPlist.plist */; };
 		77641DAB1AE8E2450022F31A /* VideoAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77641DAA1AE8E2450022F31A /* VideoAuthController.m */; };
 		77641DCC1AE8E26B0022F31A /* libaudio_processing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77641DB31AE8E26B0022F31A /* libaudio_processing.a */; };
 		77641DCD1AE8E26B0022F31A /* libaudio_processing_neon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77641DB41AE8E26B0022F31A /* libaudio_processing_neon.a */; };
@@ -822,6 +823,7 @@
 		776191111B0077AF0067122B /* ProtocolView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtocolView.m; sourceTree = "<group>"; };
 		776221671B05A47E0053C951 /* GoodImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoodImageController.h; sourceTree = "<group>"; };
 		776221681B05A47E0053C951 /* GoodImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoodImageController.m; sourceTree = "<group>"; };
+		7763E6341B09CE8300ED94EB /* MappingPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MappingPlist.plist; sourceTree = "<group>"; };
 		77641DA91AE8E2450022F31A /* VideoAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoAuthController.h; sourceTree = "<group>"; };
 		77641DAA1AE8E2450022F31A /* VideoAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoAuthController.m; sourceTree = "<group>"; };
 		77641DAE1AE8E26B0022F31A /* AnyChatDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnyChatDefine.h; sourceTree = "<group>"; };
@@ -1973,6 +1975,7 @@
 				7792CB4F1A709C8F00C44A64 /* Info.plist */,
 				7792CB501A709C8F00C44A64 /* main.m */,
 				775873C61A71F4F600EB3AE5 /* ZFUB-Prefix.pch */,
+				7763E6341B09CE8300ED94EB /* MappingPlist.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2078,6 +2081,7 @@
 				0DE4921E1B059F890083A32E /* pwd_lock.png in Resources */,
 				0DE492161B059F560083A32E /* ebankProtocol.html in Resources */,
 				7755D7DC1AE7A87F00F273BD /* AlipaySDK.bundle in Resources */,
+				7763E6351B09CE8300ED94EB /* MappingPlist.plist in Resources */,
 				0D9CA9B41AF0ABEC00CB37EF /* useriphone2@2x.png in Resources */,
 				0DE4926A1B05FA3E0083A32E /* bkg@3x.png in Resources */,
 				0D9CA9B21AF0ABDF00CB37EF /* useriphone1@2x.png in Resources */,

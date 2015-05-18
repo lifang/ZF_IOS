@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
 
-#define UMENG_APPKEY @"5514cefefd98c59e51000561"
+#define UMENG_APPKEY @"553deed667e58eda60000404"
 
 #define kDefaultCityID  @"0"
 

@@ -89,6 +89,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     if (delegate.shopcartCount > 0) {
         self.navigationItem.rightBarButtonItem.badgeValue = [NSString stringWithFormat:@"%d",delegate.shopcartCount];

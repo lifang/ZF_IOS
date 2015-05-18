@@ -51,6 +51,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.tabBarItem.badgeValue = nil;
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     delegate.shopcartCount = 0;
