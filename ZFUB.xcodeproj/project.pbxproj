@@ -2462,7 +2462,6 @@
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
-					"$(PROJECT_DIR)/ZFUB/Library/Alipay/LibBPush",
 					"$(PROJECT_DIR)/ZFUB/Library/LibBPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -2499,7 +2498,6 @@
 					"$(PROJECT_DIR)/ZFUB/UMAnalytics_Sdk_3.4.6",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/ZFUB/Library/UnionPay",
-					"$(PROJECT_DIR)/ZFUB/Library/Alipay/LibBPush",
 					"$(PROJECT_DIR)/ZFUB/Library/LibBPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
