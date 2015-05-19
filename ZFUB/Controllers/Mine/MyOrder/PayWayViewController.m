@@ -36,10 +36,10 @@
 #define kResult           @"支付结果：%@"
 
 
-#define kMode_Development             @"01"
-#define kMode_Production             @"00"
+//#define kMode_Development             @"01"
+//#define kMode_Production             @"00"
 
-#define kURL_TN_Normal                @"http://202.101.25.178:8080/sim/gettn"
+//#define kURL_TN_Normal                @"http://202.101.25.178:8080/sim/gettn"
 
 
 @interface PayWayViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
@@ -328,7 +328,7 @@
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -367,8 +367,8 @@
         [self payWithAlipay];
     }
     else if (indexPath.section == 1) {
-        _tnMode = kMode_Development;
-        // _tnMode = kMode_Production;
+        
+         _tnMode = kMode_Production;
         [self startUnionPayRequest];
     }
 }
@@ -461,7 +461,8 @@
     [self showAlertWait];
     
     //NSURL *URL=[NSURL URLWithString:@"http://121.40.64.167:8080/unionpay.do"]; //Production URL
-    NSURL *URL=[NSURL URLWithString:@"http://121.40.84.2:8080/ZFMerchant/unionpay.do"];//test URL
+    //NSURL *URL=[NSURL URLWithString:@"http://121.40.84.2:8080/ZFMerchant/unionpay.do"];//test URL
+     NSURL *URL=[NSURL URLWithString:[NSString stringWithFormat:kUnionPayURL]];
     
     NSString *Price=[NSString stringWithFormat:@"%.0f", _totalPrice*100];
     NSString *str = [NSString stringWithFormat:@"frontOrBack=back&orderId=%@&txnAmt=%@&wap=wap&txnType=01&android=android", _payNumber,Price];

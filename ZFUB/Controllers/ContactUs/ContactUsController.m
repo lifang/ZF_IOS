@@ -100,7 +100,7 @@ static NSString *s_phoneNumber = @"4000090876";
     CGFloat originY = kScreenHeight - imageSize - btnHeight * 4;
     
     UIImageView *qrView = [[UIImageView alloc] initWithFrame:CGRectMake(borderSpace, originY, imageSize, imageSize)];
-    qrView.image = kImageName(@"qr.jpg");
+    qrView.image = kImageName(@"erweima");
     [_markView addSubview:qrView];
     
     UIButton *saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -150,7 +150,7 @@ static NSString *s_phoneNumber = @"4000090876";
 
 - (IBAction)saveQR:(id)sender {
     [self removeQRView:nil];
-    UIImage *image = [UIImage imageNamed:@"qr.jpg"];
+    UIImage *image = [UIImage imageNamed:@"erweima"];
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 
