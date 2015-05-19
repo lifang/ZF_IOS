@@ -19,8 +19,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        backBtn.frame = CGRectMake(0, 0, 20, 44);
+        //UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        //backBtn.frame = CGRectMake(0, 0, 20, 44);
        // backBtn.titleLabel.font = IconFontWithSize(16);
         //[backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         //[backBtn setTitle:@"\U0000e602" forState:UIControlStateNormal];

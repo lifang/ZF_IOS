@@ -7,6 +7,7 @@
 //
 
 #import "SuccessRegisterViewController.h"
+#import "MobClick.h"
 
 @interface SuccessRegisterViewController ()
 
@@ -130,6 +131,17 @@
     
    [self.navigationController popToRootViewControllerAnimated:YES];
 
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"PageOne"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"PageOne"];
 }
 
 - (void)didReceiveMemoryWarning {

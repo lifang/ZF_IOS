@@ -10,6 +10,7 @@
 #import "SuccessRegisterViewController.h"
 #import "NetworkInterface.h"
 #import "MBProgressHUD.h"
+#import "MobClick.h"
 
 
 @interface PasswordViewController ()<UITextFieldDelegate>
@@ -34,16 +35,7 @@
     [super viewDidLoad];
     self.title=@"填写登录密码";
    self.view.backgroundColor=[UIColor colorWithHexString:@"f4f3f3"];
-    /*
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 20, 44);
-    backBtn.titleLabel.font = IconFontWithSize(22);
-    [backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [backBtn setTitle:@"\U0000e602" forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftBarBtn = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = leftBarBtn;
-*/
+ 
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"back.png")
                                                                  style:UIBarButtonItemStyleBordered
                                                                 target:self
@@ -285,7 +277,7 @@
     
     if (buttonIndex==0)
     {
-        //[self.navigationController popViewControllerAnimated:YES];
+        
         [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
     }
 }
@@ -334,6 +326,18 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"PageOne"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"PageOne"];
 }
     
 - (void)didReceiveMemoryWarning {
