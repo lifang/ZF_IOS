@@ -11,6 +11,7 @@
 #import "NetworkInterface.h"
 #import "ebankProtocolViewController.h"
 #import "PasswordViewController.h"
+#import "MobClick.h"
 
 
 @interface getCodeViewController ()<UITextFieldDelegate>
@@ -398,15 +399,17 @@
 }
 
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void)viewWillAppear:(BOOL)animated
 {
-   // [self sendMobileValidate];
-  //  [self TimeCountStart];
-
-
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"PageOne"];
 }
-
-
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"PageOne"];
+}
 
 
 - (void)didReceiveMemoryWarning {

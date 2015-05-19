@@ -14,6 +14,7 @@
 #import "getCodeViewController.h"
 #import "LocationViewController.h"
 #import "FindPasswordViewController.h"
+#import "MobClick.h"
 
 
 @interface NewRegisterViewController ()<UITextFieldDelegate,LocationDelegate,CLLocationManagerDelegate>
@@ -468,6 +469,14 @@
                                             selector:@selector(handleKeyboardDidHidden)
                                                 name:UIKeyboardDidHideNotification
                                               object:nil];
+    [MobClick beginLogPageView:@"PageOne"];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"PageOne"];
 }
 
 

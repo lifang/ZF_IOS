@@ -7,10 +7,10 @@
 //
 
 #import "ebankProtocolViewController.h"
+#import "MobClick.h"
 
-@interface ebankProtocolViewController ()<UIScrollViewDelegate>
+@interface ebankProtocolViewController ()
 
-//@property (nonatomic, strong) UIScrollView *scrollView;
 
 @property (nonatomic, strong) UIWebView *webView;
 
@@ -69,49 +69,17 @@
 
 
     [self loadHTML];
-    /*
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"ebankProtocol.txt" withExtension:nil];
-    
-    //uiwebview加载文件的第二个方式。第一个方式在下面的注释中。
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [_webView loadRequest:request];
-*/
-
+   
     
 }
 
-
-
-#pragma mark 加载本地文本文件
-- (void)loadText
-{
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ebankProtocol.txt" ofType:nil];
-    //NSURL *url = [NSURL fileURLWithPath:path];
-    
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    
-    [_webView loadData:data MIMEType:@"text/plain" textEncodingName:@"UTF-8" baseURL:nil];
-}
-
-#pragma mark 加载docx文件
-- (void)loadDOCX
-{
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ebankProtocol.docx" ofType:nil];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    //NSLog(@"%@", [self mimeType:url]);
-    
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    
-    [_webView loadData:data MIMEType:@"application/vnd.openxmlformats-officedocument.wordprocessingml.document" textEncodingName:@"UTF-8" baseURL:nil];
-}
 
 
 #pragma mark 加载本地html文件
 - (void)loadHTML
 {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ebankProtocol.html" ofType:nil];
-    NSURL *url = [NSURL fileURLWithPath:path];
+    //NSURL *url = [NSURL fileURLWithPath:path];
    // NSLog(@"%@", [self mimeType:url]);
     
     NSData *data = [NSData dataWithContentsOfFile:path];
@@ -119,6 +87,17 @@
     [self.webView loadData:data MIMEType:@"text/html" textEncodingName:@"UTF-8" baseURL:nil];
 }
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"PageOne"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"PageOne"];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
