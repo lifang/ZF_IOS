@@ -46,7 +46,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-
+    
     //判断是不是第一次启动应用
     if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"])
     {
@@ -257,10 +257,9 @@
 
 //收到通知弹出到通知界面
 - (void)showNotificationViewWithInfo:(NSDictionary *)userInfo pushLaunch:(BOOL)pushLaunch {
-    NSLog(@"%@",userInfo);
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:1];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    NSString *messageID = nil;
+    NSString *messageID = @"";
     if ([userInfo objectForKey:@"msgId"] && ![[userInfo objectForKey:@"msgId"] isKindOfClass:[NSNull class]]) {
         messageID = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"msgId"]];
     }
@@ -270,17 +269,13 @@
         detailC.messageID = messageID;
         detailC.isFromPush = YES;
         [NavigationBarAttr setNavigationBarStyle:nav];
-        if (!pushLaunch) {
-            [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
-        }
+        [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
     }
     else {
-        if (!pushLaunch) {
-            LoginViewController *loginC = [[LoginViewController alloc] init];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
-            [NavigationBarAttr setNavigationBarStyle:nav];
-            [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
-        }
+        LoginViewController *loginC = [[LoginViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginC];
+        [NavigationBarAttr setNavigationBarStyle:nav];
+        [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
     }
 }
 

@@ -24,6 +24,8 @@
 
 #define kAppChannel  4
 
+#define kAppVersionType  1   //版本更新
+
 //#define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
 #define kServiceURL @"http://www.ebank007.com/api"   //线上
 

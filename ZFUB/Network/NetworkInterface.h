@@ -434,6 +434,9 @@ static NSString *s_goodImage_method = @"good/getGoodImgUrl";
 //推送
 static NSString *s_push_method = @"customers/sendDeviceCode";
 
+//更新
+static NSString *s_update_method = @"index/getVersion";
+
 @interface NetworkInterface : NSObject
 
 /*!
@@ -1422,5 +1425,7 @@ static NSString *s_push_method = @"customers/sendDeviceCode";
 + (void)uploadPushInfoWithUserID:(NSString *)userID
                      channelInfo:(NSString *)channelInfo
                         finished:(requestDidFinished)finish;
+
++ (void)checkVersionFinished:(requestDidFinished)finish;
 
 @end
