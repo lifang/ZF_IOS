@@ -48,6 +48,12 @@
 		<string>视频认证界面</string>
 		<key>TerminalManagerController</key>
 		<string>终端管理列表界面</string>
+		<key>MerchantSelectedController</key>
+		<string>开通申请选择商户界面</string>
+		<key>BankSelectedController</key>
+		<string>开通申请选择银行界面</string>
+		<key>ChannelSelectedController</key>
+		<string>开通申请选择支付通道界面</string>
 		<key>DealFlowViewController</key>
 		<string>交易流水界面</string>
 		<key>TerminalSelectedController</key>
