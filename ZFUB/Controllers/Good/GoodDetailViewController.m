@@ -448,9 +448,9 @@
     CGFloat outTypeHeight = [self addLabelWithTitle:@"外壳类型" content:_detailModel.goodMaterial offsetY:originY];
     //电池
     originY += vSpace + outTypeHeight;
-    [self addLabelWithTitle:@"电池信息" content:_detailModel.goodBattery offsetY:originY];
+    CGFloat batteyHeight = [self addLabelWithTitle:@"电池信息" content:_detailModel.goodBattery offsetY:originY];
     //签购单
-    originY += vSpace +labelHeight;
+    originY += vSpace + batteyHeight;
     CGFloat signHeight = [self addLabelWithTitle:@"签购单打印方式" content:_detailModel.goodSignWay offsetY:originY];
     //加密卡
     originY += vSpace + signHeight;
