@@ -1260,12 +1260,13 @@ static NSString *HTTP_GET  = @"GET";
                             finished:(requestDidFinished)finish {
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_merchantUploadImage_method];
+    NSLog(@"url = %@",urlString);
     NetworkRequest *request = [[NetworkRequest alloc] initWithRequestURL:urlString
                                                               httpMethod:HTTP_POST
                                                                 finished:finish];
     [request uploadImageData:UIImagePNGRepresentation(image)
                    imageName:nil
-                         key:@"fileImg"];
+                         key:@"file"];
     [request start];
 }
 

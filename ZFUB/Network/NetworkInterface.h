@@ -297,7 +297,7 @@ static NSString *s_merchantAdd_method = @"merchant/insert";
 static NSString *s_merchantModify_method = @"merchant/update";
 
 //商户上传图片
-static NSString *s_merchantUploadImage_method = @"merchant/upload/file";
+static NSString *s_merchantUploadImage_method = @"index/upload";
 
 //删除商户
 static NSString *s_merchantDelete_method = @"merchant/delete";

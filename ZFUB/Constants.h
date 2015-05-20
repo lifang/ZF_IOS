@@ -26,22 +26,22 @@
 
 #define kAppVersionType  1   //版本更新
 
-//#define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
-#define kServiceURL @"http://www.ebank007.com/api"   //线上
+#define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
+//#define kServiceURL @"http://www.ebank007.com/api"   //线上
 
-//#define kVideoAuthIP    @"121.40.84.2"      //测试
-#define kVideoAuthIP      @"121.40.64.120"    //线上
+#define kVideoAuthIP    @"121.40.84.2"      //测试
+//#define kVideoAuthIP      @"121.40.64.120"    //线上
 #define kVideoAuthPort  8906
 
 //视频提示地址
-//#define kVideoServiceURL @"http://121.40.84.2:38080/ZFManager/notice/video"
-#define kVideoServiceURL @"http://admin.ebank007.com/notice/video"   //线上
+#define kVideoServiceURL @"http://121.40.84.2:38080/ZFManager/notice/video"
+//#define kVideoServiceURL @"http://admin.ebank007.com/notice/video"   //线上
 
-//#define kOrderCallBackURL  @"http://121.40.84.2:8080/ZFMerchant/app_notify_url.jsp"
-//#define kCSCallBackURL     @"http://121.40.84.2:8080/ZFMerchant/repair_app_notify_url.jsp"
+#define kOrderCallBackURL  @"http://121.40.84.2:8080/ZFMerchant/app_notify_url.jsp"
+#define kCSCallBackURL     @"http://121.40.84.2:8080/ZFMerchant/repair_app_notify_url.jsp"
 //线上
-#define kOrderCallBackURL  @"http://www.ebank007.com/app_notify_url.jsp"
-#define kCSCallBackURL     @"http://www.ebank007.com/repair_app_notify_url.jsp"
+//#define kOrderCallBackURL  @"http://www.ebank007.com/app_notify_url.jsp"
+//#define kCSCallBackURL     @"http://www.ebank007.com/repair_app_notify_url.jsp"
 
 //#define kMode_Production             @"01" //测试
 //#define kUnionPayURL  @"http://121.40.84.2:8080/ZFMerchant/unionpay.do" //测试

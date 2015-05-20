@@ -389,6 +389,7 @@
 }
 
 - (void)getCurrentCityInfoWithCityName:(NSString *)cityName {
+    NSLog(@"location = %@",cityName);
     CityModel *currentCity = nil;
     for (CityModel *model in [CityHandle shareCityList]) {
         if ([cityName rangeOfString:model.cityName].length != 0) {
