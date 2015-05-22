@@ -400,7 +400,12 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                 case 2: {
                     //手机
                     ModifyViewController *editC = [[ModifyViewController alloc] init];
-                    editC.editType = EditViewModify;
+                    if (!_userInfo.phoneNumber || [_userInfo.phoneNumber isEqualToString:@""]) {
+                        editC.editType = EditViewNew;
+                    }
+                    else {
+                        editC.editType = EditViewModify;
+                    }
                     editC.type = ModifyUserMobile;
                     editC.userInfo = _userInfo;
                     [self.navigationController pushViewController:editC animated:YES];
@@ -409,7 +414,12 @@ static NSInteger s_thirdSectionCount = 1;    ///第三分组列数
                 case 3: {
                     //邮箱
                     ModifyViewController *editC = [[ModifyViewController alloc] init];
-                    editC.editType = EditViewModify;
+                    if (!_userInfo.email || [_userInfo.email isEqualToString:@""]) {
+                        editC.editType = EditViewNew;
+                    }
+                    else {
+                        editC.editType = EditViewModify;
+                    }
                     editC.type = ModifyUserEmail;
                     editC.userInfo = _userInfo;
                     [self.navigationController pushViewController:editC animated:YES];
