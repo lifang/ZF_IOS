@@ -54,7 +54,7 @@ static NSDictionary *s_mappingPlist = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     NSString *pageKey = [[self getMappingDictionary] objectForKey:NSStringFromClass(self.class)];
-    NSLog(@"++++++++++++++++++++++++++++++++++++++++%@",pageKey);
+    NSLog(@"++++++++++++++++++++++++++++++++++++++++%@,%@",pageKey,[self class]);
     if (pageKey) {
         [MobClick beginLogPageView:pageKey];
     }
