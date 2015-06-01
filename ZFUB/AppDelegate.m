@@ -72,33 +72,6 @@
     
     
     
-//    //JPUSH
-//    // Required
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-//    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-//        //可以添加自定义categories
-//        [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-//                                                       UIUserNotificationTypeSound |
-//                                                       UIUserNotificationTypeAlert)
-//                                           categories:nil];
-//    } else {
-//        //categories 必须为nil
-//        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-//                                                       UIRemoteNotificationTypeSound |
-//                                                       UIRemoteNotificationTypeAlert)
-//                                           categories:nil];
-//    }
-//#else
-//    //categories 必须为nil
-//    // [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-//    //                                                UIRemoteNotificationTypeSound |
-//    //                                                UIRemoteNotificationTypeAlert)
-//    //                                   categories:nil];
-//#endif
-//    // Required
-//    [APService setupWithOption:launchOptions];
-
-    
     // iOS8 下需要使⽤用新的 API
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         UIUserNotificationType myTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound
@@ -173,7 +146,7 @@
 {
 //    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 //    self.window.backgroundColor = [UIColor whiteColor];
-    
+    [NSThread sleepForTimeInterval:3.0];//延长3秒
     _rootController = [[RootViewController alloc] init];
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

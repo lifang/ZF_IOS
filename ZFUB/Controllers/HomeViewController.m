@@ -37,6 +37,8 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
+@property (nonatomic, strong) NSString *updateURL;
+
 @end
 
 @implementation HomeViewController
@@ -52,7 +54,7 @@
     [self getUserLocation];
 //    [self fillingUser];
     
-//    [NSThread sleepForTimeInterval:3.0];//延长3秒
+    [self checkVersion];
     
 }
 
@@ -419,5 +421,52 @@
         delegate.cityID = kDefaultCityID;
     }
 }
+
+
+#pragma mark - Request
+
+- (void)checkVersion {
+   
+    [NetworkInterface checkVersionFinished:^(BOOL success, NSData *response) {
+       
+        if (success) {
+            id object = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:nil];
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                int errorCode = [[object objectForKey:@"code"] intValue];
+                if (errorCode == RequestSuccess) {
+                    NSLog(@"shuju:%@",object);
+                    id infoDict = [object objectForKey:@"result"];
+                    if ([infoDict isKindOfClass:[NSDictionary class]]) {
+                        int serviceVersion = [[infoDict objectForKey:@"versions"] intValue];
+                        _updateURL = [infoDict objectForKey:@"down_url"];
+                        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+                        
+                        NSLog(@"local:%@",localVersion);
+                        if (serviceVersion > [localVersion intValue]) {
+                            
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                                                message:@"发现新版本，是否前往下载？"
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"取消"
+                                                                      otherButtonTitles:@"前往下载", nil];
+                            [alertView show];
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }];
+}
+
+
+#pragma mark - UIAlertView
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_updateURL]];
+    }
+}
+
 
 @end
