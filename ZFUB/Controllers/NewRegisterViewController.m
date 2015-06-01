@@ -527,6 +527,7 @@
         //_cityTF.text = @"定位失败";
         _cityId = kDefaultCityID;
     }
+     [_locationManager stopUpdatingLocation];
 }
 
 
