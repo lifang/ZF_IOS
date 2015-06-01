@@ -59,7 +59,7 @@
                                                      image:kImageName(@"tabbar1.png")
                                              selectedImage:kImageName(@"tabbar1_selected.png")];
     UINavigationController *homeNav = [[UINavigationController alloc] initWithRootViewController:homeC];
-    
+
     _shoppingC = [[ShoppingCartController alloc] init];
     _shoppingC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"购物车"
                                                          image:kImageName(@"tabbar2.png")

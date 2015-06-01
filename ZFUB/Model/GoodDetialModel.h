@@ -54,8 +54,8 @@
 
 @property (nonatomic, strong) NSString *goodDescription;   //详细说明
 
-@property (nonatomic, strong) NSString *maxTime;   //租赁最长时间
-@property (nonatomic, strong) NSString *minTime;   //租赁最短时间
+@property (nonatomic, assign) int maxTime;   //租赁最长时间
+@property (nonatomic, assign) int minTime;   //租赁最短时间
 @property (nonatomic, assign) CGFloat deposit;     //押金
 @property (nonatomic, assign) CGFloat leasePrice;  //租赁价格
 @property (nonatomic, strong) NSString *leaseDescription;  //租赁说明

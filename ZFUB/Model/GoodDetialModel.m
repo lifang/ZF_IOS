@@ -78,10 +78,10 @@
                 _goodPrice = [[goodInfo objectForKey:@"retail_price"] floatValue] / 100;
             }
             if ([goodInfo objectForKey:@"lease_time"]) {
-                _minTime = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"lease_time"]];
+                _minTime = [[goodInfo objectForKey:@"lease_time"] intValue];
             }
             if ([goodInfo objectForKey:@"return_time"]) {
-                _maxTime = [NSString stringWithFormat:@"%@",[goodInfo objectForKey:@"return_time"]];
+                _maxTime = [[goodInfo objectForKey:@"return_time"] intValue];
             }
             if ([goodInfo objectForKey:@"lease_price"]) {
                 _leasePrice = [[goodInfo objectForKey:@"lease_price"] floatValue] / 100;

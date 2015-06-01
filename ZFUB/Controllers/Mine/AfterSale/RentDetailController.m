@@ -618,8 +618,13 @@
     if ([infoDict objectForKey:@"lease_min_time"]) {
         _minDuration = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"lease_min_time"]];
     }
-    if ([infoDict objectForKey:@"return_price"]) {
-        _refund = [[infoDict objectForKey:@"return_price"] floatValue] / 100;
+    if ([[infoDict objectForKey:@"crf_retrun_price"] floatValue] / 100 > 0) {
+        _refund = [[infoDict objectForKey:@"crf_retrun_price"] floatValue] / 100;
+    }
+    else {
+        if ([infoDict objectForKey:@"return_price"]) {
+            _refund = [[infoDict objectForKey:@"return_price"] floatValue] / 100;
+        }
     }
     if ([infoDict objectForKey:@"receiver_name"]) {
         _contact = [NSString stringWithFormat:@"%@",[infoDict objectForKey:@"receiver_name"]];

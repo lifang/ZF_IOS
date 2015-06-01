@@ -24,6 +24,7 @@
 #import "ChannelWebsiteController.h"
 #import "UserArchiveHelper.h"
 #import "WaitingViewController.h"
+#import "GoodDetailViewController.h"
 
 @interface HomeViewController ()<LocationDelegate,CLLocationManagerDelegate>
 
@@ -331,16 +332,15 @@
 }
 
 - (void)tapPicture:(UITapGestureRecognizer *)tap {
-//    UIImageView *imageView = (UIImageView *)[tap view];
-//    NSInteger index = imageView.tag - 1;
-//    ChannelWebsiteController *websiteC = [[ChannelWebsiteController alloc] init];
-//    if (index >= 0 && index < [_pictureItem count]) {
-//        HomeImageModel *imageModel = [_pictureItem objectAtIndex:index];
-//        websiteC.title = @"详情";
-//        websiteC.urlString = imageModel.websiteURL;
-//        websiteC.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:websiteC animated:YES];
-//    }
+    UIImageView *imageView = (UIImageView *)[tap view];
+    NSInteger index = imageView.tag - 1;
+    if (index >= 0 && index < [_pictureItem count]) {
+        HomeImageModel *imageModel = [_pictureItem objectAtIndex:index];
+        GoodDetailViewController *detailC = [[GoodDetailViewController alloc] init];
+        detailC.goodID = imageModel.goodID;
+        detailC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:detailC animated:YES];
+    }
 }
 
 #pragma mark - 数据处理

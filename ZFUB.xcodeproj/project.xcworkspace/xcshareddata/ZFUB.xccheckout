@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>32B23494-F740-430F-A425-208C49475C3D</string>
 	<key>IDESourceControlProjectName</key>
-	<string>ZFUB</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>1E493F6299DC56058D198B8DFFF9DB766DCF78C1</key>
 		<string>github.com:lifang/ZF_user_IOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ZFUB.xcodeproj</string>
+	<string>ZFUB.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1E493F6299DC56058D198B8DFFF9DB766DCF78C1</key>
