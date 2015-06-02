@@ -338,10 +338,12 @@
     NSInteger index = imageView.tag - 1;
     if (index >= 0 && index < [_pictureItem count]) {
         HomeImageModel *imageModel = [_pictureItem objectAtIndex:index];
-        GoodDetailViewController *detailC = [[GoodDetailViewController alloc] init];
-        detailC.goodID = imageModel.goodID;
-        detailC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:detailC animated:YES];
+        if (imageModel.goodID) {
+            GoodDetailViewController *detailC = [[GoodDetailViewController alloc] init];
+            detailC.goodID = imageModel.goodID;
+            detailC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:detailC animated:YES];
+        }
     }
 }
 
