@@ -21,6 +21,9 @@
         if ([dict objectForKey:@"order_psf"]) {
             _orderDeliveryFee = [[dict objectForKey:@"order_psf"] floatValue] / 100;
         }
+        if ([dict objectForKey:@"bd_cost"]) {
+            _totalOpenCost = [[dict objectForKey:@"bd_cost"] floatValue] / 100;
+        }
         if ([dict objectForKey:@"order_receiver"]) {
             _orderReceiver = [NSString stringWithFormat:@"%@",[dict objectForKey:@"order_receiver"]];
         }

@@ -77,6 +77,9 @@
             if ([goodInfo objectForKey:@"retail_price"]) {
                 _goodPrice = [[goodInfo objectForKey:@"retail_price"] floatValue] / 100;
             }
+            if ([goodInfo objectForKey:@"price"]) {
+                _goodPrimaryPrice = [[goodInfo objectForKey:@"price"] floatValue] / 100;
+            }
             if ([goodInfo objectForKey:@"lease_time"]) {
                 _minTime = [[goodInfo objectForKey:@"lease_time"] intValue];
             }

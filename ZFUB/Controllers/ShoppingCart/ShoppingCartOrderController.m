@@ -175,6 +175,7 @@
         }
         ShoppingCartModel *model = [_shoppingCartItem objectAtIndex:indexPath.row];
         cell.nameLabel.text = model.cartTitle;
+        cell.openPriceLabel.text = [NSString stringWithFormat:@"(含开通费￥%.2f)",model.channelCost];
         cell.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",model.cartPrice + model.channelCost];
         cell.numberLabel.text = [NSString stringWithFormat:@"X %d",model.cartCount];
         cell.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@",model.cartModel];

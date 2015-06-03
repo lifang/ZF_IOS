@@ -45,6 +45,8 @@
 
 @property (nonatomic, strong) NSString *terminals;
 
+@property (nonatomic, assign) CGFloat totalOpenCost;   //总开通费
+
 @property (nonatomic, assign) int needInvoice;
 
 @property (nonatomic, strong) NSMutableArray *goodList;

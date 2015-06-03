@@ -38,7 +38,9 @@
 
 @property (nonatomic, strong) NSString *goodCategory;
 
-@property (nonatomic, assign) CGFloat goodPrice;       //商品价格
+@property (nonatomic, assign) CGFloat goodPrice;       //商品价格 现价
+
+@property (nonatomic, assign) CGFloat goodPrimaryPrice; //商品原价
 
 @property (nonatomic, strong) NSString *goodComment;   //评论数
 

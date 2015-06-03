@@ -191,6 +191,7 @@
     if (indexPath.row == 0) {
         OrderDetailCell *cell = [[OrderDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.nameLabel.text = _goodDetail.goodName;
+        cell.openPriceLabel.text = [NSString stringWithFormat:@"开通费￥%.2f",_goodDetail.defaultChannel.openCost];
 //        cell.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",(_goodDetail.leasePrice + _goodDetail.defaultChannel.openCost)];
         cell.numberLabel.text = [NSString stringWithFormat:@"X %d",_count];
         cell.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@%@",_goodDetail.goodBrand,_goodDetail.goodModel];
@@ -214,10 +215,10 @@
     else if (indexPath.row == 2) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
         cell.textLabel.font = [UIFont systemFontOfSize:14.f];
-        cell.textLabel.text = @"押金和开通费用";
+        cell.textLabel.text = @"押金";
         cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:16.f];
         cell.detailTextLabel.textColor = kColor(255, 102, 36, 1);
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",(_goodDetail.defaultChannel.openCost + _goodDetail.deposit) * _count];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"￥%.2f",_goodDetail.deposit * _count];
         return cell;
     }
     else if (indexPath.row == 3) {

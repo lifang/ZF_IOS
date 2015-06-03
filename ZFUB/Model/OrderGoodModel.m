@@ -34,6 +34,9 @@
         if ([dict objectForKey:@"good_logo"]) {
             _goodPicture = [NSString stringWithFormat:@"%@",[dict objectForKey:@"good_logo"]];
         }
+        if ([dict objectForKey:@"good_opening_cost"]) {
+            _openCost = [[dict objectForKey:@"good_opening_cost"] floatValue] /100;
+        }
     }
     return self;
 }

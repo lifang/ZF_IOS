@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) NSString *goodPicture;
 
+@property (nonatomic, assign) CGFloat openCost;
+
 - (id)initWithParseDictionary:(NSDictionary *)dict;
 
 @end

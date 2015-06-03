@@ -136,6 +136,7 @@
     if (indexPath.row == 0) {
         OrderDetailCell *cell = [[OrderDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.nameLabel.text = _goodDetail.goodName;
+        cell.openPriceLabel.text = [NSString stringWithFormat:@"(含开通费￥%.2f)",_goodDetail.defaultChannel.openCost];
         cell.priceLabel.text = [NSString stringWithFormat:@"￥%.2f",(_goodDetail.goodPrice + _goodDetail.defaultChannel.openCost)];
         cell.numberLabel.text = [NSString stringWithFormat:@"X %d",_count];
         cell.brandLabel.text = [NSString stringWithFormat:@"品牌型号 %@%@",_goodDetail.goodBrand,_goodDetail.goodModel];

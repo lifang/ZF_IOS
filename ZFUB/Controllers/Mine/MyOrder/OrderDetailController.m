@@ -349,7 +349,7 @@
                     [cell.contentView addSubview:payLabel];
                     //配送费
                     UILabel *deliveryLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, 50, kScreenWidth - originX * 2, 20.f)];
-                    [self setLabel:deliveryLabel withString:[NSString stringWithFormat:@"配送费：￥%.2f",_orderDetail.orderDeliveryFee]];
+                    [self setLabel:deliveryLabel withString:[NSString stringWithFormat:@"开通费：￥%.2f",_orderDetail.totalOpenCost]];
                     [cell.contentView addSubview:deliveryLabel];
                 }
                     break;
