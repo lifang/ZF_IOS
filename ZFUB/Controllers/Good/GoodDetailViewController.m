@@ -50,6 +50,7 @@
 
 @property (nonatomic, strong) UIButton *shopcartButton;  //购物车按钮
 @property (nonatomic, strong) UIButton *buyGoodButton;   //立刻购买
+@property (nonatomic, strong) UIButton *noGoodButton;
 
 //点击看大图
 @property (nonatomic, strong) UIScrollView *imagesScrollView;
@@ -211,29 +212,42 @@
     CGFloat middleSpace = 10.f;
     CGFloat btnWidth = (kScreenWidth - 4 * middleSpace) / 2;
     CGFloat btnHeight = 36.f;
-    _shopcartButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _shopcartButton.frame = CGRectMake(middleSpace, 12, btnWidth, btnHeight);
-    _shopcartButton.layer.cornerRadius = 4.f;
-    _shopcartButton.layer.masksToBounds = YES;
-    _shopcartButton.layer.borderWidth = 1.f;
-    _shopcartButton.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
-    [_shopcartButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
-    [_shopcartButton setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
-    [_shopcartButton setTitle:@"加入购物车" forState:UIControlStateNormal];
-    _shopcartButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
-    [_shopcartButton addTarget:self action:@selector(addShoppingCart:) forControlEvents:UIControlEventTouchUpInside];
-    [_footerView addSubview:_shopcartButton];
-    
-    //立即购买
-    _buyGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _buyGoodButton.frame = CGRectMake(btnWidth + 3 * middleSpace, 12, btnWidth, btnHeight);
-    _buyGoodButton.layer.cornerRadius = 4.f;
-    _buyGoodButton.layer.masksToBounds = YES;
-    [_buyGoodButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
-    [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
-    _buyGoodButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
-    [_buyGoodButton addTarget:self action:@selector(buyNow:) forControlEvents:UIControlEventTouchUpInside];
-    [_footerView addSubview:_buyGoodButton];
+    if (_detailModel.stockNumber <= 0) {
+        _noGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _noGoodButton.frame = CGRectMake(middleSpace, 12, kScreenWidth - 2 * middleSpace, btnHeight);
+        _noGoodButton.layer.cornerRadius = 4.f;
+        _noGoodButton.layer.masksToBounds = YES;
+        [_noGoodButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+        [_noGoodButton setTitle:@"缺货" forState:UIControlStateNormal];
+        _noGoodButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
+        [_noGoodButton addTarget:self action:@selector(noGoods:) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:_noGoodButton];
+    }
+    else {
+        _shopcartButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _shopcartButton.frame = CGRectMake(middleSpace, 12, btnWidth, btnHeight);
+        _shopcartButton.layer.cornerRadius = 4.f;
+        _shopcartButton.layer.masksToBounds = YES;
+        _shopcartButton.layer.borderWidth = 1.f;
+        _shopcartButton.layer.borderColor = kColor(255, 102, 36, 1).CGColor;
+        [_shopcartButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
+        [_shopcartButton setTitleColor:kColor(134, 56, 0, 1) forState:UIControlStateHighlighted];
+        [_shopcartButton setTitle:@"加入购物车" forState:UIControlStateNormal];
+        _shopcartButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+        [_shopcartButton addTarget:self action:@selector(addShoppingCart:) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:_shopcartButton];
+        
+        //立即购买
+        _buyGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _buyGoodButton.frame = CGRectMake(btnWidth + 3 * middleSpace, 12, btnWidth, btnHeight);
+        _buyGoodButton.layer.cornerRadius = 4.f;
+        _buyGoodButton.layer.masksToBounds = YES;
+        [_buyGoodButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+        [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
+        _buyGoodButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
+        [_buyGoodButton addTarget:self action:@selector(buyNow:) forControlEvents:UIControlEventTouchUpInside];
+        [_footerView addSubview:_buyGoodButton];
+    }
 }
 
 //查看大图
@@ -303,7 +317,7 @@
     NSMutableAttributedString *primaryString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%.2f",_detailModel.goodPrimaryPrice]];
     NSDictionary *normalAttr = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [UIFont boldSystemFontOfSize:13.f],NSFontAttributeName,
-                                [UIColor blackColor],NSForegroundColorAttributeName,
+                                kColor(145, 145, 145, 1),NSForegroundColorAttributeName,
                                 [NSNumber numberWithInt:1],NSStrikethroughStyleAttributeName,
                                 nil];
     [primaryString setAttributes:normalAttr range:NSMakeRange(0, [primaryString length])];
@@ -313,7 +327,7 @@
     UILabel *saleNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(originX, originY, kScreenWidth - originX - rightSpace, labelHeight)];
     saleNumberLabel.backgroundColor = [UIColor clearColor];
     saleNumberLabel.font = [UIFont systemFontOfSize:13.f];
-    saleNumberLabel.textColor = [UIColor lightGrayColor];
+    saleNumberLabel.textColor = kColor(145, 145, 145, 1);
     saleNumberLabel.textAlignment = NSTextAlignmentRight;
     saleNumberLabel.text = [NSString stringWithFormat:@"累计销售%d",[_detailModel.goodSaleNumber intValue]];
     [_mainScrollView addSubview:saleNumberLabel];
@@ -551,36 +565,36 @@
     
     //标准手续费
     originY += labelHeight + 10;
-    CGFloat standFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.standRateItem count]
-                                                  hasTitle:YES];
-    FormView *standForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, standFormHeight)];
-    [standForm setGoodDetailDataWithFormTitle:@"刷卡交易标准手续费"
-                                      content:_detailModel.defaultChannel.standRateItem
-                                   titleArray:[NSArray arrayWithObjects:@"商户类",@"费率",@"说明",nil]];
-    [_mainScrollView addSubview:standForm];
-    
-    //资金服务费
-    originY += standFormHeight + 10;
-    CGFloat dateFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.dateRateItem count]
-                                                 hasTitle:YES];
-    FormView *dateForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, dateFormHeight)];
-    [dateForm setGoodDetailDataWithFormTitle:@"资金服务费"
-                                     content:_detailModel.defaultChannel.dateRateItem
-                                  titleArray:[NSArray arrayWithObjects:@"结算周",@"费率",@"说明", nil]];
-    [_mainScrollView addSubview:dateForm];
-    
-    //其它交易费率
-    originY += dateFormHeight + 10;
-    CGFloat otherFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.otherRateItem count]
-                                                  hasTitle:YES];
-    FormView *otherForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, otherFormHeight)];
-    [otherForm setGoodDetailDataWithFormTitle:@"其它交易费率"
-                                      content:_detailModel.defaultChannel.otherRateItem
-                                   titleArray:[NSArray arrayWithObjects:@"交易类",@"费率",@"说明", nil]];
-    [_mainScrollView addSubview:otherForm];
+//    CGFloat standFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.standRateItem count]
+//                                                  hasTitle:YES];
+//    FormView *standForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, standFormHeight)];
+//    [standForm setGoodDetailDataWithFormTitle:@"刷卡交易标准手续费"
+//                                      content:_detailModel.defaultChannel.standRateItem
+//                                   titleArray:[NSArray arrayWithObjects:@"商户类",@"费率",@"说明",nil]];
+//    [_mainScrollView addSubview:standForm];
+//    
+//    //资金服务费
+//    originY += standFormHeight + 10;
+//    CGFloat dateFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.dateRateItem count]
+//                                                 hasTitle:YES];
+//    FormView *dateForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, dateFormHeight)];
+//    [dateForm setGoodDetailDataWithFormTitle:@"资金服务费"
+//                                     content:_detailModel.defaultChannel.dateRateItem
+//                                  titleArray:[NSArray arrayWithObjects:@"结算周",@"费率",@"说明", nil]];
+//    [_mainScrollView addSubview:dateForm];
+//    
+//    //其它交易费率
+//    originY += dateFormHeight + 10;
+//    CGFloat otherFormHeight = [FormView heightWithRowCount:[_detailModel.defaultChannel.otherRateItem count]
+//                                                  hasTitle:YES];
+//    FormView *otherForm = [[FormView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, otherFormHeight)];
+//    [otherForm setGoodDetailDataWithFormTitle:@"其它交易费率"
+//                                      content:_detailModel.defaultChannel.otherRateItem
+//                                   titleArray:[NSArray arrayWithObjects:@"交易类",@"费率",@"说明", nil]];
+//    [_mainScrollView addSubview:otherForm];
     
     //申请开通条件
-    originY += otherFormHeight + 10;
+//    originY += otherFormHeight + 10;
     UILabel *openTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, labelHeight)];
     [self setLabel:openTitleLabel withTitle:@"申请开通条件" font:[UIFont systemFontOfSize:13.f]];
     
@@ -781,7 +795,7 @@
     NSMutableAttributedString *openString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"￥%.2f",_detailModel.defaultChannel.openCost]];
     NSDictionary *openAttr = [NSDictionary dictionaryWithObjectsAndKeys:
                               [UIFont boldSystemFontOfSize:13.f],NSFontAttributeName,
-                              kColor(255, 102, 36, 1),NSForegroundColorAttributeName,
+                              kColor(145, 145, 145, 1),NSForegroundColorAttributeName,
                               nil];
     [openString setAttributes:openAttr range:NSMakeRange(0, [openString length])];
     _openPriceLabel.attributedText = openString;
@@ -997,6 +1011,14 @@
     }
 }
 
+- (IBAction)noGoods:(id)sender {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.customView = [[UIImageView alloc] init];
+    hud.mode = MBProgressHUDModeCustomView;
+    [hud hide:YES afterDelay:1.5f];
+    hud.labelText = @"很报歉，该商品正在加紧补货中";
+}
+
 - (IBAction)buyGood:(id)sender {
     NSLog(@"buy ");
     _buyButton.selected = YES;
@@ -1044,7 +1066,8 @@
 
 - (IBAction)scanRate:(id)sender {
     TradeRateViewController *rateC = [[TradeRateViewController alloc] init];
-    rateC.tradeRateItem = _detailModel.defaultChannel.dateRateItem;
+//    rateC.tradeRateItem = _detailModel.defaultChannel.dateRateItem;
+    rateC.defaultChannel = _detailModel.defaultChannel;
     [self.navigationController pushViewController:rateC animated:YES];
 }
 
