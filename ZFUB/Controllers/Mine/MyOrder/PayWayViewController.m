@@ -447,10 +447,10 @@
         [self UnionPaySucess];
     }
     if ([result isEqualToString:@"fail"]) {
-        [self showAlertMessage:result];
+        [self showAlertMessage:@"支付失败"];
     }
     if ([result isEqualToString:@"cancel"]) {
-        [self showAlertMessage:result];
+        [self showAlertMessage:@"取消支付"];
     }
 }
 
@@ -460,8 +460,7 @@
 {
     [self showAlertWait];
     
-    //NSURL *URL=[NSURL URLWithString:@"http://121.40.64.167:8080/unionpay.do"]; //Production URL
-    //NSURL *URL=[NSURL URLWithString:@"http://121.40.84.2:8080/ZFMerchant/unionpay.do"];//test URL
+   
      NSURL *URL=[NSURL URLWithString:[NSString stringWithFormat:kUnionPayURL]];
     
     NSString *Price=[NSString stringWithFormat:@"%.0f", _totalPrice*100];
