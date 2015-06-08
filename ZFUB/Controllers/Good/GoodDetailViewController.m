@@ -217,7 +217,7 @@
         _noGoodButton.frame = CGRectMake(middleSpace, 12, kScreenWidth - 2 * middleSpace, btnHeight);
         _noGoodButton.layer.cornerRadius = 4.f;
         _noGoodButton.layer.masksToBounds = YES;
-        [_noGoodButton setBackgroundImage:kImageName(@"orange.png") forState:UIControlStateNormal];
+        [_noGoodButton setBackgroundImage:kImageName(@"selected.png") forState:UIControlStateNormal];
         [_noGoodButton setTitle:@"缺货" forState:UIControlStateNormal];
         _noGoodButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.f];
         [_noGoodButton addTarget:self action:@selector(noGoods:) forControlEvents:UIControlEventTouchUpInside];
@@ -616,27 +616,27 @@
     
     //商品详细说明
     originY += openHeight + 20;
-    UILabel *descriptionTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, labelHeight)];
-    [self setLabel:descriptionTitleLabel withTitle:@"商品详细说明" font:[UIFont systemFontOfSize:13.f]];
-    
-    //划线
-    originY += labelHeight + vSpace;
-    UIView *fifthLine = [[UIView alloc] initWithFrame:CGRectMake(10, originY, kScreenWidth - 20, 1)];
-    fifthLine.backgroundColor = kColor(255, 102, 36, 1);
-    [_mainScrollView addSubview:fifthLine];
-    
-    //说明
-    originY += vSpace + 1;
-    CGFloat descriptionHeight = [self heightWithString:_detailModel.goodDescription
-                                          width:kScreenWidth - leftSpace - rightSpace
-                                       fontSize:13.f];
-    descriptionHeight = descriptionHeight < labelHeight ? labelHeight : descriptionHeight;
-    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, descriptionHeight)];
-    descriptionLabel.numberOfLines = 0;
-    [self setLabel:descriptionLabel withTitle:_detailModel.goodDescription font:[UIFont systemFontOfSize:13.f]];
-    
-    //感兴趣的
-    originY += descriptionHeight + 20;
+//    UILabel *descriptionTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, labelHeight)];
+//    [self setLabel:descriptionTitleLabel withTitle:@"商品详细说明" font:[UIFont systemFontOfSize:13.f]];
+//    
+//    //划线
+//    originY += labelHeight + vSpace;
+//    UIView *fifthLine = [[UIView alloc] initWithFrame:CGRectMake(10, originY, kScreenWidth - 20, 1)];
+//    fifthLine.backgroundColor = kColor(255, 102, 36, 1);
+//    [_mainScrollView addSubview:fifthLine];
+//    
+//    //说明
+//    originY += vSpace + 1;
+//    CGFloat descriptionHeight = [self heightWithString:_detailModel.goodDescription
+//                                          width:kScreenWidth - leftSpace - rightSpace
+//                                       fontSize:13.f];
+//    descriptionHeight = descriptionHeight < labelHeight ? labelHeight : descriptionHeight;
+//    UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftSpace, originY, kScreenWidth - leftSpace - rightSpace, descriptionHeight)];
+//    descriptionLabel.numberOfLines = 0;
+//    [self setLabel:descriptionLabel withTitle:_detailModel.goodDescription font:[UIFont systemFontOfSize:13.f]];
+//    
+//    //感兴趣的
+//    originY += descriptionHeight + 20;
 //    UIView *sixthLine = [[UIView alloc] initWithFrame:CGRectMake(0, originY, kScreenWidth, 1)];
 //    sixthLine.backgroundColor = kColor(200, 198, 199, 1);
 //    [_mainScrollView addSubview:sixthLine];
@@ -1016,7 +1016,7 @@
     hud.customView = [[UIImageView alloc] init];
     hud.mode = MBProgressHUDModeCustomView;
     [hud hide:YES afterDelay:1.5f];
-    hud.labelText = @"很报歉，该商品正在加紧补货中";
+    hud.labelText = @"很抱歉，该商品正在加紧补货中";
 }
 
 - (IBAction)buyGood:(id)sender {
