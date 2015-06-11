@@ -1029,7 +1029,7 @@
     [_shopcartButton setTitleColor:kColor(255, 102, 36, 1) forState:UIControlStateNormal];
     
     [_buyGoodButton setTitle:@"立即购买" forState:UIControlStateNormal];
-    _factTitleLabel.text = @"机具原价";
+    _factTitleLabel.text = @"机具现价";
     [self setPriceWithString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice + _detailModel.defaultChannel.openCost]];
     [self setRentPriceWithFactString:[NSString stringWithFormat:@"%.2f",_detailModel.goodPrice]];
     [self setOpenPrice];
