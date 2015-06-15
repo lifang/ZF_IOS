@@ -90,7 +90,7 @@
     
     _codeTF = [[UITextField alloc] init];
     _codeTF.delegate = self;
-    _codeTF.keyboardType = UIKeyboardTypePhonePad;
+    _codeTF.keyboardType = UIKeyboardTypeNumberPad;
     _codeTF.textAlignment = NSTextAlignmentCenter;
     _codeTF.leftViewMode = UITextFieldViewModeAlways;
     _codeTF.font = FONT18;

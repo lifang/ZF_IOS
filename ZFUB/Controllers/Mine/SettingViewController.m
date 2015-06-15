@@ -164,6 +164,104 @@
     }];
 }
 
+/*
+//AppStore 更新
+-(void)checkVersion
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.labelText = @"正在检测...";
+    hud.customView = [[UIImageView alloc] init];
+    hud.mode = MBProgressHUDModeCustomView;
+    [hud hide:YES afterDelay:3.0f];
+    
+    _updateURL = @"https://itunes.apple.com/app/id1004306145";
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *localVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
+    NSArray *localVersionComponents = [localVersion componentsSeparatedByString:@"."];
+    
+    NSString *strURL=[[NSString alloc] initWithFormat:@"http://itunes.apple.com/lookup?id=1004306145"];
+    NSURL *url=[NSURL URLWithString:strURL];
+    
+    NSData *postData = [strURL dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:postData];
+    
+    NSOperationQueue *queue=[NSOperationQueue mainQueue];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data) {//请求成功
+            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            NSLog(@"%@",dict);
+            
+            NSString *error=dict[@"error"];
+            if (error) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                                message:error
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            else
+            {
+                
+                NSArray *infoArray = [dict objectForKey:@"results"];
+                
+                if ([infoArray count]) {
+                    NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
+                    NSString *AppStoreVersion = [releaseInfo objectForKey:@"version"];
+                    NSArray *AppStoreVersionComponents = [AppStoreVersion componentsSeparatedByString: @"."];
+                    
+                    if ([localVersionComponents count] == 3 && [AppStoreVersionComponents count] == 3) {
+                        if ([AppStoreVersionComponents[0] integerValue] > [localVersionComponents[0] integerValue])
+                        { // A.b.c
+                            [self displayUpdateMessage];
+                        }
+                        else if
+                            ([AppStoreVersionComponents[1] integerValue] > [localVersionComponents[1] integerValue])
+                        { // a.B.c
+                            [self displayUpdateMessage];
+                        }
+                        else if
+                            ([AppStoreVersionComponents[2] integerValue] > [localVersionComponents[2] integerValue])
+                        { // a.b.C
+                            [self displayUpdateMessage];
+                        }
+                        else
+                        {
+                            hud.labelText = @"已经是最新版本";
+                            
+                        }
+                    }
+                }
+                
+            }
+        }else   //请求失败
+        {
+            hud.labelText =@"请求失败";
+        }
+    }];
+}
+
+
+
+-(void)displayUpdateMessage
+{
+    
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                        message:@"发现新版本，是否前往下载？"
+                                                       delegate:self
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"前往下载", nil];
+    [alertView show];
+    
+}
+
+*/
+
 #pragma mark - Data
 
 - (void)initStaticData {

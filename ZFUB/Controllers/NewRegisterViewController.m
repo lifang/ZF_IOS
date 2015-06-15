@@ -58,7 +58,7 @@
     self.primaryPoint = CGPointMake(0, self.view.frame.origin.y + topHeight);
 
     UIImageView *backgroundView = [[UIImageView alloc] init];
-    backgroundView.image = kImageName(@"bkg");
+    backgroundView.image = kImageName(@"bkg2");
     backgroundView.backgroundColor = [UIColor lightGrayColor];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:backgroundView];
@@ -89,7 +89,7 @@
     [view makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.bottom.equalTo(self.view.centerY).offset(-1);
+        make.bottom.equalTo(self.view.centerY).offset(-51);
         // make.centerY.equalTo(self.view.centerY);
         make.height.equalTo(@50);
     }];
@@ -121,8 +121,8 @@
     [_cityTF makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right).offset(-30);
-        make.bottom.equalTo(self.view.centerY).offset(-1);
-       // make.centerY.equalTo(self.view.centerY);
+       // make.bottom.equalTo(self.view.centerY).offset(-1);
+        make.bottom.equalTo(self.view.centerY).offset(-51);
         make.height.equalTo(@50);
     }];
     
@@ -158,7 +158,8 @@
     [self.view addSubview:line2];
     [line2 makeConstraints:^(MASConstraintMaker *make) {
         //make.top.equalTo(_cityTF.bottom);
-        make.top.equalTo(self.view.centerY);
+       // make.top.equalTo(self.view.centerY);
+         make.top.equalTo(self.view.centerY).offset(-50);
         make.left.equalTo(self.view.left);
         make.right.equalTo(self.view.right);
         make.height.equalTo(@1);
@@ -171,7 +172,8 @@
     [view1 makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.centerY).offset(1);
+        make.top.equalTo(self.view.centerY).offset(-49);
+       // make.top.equalTo(self.view.centerY).offset(1);
         //make.centerY.equalTo(self.view.centerY);
         make.height.equalTo(@50);
 
@@ -179,7 +181,8 @@
 
     _phoneTF = [[UITextField alloc] init];
     _phoneTF.delegate = self;
-    _phoneTF.keyboardType = UIKeyboardTypePhonePad;
+    //_phoneTF.keyboardType = UIKeyboardTypePhonePad;
+    _phoneTF.keyboardType =UIKeyboardTypeNumberPad;
     _phoneTF.textAlignment = NSTextAlignmentRight;
     _phoneTF.leftViewMode = UITextFieldViewModeAlways;
     _phoneTF.font = FONT15;
@@ -200,8 +203,8 @@
     [_phoneTF makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right).offset(-30);
-        make.top.equalTo(self.view.centerY).offset(1);
-        //make.centerY.equalTo(self.view.centerY);
+      //  make.top.equalTo(self.view.centerY).offset(1);
+         make.top.equalTo(self.view.centerY).offset(-49);
         make.height.equalTo(@50);
     }];
     
@@ -227,7 +230,8 @@
     [self.view addSubview:_sendBtn];
     [_sendBtn makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
-        make.top.equalTo(_phoneTF.bottom).offset(50);
+       // make.top.equalTo(_phoneTF.bottom).offset(50);
+        make.top.equalTo(_phoneTF.bottom).offset(30);
         make.width.equalTo(@180);
         make.height.equalTo(@40);
     }];
@@ -439,7 +443,7 @@
     CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect fieldRect = [[self.editingField superview] convertRect:self.editingField.frame toView:self.view];
     CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height);
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height-_sendBtn.frame.size.height-30);
     if (offsetY > 0 && self.offset == 0) {
         self.offset = offsetY;
         [UIView animateWithDuration:0.3f animations:^{
