@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D0655B01B2EC864007D9AA8 /* bkg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D0655AF1B2EC864007D9AA8 /* bkg2@2x.png */; };
+		0D0655B21B2EC869007D9AA8 /* bkg2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D0655B11B2EC869007D9AA8 /* bkg2@3x.png */; };
 		0D336B181AE505D8002640F9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B171AE505D8002640F9 /* CFNetwork.framework */; };
 		0D336B1A1AE505E4002640F9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B191AE505E4002640F9 /* CoreFoundation.framework */; };
 		0D336B1C1AE505EC002640F9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */; };
@@ -300,6 +302,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D0655AF1B2EC864007D9AA8 /* bkg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bkg2@2x.png"; sourceTree = "<group>"; };
+		0D0655B11B2EC869007D9AA8 /* bkg2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bkg2@3x.png"; sourceTree = "<group>"; };
 		0D336B171AE505D8002640F9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		0D336B191AE505E4002640F9 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		0D336B1B1AE505EC002640F9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -978,6 +982,8 @@
 		0D9CA9B01AF0AB9300CB37EF /* image */ = {
 			isa = PBXGroup;
 			children = (
+				0D0655B11B2EC869007D9AA8 /* bkg2@3x.png */,
+				0D0655AF1B2EC864007D9AA8 /* bkg2@2x.png */,
 				0DE492651B05FA340083A32E /* bkg.png */,
 				0DE492671B05FA390083A32E /* bkg@2x.png */,
 				0DE492691B05FA3E0083A32E /* bkg@3x.png */,
@@ -2090,6 +2096,8 @@
 				0DE492681B05FA390083A32E /* bkg@2x.png in Resources */,
 				0DE4921C1B059F7B0083A32E /* user_login.png in Resources */,
 				7759C7C21B043A670032B848 /* View.xib in Resources */,
+				0D0655B21B2EC869007D9AA8 /* bkg2@3x.png in Resources */,
+				0D0655B01B2EC864007D9AA8 /* bkg2@2x.png in Resources */,
 				0DE4921A1B059F760083A32E /* sigIn@2x.png in Resources */,
 				7792CB5C1A709C8F00C44A64 /* Images.xcassets in Resources */,
 				0DE492141B059F500083A32E /* check_y.png in Resources */,
@@ -2438,8 +2446,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: fang qian (YSGNM446KN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: fang qian (YSGNM446KN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2465,7 +2473,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c01bdd30-8251-49a9-9be6-a3739405ba38";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -2474,8 +2482,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SHANGHAI EPALMPAY NETWORK TECHNOLOGY CO., LTD.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: fang qian (YSGNM446KN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: fang qian (YSGNM446KN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ZFUB/Library/Alipay",
@@ -2501,7 +2509,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c01bdd30-8251-49a9-9be6-a3739405ba38";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
