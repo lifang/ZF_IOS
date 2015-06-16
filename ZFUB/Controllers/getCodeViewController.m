@@ -41,19 +41,7 @@
     [super viewDidLoad];
     self.title=@"填写手机验证码";
     self.view.backgroundColor=[UIColor colorWithHexString:@"f4f3f3"];
-   // [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"layout_bg"]]];
-    
-    /*
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    backBtn.frame = CGRectMake(0, 0, 20, 44);
-    backBtn.titleLabel.font = IconFontWithSize(22);
-    [backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [backBtn setTitle:@"\U0000e602" forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftBarBtn = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = leftBarBtn;
-     */
-
+   
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:kImageName(@"back.png")
                                                                  style:UIBarButtonItemStyleBordered
                                                                 target:self
@@ -187,18 +175,7 @@
         make.height.equalTo(@40);
     }];
 
-    /*
-    _emailLB=[[UILabel alloc] init];
-    _emailLB.font=FONT14;
-    _emailLB.text=@"使用邮箱地址注册";
-    [self.view addSubview:_emailLB];
-    [_emailLB makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view.centerX);
-        make.bottom.equalTo(self.view.bottom).offset(50);
-        make.width.equalTo(@200);
-        make.height.equalTo(@40);
-    }];
-    */
+
     
     _TAP = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchPressed:)];
     [self.view addGestureRecognizer:_TAP];
@@ -398,12 +375,34 @@
     
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSInteger length = textField.text.length;
+    if (length >= 6 && string.length >0)
+    {
+        return  NO;
+    }
+    return YES;
+}
 
+-(void)hideKeyboard
+{
+    if ([_codeTF.text length] >= 6) {
+        [_codeTF resignFirstResponder];
+    }
+    
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [MobClick beginLogPageView:@"PageOne"];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideKeyboard)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
