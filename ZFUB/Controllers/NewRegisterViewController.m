@@ -58,7 +58,7 @@
     self.primaryPoint = CGPointMake(0, self.view.frame.origin.y + topHeight);
 
     UIImageView *backgroundView = [[UIImageView alloc] init];
-    backgroundView.image = kImageName(@"bkg2");
+    backgroundView.image = kImageName(@"bkg");
     backgroundView.backgroundColor = [UIColor lightGrayColor];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:backgroundView];
@@ -69,19 +69,6 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     
-    /*
-    UIImageView *loginView = [[UIImageView alloc] init];
-    loginView.image = kImageName(@"login_logo.png");
-    loginView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:loginView];
-    [loginView makeConstraints:^(MASConstraintMaker *make) {
-       // make.top.equalTo(self.view.mas_top).offset(80);
-        make.centerX.equalTo(self.view.centerX);
-        make.width.equalTo(@(self.view.frame.size.width));
-        make.bottom.equalTo(self.view.centerY).offset(-60);
-        make.height.equalTo(@((self.view.frame.size.height)*0.25));
-    }];
-     */
 
     UIView *view=[[UIView alloc] init];
     view.backgroundColor=[UIColor whiteColor];
@@ -89,8 +76,7 @@
     [view makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.bottom.equalTo(self.view.centerY).offset(-51);
-        // make.centerY.equalTo(self.view.centerY);
+        make.bottom.equalTo(self.view.centerY).offset(-1);
         make.height.equalTo(@50);
     }];
     
@@ -108,11 +94,6 @@
     cityLB.textAlignment=NSTextAlignmentCenter;
     cityLB.textColor = [UIColor colorWithHexString:@"333333"];
     _cityTF.leftView = cityLB;
-    //UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
-   // UIImageView *IMV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
-    //IMV.image = [UIImage imageNamed:@"user_login"];
-    //[view addSubview:IMV];
-   // _cityTF.rightView=view;
     _cityTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     _cityTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _cityTF.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -121,8 +102,7 @@
     [_cityTF makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right).offset(-30);
-       // make.bottom.equalTo(self.view.centerY).offset(-1);
-        make.bottom.equalTo(self.view.centerY).offset(-51);
+        make.bottom.equalTo(self.view.centerY).offset(-1);
         make.height.equalTo(@50);
     }];
     
@@ -157,9 +137,7 @@
     [line2 setBackgroundColor:[UIColor colorWithHexString:LineColor]];
     [self.view addSubview:line2];
     [line2 makeConstraints:^(MASConstraintMaker *make) {
-        //make.top.equalTo(_cityTF.bottom);
-       // make.top.equalTo(self.view.centerY);
-         make.top.equalTo(self.view.centerY).offset(-50);
+        make.top.equalTo(self.view.centerY);
         make.left.equalTo(self.view.left);
         make.right.equalTo(self.view.right);
         make.height.equalTo(@1);
@@ -172,16 +150,13 @@
     [view1 makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.centerY).offset(-49);
-       // make.top.equalTo(self.view.centerY).offset(1);
-        //make.centerY.equalTo(self.view.centerY);
+        make.top.equalTo(self.view.centerY).offset(1);
         make.height.equalTo(@50);
 
     }];
 
     _phoneTF = [[UITextField alloc] init];
     _phoneTF.delegate = self;
-    //_phoneTF.keyboardType = UIKeyboardTypePhonePad;
     _phoneTF.keyboardType =UIKeyboardTypeNumberPad;
     _phoneTF.textAlignment = NSTextAlignmentRight;
     _phoneTF.leftViewMode = UITextFieldViewModeAlways;
@@ -203,8 +178,7 @@
     [_phoneTF makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right).offset(-30);
-      //  make.top.equalTo(self.view.centerY).offset(1);
-         make.top.equalTo(self.view.centerY).offset(-49);
+        make.top.equalTo(self.view.centerY).offset(1);
         make.height.equalTo(@50);
     }];
     
@@ -246,8 +220,7 @@
     [_forgetBtn setHidden:YES];
     [self.view addSubview:_forgetBtn];
     [_forgetBtn makeConstraints:^(MASConstraintMaker *make) {
-       // make.centerX.equalTo(self.view.centerX);
-       // make.top.equalTo(_phoneTF.bottom).offset(50);
+       
         make.centerX.equalTo(self.view.left).offset(padding);
         make.centerY.equalTo(_sendBtn.centerY);
         make.width.equalTo(@60);
@@ -273,7 +246,7 @@
     _TAP = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchPressed:)];
     [self.view addGestureRecognizer:_TAP];
     
-    //[self initPickerView];
+   
     [self getUserLocation];
 }
 
@@ -281,7 +254,6 @@
 -(void)locBtnPressed:(id)sender
 {
     
-    //[self pickerScrollIn];
     LocationViewController *locVC=[[LocationViewController alloc] init];
     locVC.delegate=self;
     locVC.hidesBottomBarWhenPushed=YES;
@@ -328,13 +300,7 @@
         
     }
     [self sendMobileValidate];
-    /*
-    getCodeViewController *getCodeVC=[[getCodeViewController alloc] init];
-    getCodeVC.hidesBottomBarWhenPushed=YES;
-    getCodeVC.phoneNumber=_phoneTF.text;
-    getCodeVC.cityId=_cityId;
-    [self.navigationController pushViewController:getCodeVC animated:YES ];
-*/
+
 
 }
 
@@ -425,7 +391,15 @@
     [_sendBtn setHidden:NO];
     [_forgetBtn setHidden:YES];
     [_siginBtn setHidden:YES];
+  
+    
     return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    
+ return YES;
 }
 
 
@@ -436,6 +410,16 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSInteger length = _phoneTF.text.length;
+    if (length >= 11 && string.length >0)
+    {
+        return  NO;
+    }
+    return YES;
+}
+
 #pragma mark - 键盘
 
 - (void)handleKeyboardDidShow:(NSNotification *)paramNotification {
@@ -443,7 +427,7 @@
     CGRect keyboardRect = [[[paramNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect fieldRect = [[self.editingField superview] convertRect:self.editingField.frame toView:self.view];
     CGFloat topHeight = self.navigationController.navigationBar.frame.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height;
-    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height-_sendBtn.frame.size.height-30);
+    CGFloat offsetY = keyboardRect.size.height - (kScreenHeight - topHeight - fieldRect.origin.y - fieldRect.size.height-5);
     if (offsetY > 0 && self.offset == 0) {
         self.offset = offsetY;
         [UIView animateWithDuration:0.3f animations:^{
@@ -461,18 +445,30 @@
     }
 }
 
+-(void)hideKeyboard
+{
+     if ([_phoneTF.text length] >= 11) {
+        [_phoneTF resignFirstResponder];
+     }
+
+}
 
 - (void)viewWillAppear:(BOOL)animated {
 
-    [[NSNotificationCenter defaultCenter]addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                             selector:@selector(handleKeyboardDidShow:)
                                                 name:UIKeyboardDidShowNotification
                                               object:nil];
     //注册通知，监听键盘消失事件
-    [[NSNotificationCenter defaultCenter]addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                             selector:@selector(handleKeyboardDidHidden)
                                                 name:UIKeyboardDidHideNotification
                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideKeyboard)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
     [MobClick beginLogPageView:@"PageOne"];
 }
 
