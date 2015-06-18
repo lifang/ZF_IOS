@@ -10,6 +10,7 @@
 #import "IntentionViewController.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
+#import "RegularFormat.h"
 
 static NSString *s_phoneNumber = @"4000090876";
 
@@ -248,8 +249,26 @@ static NSString *s_phoneNumber = @"4000090876";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
-        NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",s_phoneNumber]];
-        [[UIApplication sharedApplication] openURL:phoneURL];
+        if ([RegularFormat supportSIMStatusNotInserted]) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1.f];
+            hud.labelText = @"未插入SIM卡";
+        }
+        else {
+            NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",s_phoneNumber]];
+            if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
+                [[UIApplication sharedApplication] openURL:phoneURL];
+            }
+            else {
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+                hud.customView = [[UIImageView alloc] init];
+                hud.mode = MBProgressHUDModeCustomView;
+                [hud hide:YES afterDelay:1.f];
+                hud.labelText = @"无法拨号";
+            }
+        }
     }
 }
 

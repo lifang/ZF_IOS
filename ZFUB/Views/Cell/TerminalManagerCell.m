@@ -293,26 +293,26 @@ typedef enum {
         //已开通
         if ([_cellData.TM_status intValue] == TerminalStatusOpened) {
             UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+//            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
                 UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+//                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
                 }
                 else {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:1];
+//                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
                 }
             }
             else {
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+//                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonFirst totalCount:1];
                 }
                 else {
-                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:1];
+//                    [self layoutView:findPswBtn withPosition:TMButtonFirst totalCount:1];
                 }
 
             }
@@ -321,30 +321,30 @@ typedef enum {
             //部分开通
             UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
             UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
-            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
+//            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
                 UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:4];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:4];
-                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonForth totalCount:4];
-                }
-                else {
                     [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
                     [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
+//                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                }
+                else {
+                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+//                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
                 }
             }
             else {
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:3];
-                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
+//                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
                 }
                 else {
-                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:1];
+//                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
                 }
             }
         }

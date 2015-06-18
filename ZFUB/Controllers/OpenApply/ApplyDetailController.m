@@ -15,6 +15,7 @@
 #import "BankSelectedController.h"
 #import "ChannelSelectedController.h"
 #import "RegularFormat.h"
+#import "TerminalManagerController.h"
 
 #define kTextViewTag   111
 #define kApplyImageTag 112
@@ -347,8 +348,9 @@
                     hud.labelText = [NSString stringWithFormat:@"%@",[object objectForKey:@"message"]];
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
-                    hud.labelText = @"添加成功";
+                    hud.labelText = @"提交成功";
                     [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshTerminalNotification object:nil];
                 }
             }
             else {
@@ -406,7 +408,7 @@
     for (int i = 0; i < [list count]; i++) {
         NSDictionary *channelDict = [list objectAtIndex:i];
         ChannelListModel *model = [[ChannelListModel alloc] initWithParseDictionary:channelDict];
-        if ([model.channelID isEqualToString:_channelID]) {
+        if ([model.channelID isEqualToString:_applyData.terminalChannelID]) {
             [_channelItems addObject:model];
         }
     }

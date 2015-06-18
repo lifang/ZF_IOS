@@ -27,4 +27,7 @@
 //身份证
 + (BOOL)isCorrectIdentificationCard:(NSString *)string;
 
+//判断sim卡是否被插入 私有
++ (BOOL)supportSIMStatusNotInserted;
+
 @end
