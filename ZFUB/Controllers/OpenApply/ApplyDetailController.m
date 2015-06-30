@@ -349,8 +349,11 @@
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"提交成功";
-                    [self.navigationController popViewControllerAnimated:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshTerminalNotification object:nil];
+                    if ([[self.navigationController childViewControllers] count] >= 2) {
+                        UIViewController *controller = [self.navigationController.childViewControllers objectAtIndex:1];
+                        [self.navigationController popToViewController:controller animated:YES];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RefreshTerminalNotification object:nil];
+                    }
                 }
             }
             else {

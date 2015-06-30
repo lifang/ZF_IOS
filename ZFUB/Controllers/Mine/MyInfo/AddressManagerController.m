@@ -12,6 +12,7 @@
 #import "AddressModel.h"
 #import "AddressEditController.h"
 #import "AddressCell.h"
+#import "SelectedAddressController.h"
 
 typedef enum {
     AddressSingleDeleteTag = 40,
@@ -228,6 +229,7 @@ typedef enum {
                 }
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"删除成功";
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
                     [_addressItems removeObject:model];
                     [_tableView beginUpdates];
                     [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -274,6 +276,7 @@ typedef enum {
                 else if ([errorCode intValue] == RequestSuccess) {
                     hud.labelText = @"删除成功";
                     [self updateAddressListForMultiDelete];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshSelectedAddressNotification object:nil];
                 }
             }
             else {
