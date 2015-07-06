@@ -913,14 +913,14 @@ typedef enum {
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
 //        UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
         if (_terminalModel.appID && ![_terminalModel.appID isEqualToString:@""]) {
-            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
             if (_terminalModel.hasVideoAuth) {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
 //                [self layoutButton:findPswBtn position:TerDetailBtnBottomRight];
-                [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnTopRight];
             }
             else {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
 //                [self layoutButton:findPswBtn position:TerDetailBtnBottomRight];
             }
         }
@@ -941,16 +941,16 @@ typedef enum {
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
 //        UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
         if (_terminalModel.appID && ![_terminalModel.appID isEqualToString:@""]) {
-            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
             if (_terminalModel.hasVideoAuth) {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
 //                [self layoutButton:findPswBtn position:TerDetailBtnTopLeft];
-                [self layoutButton:videoAuthBtn position:TerDetailBtnTopLeft];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];
             }
             else {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
 //                [self layoutButton:findPswBtn position:TerDetailBtnTopLeft];
             }
         }
@@ -972,16 +972,16 @@ typedef enum {
         UIButton *videoAuthBtn;
         UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirmNotice:)];
         if (_terminalModel.appID && ![_terminalModel.appID isEqualToString:@""]) {
-            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
             videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
             if (_terminalModel.hasVideoAuth) {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
-                [self layoutButton:videoAuthBtn position:TerDetailBtnTopLeft];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];
             }
             else {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
             }
         }
         else {
@@ -1000,15 +1000,15 @@ typedef enum {
         UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
         UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
         if (_terminalModel.appID && ![_terminalModel.appID isEqualToString:@""]) {
-            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//            UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
             if (_terminalModel.hasVideoAuth) {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
-                [self layoutButton:videoAuthBtn position:TerDetailBtnTopLeft];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
+                [self layoutButton:videoAuthBtn position:TerDetailBtnBottomRight];
             }
             else {
-                [self layoutButton:synBtn position:TerDetailBtnTopRight];
-                [self layoutButton:openConfirmBtn position:TerDetailBtnBottomRight];
+//                [self layoutButton:synBtn position:TerDetailBtnTopRight];
+                [self layoutButton:openConfirmBtn position:TerDetailBtnTopRight];
             }
         }
         else {

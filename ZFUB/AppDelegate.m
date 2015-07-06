@@ -71,7 +71,6 @@
     [self umengTrack];
     
     
-    
     // iOS8 下需要使⽤用新的 API
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         UIUserNotificationType myTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound

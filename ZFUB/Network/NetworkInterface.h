@@ -1416,6 +1416,7 @@ static NSString *s_update_method = @"index/getVersion";
                                       finished:(requestDidFinished)finish;
 
 + (void)getModifyEmailValidateWithUserID:(NSString *)userID
+                                userName:(NSString *)userName
                                    email:(NSString *)email
                                finished:(requestDidFinished)finish;
 

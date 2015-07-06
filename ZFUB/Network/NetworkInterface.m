@@ -1845,6 +1845,7 @@ static NSString *HTTP_GET  = @"GET";
 }
 
 + (void)getModifyEmailValidateWithUserID:(NSString *)userID
+                                userName:(NSString *)userName
                                    email:(NSString *)email
                                 finished:(requestDidFinished)finish {
     //参数
@@ -1852,6 +1853,9 @@ static NSString *HTTP_GET  = @"GET";
     [paramDict setObject:[NSNumber numberWithInt:[userID intValue]] forKey:@"id"];
     if (email) {
         [paramDict setObject:email forKey:@"email"];
+    }
+    if (userName) {
+        [paramDict setObject:userName forKey:@"userName"];
     }
     //url
     NSString *urlString = [NSString stringWithFormat:@"%@/%@",kServiceURL,s_modifyEmailValidate_method];

@@ -295,14 +295,14 @@ typedef enum {
             UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
 //            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
-                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
 //                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonFirst totalCount:1];
                 }
                 else {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:1];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:1];
 //                    [self layoutView:findPswBtn withPosition:TMButtonSecond totalCount:2];
                 }
             }
@@ -323,16 +323,16 @@ typedef enum {
             UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
 //            UIButton *findPswBtn = [self buttonWithTitle:@"找回POS密码" action:@selector(findPassword:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
-                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
 //                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:4];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
                 }
                 else {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:1];
 //                    [self layoutView:findPswBtn withPosition:TMButtonThird totalCount:3];
                 }
             }
@@ -354,16 +354,16 @@ typedef enum {
             UIButton *videoAuthBtn;
             UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirmNotice:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
-                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
                 }
                 else {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:1];
                 }
             }
             else {
@@ -382,15 +382,15 @@ typedef enum {
             UIButton *openConfirmBtn = [self buttonWithTitle:@"重新申请开通" action:@selector(openConfirm:)];
             UIButton *videoAuthBtn = [self buttonWithTitle:@"视频认证" action:@selector(videoAuth:)];
             if (_cellData.appID && ![_cellData.appID isEqualToString:@""]) {
-                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
+//                UIButton *synBtn = [self buttonWithTitle:@"同步" action:@selector(synchronization:)];
                 if (_cellData.hasVideoAuth) {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:3];
-                    [self layoutView:videoAuthBtn withPosition:TMButtonThird totalCount:3];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:3];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:videoAuthBtn withPosition:TMButtonSecond totalCount:2];
                 }
                 else {
-                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
-                    [self layoutView:openConfirmBtn withPosition:TMButtonSecond totalCount:2];
+//                    [self layoutView:synBtn withPosition:TMButtonFirst totalCount:2];
+                    [self layoutView:openConfirmBtn withPosition:TMButtonFirst totalCount:1];
                 }
             }
             else {
