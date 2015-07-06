@@ -25,6 +25,8 @@
 #import "UserArchiveHelper.h"
 #import "WaitingViewController.h"
 #import "GoodDetailViewController.h"
+#import "MyOrderViewController.h"
+#import "AfterSaleViewController.h"
 
 @interface HomeViewController ()<LocationDelegate,CLLocationManagerDelegate>
 
@@ -143,8 +145,10 @@
                           @"开通认证",
                           @"终端管理",
                           @"交易流水",
-                          @"我要贷款",
-                          @"我要理财",
+                         // @"我",
+                        //  @"我要理财",
+                          @"我的订单",
+                          @"售后记录",
                           @"系统公告",
                           @"联系我们",
                           nil];
@@ -293,18 +297,28 @@
             break;
         case ModuleLoan: {
             //我要贷款
-            WaitingViewController *waitC = [[WaitingViewController alloc] init];
-            waitC.hidesBottomBarWhenPushed = YES;
-            waitC.title = @"我要贷款";
-            [self.navigationController pushViewController:waitC animated:YES];
+         //   WaitingViewController *waitC = [[WaitingViewController alloc] init];
+         //   waitC.hidesBottomBarWhenPushed = YES;
+          //  waitC.title = @"我要贷款";
+          //  [self.navigationController pushViewController:waitC animated:YES];
+             //我的订单
+            MyOrderViewController *orderC = [[MyOrderViewController alloc] init];
+            orderC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:orderC animated:YES];
+            
         }
             break;
         case ModuleFinancial: {
             //我要理财
-            WaitingViewController *waitC = [[WaitingViewController alloc] init];
-            waitC.hidesBottomBarWhenPushed = YES;
-            waitC.title = @"我要理财";
-            [self.navigationController pushViewController:waitC animated:YES];
+          //  WaitingViewController *waitC = [[WaitingViewController alloc] init];
+          //  waitC.hidesBottomBarWhenPushed = YES;
+          //  waitC.title = @"我要理财";
+          //  [self.navigationController pushViewController:waitC animated:YES];
+            //售后记录
+            AfterSaleViewController *afterC = [[AfterSaleViewController alloc] init];
+            afterC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:afterC animated:YES];
+            
         }
             break;
         case ModuleSystemAnnouncement: {
@@ -426,7 +440,7 @@
 
 
 #pragma mark - Request
-
+/*
 - (void)checkVersion {
    
     [NetworkInterface checkVersionFinished:^(BOOL success, NSData *response) {
@@ -460,8 +474,8 @@
         }
     }];
 }
+*/
 
-/*
 //AppStore 更新
 -(void)checkVersion
 {
@@ -533,7 +547,7 @@
     
 }
 
-*/
+
 #pragma mark - UIAlertView
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
