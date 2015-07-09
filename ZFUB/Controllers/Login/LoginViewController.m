@@ -293,6 +293,7 @@
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     delegate.token = token;
     delegate.userID = userID;
+    delegate.username = _userTF.text;
     //绑定推送
     [BPush bindChannel];
     [self dismissViewControllerAnimated:YES completion:nil];

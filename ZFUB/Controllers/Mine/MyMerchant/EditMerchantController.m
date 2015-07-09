@@ -7,6 +7,7 @@
 //
 
 #import "EditMerchantController.h"
+#import "CreateMerchantController.h"
 #import "NetworkInterface.h"
 #import "AppDelegate.h"
 #import "RegularFormat.h"
@@ -131,6 +132,7 @@
                     hud.labelText = @"修改商户成功";
                     [self updateMerchant:modifyModel];
                     [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMerchantListNotification object:nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:EditMerchantInfoNotification object:nil];
                 }
             }
