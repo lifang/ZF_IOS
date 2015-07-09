@@ -9,6 +9,7 @@
 #import "MerchantDetailController.h"
 #import "MerchantDetailModel.h"
 #import "EditMerchantController.h"
+#import "CreateMerchantController.h"
 
 #define kImageTag   20
 
@@ -157,7 +158,9 @@
                     if (flag) {
                         _mercahtnDetail.merchantCityID = model.merchantCityID;
                     }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RefreshMerchantListNotification object:nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:EditMerchantInfoNotification object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }
             else {

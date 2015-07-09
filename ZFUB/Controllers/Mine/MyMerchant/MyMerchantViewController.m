@@ -590,7 +590,7 @@ typedef enum {
 #pragma mark - NSNotification
 
 - (void)refreshMerchantList:(NSNotification *)notification {
-    [self firstLoadData];
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.1f];
 }
 
 #pragma mark - UIAlertView
