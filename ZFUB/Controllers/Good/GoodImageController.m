@@ -64,12 +64,6 @@
     [self getGoodImageList];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-
-//[self getGoodImageList];
-    
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -184,7 +178,9 @@
                 UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [[SDImageCache sharedImageCache] storeImage:image forKey:model.imageURL];
                 CGSize size = image.size;
-                [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+               // [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+                [_imageSizeArray setObject:[NSValue valueWithCGSize:size] atIndexedSubscript:i];
+               // [_imageSizeArray insertObject:[NSValue valueWithCGSize:size] atIndex:i];
    
             }
          
@@ -232,7 +228,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_imageSizeArray == nil) {
         return 44;
-
     }
     else
     {
