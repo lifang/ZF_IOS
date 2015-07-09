@@ -133,13 +133,12 @@
 
 -(void)gotoMain
 {
-//    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//    self.window.backgroundColor = [UIColor whiteColor];
+
     [NSThread sleepForTimeInterval:3.0];//延长3秒
     _rootController = [[RootViewController alloc] init];
     self.window.rootViewController = _rootController;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-//    [self.window makeKeyAndVisible];
+//   [self.window makeKeyAndVisible];
 
 
 }

@@ -169,6 +169,7 @@
                 UIImage *image = [imageCache imageFromDiskCacheForKey:model.imageURL];
                 CGSize size = image.size;
                 [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+                //[_imageSizeArray setObject:[NSValue valueWithCGSize:size] atIndexedSubscript:i];
                 
                 
             } else
@@ -178,8 +179,8 @@
                 UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [[SDImageCache sharedImageCache] storeImage:image forKey:model.imageURL];
                 CGSize size = image.size;
-               // [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
-                [_imageSizeArray setObject:[NSValue valueWithCGSize:size] atIndexedSubscript:i];
+                [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+               // [_imageSizeArray setObject:[NSValue valueWithCGSize:size] atIndexedSubscript:i];
                // [_imageSizeArray insertObject:[NSValue valueWithCGSize:size] atIndex:i];
    
             }
@@ -205,7 +206,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     NSString *identifier = [NSString stringWithFormat:@"ImageIdentifier%ld",indexPath.row];
+     NSString *identifier = [NSString stringWithFormat:@"ImageIdentifier%ld",(long)indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     CGSize size = [[_imageSizeArray objectAtIndex:indexPath.row] CGSizeValue];
     CGFloat HHH = size.height;

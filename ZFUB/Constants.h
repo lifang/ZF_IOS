@@ -40,6 +40,9 @@
 
 #define kOrderCallBackURL  @"http://121.40.84.2:8080/ZFMerchant/app_notify_url.jsp"
 #define kCSCallBackURL     @"http://121.40.84.2:8080/ZFMerchant/repair_app_notify_url.jsp"
+//yufa
+//#define kOrderCallBackURL  @"http://121.40.224.25:8080/app_notify_url.jsp"
+//#define kCSCallBackURL     @"http://121.40.224.25:8080/repair_app_notify_url.jsp"
 //线上
 //#define kOrderCallBackURL  @"http://www.ebank007.com/app_notify_url.jsp"
 //#define kCSCallBackURL     @"http://www.ebank007.com/repair_app_notify_url.jsp"

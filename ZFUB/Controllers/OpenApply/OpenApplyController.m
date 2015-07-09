@@ -45,7 +45,18 @@
     _applyList = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self firstLoadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshTerminal:)
+                                                 name:@"RefreshTerminalNotification"
+                                               object:nil];
 }
+
+#pragma mark - Notification
+
+- (void)refreshTerminal:(NSNotification *)notifiction {
+    [self performSelector:@selector(firstLoadData) withObject:nil afterDelay:0.1f];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
