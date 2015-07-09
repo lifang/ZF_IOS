@@ -9,6 +9,9 @@
 #import "GoodImageController.h"
 #import "NetworkInterface.h"
 #import "UIImageView+WebCache.h"
+#import "SDImageCache.h"
+#import "SDWebImageManager.h"
+
 
 #define kGoodImageViewTag  130
 
@@ -44,6 +47,8 @@
 
 @property (nonatomic, strong) NSMutableArray *imageList;
 
+@property (nonatomic, strong) NSMutableArray *imageSizeArray;
+
 @end
 
 @implementation GoodImageController
@@ -54,8 +59,16 @@
     self.title = @"图文详情";
     self.view.backgroundColor = kColor(244, 243, 243, 1);
     _imageList = [[NSMutableArray alloc] init];
+    _imageSizeArray = [[NSMutableArray alloc] init];
     [self initAndLayoutUI];
     [self getGoodImageList];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+
+//[self getGoodImageList];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -148,16 +161,41 @@
         return;
     }
     [_imageList removeAllObjects];
+    [_imageSizeArray removeAllObjects];
     NSArray *list = [dict objectForKey:@"result"];
     for (int i = 0; i < [list count]; i++) {
         id imageDict = [list objectAtIndex:i];
         if ([imageDict isKindOfClass:[NSDictionary class]]) {
             GoodImageModel *model = [[GoodImageModel alloc] initWithParseDictionary:imageDict];
             [_imageList addObject:model];
+            
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            if ([imageCache diskImageExistsWithKey:model.imageURL]) {
+               
+                UIImage *image = [imageCache imageFromDiskCacheForKey:model.imageURL];
+                CGSize size = image.size;
+                [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+                
+                
+            } else
+            {
+                NSString *imageURL = [NSString stringWithFormat:@"%@",model.imageURL];
+                NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageURL]];
+                UIImage *image = [[UIImage alloc] initWithData:imageData];
+                [[SDImageCache sharedImageCache] storeImage:image forKey:model.imageURL];
+                CGSize size = image.size;
+                [_imageSizeArray addObject:[NSValue valueWithCGSize:size]];
+   
+            }
+         
         }
+             
     }
+    NSLog(@"size:%@",_imageSizeArray);
     [_tableView reloadData];
 }
+
+
 
 #pragma mark - UITableView
 
@@ -167,47 +205,52 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_imageList count];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *identifier = @"ImageIdentifier";
+     NSString *identifier = [NSString stringWithFormat:@"ImageIdentifier%ld",indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    CGSize size = [[_imageSizeArray objectAtIndex:indexPath.row] CGSizeValue];
+    CGFloat HHH = size.height;
+    CGFloat WWW = size.width;
+    CGFloat Chight = HHH/WWW * kScreenWidth;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth)];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, Chight)];
         imageView.tag = kGoodImageViewTag;
         [cell.contentView addSubview:imageView];
     }
-    UIView *selectView = [[UIView alloc] init];
-    selectView.backgroundColor = [UIColor clearColor];
-    cell.selectedBackgroundView = selectView;
-    
+   
     UIImageView *imageView = (UIImageView *)[cell.contentView viewWithTag:kGoodImageViewTag];
     GoodImageModel *model = [_imageList objectAtIndex:indexPath.row];
     [imageView sd_setImageWithURL:[NSURL URLWithString:model.imageURL]];
+
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kScreenWidth;
+    if (_imageSizeArray == nil) {
+        return 44;
+
+    }
+    else
+    {
+    CGSize size = [[_imageSizeArray objectAtIndex:indexPath.row] CGSizeValue];
+    CGFloat bilv = size.width*1.0/kScreenWidth;
+    CGFloat Chight =  size.height/bilv;
+    return Chight;
+    }
+
+    
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    if (section == 0) {
-//        return 5.f;
-//    }
-//    return 0.001f;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//    if (section == [_imageList count] - 1) {
-//        return 5.f;
-//    }
-//    return 0.001f;
-//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+
+
 
 @end

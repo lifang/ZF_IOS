@@ -53,8 +53,8 @@
 //#define kMode_Production             @"00"  //yufa
 //#define kUnionPayURL  @"http://121.40.224.25:8080/unionpay.do" //yufa
 
-#define kBaiduAPIKey  @"18vgfrYe8V4hmFH6m2IHMjbz" //APPstore
-//#define kBaiduAPIKey @"MTrtGFhYhOXMFLbdvz2nFZM7" //zhangfu
+//#define kBaiduAPIKey  @"18vgfrYe8V4hmFH6m2IHMjbz" //APPstore
+#define kBaiduAPIKey @"MTrtGFhYhOXMFLbdvz2nFZM7" //zhangfu
 
 
 #define kImageName(name) [UIImage imageNamed:name]

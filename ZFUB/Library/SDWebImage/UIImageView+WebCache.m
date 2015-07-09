@@ -51,6 +51,7 @@ static char imageURLKey;
         id <SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadImageWithURL:url options:options progress:progressBlock completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
             if (!wself) return;
             dispatch_main_sync_safe(^{
+                
                 if (!wself) return;
                 if (image) {
                     wself.image = image;
