@@ -153,8 +153,8 @@
         cell.textLabel.font = [UIFont systemFontOfSize:14.f];
         cell.textLabel.text = @"购买数量";
         _numberField.frame = CGRectMake(kScreenWidth - 100, 10, 90, 24);
-        [cell.contentView addSubview:_numberField];
         _numberField.text = [NSString stringWithFormat:@"%d",_count];
+        [cell.contentView addSubview:_numberField];
         return cell;
     }
     else if (indexPath.row == 2) {
@@ -234,6 +234,7 @@
         }
         else {
             
+            
         }
     }
     else {
@@ -245,11 +246,23 @@
     BOOL isNumber = [RegularFormat isNumber:_numberField.text];
     if (isNumber) {
         int currentCount = [_numberField.text intValue];
-        currentCount++;
-        _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
-        _count = currentCount;
-        [self updatPrice];
-        [self.tableView reloadData];
+         currentCount++;
+        if (currentCount <= 10000) {
+          _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
+          _count = currentCount;
+         [self updatPrice];
+         [self.tableView reloadData];
+         
+        }
+        else
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1];
+            hud.labelText = @"购买商品数量不得大于10000件";
+        
+        }
     }
     else {
         _numberField.text = [NSString stringWithFormat:@"%d",_count];
@@ -264,10 +277,24 @@
     BOOL isNumber = [RegularFormat isNumber:_numberField.text];
     if (isNumber && [_numberField.text intValue] > 0) {
         int currentCount = [_numberField.text intValue];
-        _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
-        _count = currentCount;
-        [self updatPrice];
-        [self.tableView reloadData];
+        if (currentCount <= 10000) {
+            _numberField.text = [NSString stringWithFormat:@"%d",currentCount];
+            _count = currentCount;
+            [self updatPrice];
+            [self.tableView reloadData];
+        }else if (currentCount > 10000)
+        {
+            _numberField.text = @"10000";
+            _count = 10000;
+            [self updatPrice];
+            [self.tableView reloadData];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            hud.customView = [[UIImageView alloc] init];
+            hud.mode = MBProgressHUDModeCustomView;
+            [hud hide:YES afterDelay:1];
+            hud.labelText = @"购买商品数量不得大于10000件";
+
+        }
     }
     else {
         _numberField.text = [NSString stringWithFormat:@"%d",_count];

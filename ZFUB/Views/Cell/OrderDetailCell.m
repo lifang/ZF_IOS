@@ -117,7 +117,18 @@
     [self layoutGoodLabel:_brandLabel WithTopView:_openPriceLabel topSpace:0.f alignment:NSTextAlignmentLeft leftSpace:10.f];
     //支付通道
     _channelLabel = [[UILabel alloc] init];
-    [self layoutGoodLabel:_channelLabel WithTopView:_brandLabel topSpace:0.f alignment:NSTextAlignmentLeft leftSpace:40.f];
+    //[self layoutGoodLabel:_channelLabel WithTopView:_brandLabel topSpace:0.f alignment:NSTextAlignmentLeft leftSpace:40.f];
+    _channelLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _channelLabel.backgroundColor = [UIColor clearColor];
+    _channelLabel.font = [UIFont systemFontOfSize:12.f];
+    _channelLabel.textAlignment = NSTextAlignmentLeft;
+    [self.contentView addSubview:_channelLabel];
+    [_channelLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_pictureView.right).offset(20);
+        make.top.equalTo( _brandLabel.bottom).offset(0);
+        //make.width.equalTo(@);
+        make.height.equalTo(@14);
+    }];
     //数量
     _numberLabel = [[UILabel alloc] init];
     _numberLabel.translatesAutoresizingMaskIntoConstraints = NO;

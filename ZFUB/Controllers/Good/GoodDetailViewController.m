@@ -212,6 +212,7 @@
     CGFloat middleSpace = 10.f;
     CGFloat btnWidth = (kScreenWidth - 4 * middleSpace) / 2;
     CGFloat btnHeight = 36.f;
+    /*
     if (_detailModel.stockNumber <= 0) {
         _noGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _noGoodButton.frame = CGRectMake(middleSpace, 12, kScreenWidth - 2 * middleSpace, btnHeight);
@@ -224,6 +225,7 @@
         [_footerView addSubview:_noGoodButton];
     }
     else {
+     */
         _shopcartButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _shopcartButton.frame = CGRectMake(middleSpace, 12, btnWidth, btnHeight);
         _shopcartButton.layer.cornerRadius = 4.f;
@@ -247,7 +249,7 @@
         _buyGoodButton.titleLabel.font = [UIFont systemFontOfSize:16.f];
         [_buyGoodButton addTarget:self action:@selector(buyNow:) forControlEvents:UIControlEventTouchUpInside];
         [_footerView addSubview:_buyGoodButton];
-    }
+    //}
 }
 
 //查看大图
