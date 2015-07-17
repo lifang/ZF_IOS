@@ -26,6 +26,8 @@
 
 #define kAppVersionType  1   //版本更新
 
+#define kOffsetKeyboard  44  //键盘
+
 //#define kServiceURL @"http://121.40.224.25:8080/api" //yufa
 #define kServiceURL @"http://121.40.84.2:8080/ZFMerchant/api"
 //#define kServiceURL @"http://www.ebank007.com/api"   //线上
